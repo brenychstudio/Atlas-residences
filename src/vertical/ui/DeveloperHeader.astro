@@ -1,0 +1,65 @@
+---
+import { type Lang, isLang, t } from "../../content/languages";
+
+const { lang, pathname = "/" } = Astro.props as { lang: string; pathname?: string };
+
+const langParam = lang ?? "en";
+if (!isLang(langParam)) throw new Error("Invalid lang");
+const L = langParam as Lang;
+
+const nav = [
+  { href: `/${L}/`, label: t(L, "Home", "Inicio") },
+  { href: `/${L}/masterplan/`, label: t(L, "Masterplan", "Plan maestro") },
+  { href: `/${L}/units/`, label: t(L, "Units", "Unidades") },
+  { href: `/${L}/location/`, label: t(L, "Location", "Ubicación") },
+  { href: `/${L}/downloads/`, label: t(L, "Downloads", "Descargas") },
+  { href: `/${L}/contact/`, label: t(L, "Contact", "Contacto") },
+];
+
+function isActive(href: string) {
+  if (href === `/${L}/`) return pathname === href;
+  return pathname.startsWith(href);
+}
+---
+
+<header class="sticky top-0 z-50 border-b border-[var(--border)] bg-[color:var(--card)]/95 backdrop-blur">
+  <div class="mx-auto flex w-full max-w-[72rem] items-center justify-between gap-3 px-4 py-3 md:px-6">
+    <a
+      href={`/${L}/`}
+      class="inline-flex min-h-[44px] items-center text-xs uppercase tracking-[0.18em] text-[color:var(--fg)]"
+    >
+      Atlas Residences
+    </a>
+
+    <nav class="hidden items-center gap-1 md:flex">
+      {nav.map((item) => (
+        <a
+          href={item.href}
+          class={`inline-flex min-h-[44px] items-center rounded-full px-3 text-sm transition ${isActive(item.href) ? "bg-[color:var(--fg)] text-[color:var(--bg)]" : "text-[color:var(--muted)] hover:text-[color:var(--fg)]"}`}
+          aria-current={isActive(item.href) ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <a
+      href={`/${L}/contact/`}
+      class="inline-flex min-h-[44px] items-center rounded-full border border-[var(--border)] px-4 text-sm text-[color:var(--fg)] transition hover:border-[color:var(--accent)]"
+    >
+      {t(L, "Book a viewing", "Reservar visita")}
+    </a>
+  </div>
+
+  <nav class="mx-auto flex w-full max-w-[72rem] items-center gap-2 overflow-x-auto px-4 pb-3 md:hidden">
+    {nav.map((item) => (
+      <a
+        href={item.href}
+        class={`inline-flex min-h-[44px] shrink-0 items-center rounded-full border px-3 text-sm ${isActive(item.href) ? "border-[color:var(--fg)] bg-[color:var(--fg)] text-[color:var(--bg)]" : "border-[var(--border)] text-[color:var(--muted)]"}`}
+        aria-current={isActive(item.href) ? "page" : undefined}
+      >
+        {item.label}
+      </a>
+    ))}
+  </nav>
+</header>

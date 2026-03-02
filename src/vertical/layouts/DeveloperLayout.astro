@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../../core/layouts/BaseLayout.astro";
+import DeveloperHeader from "../ui/DeveloperHeader.astro";
+import StickyCTA from "../ui/StickyCTA.astro";
+
+const props = Astro.props;
+const pathname = Astro.url.pathname;
+const lang = (props as { lang?: string }).lang;
+---
+
+<BaseLayout {...props}>
+  <DeveloperHeader slot="header" lang={lang} pathname={pathname} />
+  <slot />
+  <StickyCTA lang={lang} />
+</BaseLayout>
