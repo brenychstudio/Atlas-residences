@@ -1,0 +1,135 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { LANGS, type Lang, isLang } from "../../../content/languages";
+import { getExperiences, getExperienceBySlug, getSettings } from "../../../cms/sheets";
+import { pickLang, splitPipe } from "../../../cms/types";
+import { getHotelLabels } from "../../../vertical/content/labels";
+
+export async function getStaticPaths() {
+  const xs = await getExperiences();
+  return LANGS.flatMap((lang) =>
+    xs.map((x) => ({ params: { lang, slug: x.slug } }))
+  );
+}
+
+export const prerender = true;
+
+const langParam = Astro.params.lang ?? "en";
+if (!isLang(langParam)) throw new Error("Invalid lang");
+const lang = langParam as Lang;
+
+const L = getHotelLabels(lang);
+
+const slug = Astro.params.slug!;
+const x = await getExperienceBySlug(slug);
+if (!x) throw new Error(`Experience not found: ${slug}`);
+
+const s = await getSettings();
+
+const title = pickLang(lang, x, "title");
+const desc = pickLang(lang, x, "description");
+
+const cover = (x.cover_image ?? "").trim();
+const gallery = splitPipe(x.gallery_images);
+
+const images = [
+  ...(cover ? [cover] : []),
+  ...gallery.filter((p) => p && p !== cover),
+].filter(Boolean);
+
+const isContact = String((x as any).cta_type ?? "").toLowerCase() === "contact";
+const ctaLabel = isContact ? L.contactUs : L.book;
+
+const ctaHref = isContact
+  ? `/${lang}/contact/`
+  : ((x as any).cta_url && String((x as any).cta_url).trim())
+    ? String((x as any).cta_url).trim()
+    : s.booking_url;
+
+const cat = String((x as any).category ?? "").trim();
+---
+
+<BaseLayout lang={lang} title={title}>
+  <div class="flex items-center justify-between gap-4">
+    <a class="text-sm opacity-70 hover:opacity-100 underline" href={`/${lang}/experiences/`}>
+      {L.backToExperiences}
+    </a>
+
+    <a
+      class="hidden sm:inline-flex rounded-full px-4 py-2 bg-black text-white active:scale-[0.98] transition"
+      href={ctaHref}
+      target={!isContact ? "_blank" : undefined}
+      rel="noreferrer"
+    >
+      {ctaLabel}
+    </a>
+  </div>
+
+  {cover ? (
+    <section class="mt-6 overflow-hidden rounded-3xl border border-black/10">
+      <div class="aspect-[16/9] bg-black/5">
+        <img src={cover} alt="" class="h-full w-full object-cover" loading="eager" decoding="async" />
+      </div>
+    </section>
+  ) : null}
+
+  <section class="mt-8">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <div>
+        {cat ? <div class="text-xs uppercase tracking-widest opacity-60">{cat}</div> : null}
+        <h1 class="mt-2 text-3xl sm:text-4xl tracking-tight">{title}</h1>
+        {desc ? <p class="mt-3 max-w-2xl text-sm sm:text-base opacity-80">{desc}</p> : null}
+      </div>
+
+      <a
+        class="sm:hidden inline-flex rounded-full px-5 py-2 bg-black text-white active:scale-[0.98] transition"
+        href={ctaHref}
+        target={!isContact ? "_blank" : undefined}
+        rel="noreferrer"
+      >
+        {ctaLabel}
+      </a>
+    </div>
+  </section>
+
+  {images.length > 1 ? (
+    <section class="mt-10 mb-16">
+      <div class="flex items-end justify-between">
+        <h2 class="text-lg tracking-tight">{L.gallery}</h2>
+        <div class="text-xs opacity-60">{L.tapFull}</div>
+      </div>
+
+      <div class="mt-5 grid gap-4 sm:grid-cols-2">
+        {images.map((src) => (
+          <a
+            href={src}
+            target="_blank"
+            rel="noreferrer"
+            class="block rounded-2xl overflow-hidden bg-black/5 active:scale-[0.995] transition"
+          >
+            <img src={src} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+          </a>
+        ))}
+      </div>
+    </section>
+  ) : null}
+
+  <div class="fixed inset-x-0 bottom-0 z-50 sm:hidden">
+    <div class="mx-auto max-w-6xl px-4 pb-4">
+      <div class="rounded-2xl border border-black/10 bg-white/80 backdrop-blur p-3 flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <div class="text-xs opacity-60">{L.directBooking}</div>
+          <div class="text-sm truncate">{title}</div>
+        </div>
+        <a
+          class="shrink-0 rounded-full px-4 py-2 bg-black text-white active:scale-[0.98] transition"
+          href={ctaHref}
+          target={!isContact ? "_blank" : undefined}
+          rel="noreferrer"
+        >
+          {L.book}
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

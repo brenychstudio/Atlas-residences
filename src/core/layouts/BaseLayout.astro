@@ -1,0 +1,22 @@
+---
+import "../../styles/global.css";
+
+import type { Lang } from "../content/languages";
+
+const { lang, title } = Astro.props as { lang: Lang; title: string };
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+  </head>
+  <body class="bg-white text-black">
+    <slot name="header" />
+    <main class="mx-auto max-w-6xl px-4 py-10">
+      <slot />
+    </main>
+  </body>
+</html>

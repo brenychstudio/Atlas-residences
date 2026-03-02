@@ -1,0 +1,255 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Button from "../../core/ui/Button.astro";
+import { LANGS, type Lang, isLang, t } from "../../content/languages";
+import { getSettings, getRooms, getOffers, getExperiences, getReviews } from "../../cms/sheets";
+import { pickLang, splitPipe } from "../../cms/types";
+import { getHomeCopy } from "../../vertical/content/home";
+import { getHotelLabels } from "../../vertical/content/labels";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const langParam = Astro.params.lang ?? "en";
+if (!isLang(langParam)) throw new Error("Invalid lang");
+const lang = langParam as Lang;
+
+const L = getHotelLabels(lang);
+
+const s = await getSettings();
+const title = t(lang, s.hotel_name_en, s.hotel_name_es);
+
+const { headline, sub } = getHomeCopy(lang);
+
+const heroSrc =
+  (s.hero_image && s.hero_image.trim()) ||
+  "/hotels/barcelona-boutique-demo/hero/hero-16x9.png";
+
+const rooms = (await getRooms()).slice(0, 3);
+const offers = (await getOffers()).slice(0, 3);
+const exps = (await getExperiences()).slice(0, 4);
+
+const reviews = (await getReviews()).slice(0, 2);
+
+const gallery = [
+  "/hotels/barcelona-boutique-demo/gallery/courtyard-16x9.png",
+  "/hotels/barcelona-boutique-demo/gallery/gallery-staircase-4x5.png",
+  "/hotels/barcelona-boutique-demo/gallery/gallery-courtyard-reflection-1x1.png",
+  "/hotels/barcelona-boutique-demo/restaurant/restaurant-corner-16x9.png",
+];
+---
+
+<BaseLayout lang={lang} title={title}>
+  <!-- HERO (hotel-style) -->
+  <section class="relative overflow-hidden rounded-3xl border border-black/10">
+    <div class="aspect-[16/10] sm:aspect-[21/9] bg-black/5">
+      <img
+        src={heroSrc}
+        alt=""
+        class="h-full w-full object-cover"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+
+    <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-black/20 to-transparent"></div>
+
+    <div class="absolute bottom-0 left-0 right-0 p-6 sm:p-10 text-white">
+      <div class="text-xs uppercase tracking-widest opacity-80">
+        {t(lang, "Barcelona · Boutique", "Barcelona · Boutique")}
+      </div>
+
+      <h1 class="mt-3 text-3xl sm:text-5xl tracking-tight">{headline}</h1>
+
+      <p class="mt-3 max-w-2xl text-sm sm:text-base opacity-85">{sub}</p>
+
+      <div class="mt-6 flex flex-wrap gap-3">
+        <Button href={s.booking_url} target="_blank" rel="noreferrer" variant="light">
+          {L.bookNow}
+        </Button>
+
+        <Button
+          href={`/${lang}/rooms/`}
+          variant="ghost"
+          class="border-white/35 bg-white/0 text-white"
+        >
+          {L.exploreRooms}
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROOMS -->
+  <section class="mt-14">
+    <div class="flex items-end justify-between">
+      <h2 class="text-xl tracking-tight">{L.rooms}</h2>
+      <a class="text-sm opacity-70 hover:opacity-100 underline" href={`/${lang}/rooms/`}>
+        {L.viewAll}
+      </a>
+    </div>
+
+    <div class="mt-6 grid gap-6 sm:grid-cols-3">
+      {rooms.map((r) => (
+        <a
+          class="block rounded-2xl border border-black/10 overflow-hidden active:scale-[0.99] transition"
+          href={`/${lang}/rooms/${r.slug}/`}
+        >
+          <div class="aspect-[4/3] bg-black/5">
+            {r.cover_image ? (
+              <img
+                src={r.cover_image}
+                alt=""
+                class="h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : null}
+          </div>
+
+          <div class="p-4">
+            <div class="flex items-baseline justify-between gap-3">
+              <h3 class="text-base">{pickLang(lang, r, "name")}</h3>
+              {r.price_from ? <span class="text-sm opacity-70">€{r.price_from}</span> : null}
+            </div>
+
+            <p class="mt-2 text-sm opacity-80">{pickLang(lang, r, "short")}</p>
+
+            <div class="mt-3 flex flex-wrap gap-2">
+              {splitPipe(pickLang(lang, r, "highlights"))
+                .slice(0, 2)
+                .map((x) => (
+                  <span class="text-xs rounded-full px-3 py-1 bg-black/5">{x}</span>
+                ))}
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- OFFERS -->
+  {offers.length ? (
+    <section class="mt-14">
+      <div class="flex items-end justify-between">
+        <h2 class="text-xl tracking-tight">{L.offers}</h2>
+        <a class="text-sm opacity-70 hover:opacity-100 underline" href={`/${lang}/offers/`}>
+          {L.viewAll}
+        </a>
+      </div>
+
+      <div class="mt-6 grid gap-6 sm:grid-cols-3">
+        {offers.map((o) => (
+          <a
+            class="block rounded-2xl border border-black/10 overflow-hidden active:scale-[0.99] transition"
+            href={`/${lang}/offers/${o.slug}/`}
+          >
+            <div class="aspect-[16/10] bg-black/5">
+              {o.cover_image ? (
+                <img
+                  src={o.cover_image}
+                  alt=""
+                  class="h-full w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : null}
+            </div>
+
+            <div class="p-4">
+              <h3 class="text-base">{pickLang(lang, o, "title")}</h3>
+              <p class="mt-2 text-sm opacity-80">{pickLang(lang, o, "period")}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  ) : null}
+
+  <!-- EXPERIENCES -->
+  {exps.length ? (
+    <section class="mt-14">
+      <div class="flex items-end justify-between">
+        <h2 class="text-xl tracking-tight">{L.experiences}</h2>
+        <a class="text-sm opacity-70 hover:opacity-100 underline" href={`/${lang}/experiences/`}>
+          {L.viewAll}
+        </a>
+      </div>
+
+      <div class="mt-6 grid gap-6 sm:grid-cols-2">
+        {exps.map((x) => (
+          <a
+            class="block rounded-2xl border border-black/10 overflow-hidden active:scale-[0.99] transition"
+            href={`/${lang}/experiences/${x.slug}/`}
+          >
+            <div class="aspect-[16/10] bg-black/5">
+              {x.cover_image ? (
+                <img
+                  src={x.cover_image}
+                  alt=""
+                  class="h-full w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : null}
+            </div>
+
+            <div class="p-4">
+              <div class="text-xs opacity-60">{x.category}</div>
+              <h3 class="mt-1 text-base">{pickLang(lang, x, "title")}</h3>
+              <p class="mt-2 text-sm opacity-80 line-clamp-2">{pickLang(lang, x, "description")}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  ) : null}
+
+ <!-- GALLERY STRIP -->
+<section class="mt-14">
+  <div class="flex items-end justify-between">
+    <h2 class="text-xl tracking-tight">{L.gallery}</h2>
+    <a class="text-sm opacity-70 hover:opacity-100 underline" href="#">
+      {L.cinematicPreview}
+    </a>
+  </div>
+
+    <div class="mt-6 grid gap-4 sm:grid-cols-12">
+      <div class="sm:col-span-7 rounded-2xl overflow-hidden bg-black/5">
+        <img src={gallery[0]} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+      </div>
+
+      <div class="sm:col-span-5 grid gap-4">
+        <div class="rounded-2xl overflow-hidden bg-black/5">
+          <img src={gallery[1]} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="rounded-2xl overflow-hidden bg-black/5">
+            <img src={gallery[2]} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+          </div>
+          <div class="rounded-2xl overflow-hidden bg-black/5">
+            <img src={gallery[3]} alt="" class="h-full w-full object-cover" loading="lazy" decoding="async" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  {reviews.length ? (
+    <section class="mt-14 mb-10">
+      <h2 class="text-xl tracking-tight">{L.guestNotes}</h2>
+
+      <div class="mt-6 grid gap-6 sm:grid-cols-2">
+        {reviews.map((r) => (
+          <div class="rounded-2xl border border-black/10 p-5">
+            <div class="text-xs opacity-60">{r.source} · {r.rating}</div>
+            <p class="mt-3 text-sm opacity-90">“{pickLang(lang, r, "quote")}”</p>
+            <div class="mt-3 text-sm opacity-70">— {r.author}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+  ) : null}
+</BaseLayout>

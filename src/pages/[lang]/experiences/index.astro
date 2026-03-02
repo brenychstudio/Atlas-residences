@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { LANGS, type Lang, isLang } from "../../../content/languages";
+import { getExperiences } from "../../../cms/sheets";
+import { pickLang } from "../../../cms/types";
+import Card from "../../../core/ui/Card.astro";
+import { getHotelLabels } from "../../../vertical/content/labels";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const langParam = Astro.params.lang ?? "en";
+if (!isLang(langParam)) throw new Error("Invalid lang");
+const lang = langParam as Lang;
+
+const L = getHotelLabels(lang);
+
+const exps = await getExperiences();
+const title = L.experiences;
+---
+
+<BaseLayout lang={lang} title={title}>
+  <h1 class="text-2xl tracking-tight">{title}</h1>
+
+  <div class="mt-6 grid gap-6 sm:grid-cols-2">
+    {exps.map((x) => (
+      <Card href={`/${lang}/experiences/${x.slug}/`} class="active:scale-[0.99] transition">
+        <div class="aspect-[16/10] bg-black/5">
+          {x.cover_image ? (
+            <img
+              src={x.cover_image}
+              alt=""
+              class="h-full w-full object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+          ) : null}
+        </div>
+
+        <div class="p-4">
+          <div class="text-xs opacity-60">{x.category}</div>
+          <h2 class="mt-1 text-lg">{pickLang(lang, x, "title")}</h2>
+          <p class="mt-2 text-sm opacity-80 line-clamp-2">{pickLang(lang, x, "description")}</p>
+        </div>
+      </Card>
+    ))}
+  </div>
+</BaseLayout>

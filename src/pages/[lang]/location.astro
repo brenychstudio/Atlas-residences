@@ -1,0 +1,195 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { LANGS, type Lang, isLang, t } from "../../content/languages";
+import { getSettings } from "../../cms/sheets";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const langParam = Astro.params.lang ?? "en";
+if (!isLang(langParam)) throw new Error("Invalid lang");
+const lang = langParam as Lang;
+
+const s = await getSettings();
+
+const title = t(lang, "Location", "Ubicación");
+const address = t(lang, s.address_en, s.address_es);
+
+const lat = Number(String(s.coords_lat ?? "").trim());
+const lng = Number(String(s.coords_lng ?? "").trim());
+const hasCoords = Number.isFinite(lat) && Number.isFinite(lng);
+
+// Без ключів / SDK: Google Maps embed через q=...
+const mapQuery = hasCoords ? `${lat},${lng}` : address;
+const mapsEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=15&output=embed`;
+const mapsLink = `https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}`;
+
+// MVP demo picks (пізніше перенесемо в Sheets як таб "nearby")
+const nearby = [
+  {
+    category: "culture",
+    title_en: "Gothic Quarter walk",
+    title_es: "Paseo por el Barrio Gótico",
+    distance_en: "12–18 min",
+    distance_es: "12–18 min",
+    url: "https://www.google.com/maps/search/?api=1&query=Barri+G%C3%B2tic+Barcelona",
+    note_en: "Quiet morning route with iconic streets.",
+    note_es: "Ruta tranquila por calles icónicas.",
+  },
+  {
+    category: "culture",
+    title_en: "Casa Batlló / Passeig de Gràcia",
+    title_es: "Casa Batlló / Passeig de Gràcia",
+    distance_en: "10–15 min",
+    distance_es: "10–15 min",
+    url: "https://www.google.com/maps/search/?api=1&query=Casa+Batllo+Barcelona",
+    note_en: "Design landmark, perfect for golden hour.",
+    note_es: "Icono de diseño, ideal a la hora dorada.",
+  },
+  {
+    category: "food",
+    title_en: "Local specialty coffee",
+    title_es: "Café de especialidad",
+    distance_en: "5–9 min",
+    distance_es: "5–9 min",
+    url: "https://www.google.com/maps/search/?api=1&query=specialty+coffee+near+Barcelona",
+    note_en: "Minimal spots for a slow start.",
+    note_es: "Sitios minimal para empezar lento.",
+  },
+  {
+    category: "beach",
+    title_en: "Barceloneta beach mood",
+    title_es: "Mood playa Barceloneta",
+    distance_en: "18–25 min",
+    distance_es: "18–25 min",
+    url: "https://www.google.com/maps/search/?api=1&query=Barceloneta+Beach",
+    note_en: "A simple beach walk and sea air.",
+    note_es: "Paseo simple y aire de mar.",
+  },
+];
+
+const catLabel = (c: string) =>
+  c === "food"
+    ? t(lang, "Dining", "Gastronomía")
+    : c === "beach"
+    ? t(lang, "Beach", "Playa")
+    : c === "culture"
+    ? t(lang, "Culture", "Cultura")
+    : t(lang, "Nearby", "Cerca");
+---
+
+<BaseLayout lang={lang} title={title}>
+  <section class="mt-2">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <h1 class="text-3xl sm:text-4xl tracking-tight">{title}</h1>
+        <p class="mt-3 max-w-2xl text-sm sm:text-base opacity-80">
+          {t(lang, "A calm base for Barcelona — walkable, curated, direct.", "Una base tranquila en Barcelona — caminable, curada, directa.")}
+        </p>
+      </div>
+
+      <div class="flex gap-2">
+        <a
+          class="rounded-full px-4 py-2 border border-black/15 active:scale-[0.98] transition"
+          href={mapsLink}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {t(lang, "Open in Maps", "Abrir en Maps")}
+        </a>
+        <a
+          class="rounded-full px-4 py-2 bg-black text-white active:scale-[0.98] transition"
+          href={s.booking_url}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {t(lang, "Book", "Reservar")}
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-8 grid gap-6 lg:grid-cols-12">
+      <!-- Map -->
+      <div class="lg:col-span-7 rounded-3xl overflow-hidden border border-black/10 bg-black/5">
+        <iframe
+          title="Map"
+          src={mapsEmbedSrc}
+          class="w-full h-[420px] lg:h-[520px]"
+          style="border:0;"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+
+      <!-- Address + Nearby -->
+      <div class="lg:col-span-5">
+        <div class="rounded-3xl border border-black/10 p-5">
+          <div class="text-xs uppercase tracking-widest opacity-60">
+            {t(lang, "Address", "Dirección")}
+          </div>
+          <div class="mt-2 text-base">{address}</div>
+
+          {hasCoords ? (
+            <div class="mt-2 text-xs opacity-60">
+              {lat.toFixed(5)}, {lng.toFixed(5)}
+            </div>
+          ) : null}
+
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="text-xs rounded-full px-3 py-1 bg-black/5">
+              {t(lang, "Walkable", "Caminable")}
+            </span>
+            <span class="text-xs rounded-full px-3 py-1 bg-black/5">
+              {t(lang, "Direct booking", "Reserva directa")}
+            </span>
+            <span class="text-xs rounded-full px-3 py-1 bg-black/5">
+              {t(lang, "Quiet luxury", "Lujo silencioso")}
+            </span>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <div class="flex items-end justify-between">
+            <h2 class="text-lg tracking-tight">{t(lang, "Nearby picks", "Recomendaciones")}</h2>
+            <div class="text-xs opacity-60">{t(lang, "Curated", "Curado")}</div>
+          </div>
+
+          <div class="mt-4 grid gap-3">
+            {nearby.map((x) => (
+              <a
+                href={x.url}
+                target="_blank"
+                rel="noreferrer"
+                class="block rounded-2xl border border-black/10 p-4 hover:bg-black/5 transition"
+              >
+                <div class="flex items-baseline justify-between gap-3">
+                  <div class="text-xs opacity-60">{catLabel(x.category)}</div>
+                  <div class="text-xs opacity-60">
+                    {lang === "en" ? x.distance_en : x.distance_es}
+                  </div>
+                </div>
+
+                <div class="mt-1 text-base">
+                  {lang === "en" ? x.title_en : x.title_es}
+                </div>
+
+                <div class="mt-2 text-sm opacity-75">
+                  {lang === "en" ? x.note_en : x.note_es}
+                </div>
+              </a>
+            ))}
+          </div>
+
+          <div class="mt-4 text-xs opacity-60">
+            {t(
+              lang,
+              "Tip: we can move these picks to Google Sheets (nearby tab) later.",
+              "Tip: потом перенесём ці рекомендації в Google Sheets (таб nearby)."
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

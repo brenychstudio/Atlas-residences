@@ -1,0 +1,67 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { LANGS, type Lang, isLang, t } from "../../content/languages";
+import { getSettings } from "../../cms/sheets";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const langParam = Astro.params.lang ?? "en";
+if (!isLang(langParam)) throw new Error("Invalid lang");
+const lang = langParam as Lang;
+
+const s = await getSettings();
+const title = t(lang, "Contact", "Contacto");
+
+// Null-safe (engine demo mode)
+const whatsappRaw = String((s as any).whatsapp ?? "");
+const waDigits = whatsappRaw.replace(/[^\d]/g, "");
+const waLink = waDigits ? `https://wa.me/${waDigits}` : "";
+
+const email = String((s as any).email ?? "");
+const address =
+  (lang === "es" ? (s as any).address_es : (s as any).address_en) ?? "";
+
+const coordsLat = String((s as any).coords_lat ?? "41.3851"); // Barcelona fallback
+const coordsLng = String((s as any).coords_lng ?? "2.1734");
+---
+
+<BaseLayout lang={lang} title={title}>
+  <h1 class="text-2xl tracking-tight">{title}</h1>
+
+  <div class="mt-6 grid gap-6 sm:grid-cols-2">
+    <div class="rounded-2xl border border-black/10 p-5">
+      <div class="text-sm opacity-70">{t(lang, "Address", "Dirección")}</div>
+      <div class="mt-2">{address || "—"}</div>
+
+      <div class="mt-5 text-sm opacity-70">WhatsApp</div>
+      {waLink ? (
+        <a class="mt-2 inline-block underline" href={waLink} target="_blank" rel="noreferrer">
+          {whatsappRaw}
+        </a>
+      ) : (
+        <div class="mt-2 opacity-60">—</div>
+      )}
+
+      <div class="mt-5 text-sm opacity-70">{t(lang, "Email", "Email")}</div>
+      {email ? (
+        <a class="mt-2 inline-block underline" href={`mailto:${email}`}>
+          {email}
+        </a>
+      ) : (
+        <div class="mt-2 opacity-60">—</div>
+      )}
+    </div>
+
+    <div class="rounded-2xl border border-black/10 overflow-hidden bg-black/5 min-h-[260px]">
+      <iframe
+        title="map"
+        class="w-full h-full"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src={`https://www.google.com/maps?q=${coordsLat},${coordsLng}&z=14&output=embed`}
+      />
+    </div>
+  </div>
+</BaseLayout>

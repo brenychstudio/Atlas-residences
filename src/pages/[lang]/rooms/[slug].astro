@@ -1,0 +1,182 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { LANGS, type Lang, isLang } from "../../../content/languages";
+import { getRooms, getRoomBySlug, getSettings } from "../../../cms/sheets";
+import { pickLang, splitPipe } from "../../../cms/types";
+import { getHotelLabels } from "../../../vertical/content/labels";
+
+export async function getStaticPaths() {
+  const rooms = await getRooms();
+  return LANGS.flatMap((lang) =>
+    rooms.map((r) => ({ params: { lang, slug: r.slug } }))
+  );
+}
+
+export const prerender = true;
+
+const langParam = Astro.params.lang ?? "en";
+if (!isLang(langParam)) throw new Error("Invalid lang");
+const lang = langParam as Lang;
+
+const L = getHotelLabels(lang);
+
+const slug = Astro.params.slug!;
+const room = await getRoomBySlug(slug);
+if (!room) throw new Error(`Room not found: ${slug}`);
+
+const s = await getSettings();
+
+const roomName = pickLang(lang, room, "name");
+const title = roomName;
+
+const bookUrl =
+  room.booking_link && room.booking_link.trim()
+    ? room.booking_link
+    : s.booking_url;
+
+const facts = [
+  room.guests ? { label: L.guests, value: room.guests } : null,
+  room.size_sqm ? { label: L.size, value: `${room.size_sqm} m²` } : null,
+  pickLang(lang, room, "beds") ? { label: L.beds, value: pickLang(lang, room, "beds") } : null,
+  room.price_from ? { label: L.from, value: `€${room.price_from}` } : null,
+].filter(Boolean);
+
+const amenities = splitPipe(pickLang(lang, room, "amenities"));
+const highlights = splitPipe(pickLang(lang, room, "highlights"));
+
+const cover = (room.cover_image ?? "").trim();
+const gallery = splitPipe(room.gallery_images);
+
+const images = [
+  ...(cover ? [cover] : []),
+  ...gallery.filter((x) => x && x !== cover),
+].filter(Boolean);
+---
+
+<BaseLayout lang={lang} title={title}>
+  <div class="flex items-center justify-between gap-4">
+    <a class="text-sm opacity-70 hover:opacity-100 underline" href={`/${lang}/rooms/`}>
+      {L.backToRooms}
+    </a>
+
+    <a
+      class="hidden sm:inline-flex rounded-full px-4 py-2 bg-black text-white active:scale-[0.98] transition"
+      href={bookUrl}
+      target="_blank"
+      rel="noreferrer"
+    >
+      {L.book}
+    </a>
+  </div>
+
+  <section class="mt-6 overflow-hidden rounded-3xl border border-black/10">
+    <div class="aspect-[16/9] bg-black/5">
+      {cover ? (
+        <img
+          src={cover}
+          alt=""
+          class="h-full w-full object-cover"
+          loading="eager"
+          decoding="async"
+        />
+      ) : null}
+    </div>
+  </section>
+
+  <section class="mt-8">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <div>
+        <h1 class="text-3xl sm:text-4xl tracking-tight">{roomName}</h1>
+        <p class="mt-3 max-w-2xl text-sm sm:text-base opacity-80">
+          {pickLang(lang, room, "description")}
+        </p>
+      </div>
+
+      <a
+        class="sm:hidden inline-flex rounded-full px-5 py-2 bg-black text-white active:scale-[0.98] transition"
+        href={bookUrl}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {L.book}
+      </a>
+    </div>
+
+    {facts.length ? (
+      <div class="mt-6 grid gap-3 sm:grid-cols-4">
+        {facts.map((f) => (
+          <div class="rounded-2xl border border-black/10 p-4">
+            <div class="text-xs uppercase tracking-wider opacity-60">{f.label}</div>
+            <div class="mt-2 text-base">{f.value}</div>
+          </div>
+        ))}
+      </div>
+    ) : null}
+
+    {highlights.length ? (
+      <div class="mt-6 flex flex-wrap gap-2">
+        {highlights.slice(0, 6).map((x) => (
+          <span class="text-xs rounded-full px-3 py-1 bg-black/5">{x}</span>
+        ))}
+      </div>
+    ) : null}
+  </section>
+
+  {amenities.length ? (
+    <section class="mt-10">
+      <h2 class="text-lg tracking-tight">{L.amenities}</h2>
+      <div class="mt-4 flex flex-wrap gap-2">
+        {amenities.slice(0, 18).map((x) => (
+          <span class="text-xs rounded-full px-3 py-1 border border-black/10">{x}</span>
+        ))}
+      </div>
+    </section>
+  ) : null}
+
+  {images.length ? (
+    <section class="mt-10 mb-16">
+      <div class="flex items-end justify-between">
+        <h2 class="text-lg tracking-tight">{L.gallery}</h2>
+        <div class="text-xs opacity-60">{L.tapFull}</div>
+      </div>
+
+      <div class="mt-5 grid gap-4 sm:grid-cols-2">
+        {images.map((src) => (
+          <a
+            href={src}
+            target="_blank"
+            rel="noreferrer"
+            class="block rounded-2xl overflow-hidden bg-black/5 active:scale-[0.995] transition"
+          >
+            <img
+              src={src}
+              alt=""
+              class="h-full w-full object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+          </a>
+        ))}
+      </div>
+    </section>
+  ) : null}
+
+  <div class="fixed inset-x-0 bottom-0 z-50 sm:hidden">
+    <div class="mx-auto max-w-6xl px-4 pb-4">
+      <div class="rounded-2xl border border-black/10 bg-white/80 backdrop-blur p-3 flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <div class="text-xs opacity-60">{L.bookDirect}</div>
+          <div class="text-sm truncate">{roomName}</div>
+        </div>
+        <a
+          class="shrink-0 rounded-full px-4 py-2 bg-black text-white active:scale-[0.98] transition"
+          href={bookUrl}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {L.book}
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,15 @@
+---
+const { href, class: className = "" } = Astro.props;
+const base = "block rounded-2xl border border-black/10 overflow-hidden";
+const cls = `${base} ${className}`.trim();
+---
+
+{href ? (
+  <a class={cls} href={href}>
+    <slot />
+  </a>
+) : (
+  <div class={cls}>
+    <slot />
+  </div>
+)}

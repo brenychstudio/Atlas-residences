@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../../core/layouts/BaseLayout.astro";
+import HotelHeader from "../ui/HotelHeader.astro";
+
+const props = Astro.props;
+const pathname = Astro.url.pathname;
+
+// Очікуємо, що props.lang існує так само, як і раніше у ваших сторінках.
+const lang = (props as any).lang;
+---
+
+<BaseLayout {...props}>
+  <HotelHeader slot="header" lang={lang} pathname={pathname} />
+  <slot />
+</BaseLayout>

@@ -1,0 +1,68 @@
+---
+type NavItem = { href: string; label: string };
+type Cta = { href: string; label: string; target?: string; rel?: string };
+
+const {
+  siteName,
+  nav = [],
+  cta,
+  lang = "en",
+  langs = ["en", "es"],
+  pathname = "/",
+} = Astro.props as {
+  siteName: string;
+  nav: NavItem[];
+  cta: Cta;
+  lang: string;
+  langs: string[];
+  pathname?: string;
+};
+
+function swapLang(path: string, from: string, to: string) {
+  if (!path || path === "/") return `/${to}/`;
+  const fromPrefix = `/${from}/`;
+  const toPrefix = `/${to}/`;
+
+  if (path.startsWith(fromPrefix)) return toPrefix + path.slice(fromPrefix.length);
+  if (path.startsWith(toPrefix)) return path;
+  // якщо path без префікса мови
+  const cleaned = path.startsWith("/") ? path.slice(1) : path;
+  return `/${to}/` + cleaned;
+}
+---
+
+<header class="sticky top-0 z-50 backdrop-blur bg-white/70 border-b border-black/10">
+  <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-6 min-w-0">
+      <a class="text-xs tracking-[0.24em] uppercase truncate" href={`/${lang}/`}>{siteName}</a>
+
+      <nav class="hidden md:flex items-center gap-4 text-sm">
+        {nav.map((item) => (
+          <a class="opacity-70 hover:opacity-100 transition" href={item.href}>{item.label}</a>
+        ))}
+      </nav>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <div class="inline-flex items-center rounded-full border border-black/10 bg-white/60 p-1 text-xs">
+        {langs.map((L) => (
+          <a
+            class={`px-3 py-1 rounded-full transition ${L === lang ? "bg-black text-white" : "opacity-70 hover:opacity-100"}`}
+            href={swapLang(pathname ?? "/", lang, L)}
+          >
+            {String(L).toUpperCase()}
+          </a>
+        ))}
+      </div>
+
+      <a
+        class="rounded-full px-4 py-2 bg-black text-white active:scale-[0.98] transition"
+        href={cta?.href}
+        target={cta?.target}
+        rel={cta?.rel}
+      >
+        {cta?.label}
+      </a>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,32 @@
+---
+const {
+  href,
+  target,
+  rel,
+  variant = "primary", // "primary" | "ghost" | "light"
+  class: className = "",
+  type = "button",
+} = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center rounded-full active:scale-[0.98] transition";
+
+const styles =
+  variant === "ghost"
+    ? "border px-5 py-2" // без border-color, щоб класом можна було задати білий/чорний
+    : variant === "light"
+    ? "bg-white text-black px-5 py-2"
+    : "bg-black text-white px-5 py-2";
+
+const cls = `${base} ${styles} ${className}`.trim();
+---
+
+{href ? (
+  <a class={cls} href={href} target={target} rel={rel}>
+    <slot />
+  </a>
+) : (
+  <button class={cls} type={type}>
+    <slot />
+  </button>
+)}
