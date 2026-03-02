@@ -1,12 +1,13 @@
 ---
 import { type Lang, isLang, t } from "../../content/languages";
 
-const { lang, pathname = "/" } = Astro.props as { lang: string; pathname?: string };
+const { lang, pathname = "/" } = Astro.props as { lang?: string; pathname?: string };
 
 const langParam = lang ?? "en";
 if (!isLang(langParam)) throw new Error("Invalid lang");
 const L = langParam as Lang;
-
+---
+  
 const nav = [
   { href: `/${L}/`, label: t(L, "Home", "Inicio") },
   { href: `/${L}/masterplan/`, label: t(L, "Masterplan", "Plan maestro") },
