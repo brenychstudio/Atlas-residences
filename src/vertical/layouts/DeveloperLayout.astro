@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../../core/layouts/BaseLayout.astro";
+import DeveloperHeader from "../ui/DeveloperHeader.astro";
+
+const props = Astro.props;
+const pathname = Astro.url.pathname;
+const lang = (props as { lang?: string }).lang;
+---
+
+<BaseLayout {...props}>
+  <DeveloperHeader slot="header" lang={lang} pathname={pathname} />
+  <slot />
+</BaseLayout>

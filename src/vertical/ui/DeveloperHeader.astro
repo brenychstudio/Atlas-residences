@@ -1,0 +1,32 @@
+---
+import CoreHeader from "../../core/ui/CoreHeader.astro";
+import { LANGS, type Lang, isLang, t } from "../../content/languages";
+
+const { lang, pathname = "/" } = Astro.props as { lang: string; pathname?: string };
+
+const langParam = lang ?? "en";
+if (!isLang(langParam)) throw new Error("Invalid lang");
+const L = langParam as Lang;
+
+const nav = [
+  { href: `/${L}/masterplan/`, label: t(L, "Masterplan", "Plan maestro") },
+  { href: `/${L}/units/`, label: t(L, "Units", "Unidades") },
+  { href: `/${L}/location/`, label: t(L, "Location", "Ubicación") },
+  { href: `/${L}/downloads/`, label: t(L, "Downloads", "Descargas") },
+  { href: `/${L}/contact/`, label: t(L, "Contact", "Contacto") },
+];
+
+const cta = {
+  href: `/${L}/contact/`,
+  label: t(L, "Get in touch", "Contactar"),
+};
+---
+
+<CoreHeader
+  siteName={t(L, "Atlas Residences", "Atlas Residences")}
+  nav={nav}
+  cta={cta}
+  lang={L}
+  langs={LANGS}
+  pathname={pathname}
+/>
