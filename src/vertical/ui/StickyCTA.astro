@@ -1,0 +1,64 @@
+---
+import { type Lang, isLang, t } from "../../content/languages";
+
+const { lang } = Astro.props as { lang?: string };
+const langParam = lang ?? "en";
+if (!isLang(langParam)) throw new Error("Invalid lang");
+const L = langParam as Lang;
+---
+
+<div class="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-4 pb-4 md:hidden">
+  <div class="pointer-events-auto mx-auto w-full max-w-[72rem] rounded-2xl border border-[var(--border)] bg-[color:var(--card)]/95 p-3 shadow-lg backdrop-blur">
+    <div class="grid grid-cols-1 gap-2">
+      <a
+        href={`/${L}/downloads/`}
+        class="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-[color:var(--fg)] px-4 text-sm font-medium text-[color:var(--bg)]"
+      >
+        {t(L, "Request price list", "Solicitar lista de precios")}
+      </a>
+
+      <div class="grid grid-cols-3 gap-2">
+        <a
+          href={`/${L}/contact/`}
+          class="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-[var(--border)] px-3 text-xs text-[color:var(--fg)]"
+        >
+          {t(L, "Book a viewing", "Reservar visita")}
+        </a>
+        <button
+          type="button"
+          class="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-[var(--border)] px-3 text-xs text-[color:var(--fg)]"
+        >
+          WhatsApp
+        </button>
+        <button
+          type="button"
+          class="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-[var(--border)] px-3 text-xs text-[color:var(--fg)]"
+        >
+          {t(L, "Call", "Llamar")}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="hidden md:block">
+  <aside class="mx-auto mt-8 w-full max-w-[72rem] px-6">
+    <div class="rounded-2xl border border-[var(--border)] bg-[color:var(--card)] p-4">
+      <div class="flex flex-wrap items-center gap-3">
+        <a
+          href={`/${L}/downloads/`}
+          class="inline-flex min-h-[44px] items-center justify-center rounded-full bg-[color:var(--fg)] px-5 text-sm text-[color:var(--bg)]"
+        >
+          {t(L, "Request price list", "Solicitar lista de precios")}
+        </a>
+        <a
+          href={`/${L}/contact/`}
+          class="inline-flex min-h-[44px] items-center justify-center rounded-full border border-[var(--border)] px-5 text-sm"
+        >
+          {t(L, "Book a viewing", "Reservar visita")}
+        </a>
+        <span class="text-sm text-[color:var(--muted)]">WhatsApp / {t(L, "Call", "Llamar")} (placeholder)</span>
+      </div>
+    </div>
+  </aside>
+</div>
