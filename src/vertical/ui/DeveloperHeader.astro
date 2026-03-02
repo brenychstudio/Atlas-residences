@@ -6,8 +6,7 @@ const { lang, pathname = "/" } = Astro.props as { lang?: string; pathname?: stri
 const langParam = lang ?? "en";
 if (!isLang(langParam)) throw new Error("Invalid lang");
 const L = langParam as Lang;
----
-  
+
 const nav = [
   { href: `/${L}/`, label: t(L, "Home", "Inicio") },
   { href: `/${L}/masterplan/`, label: t(L, "Masterplan", "Plan maestro") },
@@ -33,15 +32,22 @@ function isActive(href: string) {
     </a>
 
     <nav class="hidden items-center gap-1 md:flex">
-      {nav.map((item) => (
-        <a
-          href={item.href}
-          class={`inline-flex min-h-[44px] items-center rounded-full px-3 text-sm transition ${isActive(item.href) ? "bg-[color:var(--fg)] text-[color:var(--bg)]" : "text-[color:var(--muted)] hover:text-[color:var(--fg)]"}`}
-          aria-current={isActive(item.href) ? "page" : undefined}
-        >
-          {item.label}
-        </a>
-      ))}
+      {nav.map((item) => {
+        const active = isActive(item.href);
+        return (
+          <a
+            href={item.href}
+            class={`inline-flex min-h-[44px] items-center rounded-full px-3 text-sm transition ${
+              active
+                ? "bg-[color:var(--fg)] text-[color:var(--bg)]"
+                : "text-[color:var(--muted)] hover:text-[color:var(--fg)]"
+            }`}
+            aria-current={active ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        );
+      })}
     </nav>
 
     <a
@@ -53,14 +59,21 @@ function isActive(href: string) {
   </div>
 
   <nav class="mx-auto flex w-full max-w-[72rem] items-center gap-2 overflow-x-auto px-4 pb-3 md:hidden">
-    {nav.map((item) => (
-      <a
-        href={item.href}
-        class={`inline-flex min-h-[44px] shrink-0 items-center rounded-full border px-3 text-sm ${isActive(item.href) ? "border-[color:var(--fg)] bg-[color:var(--fg)] text-[color:var(--bg)]" : "border-[var(--border)] text-[color:var(--muted)]"}`}
-        aria-current={isActive(item.href) ? "page" : undefined}
-      >
-        {item.label}
-      </a>
-    ))}
+    {nav.map((item) => {
+      const active = isActive(item.href);
+      return (
+        <a
+          href={item.href}
+          class={`inline-flex min-h-[44px] shrink-0 items-center rounded-full border px-3 text-sm ${
+            active
+              ? "border-[color:var(--fg)] bg-[color:var(--fg)] text-[color:var(--bg)]"
+              : "border-[var(--border)] text-[color:var(--muted)]"
+          }`}
+          aria-current={active ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      );
+    })}
   </nav>
 </header>
