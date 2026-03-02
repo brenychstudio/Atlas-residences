@@ -11,9 +11,9 @@ if (!isLang(langParam)) throw new Error("Invalid lang");
 const lang = langParam as Lang;
 ---
 
-<BaseLayout lang={lang} title={t(lang, "Location | Atlas Residences", "Ubicación | Atlas Residences") }>
+<BaseLayout lang={lang} title={t(lang, "Downloads | Atlas Residences", "Descargas | Atlas Residences") }>
   <section class="space-y-3">
-    <h1 class="text-3xl tracking-tight">{t(lang, "Location", "Ubicación")}</h1>
-    <p class="opacity-80">{t(lang, "Location placeholder.", "Marcador de posición de ubicación.")}</p>
+    <h1 class="text-3xl tracking-tight">{t(lang, "Downloads", "Descargas")}</h1>
+    <p class="opacity-80">{t(lang, "Downloads placeholder.", "Marcador de posición de descargas.")}</p>
   </section>
 </BaseLayout>

@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { LANGS, type Lang, isLang, t } from "../../../content/languages";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const langParam = Astro.params.lang ?? "en";
+if (!isLang(langParam)) throw new Error("Invalid lang");
+const lang = langParam as Lang;
+---
+
+<BaseLayout lang={lang} title={t(lang, "Units | Atlas Residences", "Unidades | Atlas Residences") }>
+  <section class="space-y-3">
+    <h1 class="text-3xl tracking-tight">{t(lang, "Units", "Unidades")}</h1>
+    <p class="opacity-80">{t(lang, "Units list placeholder.", "Marcador de posición de listado de unidades.")}</p>
+  </section>
+</BaseLayout>
