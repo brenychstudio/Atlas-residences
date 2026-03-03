@@ -1,0 +1,7 @@
+﻿id,title_en,title_es,beds,baths,area_from,area_to,price_from,price_to,highlights_en,highlights_es,cover_image,status
+t1,1BR Compact,1BR Compacto,1,1,45,52,320000,420000,Efficient layout|Private terrace option|Smart storage,Diseño eficiente|Opción de terraza privada|Almacenamiento inteligente,,published
+t2,2BR Standard,2BR Estándar,2,2,68,82,520000,720000,Open living kitchen|Dual orientation options|Family-ready layout,Cocina y sala abiertas|Opciones de doble orientación|Diseño familiar,,published
+t3,2BR Corner,2BR Esquina,2,2,78,90,650000,820000,Corner glazing|Cross ventilation|Premium views,Acristalamiento en esquina|Ventilación cruzada|Vistas premium,,published
+t4,3BR Family,3BR Familiar,3,2,95,120,850000,1200000,Generous social zone|Flexible study nook|Large primary suite,Amplia zona social|Espacio flexible de estudio|Suite principal grande,,published
+t5,Penthouse 3BR,Ático 3BR,3,3,130,160,1500000,2200000,Private rooftop terrace|Panoramic skyline|Concierge-ready access,Terraza privada en azotea|Panorámica urbana|Acceso preparado para concierge,,published
+t6,Duplex 4BR,Dúplex 4BR,4,4,160,200,2200000,3200000,Double-height living|Internal stair core|Signature residence,Sala de doble altura|Núcleo de escalera interior|Residencia insignia,,published

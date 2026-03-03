@@ -1,0 +1,3 @@
+﻿id,name_en,name_es,floors,delivery_date,masterplan_hotspot_x,masterplan_hotspot_y,status
+a,Tower A,Torre A,8,2028-06-30,32,46,published
+b,Tower B,Torre B,6,2028-09-30,67,54,published
