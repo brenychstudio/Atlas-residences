@@ -11,6 +11,10 @@ const langParam = Astro.params.lang ?? "en";
 if (!isLang(langParam)) throw new Error("Invalid lang");
 const lang = langParam as Lang;
 
+const searchParams = Astro.url.searchParams;
+const buildingParam = (searchParams.get("building") ?? "all").toLowerCase();
+const initialBuilding = ["all", "a", "b"].includes(buildingParam) ? buildingParam : "all";
+
 const units = (await getUnits()).sort((a, b) => Number(a.sort ?? 0) - Number(b.sort ?? 0));
 const unitTypes = await getUnitTypes();
 const unitTypeById = new Map(unitTypes.map((unitType) => [unitType.id, unitType]));
@@ -51,7 +55,15 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
       <p id="active-filters" class="text-sm opacity-70">{t(lang, "All filters", "Todos los filtros")}</p>
     </header>
 
-    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" id="units-filters">
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4" id="units-filters">
+      <div class="space-y-1">
+        <p class="text-sm font-medium">{t(lang, "Building", "Bloque")}</p>
+        <div class="flex flex-wrap gap-2" data-filter="building">
+          <a data-value="all" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "All", "Todos")}</a>
+          <a data-value="a" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">A</a>
+          <a data-value="b" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">B</a>
+        </div>
+      </div>
       <div class="space-y-1">
         <p class="text-sm font-medium">{t(lang, "Beds", "Dormitorios")}</p>
         <div class="flex flex-wrap gap-2" data-filter="beds">
@@ -86,7 +98,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
       </div>
     </div>
 
-    <div id="units-grid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div id="units-grid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-initial-building={initialBuilding}>
       {units.map((unit) => {
         const unitType = unit.type_id ? unitTypeById.get(unit.type_id) : undefined;
         const beds = unit.beds || unitType?.beds || "-";
@@ -94,6 +106,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
         const area = unit.area_m2 || unitType?.area_from || "-";
         const status = String(unit.status ?? "").toLowerCase();
         const orientation = String(unit.orientation ?? "").toLowerCase();
+        const building = String(unit.building_id ?? "").toLowerCase();
         const statusClass = statusClassMap[status] ?? "bg-slate-200 text-slate-800";
 
         return (
@@ -103,6 +116,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
             data-beds={beds}
             data-status={status || "unknown"}
             data-orientation={orientation || "unknown"}
+            data-building={building || "unknown"}
           >
             <div class="flex items-start justify-between gap-3">
               <h2 class="text-lg font-semibold leading-tight break-words">
@@ -143,6 +157,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
 <script is:inline>
   (() => {
     const filters = {
+      building: "all",
       beds: "all",
       status: "all",
       orientation: "all"
@@ -158,6 +173,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
       allFilters: { en: "All filters", es: "Todos los filtros" },
       filteredBy: { en: "Filtered by", es: "Filtrado por" },
       units: { en: "units", es: "unidades" },
+      building: { en: "building", es: "bloque" },
       beds: { en: "beds", es: "dorm." },
       status: { en: "status", es: "estado" },
       orientation: { en: "orientation", es: "orientación" }
@@ -195,11 +211,13 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
         const beds = card.getAttribute("data-beds");
         const status = card.getAttribute("data-status");
         const orientation = card.getAttribute("data-orientation");
+        const building = card.getAttribute("data-building");
 
+        const matchBuilding = filters.building === "all" || building === filters.building;
         const matchBeds = filters.beds === "all" || beds === filters.beds;
         const matchStatus = filters.status === "all" || status === filters.status;
         const matchOrientation = filters.orientation === "all" || orientation === filters.orientation;
-        const visible = matchBeds && matchStatus && matchOrientation;
+        const visible = matchBuilding && matchBeds && matchStatus && matchOrientation;
 
         card.classList.toggle("hidden", !visible);
         if (visible) count += 1;
@@ -209,6 +227,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
       if (summary) summary.textContent = `${count} ${text.units[lang]}`;
 
       const active = [];
+      if (filters.building !== "all") active.push(`${text.building[lang]}: ${filters.building.toUpperCase()}`);
       if (filters.beds !== "all") active.push(`${filters.beds} ${text.beds[lang]}`);
       if (filters.status !== "all") active.push(`${text.status[lang]}: ${filters.status}`);
       if (filters.orientation !== "all") active.push(`${text.orientation[lang]}: ${filters.orientation}`);
