@@ -1,19 +1,227 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../../content/languages";
+import { getUnits, getUnitTypes } from "../../../vertical/cms/sheets";
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
 }
 
 const langParam = Astro.params.lang ?? "en";
 if (!isLang(langParam)) throw new Error("Invalid lang");
 const lang = langParam as Lang;
+
+const units = (await getUnits()).sort((a, b) => Number(a.sort ?? 0) - Number(b.sort ?? 0));
+const unitTypes = await getUnitTypes();
+const unitTypeById = new Map(unitTypes.map((unitType) => [unitType.id, unitType]));
+
+const statusClassMap: Record<string, string> = {
+  available: "bg-emerald-100 text-emerald-800",
+  reserved: "bg-amber-100 text-amber-800",
+  sold: "bg-rose-100 text-rose-800",
+  coming_soon: "bg-slate-200 text-slate-800",
+};
+
+const statusText = (status?: string) => {
+  const normalized = String(status ?? "").toLowerCase();
+  if (normalized === "available") return t(lang, "Available", "Disponible");
+  if (normalized === "reserved") return t(lang, "Reserved", "Reservada");
+  if (normalized === "sold") return t(lang, "Sold", "Vendida");
+  if (normalized === "coming_soon") return t(lang, "Coming soon", "Próximamente");
+  return t(lang, "Unknown", "Sin estado");
+};
+
+const orientationText = (orientation?: string) => {
+  const normalized = String(orientation ?? "").toLowerCase();
+  if (normalized === "sea") return t(lang, "Sea", "Mar");
+  if (normalized === "city") return t(lang, "City", "Ciudad");
+  if (normalized === "courtyard") return t(lang, "Courtyard", "Patio");
+  if (normalized === "mountain") return t(lang, "Mountain", "Montaña");
+  return t(lang, "Unknown", "Sin orientación");
+};
+
+const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
 ---
 
 <BaseLayout lang={lang} title={t(lang, "Units | Atlas Residences", "Unidades | Atlas Residences") }>
-  <section class="space-y-3">
-    <h1 class="text-3xl tracking-tight">{t(lang, "Units", "Unidades")}</h1>
-    <p class="opacity-80">{t(lang, "Units list placeholder.", "Marcador de posición de listado de unidades.")}</p>
+  <section class="space-y-5">
+    <header class="space-y-2">
+      <h1 class="text-3xl tracking-tight">{t(lang, "Units", "Unidades")}</h1>
+      <p id="units-summary" class="text-sm opacity-80">{units.length} {t(lang, "units", "unidades")}</p>
+      <p id="active-filters" class="text-sm opacity-70">{t(lang, "All filters", "Todos los filtros")}</p>
+    </header>
+
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" id="units-filters">
+      <div class="space-y-1">
+        <p class="text-sm font-medium">{t(lang, "Beds", "Dormitorios")}</p>
+        <div class="flex flex-wrap gap-2" data-filter="beds">
+          <a data-value="all" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "All", "Todos")}</a>
+          <a data-value="1" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">1</a>
+          <a data-value="2" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">2</a>
+          <a data-value="3" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">3</a>
+          <a data-value="4" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">4</a>
+        </div>
+      </div>
+
+      <div class="space-y-1">
+        <p class="text-sm font-medium">{t(lang, "Status", "Estado")}</p>
+        <div class="flex flex-wrap gap-2" data-filter="status">
+          <a data-value="all" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "All", "Todos")}</a>
+          <a data-value="available" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Available", "Disponible")}</a>
+          <a data-value="reserved" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Reserved", "Reservada")}</a>
+          <a data-value="sold" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Sold", "Vendida")}</a>
+          <a data-value="coming_soon" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Coming soon", "Próximamente")}</a>
+        </div>
+      </div>
+
+      <div class="space-y-1">
+        <p class="text-sm font-medium">{t(lang, "Orientation", "Orientación")}</p>
+        <div class="flex flex-wrap gap-2" data-filter="orientation">
+          <a data-value="all" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "All", "Todos")}</a>
+          <a data-value="sea" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Sea", "Mar")}</a>
+          <a data-value="city" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "City", "Ciudad")}</a>
+          <a data-value="courtyard" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Courtyard", "Patio")}</a>
+          <a data-value="mountain" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Mountain", "Montaña")}</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="units-grid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {units.map((unit) => {
+        const unitType = unit.type_id ? unitTypeById.get(unit.type_id) : undefined;
+        const beds = unit.beds || unitType?.beds || "-";
+        const baths = unit.baths || unitType?.baths || "-";
+        const area = unit.area_m2 || unitType?.area_from || "-";
+        const status = String(unit.status ?? "").toLowerCase();
+        const orientation = String(unit.orientation ?? "").toLowerCase();
+        const statusClass = statusClassMap[status] ?? "bg-slate-200 text-slate-800";
+
+        return (
+          <a
+            href={buildUnitsHref(unit.id)}
+            class="unit-card min-h-11 overflow-hidden rounded-xl border p-4 transition hover:border-black/40"
+            data-beds={beds}
+            data-status={status || "unknown"}
+            data-orientation={orientation || "unknown"}
+          >
+            <div class="flex items-start justify-between gap-3">
+              <h2 class="text-lg font-semibold leading-tight break-words">
+                {t(lang, "Unit", "Unidad")} {unit.number || unit.id}
+              </h2>
+              <span class={`rounded-full px-2.5 py-1 text-xs font-medium ${statusClass}`}>{statusText(unit.status)}</span>
+            </div>
+
+            <p class="mt-1 text-sm opacity-80">
+              {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")} {unit.floor || "-"}
+            </p>
+
+            <dl class="mt-3 grid grid-cols-2 gap-2 text-sm">
+              <div>
+                <dt class="opacity-70">{t(lang, "Beds/Baths", "Dorm./Baños")}</dt>
+                <dd class="font-medium">{beds}/{baths}</dd>
+              </div>
+              <div>
+                <dt class="opacity-70">{t(lang, "Area", "Superficie")}</dt>
+                <dd class="font-medium">{area} m²</dd>
+              </div>
+              <div>
+                <dt class="opacity-70">{t(lang, "Orientation", "Orientación")}</dt>
+                <dd class="font-medium">{orientationText(unit.orientation)}</dd>
+              </div>
+              <div>
+                <dt class="opacity-70">{t(lang, "Price", "Precio")}</dt>
+                <dd class="font-medium">{unit.price_eur ? `€${unit.price_eur}` : t(lang, "Request price", "Solicitar precio")}</dd>
+              </div>
+            </dl>
+          </a>
+        );
+      })}
+    </div>
   </section>
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    const filters = {
+      beds: "all",
+      status: "all",
+      orientation: "all"
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    for (const key of Object.keys(filters)) {
+      const value = params.get(key);
+      if (value) filters[key] = value;
+    }
+
+    const text = {
+      allFilters: { en: "All filters", es: "Todos los filtros" },
+      filteredBy: { en: "Filtered by", es: "Filtrado por" },
+      units: { en: "units", es: "unidades" },
+      beds: { en: "beds", es: "dorm." },
+      status: { en: "status", es: "estado" },
+      orientation: { en: "orientation", es: "orientación" }
+    };
+
+    const lang = document.documentElement.lang === "es" ? "es" : "en";
+
+    const buildQuery = (next) => {
+      const query = new URLSearchParams();
+      for (const [key, value] of Object.entries(next)) {
+        if (value && value !== "all") query.set(key, value);
+      }
+      const qs = query.toString();
+      return `${window.location.pathname}${qs ? `?${qs}` : ""}`;
+    };
+
+    const updateFilterButtons = () => {
+      document.querySelectorAll("[data-filter]").forEach((group) => {
+        const key = group.getAttribute("data-filter");
+        group.querySelectorAll("a[data-value]").forEach((link) => {
+          const value = link.getAttribute("data-value") || "all";
+          const next = { ...filters, [key]: value };
+          link.setAttribute("href", buildQuery(next));
+          const active = filters[key] === value;
+          link.classList.toggle("bg-black", active);
+          link.classList.toggle("text-white", active);
+          link.classList.toggle("border-black", active);
+        });
+      });
+    };
+
+    const applyCards = () => {
+      let count = 0;
+      document.querySelectorAll(".unit-card").forEach((card) => {
+        const beds = card.getAttribute("data-beds");
+        const status = card.getAttribute("data-status");
+        const orientation = card.getAttribute("data-orientation");
+
+        const matchBeds = filters.beds === "all" || beds === filters.beds;
+        const matchStatus = filters.status === "all" || status === filters.status;
+        const matchOrientation = filters.orientation === "all" || orientation === filters.orientation;
+        const visible = matchBeds && matchStatus && matchOrientation;
+
+        card.classList.toggle("hidden", !visible);
+        if (visible) count += 1;
+      });
+
+      const summary = document.getElementById("units-summary");
+      if (summary) summary.textContent = `${count} ${text.units[lang]}`;
+
+      const active = [];
+      if (filters.beds !== "all") active.push(`${filters.beds} ${text.beds[lang]}`);
+      if (filters.status !== "all") active.push(`${text.status[lang]}: ${filters.status}`);
+      if (filters.orientation !== "all") active.push(`${text.orientation[lang]}: ${filters.orientation}`);
+
+      const activeFilters = document.getElementById("active-filters");
+      if (activeFilters) {
+        activeFilters.textContent = active.length
+          ? `${text.filteredBy[lang]} ${active.join(" · ")}`
+          : text.allFilters[lang];
+      }
+    };
+
+    updateFilterButtons();
+    applyCards();
+  })();
+</script>
