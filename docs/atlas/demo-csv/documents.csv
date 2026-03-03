@@ -1,0 +1,6 @@
+﻿id,title_en,title_es,type,url_en,url_es,gated,status
+brochure,Project Brochure,Folleto del proyecto,brochure,/atlas/downloads/brochure-cover-en-4x5.png,/atlas/downloads/brochure-cover-en-4x5.png,true,published
+price_list,Price List,Lista de precios,price_list,/atlas/downloads/pricelist-cover-en-4x5.png,/atlas/downloads/pricelist-cover-en-4x5.png,true,published
+specs,Technical Specs,Especificaciones técnicas,specs,/atlas/downloads/brochure-cover-en-4x5.png,/atlas/downloads/brochure-cover-en-4x5.png,false,published
+finishes,Finishes Book,Libro de acabados,finishes,/atlas/downloads/brochure-cover-en-4x5.png,/atlas/downloads/brochure-cover-en-4x5.png,false,published
+legal,Legal Pack,Documentación legal,legal,/atlas/downloads/brochure-cover-en-4x5.png,/atlas/downloads/brochure-cover-en-4x5.png,false,published

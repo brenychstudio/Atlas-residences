@@ -1,0 +1,11 @@
+﻿id,name_en,name_es,category,distance_minutes,coords_lat,coords_lng,status
+poi-01,Marina Metro,Metro Marina,metro,4,41.3890,2.1760,published
+poi-02,Diagonal School,Colegio Diagonal,school,8,41.3921,2.1625,published
+poi-03,Ciutadella Park,Parque Ciutadella,park,6,41.3889,2.1860,published
+poi-04,Barceloneta Beach,Playa Barceloneta,beach,15,41.3810,2.1947,published
+poi-05,Glòries Mall,Centro Glòries,shopping,9,41.4040,2.1900,published
+poi-06,Design Museum,Museo del Diseño,culture,7,41.4036,2.1906,published
+poi-07,Tech Hub 22@,Hub tecnológico 22@,shopping,12,41.4052,2.1990,published
+poi-08,Family Clinic,Clínica familiar,school,10,41.3942,2.1741,published
+poi-09,Montjuïc Viewpoint,Mirador Montjuïc,culture,18,41.3634,2.1652,published
+poi-10,Waterfront Promenade,Paseo marítimo,park,13,41.3798,2.1898,published
