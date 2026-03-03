@@ -1,0 +1,6 @@
+﻿id,label_en,label_es,category,x,y,icon,status
+wellness,Wellness Center,Centro de bienestar,wellness,28,62,/atlas/icons/ic-01-wellness-1x1.png,published
+kids,Kids Club,Club infantil,kids,42,58,/atlas/icons/ic-02-kids-1x1.png,published
+parking,Smart Parking,Aparcamiento inteligente,parking,54,70,/atlas/icons/ic-03-parking-1x1.png,published
+green,Green Courtyard,Patio verde,green,36,44,/atlas/icons/ic-04-green-1x1.png,published
+security,24/7 Security,Seguridad 24/7,security,61,48,/atlas/icons/ic-05-security-1x1.png,published
