@@ -1,4 +1,7 @@
 // src/vertical/cms/sheets.ts
+import fs from "node:fs";
+import path from "node:path";
+
 import type {
   Settings,
   Building,
@@ -36,7 +39,7 @@ import {
   REQUIRED_DEVELOPER_SHEETS,
 } from "./urls";
 
-// IMPORTANT: demo settings must use ATLAS_ASSETS (no new hardcoded /atlas/... paths here)
+// demo settings must use ATLAS_ASSETS (no new hardcoded /atlas/... in loader logic)
 import { ATLAS_ASSETS } from "../content/assets";
 
 type CmsData = {
@@ -65,11 +68,7 @@ function onlyPublished<T extends { status?: string }>(xs: T[]): T[] {
 }
 
 function sortByOrder<T extends { sort_order?: string }>(xs: T[]): T[] {
-  return [...xs].sort((a, b) => {
-    const aa = Number(a.sort_order ?? 0);
-    const bb = Number(b.sort_order ?? 0);
-    return aa - bb;
-  });
+  return [...xs].sort((a, b) => Number(a.sort_order ?? 0) - Number(b.sort_order ?? 0));
 }
 
 function sortByNumericKey<T extends Record<string, any>>(xs: T[], key: string): T[] {
@@ -80,8 +79,30 @@ let warnedMissingEnv = false;
 function warnMissingEnvOnce() {
   if (warnedMissingEnv) return;
   warnedMissingEnv = true;
-  console.warn("[engine] Missing SHEETS_*_CSV env vars → using demo fallback data (empty lists).");
+  console.warn("[engine] Missing SHEETS_*_CSV env vars -> using demo fallback data (empty lists).");
 }
+
+let usedLocalDemoPack = false;
+let warnedLocalDemoPack = false;
+function warnLocalDemoPackOnce() {
+  if (warnedLocalDemoPack) return;
+  warnedLocalDemoPack = true;
+  console.warn("[engine] Using local demo CSV pack (docs/atlas/demo-csv).");
+}
+
+const LOCAL_DEMO_DIR = path.resolve(process.cwd(), "docs/atlas/demo-csv");
+
+const LOCAL_FILES: Record<string, string> = {
+  [SHEETS_SETTINGS_CSV]: "settings.csv",
+  [SHEETS_BUILDINGS_CSV]: "buildings.csv",
+  [SHEETS_UNIT_TYPES_CSV]: "unit_types.csv",
+  [SHEETS_UNITS_CSV]: "units.csv",
+  [SHEETS_AMENITIES_CSV]: "amenities.csv",
+  [SHEETS_POI_CSV]: "poi.csv",
+  [SHEETS_DOCUMENTS_CSV]: "documents.csv",
+  [SHEETS_PROGRESS_CSV]: "progress.csv",
+  [SHEETS_PAGES_CSV]: "pages.csv",
+};
 
 function validateStrictRequiredEnv() {
   if (!isStrictEnv()) return;
@@ -91,22 +112,81 @@ function validateStrictRequiredEnv() {
   }
 }
 
-function getRequiredUrlOrWarn(envKey: string): string | undefined {
+// CSV parser (no deps; supports quoted commas and BOM)
+function parseCsvLine(line: string): string[] {
+  const out: string[] = [];
+  let buf = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQuotes && line[i + 1] === '"') {
+        buf += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+      continue;
+    }
+    if (ch === "," && !inQuotes) {
+      out.push(buf);
+      buf = "";
+      continue;
+    }
+    buf += ch;
+  }
+  out.push(buf);
+  return out;
+}
+
+function parseCsv(text: string): Record<string, string>[] {
+  const lines = text
+    .replace(/^\uFEFF/, "")
+    .split(/\r?\n/)
+    .filter((l) => l.trim().length > 0);
+
+  if (lines.length === 0) return [];
+
+  const headers = parseCsvLine(lines[0]).map((h) => h.trim());
+  const rows: Record<string, string>[] = [];
+
+  for (let i = 1; i < lines.length; i++) {
+    const cols = parseCsvLine(lines[i]);
+    const row: Record<string, string> = {};
+    headers.forEach((h, idx) => {
+      row[h] = (cols[idx] ?? "").trim();
+    });
+    rows.push(row);
+  }
+  return rows;
+}
+
+function readLocalCsvRows(localFilename: string): Record<string, string>[] | null {
+  const fp = path.join(LOCAL_DEMO_DIR, localFilename);
+  if (!fs.existsSync(fp)) return null;
+  const txt = fs.readFileSync(fp, "utf8");
+  usedLocalDemoPack = true;
+  return parseCsv(txt);
+}
+
+async function loadTable<T extends Record<string, any>>(envKey: string): Promise<T[]> {
   const url = getEnv(envKey);
-  if (url) return url;
+  if (url) return fetchSheetRows<T>(url);
 
   if (isStrictEnv()) {
-    // strict should have been validated before calling this
     throw new Error(`Missing env var: ${envKey}`);
   }
 
-  warnMissingEnvOnce();
-  return undefined;
-}
+  const localFile = LOCAL_FILES[envKey];
+  if (localFile) {
+    const rows = readLocalCsvRows(localFile);
+    if (rows) return rows as T[];
+  }
 
-function getOptionalUrl(envKey: string): string | undefined {
-  const url = getEnv(envKey);
-  return url || undefined;
+  // no local pack -> demo empty lists + warning
+  warnMissingEnvOnce();
+  return [];
 }
 
 function demoSettings(): Settings {
@@ -116,18 +196,11 @@ function demoSettings(): Settings {
   const og = A.og01Home1200x630 ?? A.og?.og01Home1200x630 ?? hero ?? "";
   const logo = A.mark01_1x1 ?? A.brand?.mark01_1x1 ?? "";
 
-  // brochure/pricelist covers (if keys exist; otherwise fall back to OG)
   const brochureCover =
-    A.brochureCoverEn4x5 ??
-    A.downloads?.brochureCoverEn4x5 ??
-    A["brochure-cover-en-4x5"] ??
-    og;
+    A.brochureCoverEn4x5 ?? A.downloads?.brochureCoverEn4x5 ?? og;
 
   const priceListCover =
-    A.pricelistCoverEn4x5 ??
-    A.downloads?.pricelistCoverEn4x5 ??
-    A["pricelist-cover-en-4x5"] ??
-    og;
+    A.pricelistCoverEn4x5 ?? A.downloads?.pricelistCoverEn4x5 ?? og;
 
   return {
     project_name_en: "ATLAS RESIDENCES",
@@ -154,7 +227,6 @@ function demoSettings(): Settings {
     price_list_url_es: priceListCover,
 
     languages_enabled: "en|es",
-    // legacy alias used by some parts of the engine
     languages: "en|es",
 
     brand_bg: "#0b0c0d",
@@ -165,32 +237,13 @@ function demoSettings(): Settings {
     og_image: og,
     hero_image: hero,
 
-    // legacy hotel compatibility
     hotel_name_en: "ATLAS RESIDENCES",
     hotel_name_es: "ATLAS RESIDENCES",
   } as Settings;
 }
 
 async function loadCms(): Promise<CmsData> {
-  // strict-mode: must fail fast if any required developer env var is missing
   validateStrictRequiredEnv();
-
-  // Developer URLs
-  const settingsUrl = getRequiredUrlOrWarn(SHEETS_SETTINGS_CSV);
-  const buildingsUrl = getRequiredUrlOrWarn(SHEETS_BUILDINGS_CSV);
-  const unitTypesUrl = getRequiredUrlOrWarn(SHEETS_UNIT_TYPES_CSV);
-  const unitsUrl = getRequiredUrlOrWarn(SHEETS_UNITS_CSV);
-  const amenitiesUrl = getRequiredUrlOrWarn(SHEETS_AMENITIES_CSV);
-  const poiUrl = getRequiredUrlOrWarn(SHEETS_POI_CSV);
-  const documentsUrl = getRequiredUrlOrWarn(SHEETS_DOCUMENTS_CSV);
-  const progressUrl = getRequiredUrlOrWarn(SHEETS_PROGRESS_CSV);
-  const pagesUrl = getRequiredUrlOrWarn(SHEETS_PAGES_CSV);
-
-  // Legacy optional URLs (do not warn; do not fail strict)
-  const roomsUrl = getOptionalUrl(SHEETS_ROOMS_CSV);
-  const offersUrl = getOptionalUrl(SHEETS_OFFERS_CSV);
-  const experiencesUrl = getOptionalUrl(SHEETS_EXPERIENCES_CSV);
-  const reviewsUrl = getOptionalUrl(SHEETS_REVIEWS_CSV);
 
   const [
     settingsRows,
@@ -202,30 +255,33 @@ async function loadCms(): Promise<CmsData> {
     documents,
     progress,
     pages,
-    // legacy:
+    // legacy optional:
     rooms,
     offers,
     experiences,
     reviews,
   ] = await Promise.all([
-    settingsUrl ? fetchSheetRows<Settings>(settingsUrl) : Promise.resolve<Settings[]>([]),
-    buildingsUrl ? fetchSheetRows<Building>(buildingsUrl) : Promise.resolve<Building[]>([]),
-    unitTypesUrl ? fetchSheetRows<UnitType>(unitTypesUrl) : Promise.resolve<UnitType[]>([]),
-    unitsUrl ? fetchSheetRows<Unit>(unitsUrl) : Promise.resolve<Unit[]>([]),
-    amenitiesUrl ? fetchSheetRows<Amenity>(amenitiesUrl) : Promise.resolve<Amenity[]>([]),
-    poiUrl ? fetchSheetRows<Poi>(poiUrl) : Promise.resolve<Poi[]>([]),
-    documentsUrl ? fetchSheetRows<Document>(documentsUrl) : Promise.resolve<Document[]>([]),
-    progressUrl ? fetchSheetRows<ProgressEntry>(progressUrl) : Promise.resolve<ProgressEntry[]>([]),
-    pagesUrl ? fetchSheetRows<Page>(pagesUrl) : Promise.resolve<Page[]>([]),
+    loadTable<Settings>(SHEETS_SETTINGS_CSV),
+    loadTable<Building>(SHEETS_BUILDINGS_CSV),
+    loadTable<UnitType>(SHEETS_UNIT_TYPES_CSV),
+    loadTable<Unit>(SHEETS_UNITS_CSV),
+    loadTable<Amenity>(SHEETS_AMENITIES_CSV),
+    loadTable<Poi>(SHEETS_POI_CSV),
+    loadTable<Document>(SHEETS_DOCUMENTS_CSV),
+    loadTable<ProgressEntry>(SHEETS_PROGRESS_CSV),
+    loadTable<Page>(SHEETS_PAGES_CSV),
 
-    // legacy optional:
-    roomsUrl ? fetchSheetRows<Room>(roomsUrl) : Promise.resolve<Room[]>([]),
-    offersUrl ? fetchSheetRows<Offer>(offersUrl) : Promise.resolve<Offer[]>([]),
-    experiencesUrl ? fetchSheetRows<Experience>(experiencesUrl) : Promise.resolve<Experience[]>([]),
-    reviewsUrl ? fetchSheetRows<Review>(reviewsUrl) : Promise.resolve<Review[]>([]),
+    // legacy: do not warn; do not fail strict
+    getEnv(SHEETS_ROOMS_CSV) ? fetchSheetRows<Room>(getEnv(SHEETS_ROOMS_CSV)!) : Promise.resolve([]),
+    getEnv(SHEETS_OFFERS_CSV) ? fetchSheetRows<Offer>(getEnv(SHEETS_OFFERS_CSV)!) : Promise.resolve([]),
+    getEnv(SHEETS_EXPERIENCES_CSV) ? fetchSheetRows<Experience>(getEnv(SHEETS_EXPERIENCES_CSV)!) : Promise.resolve([]),
+    getEnv(SHEETS_REVIEWS_CSV) ? fetchSheetRows<Review>(getEnv(SHEETS_REVIEWS_CSV)!) : Promise.resolve([]),
   ]);
 
-  // settings: strict expects exactly 1 row; demo falls back
+  if (!isStrictEnv() && usedLocalDemoPack) {
+    warnLocalDemoPackOnce();
+  }
+
   if (isStrictEnv()) {
     if (settingsRows.length !== 1) throw new Error("settings sheet must contain exactly 1 row.");
   }
@@ -233,10 +289,8 @@ async function loadCms(): Promise<CmsData> {
 
   return {
     settings,
-
     buildings: sortByOrder(onlyPublished(buildings)),
     unit_types: sortByOrder(onlyPublished(unit_types)),
-    // units are availability-driven, not published/draft; keep all and sort by `sort`
     units: sortByNumericKey(units, "sort"),
 
     amenities: sortByOrder(onlyPublished(amenities)),
@@ -245,7 +299,6 @@ async function loadCms(): Promise<CmsData> {
     progress: sortByOrder(onlyPublished(progress)),
     pages: sortByOrder(onlyPublished(pages)),
 
-    // legacy
     rooms: sortByOrder(onlyPublished(rooms)),
     offers: sortByOrder(onlyPublished(offers)),
     experiences: sortByOrder(onlyPublished(experiences)),
@@ -258,9 +311,7 @@ async function getCms(): Promise<CmsData> {
   return cachePromise;
 }
 
-/**
- * Developer Vertical Public API (required)
- */
+// Developer API
 export async function getSettings(): Promise<Settings> {
   return (await getCms()).settings;
 }
@@ -292,10 +343,7 @@ export async function getPages(): Promise<Page[]> {
   return (await getCms()).pages;
 }
 
-/**
- * Legacy hotel API (compat)
- * Keep these so old routes compile/build until removed.
- */
+// Legacy API (compat)
 export async function getRooms(): Promise<Room[]> {
   return (await getCms()).rooms;
 }
@@ -318,6 +366,5 @@ export async function getReviews(): Promise<Review[]> {
   return (await getCms()).reviews;
 }
 export async function getPageBySlug(slug: string): Promise<Page | undefined> {
-  const pages = (await getCms()).pages;
-  return pages.find((p) => p.slug === slug);
+  return (await getCms()).pages.find((p) => p.slug === slug);
 }
