@@ -42,6 +42,7 @@ import {
 // demo settings must use ATLAS_ASSETS (no new hardcoded /atlas/... in loader logic)
 import {
   ATLAS_ASSETS,
+  warnMissingCriticalAtlasAssetsDevOnly,
   resolvePlanImage,
   resolveUnitGallery,
   resolveUnitTypeCover,
@@ -247,8 +248,25 @@ function demoSettings(): Settings {
   } as Settings;
 }
 
+let warnedMissingVisualFields = false;
+function warnMissingVisualBindingsDevOnly(unitTypes: UnitType[], units: Unit[]): void {
+  if (warnedMissingVisualFields || process.env.NODE_ENV !== "development") return;
+
+  const missingCoverCount = unitTypes.filter((item) => !String(item.cover_image ?? "").trim()).length;
+  const missingPlanCount = units.filter((item) => !String(item.plan_image ?? "").trim()).length;
+  const missingGalleryCount = units.filter((item) => !String(item.gallery_images ?? "").trim()).length;
+
+  if (missingCoverCount || missingPlanCount || missingGalleryCount) {
+    console.warn(
+      `[atlas] Visual bindings fallback used (missing raw fields): cover=${missingCoverCount}, plan=${missingPlanCount}, gallery=${missingGalleryCount}`
+    );
+  }
+  warnedMissingVisualFields = true;
+}
+
 async function loadCms(): Promise<CmsData> {
   validateStrictRequiredEnv();
+  warnMissingCriticalAtlasAssetsDevOnly();
 
   const [
     settingsRows,
@@ -291,6 +309,8 @@ async function loadCms(): Promise<CmsData> {
     if (settingsRows.length !== 1) throw new Error("settings sheet must contain exactly 1 row.");
   }
   const settings = settingsRows[0] ?? demoSettings();
+
+  warnMissingVisualBindingsDevOnly(unit_types, units);
 
   const normalizedUnitTypes = unit_types.map((unitType) => ({
     ...unitType,

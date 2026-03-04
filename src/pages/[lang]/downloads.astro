@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../content/languages";
+import { getSettings } from "../../vertical/cms/sheets";
 
 export function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
@@ -9,11 +10,71 @@ export function getStaticPaths() {
 const langParam = Astro.params.lang ?? "en";
 if (!isLang(langParam)) throw new Error("Invalid lang");
 const lang = langParam as Lang;
+
+const settings = await getSettings();
+const brochureUrl = String((lang === "es" ? settings.brochure_url_es : settings.brochure_url_en) ?? "").trim();
+const priceListUrl = String((lang === "es" ? settings.price_list_url_es : settings.price_list_url_en) ?? "").trim();
+const hasDownloads = Boolean(brochureUrl || priceListUrl);
 ---
 
 <BaseLayout lang={lang} title={t(lang, "Downloads | Atlas Residences", "Descargas | Atlas Residences") }>
-  <section class="space-y-3">
-    <h1 class="text-3xl tracking-tight">{t(lang, "Downloads", "Descargas")}</h1>
-    <p class="opacity-80">{t(lang, "Downloads placeholder.", "Marcador de posición de descargas.")}</p>
+  <section class="space-y-5">
+    <header class="space-y-2">
+      <h1 class="text-3xl tracking-tight">{t(lang, "Downloads", "Descargas")}</h1>
+      <p class="opacity-80">{t(lang, "Sales documents and brochures.", "Documentos comerciales y folletos.")}</p>
+    </header>
+
+    {hasDownloads ? (
+    <div class="grid gap-3 sm:grid-cols-2">
+      <a
+        class="group overflow-hidden rounded-xl border transition hover:border-black/40"
+        href={brochureUrl || "#"}
+        aria-disabled={!brochureUrl}
+      >
+        {brochureUrl && (
+          <img
+            src={brochureUrl}
+            alt={t(lang, "Project brochure cover", "Portada del folleto del proyecto")}
+            class="aspect-[4/5] w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        )}
+        <div class="p-4">
+          <p class="text-sm font-medium">{t(lang, "Project brochure", "Folleto del proyecto")}</p>
+          <p class="text-xs opacity-70">{brochureUrl ? t(lang, "Open document", "Abrir documento") : t(lang, "Unavailable", "No disponible")}</p>
+        </div>
+      </a>
+
+      <a
+        class="group overflow-hidden rounded-xl border transition hover:border-black/40"
+        href={priceListUrl || "#"}
+        aria-disabled={!priceListUrl}
+      >
+        {priceListUrl && (
+          <img
+            src={priceListUrl}
+            alt={t(lang, "Price list cover", "Portada de lista de precios")}
+            class="aspect-[4/5] w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        )}
+        <div class="p-4">
+          <p class="text-sm font-medium">{t(lang, "Price list", "Lista de precios")}</p>
+          <p class="text-xs opacity-70">{priceListUrl ? t(lang, "Open document", "Abrir documento") : t(lang, "Unavailable", "No disponible")}</p>
+        </div>
+      </a>
+    </div>
+    ) : (
+      <div class="space-y-3 rounded-xl border bg-slate-50 p-5">
+        <p class="text-sm opacity-80">
+          {t(lang, "Downloads will be available shortly.", "Las descargas estarán disponibles en breve.")}
+        </p>
+        <a class="inline-flex min-h-11 items-center rounded-lg border px-4 py-2 text-sm font-medium transition hover:border-black/40" href={`/${lang}/contact/`}>
+          {t(lang, "Contact sales", "Contactar ventas")}
+        </a>
+      </div>
+    )}
   </section>
 </BaseLayout>
