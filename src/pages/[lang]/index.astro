@@ -70,10 +70,14 @@ const heroMobileImage = heroVariants.mobile;
     />
 
     <div class="space-y-4">
-      <p class="text-xs uppercase tracking-[0.2em] opacity-60">Atlas Residences</p>
-      <h1 class="text-3xl tracking-tight sm:text-4xl">{t(lang, "Developer Demo Home", "Inicio demo de desarrollador")}</h1>
+      <p class="text-xs uppercase tracking-[0.2em] opacity-60">{t(lang, "ATLAS RESIDENCES", "ATLAS RESIDENCES")}</p>
+      <h1 class="text-3xl tracking-tight sm:text-4xl">{t(lang, "Atlas Residences", "Atlas Residences")}</h1>
       <p class="max-w-3xl text-sm opacity-80 sm:text-base">
-        {t(lang, "IA v1 skeleton for the new developer vertical.", "Esqueleto IA v1 para la nueva vertical de desarrollador.")}
+        {t(
+          lang,
+          "Explore curated residences with live availability, masterplan hotspots, and detailed unit visuals.",
+          "Explora residencias seleccionadas con disponibilidad en vivo, masterplan interactivo y detalles visuales por unidad.",
+        )}
       </p>
     </div>
 
@@ -91,5 +95,9 @@ const heroMobileImage = heroVariants.mobile;
         <span class="text-xs opacity-0 transition group-hover:opacity-60">→</span>
       </a>
     </div>
+
+    <p class="text-xs opacity-70 sm:text-sm">
+      {t(lang, "Live inventory · Masterplan view · Request a viewing", "Inventario en vivo · Masterplan · Reservar visita")}
+    </p>
   </section>
 </BaseLayout>

@@ -6,6 +6,7 @@ type Props = {
   mobileImage?: string;
 
   alt?: string;
+
   sliderLabel?: string;
   morningLabel?: string;
   bluehourLabel?: string;
@@ -39,6 +40,7 @@ const hasPoster = Boolean(poster);
 const hasSunset = Boolean(sunsetSrc) && sunsetSrc !== poster;
 const hasBluehour = Boolean(bluehourSrc) && bluehourSrc !== poster && bluehourSrc !== sunsetSrc;
 
+// показуємо слайдер тільки якщо є що змішувати
 const hasBlend = hasSunset || hasBluehour;
 ---
 
@@ -47,6 +49,7 @@ const hasBlend = hasSunset || hasBluehour;
     class="space-y-3"
     data-sun-hero
     data-has-bluehour={hasBluehour ? "true" : "false"}
+    data-has-blend={hasBlend ? "true" : "false"}
     style="--sun:0; --bluehour-opacity:0; --sunset-opacity:0; --px:0px; --py:0px; --fog-shift:0; --sun-x:50%; --sun-y:34%; --glint-offset:0%; --scroll:0; --scroll-y:0px;"
   >
     <div class="sun-hero-frame relative overflow-hidden rounded-2xl border bg-slate-100" data-sun-hero-frame>
@@ -311,6 +314,7 @@ const hasBlend = hasSunset || hasBluehour;
           resetScroll();
           return;
         }
+
         const rect = frame.getBoundingClientRect();
         const viewport = window.innerHeight || 1;
 
