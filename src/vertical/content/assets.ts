@@ -63,6 +63,33 @@ export const ATLAS_ASSETS = {
   },
 } as const;
 
+export const ATLAS_CRITICAL_ASSET_PATHS: Record<string, string> = {
+  heroMorning: ATLAS_ASSETS.hero.hr01Morning16x9,
+  heroSunset: ATLAS_ASSETS.hero.hr02Sunset16x9,
+  masterplanWide: ATLAS_ASSETS.masterplan.mp01Wide16x9,
+  planT1: ATLAS_ASSETS.plans.plT11br1x1,
+  planT2: ATLAS_ASSETS.plans.plT22brStandard1x1,
+  planT3: ATLAS_ASSETS.plans.plT32brCorner1x1,
+  planT4: ATLAS_ASSETS.plans.plT43brFamily1x1,
+  planT5: ATLAS_ASSETS.plans.plT53brPenthouse1x1,
+  planT6: ATLAS_ASSETS.plans.plT64brDuplex1x1,
+  downloadsBrochureCover: ATLAS_ASSETS.downloads.brochureCoverEn4x5,
+  downloadsPriceListCover: ATLAS_ASSETS.downloads.pricelistCoverEn4x5,
+};
+
+let warnedCriticalAssets = false;
+export function warnMissingCriticalAtlasAssetsDevOnly(): void {
+  if (warnedCriticalAssets || process.env.NODE_ENV !== "development") return;
+  const missing = Object.entries(ATLAS_CRITICAL_ASSET_PATHS)
+    .filter(([, assetPath]) => !String(assetPath ?? "").trim())
+    .map(([name]) => name);
+
+  if (missing.length > 0) {
+    console.warn(`[atlas] Missing critical asset paths: ${missing.join(", ")}`);
+  }
+  warnedCriticalAssets = true;
+}
+
 export type AtlasAssetPath = (typeof ATLAS_ASSETS)[keyof typeof ATLAS_ASSETS];
 
 function normalizeTypeId(typeId?: string): string {
