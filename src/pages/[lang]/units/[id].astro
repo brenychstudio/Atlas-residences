@@ -1,4 +1,7 @@
 ---
+// FILE: src/pages/[lang]/units/[id].astro
+// FULL REPLACE
+
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { type Lang, isLang, t } from "../../../content/languages";
 import { getSettings, getUnitById, getUnits, getUnitTypes } from "../../../vertical/cms/sheets";
@@ -26,9 +29,11 @@ const unit = await getUnitById(id);
 const unitTypes = await getUnitTypes();
 const unitType = unit?.type_id ? unitTypes.find((item) => item.id === unit.type_id) : undefined;
 
+// Visuals (defensive). Task 12 ensures fallbacks, but still guard against empty strings.
+// Accept both '|' and ',' separators (be defensive with older CSV values).
 const coverImage = String(unitType?.cover_image ?? "").trim();
 const planImage = String(unit?.plan_image ?? "").trim();
-const galleryImages = String(unit?.gallery_images ?? "")
+const galleryImages = String((unit as any)?.gallery_images ?? "")
   .split(/[|,]/)
   .map((item) => item.trim())
   .filter(Boolean);
@@ -57,13 +62,20 @@ const orientationText = (orientation?: string) => {
 };
 
 const unitLabel = unit?.number || unit?.id || id;
+
 const seoTitle = unit
   ? `${t(lang, "Unit", "Unidad")} ${unitLabel} — ${projectName}`
   : `${t(lang, "Unit", "Unidad")} — ${projectName}`;
+
 const seoDescription = unit
-  ? `${beds} ${t(lang, "beds", "dorm.")}, ${baths} ${t(lang, "baths", "baños")}, ${area} m², ${statusText(unit.status)}, ${orientationText(unit.orientation)}.`
+  ? `${beds} ${t(lang, "beds", "dorm.")}, ${baths} ${t(lang, "baths", "baños")}, ${area} m², ${statusText(
+      unit.status,
+    )}, ${orientationText(unit.orientation)}.`
   : t(lang, "Unit details are unavailable.", "Los detalles de la unidad no están disponibles.");
-const seoImage = unit?.plan_image || ATLAS_ASSETS.og.og02Units1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
+
+// Prefer plan image (already resolved), then OG units, then masterplan
+const seoImage = planImage || ATLAS_ASSETS.og.og02Units1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
+
 const seoNoindex = !unit;
 const ogLocale = lang === "es" ? "es_ES" : "en_US";
 ---
@@ -101,24 +113,42 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
   ) : (
     <section class="space-y-5">
       <header class="space-y-2">
-        <h1 class="text-3xl tracking-tight">{t(lang, "Unit", "Unidad")} {unit.number || unit.id}</h1>
+        <h1 class="text-3xl tracking-tight">
+          {t(lang, "Unit", "Unidad")} {unit.number || unit.id}
+        </h1>
         <p class="opacity-80">
-          {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")} {unit.floor || "-"}
+          {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")}{" "}
+          {unit.floor || "-"}
         </p>
       </header>
 
       {coverImage && (
-        <img src={coverImage} alt={`${t(lang, "Unit", "Unidad")} ${unit.number || unit.id}`} class="w-full rounded-xl border object-cover" loading="lazy" />
+        <img
+          src={coverImage}
+          alt={`${t(lang, "Unit", "Unidad")} ${unit.number || unit.id}`}
+          class="w-full rounded-xl border object-cover"
+          loading="lazy"
+        />
       )}
 
       {planImage && (
-        <img src={planImage} alt={`${t(lang, "Unit plan", "Plano de unidad")} ${unit.number || unit.id}`} class="w-full rounded-xl border object-cover" loading="lazy" />
+        <img
+          src={planImage}
+          alt={`${t(lang, "Unit plan", "Plano de unidad")} ${unit.number || unit.id}`}
+          class="w-full rounded-xl border object-cover"
+          loading="lazy"
+        />
       )}
 
       {galleryImages.length > 0 && (
         <div class="grid gap-3 sm:grid-cols-2">
           {galleryImages.map((image, index) => (
-            <img src={image} alt={`${t(lang, "Gallery image", "Imagen de galería")} ${index + 1}`} class="w-full rounded-xl border object-cover" loading="lazy" />
+            <img
+              src={image}
+              alt={`${t(lang, "Gallery image", "Imagen de galería")} ${index + 1}`}
+              class="w-full rounded-xl border object-cover"
+              loading="lazy"
+            />
           ))}
         </div>
       )}
@@ -126,7 +156,9 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
       <div class="grid gap-3 rounded-xl border p-4 text-sm sm:grid-cols-2">
         <div>
           <p class="opacity-70">{t(lang, "Beds / Baths", "Dormitorios / Baños")}</p>
-          <p class="text-base font-medium">{beds} / {baths}</p>
+          <p class="text-base font-medium">
+            {beds} / {baths}
+          </p>
         </div>
         <div>
           <p class="opacity-70">{t(lang, "Area", "Superficie")}</p>
@@ -142,15 +174,23 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
         </div>
         <div class="sm:col-span-2">
           <p class="opacity-70">{t(lang, "Price", "Precio")}</p>
-          <p class="text-base font-medium">{unit.price_eur ? `€${unit.price_eur}` : t(lang, "Request price", "Solicitar precio")}</p>
+          <p class="text-base font-medium">
+            {unit.price_eur ? `€${unit.price_eur}` : t(lang, "Request price", "Solicitar precio")}
+          </p>
         </div>
       </div>
 
       <div class="flex flex-col gap-3 sm:flex-row">
-        <a class="inline-flex min-h-11 items-center justify-center rounded-lg bg-black px-5 py-3 font-medium text-white" href={`/${lang}/downloads/`}>
+        <a
+          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-black px-5 py-3 font-medium text-white"
+          href={`/${lang}/downloads/`}
+        >
           {t(lang, "Request price list", "Solicitar lista de precios")}
         </a>
-        <a class="inline-flex min-h-11 items-center justify-center rounded-lg border px-5 py-3 font-medium" href={`/${lang}/contact/`}>
+        <a
+          class="inline-flex min-h-11 items-center justify-center rounded-lg border px-5 py-3 font-medium"
+          href={`/${lang}/contact/`}
+        >
           {t(lang, "Book a viewing", "Reservar visita")}
         </a>
       </div>
