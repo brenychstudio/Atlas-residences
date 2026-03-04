@@ -1,7 +1,8 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../content/languages";
-import { getSettings } from "../../vertical/cms/sheets";
+import { getPageBySlug, getSettings } from "../../vertical/cms/sheets";
+import { ATLAS_ASSETS } from "../../vertical/content/assets";
 
 export function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
@@ -12,6 +13,21 @@ if (!isLang(langParam)) throw new Error("Invalid lang");
 const lang = langParam as Lang;
 
 const settings = await getSettings();
+
+const p0 = Astro.url.pathname;
+const p = p0.endsWith("/") ? p0 : `${p0}/`;
+const pageSeo = await getPageBySlug(p);
+
+const projectName = (lang === "es" ? settings.project_name_es : settings.project_name_en) || "Atlas Residences";
+const defaultDescription =
+  (lang === "es" ? settings.tagline_es : settings.tagline_en) ||
+  t(lang, "Book a viewing and contact Atlas Residences.", "Reserva una visita y contacta con Atlas Residences.");
+
+const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Contact", "Contacto")} — ${projectName}`;
+const seoDescription = (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) || defaultDescription;
+const seoImage = pageSeo?.og_image || ATLAS_ASSETS.og.og01Home1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
+const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";
+const ogLocale = lang === "es" ? "es_ES" : "en_US";
 
 const rawIntent = (Astro.url.searchParams.get("intent") ?? "viewing").toLowerCase();
 const intent = ["viewing", "whatsapp", "call"].includes(rawIntent) ? rawIntent : "viewing";
@@ -37,7 +53,22 @@ const mapsHref = hasCoords
   : "";
 ---
 
-<BaseLayout lang={lang} title={t(lang, "Contact | Atlas Residences", "Contacto | Atlas Residences") }>
+<BaseLayout lang={lang} title={seoTitle}>
+  <Fragment slot="head">
+    <title>{seoTitle}</title>
+    <meta name="description" content={seoDescription} />
+    <meta property="og:title" content={seoTitle} />
+    <meta property="og:description" content={seoDescription} />
+    <meta property="og:image" content={seoImage} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={seoTitle} />
+    <meta name="twitter:description" content={seoDescription} />
+    <meta name="twitter:image" content={seoImage} />
+    {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
+  </Fragment>
+
   <section class="space-y-6">
     <header class="space-y-2">
       <h1 class="text-3xl tracking-tight">{t(lang, "Book a viewing", "Reservar visita")}</h1>

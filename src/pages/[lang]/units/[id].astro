@@ -1,7 +1,8 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { type Lang, isLang, t } from "../../../content/languages";
-import { getUnitById, getUnits, getUnitTypes } from "../../../vertical/cms/sheets";
+import { getSettings, getUnitById, getUnits, getUnitTypes } from "../../../vertical/cms/sheets";
+import { ATLAS_ASSETS } from "../../../vertical/content/assets";
 
 export async function getStaticPaths() {
   const units = await getUnits();
@@ -20,10 +21,12 @@ if (!isLang(langProp)) throw new Error("Invalid lang");
 const lang = langProp as Lang;
 const id = String(Astro.props.id ?? Astro.params.id ?? "");
 
+const settings = await getSettings();
 const unit = await getUnitById(id);
 const unitTypes = await getUnitTypes();
 const unitType = unit?.type_id ? unitTypes.find((item) => item.id === unit.type_id) : undefined;
 
+const projectName = (lang === "es" ? settings.project_name_es : settings.project_name_en) || "Atlas Residences";
 const beds = unit?.beds || unitType?.beds || "-";
 const baths = unit?.baths || unitType?.baths || "-";
 const area = unit?.area_m2 || unitType?.area_from || "-";
@@ -45,9 +48,35 @@ const orientationText = (orientation?: string) => {
   if (normalized === "mountain") return t(lang, "Mountain", "Montaña");
   return t(lang, "Unknown", "Sin orientación");
 };
+
+const unitLabel = unit?.number || unit?.id || id;
+const seoTitle = unit
+  ? `${t(lang, "Unit", "Unidad")} ${unitLabel} — ${projectName}`
+  : `${t(lang, "Unit", "Unidad")} — ${projectName}`;
+const seoDescription = unit
+  ? `${beds} ${t(lang, "beds", "dorm.")}, ${baths} ${t(lang, "baths", "baños")}, ${area} m², ${statusText(unit.status)}, ${orientationText(unit.orientation)}.`
+  : t(lang, "Unit details are unavailable.", "Los detalles de la unidad no están disponibles.");
+const seoImage = unit?.plan_image || ATLAS_ASSETS.og.og02Units1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
+const seoNoindex = !unit;
+const ogLocale = lang === "es" ? "es_ES" : "en_US";
 ---
 
-<BaseLayout lang={lang} title={t(lang, "Unit detail | Atlas Residences", "Detalle de unidad | Atlas Residences") }>
+<BaseLayout lang={lang} title={seoTitle}>
+  <Fragment slot="head">
+    <title>{seoTitle}</title>
+    <meta name="description" content={seoDescription} />
+    <meta property="og:title" content={seoTitle} />
+    <meta property="og:description" content={seoDescription} />
+    <meta property="og:image" content={seoImage} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={seoTitle} />
+    <meta name="twitter:description" content={seoDescription} />
+    <meta name="twitter:image" content={seoImage} />
+    {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
+  </Fragment>
+
   {!unit ? (
     <section class="space-y-4 rounded-xl border p-5">
       <h1 class="text-2xl font-semibold tracking-tight">{t(lang, "Unit not found", "Unidad no encontrada")}</h1>
