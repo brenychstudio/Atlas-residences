@@ -1,4 +1,4 @@
-﻿---
+---
 // FILE: src/pages/[lang]/units/[id].astro
 // FULL REPLACE
 
@@ -48,7 +48,7 @@ const statusText = (status?: string) => {
   if (normalized === "available") return t(lang, "Available", "Disponible");
   if (normalized === "reserved") return t(lang, "Reserved", "Reservada");
   if (normalized === "sold") return t(lang, "Sold", "Vendida");
-  if (normalized === "coming_soon") return t(lang, "Coming soon", "Pr├│ximamente");
+  if (normalized === "coming_soon") return t(lang, "Coming soon", "Próximamente");
   return t(lang, "Unknown", "Sin estado");
 };
 
@@ -57,21 +57,21 @@ const orientationText = (orientation?: string) => {
   if (normalized === "sea") return t(lang, "Sea", "Mar");
   if (normalized === "city") return t(lang, "City", "Ciudad");
   if (normalized === "courtyard") return t(lang, "Courtyard", "Patio");
-  if (normalized === "mountain") return t(lang, "Mountain", "Monta├▒a");
-  return t(lang, "Unknown", "Sin orientaci├│n");
+  if (normalized === "mountain") return t(lang, "Mountain", "Montaña");
+  return t(lang, "Unknown", "Sin orientación");
 };
 
 const unitLabel = unit?.number || unit?.id || id;
 
 const seoTitle = unit
-  ? `${t(lang, "Unit", "Unidad")} ${unitLabel} тАФ ${projectName}`
-  : `${t(lang, "Unit", "Unidad")} тАФ ${projectName}`;
+  ? `${t(lang, "Unit", "Unidad")} ${unitLabel} — ${projectName}`
+  : `${t(lang, "Unit", "Unidad")} — ${projectName}`;
 
 const seoDescription = unit
-  ? `${beds} ${t(lang, "beds", "dorm.")}, ${baths} ${t(lang, "baths", "ba├▒os")}, ${area} m┬▓, ${statusText(
+  ? `${beds} ${t(lang, "beds", "dorm.")}, ${baths} ${t(lang, "baths", "baños")}, ${area} m², ${statusText(
       unit.status,
     )}, ${orientationText(unit.orientation)}.`
-  : t(lang, "Unit details are unavailable.", "Los detalles de la unidad no est├бn disponibles.");
+  : t(lang, "Unit details are unavailable.", "Los detalles de la unidad no están disponibles.");
 
 // Prefer plan image (already resolved), then OG units, then masterplan
 const seoImage = planImage || ATLAS_ASSETS.og.og02Units1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
@@ -103,7 +103,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
         {t(
           lang,
           "This unit is no longer available or the link is incorrect.",
-          "Esta unidad ya no est├б disponible o el enlace es incorrecto.",
+          "Esta unidad ya no está disponible o el enlace es incorrecto.",
         )}
       </p>
       <a class="inline-flex min-h-11 items-center rounded-lg border px-4 py-2 font-medium" href={`/${lang}/units/`}>
@@ -117,7 +117,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
           {t(lang, "Unit", "Unidad")} {unit.number || unit.id}
         </h1>
         <p class="opacity-80">
-          {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} ┬╖ {t(lang, "Floor", "Planta")}{" "}
+          {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")}{" "}
           {unit.floor || "-"}
         </p>
       </header>
@@ -147,7 +147,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
           {galleryImages.map((image, index) => (
             <img
               src={image}
-              alt={`${t(lang, "Gallery image", "Imagen de galer├нa")} ${index + 1}`}
+              alt={`${t(lang, "Gallery image", "Imagen de galería")} ${index + 1}`}
               class="w-full rounded-xl border object-cover"
               loading="lazy"
               decoding="async"
@@ -158,17 +158,17 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
 
       <div class="grid gap-3 rounded-xl border p-4 text-sm sm:grid-cols-2">
         <div>
-          <p class="opacity-70">{t(lang, "Beds / Baths", "Dormitorios / Ba├▒os")}</p>
+          <p class="opacity-70">{t(lang, "Beds / Baths", "Dormitorios / Baños")}</p>
           <p class="text-base font-medium">
             {beds} / {baths}
           </p>
         </div>
         <div>
           <p class="opacity-70">{t(lang, "Area", "Superficie")}</p>
-          <p class="text-base font-medium">{area} m┬▓</p>
+          <p class="text-base font-medium">{area} m²</p>
         </div>
         <div>
-          <p class="opacity-70">{t(lang, "Orientation", "Orientaci├│n")}</p>
+          <p class="opacity-70">{t(lang, "Orientation", "Orientación")}</p>
           <p class="text-base font-medium">{orientationText(unit.orientation)}</p>
         </div>
         <div>
@@ -178,7 +178,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
         <div class="sm:col-span-2">
           <p class="opacity-70">{t(lang, "Price", "Precio")}</p>
           <p class="text-base font-medium">
-            {unit.price_eur ? `тВм${unit.price_eur}` : t(lang, "Request price", "Solicitar precio")}
+            {unit.price_eur ? `€${unit.price_eur}` : t(lang, "Request price", "Solicitar precio")}
           </p>
         </div>
       </div>

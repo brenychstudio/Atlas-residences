@@ -1,4 +1,4 @@
-﻿---
+---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../content/languages";
 import { getAmenities, getBuildings, getPageBySlug, getSettings, getUnits } from "../../vertical/cms/sheets";
@@ -21,7 +21,7 @@ const defaultDescription =
   (lang === "es" ? settings.tagline_es : settings.tagline_en) ||
   t(lang, "Explore Atlas residences on the masterplan.", "Explora Atlas Residences en el plan maestro.");
 
-const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Masterplan", "Plan maestro")} тАФ ${projectName}`;
+const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Masterplan", "Plan maestro")} — ${projectName}`;
 const seoDescription = (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) || defaultDescription;
 const seoImage = pageSeo?.og_image || ATLAS_ASSETS.masterplan.mp01Wide16x9 || ATLAS_ASSETS.og.og01Home1200x630;
 const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";
@@ -59,14 +59,14 @@ const statusText = (status: string) => {
   if (status === "available") return t(lang, "Available", "Disponible");
   if (status === "reserved") return t(lang, "Reserved", "Reservada");
   if (status === "sold") return t(lang, "Sold", "Vendida");
-  if (status === "coming_soon") return t(lang, "Coming soon", "Pr├│ximamente");
+  if (status === "coming_soon") return t(lang, "Coming soon", "Próximamente");
   return t(lang, "Unknown", "Sin estado");
 };
 
 const amenityCategoryText = (category?: string) => {
   const normalized = String(category ?? "").toLowerCase();
   if (normalized === "wellness") return t(lang, "Wellness", "Bienestar");
-  if (normalized === "kids") return t(lang, "Kids", "Ni├▒os");
+  if (normalized === "kids") return t(lang, "Kids", "Niños");
   if (normalized === "parking") return t(lang, "Parking", "Aparcamiento");
   if (normalized === "green") return t(lang, "Green", "Zonas verdes");
   if (normalized === "security") return t(lang, "Security", "Seguridad");
@@ -92,7 +92,7 @@ const amenityCategoryText = (category?: string) => {
 
   <section class="space-y-5">
     <header class="space-y-2">
-      <h1 class="text-3xl tracking-tight">{t(lang, "Cinematic masterplan", "Plan maestro cinem├бtico")}</h1>
+      <h1 class="text-3xl tracking-tight">{t(lang, "Cinematic masterplan", "Plan maestro cinemático")}</h1>
       <p class="text-sm opacity-80">{t(lang, "Tap a building to inspect live inventory.", "Toca un bloque para ver el inventario en vivo.")}</p>
     </header>
 
@@ -114,7 +114,7 @@ const amenityCategoryText = (category?: string) => {
           <a href="#" data-value="available" class="min-h-11 rounded-full border px-4 py-2 text-sm">{t(lang, "Available", "Disponible")}</a>
           <a href="#" data-value="reserved" class="min-h-11 rounded-full border px-4 py-2 text-sm">{t(lang, "Reserved", "Reservada")}</a>
           <a href="#" data-value="sold" class="min-h-11 rounded-full border px-4 py-2 text-sm">{t(lang, "Sold", "Vendida")}</a>
-          <a href="#" data-value="coming_soon" class="min-h-11 rounded-full border px-4 py-2 text-sm">{t(lang, "Coming soon", "Pr├│ximamente")}</a>
+          <a href="#" data-value="coming_soon" class="min-h-11 rounded-full border px-4 py-2 text-sm">{t(lang, "Coming soon", "Próximamente")}</a>
         </div>
       </div>
     </div>
@@ -166,7 +166,7 @@ const amenityCategoryText = (category?: string) => {
               data-amenity-id={amenityId}
               aria-label={lang === "es" ? amenity.label_es : amenity.label_en}
             >
-              тАв
+              •
             </button>
           );
         })}
@@ -190,7 +190,7 @@ const amenityCategoryText = (category?: string) => {
           <dd id="status-sold" class="font-medium">0</dd>
         </div>
         <div>
-          <dt class="opacity-70">{t(lang, "Coming soon", "Pr├│ximamente")}</dt>
+          <dt class="opacity-70">{t(lang, "Coming soon", "Próximamente")}</dt>
           <dd id="status-coming_soon" class="font-medium">0</dd>
         </div>
       </dl>
@@ -292,7 +292,7 @@ const amenityCategoryText = (category?: string) => {
       document.getElementById("building-name").textContent = building.name;
       const floors = building.floors || data.labels.noData;
       const delivery = building.deliveryDate || data.labels.noData;
-      document.getElementById("building-meta").textContent = `${data.labels.floors}: ${floors} ┬╖ ${data.labels.delivery}: ${delivery}`;
+      document.getElementById("building-meta").textContent = `${data.labels.floors}: ${floors} · ${data.labels.delivery}: ${delivery}`;
 
       const scoped = filteredUnits.filter((unit) => unit.buildingId === buildingId);
       const statuses = { available: 0, reserved: 0, sold: 0, coming_soon: 0 };

@@ -1,4 +1,4 @@
-﻿---
+---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../../content/languages";
 import { getPageBySlug, getSettings, getUnits, getUnitTypes } from "../../../vertical/cms/sheets";
@@ -21,7 +21,7 @@ const defaultDescription =
   (lang === "es" ? settings.tagline_es : settings.tagline_en) ||
   t(lang, "Browse available units at Atlas Residences.", "Explora las unidades disponibles en Atlas Residences.");
 
-const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Units", "Unidades")} тАФ ${projectName}`;
+const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Units", "Unidades")} — ${projectName}`;
 const seoDescription = (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) || defaultDescription;
 const seoImage = pageSeo?.og_image || ATLAS_ASSETS.og.og02Units1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
 const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";
@@ -47,7 +47,7 @@ const statusText = (status?: string) => {
   if (normalized === "available") return t(lang, "Available", "Disponible");
   if (normalized === "reserved") return t(lang, "Reserved", "Reservada");
   if (normalized === "sold") return t(lang, "Sold", "Vendida");
-  if (normalized === "coming_soon") return t(lang, "Coming soon", "Pr├│ximamente");
+  if (normalized === "coming_soon") return t(lang, "Coming soon", "Próximamente");
   return t(lang, "Unknown", "Sin estado");
 };
 
@@ -104,18 +104,18 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
           <a data-value="available" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Available", "Disponible")}</a>
           <a data-value="reserved" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Reserved", "Reservada")}</a>
           <a data-value="sold" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Sold", "Vendida")}</a>
-          <a data-value="coming_soon" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Coming soon", "Pr├│ximamente")}</a>
+          <a data-value="coming_soon" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Coming soon", "Próximamente")}</a>
         </div>
       </div>
 
       <div class="space-y-1">
-        <p class="text-sm font-medium">{t(lang, "Orientation", "Orientaci├│n")}</p>
+        <p class="text-sm font-medium">{t(lang, "Orientation", "Orientación")}</p>
         <div class="flex flex-wrap gap-2" data-filter="orientation">
           <a data-value="all" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "All", "Todos")}</a>
           <a data-value="sea" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Sea", "Mar")}</a>
           <a data-value="city" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "City", "Ciudad")}</a>
           <a data-value="courtyard" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Courtyard", "Patio")}</a>
-          <a data-value="mountain" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Mountain", "Monta├▒a")}</a>
+          <a data-value="mountain" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Mountain", "Montaña")}</a>
         </div>
       </div>
     </div>
@@ -162,17 +162,17 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
               </div>
 
               <p class="text-sm opacity-80">
-                {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} ┬╖ {t(lang, "Floor", "Planta")} {unit.floor || "-"}
+                {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")} {unit.floor || "-"}
               </p>
 
               <dl class="grid grid-cols-2 gap-2 text-sm">
                 <div>
-                  <dt class="opacity-70">{t(lang, "Beds/Baths", "Dorm./Ba├▒os")}</dt>
+                  <dt class="opacity-70">{t(lang, "Beds/Baths", "Dorm./Baños")}</dt>
                   <dd class="font-medium">{beds}/{baths}</dd>
                 </div>
                 <div>
                   <dt class="opacity-70">{t(lang, "Area", "Superficie")}</dt>
-                  <dd class="font-medium">{area} m┬▓</dd>
+                  <dd class="font-medium">{area} m²</dd>
                 </div>
                 <div>
                   <dt class="opacity-70">{t(lang, "Status", "Estado")}</dt>
@@ -180,7 +180,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
                 </div>
                 <div>
                   <dt class="opacity-70">{t(lang, "Price", "Precio")}</dt>
-                  <dd class="font-medium">{unit.price_eur ? `тВм${unit.price_eur}` : t(lang, "Request price", "Solicitar precio")}</dd>
+                  <dd class="font-medium">{unit.price_eur ? `€${unit.price_eur}` : t(lang, "Request price", "Solicitar precio")}</dd>
                 </div>
               </dl>
             </div>
@@ -213,7 +213,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
       building: { en: "building", es: "bloque" },
       beds: { en: "beds", es: "dorm." },
       status: { en: "status", es: "estado" },
-      orientation: { en: "orientation", es: "orientaci├│n" }
+      orientation: { en: "orientation", es: "orientación" }
     };
 
     const lang = document.documentElement.lang === "es" ? "es" : "en";
@@ -272,7 +272,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
       const activeFilters = document.getElementById("active-filters");
       if (activeFilters) {
         activeFilters.textContent = active.length
-          ? `${text.filteredBy[lang]} ${active.join(" ┬╖ ")}`
+          ? `${text.filteredBy[lang]} ${active.join(" · ")}`
           : text.allFilters[lang];
       }
     };
