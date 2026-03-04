@@ -1,41 +1,60 @@
 ---
 type Props = {
   morningImage?: string;
-  sunsetImage?: string;
   bluehourImage?: string;
+  sunsetImage?: string;
   mobileImage?: string;
-  alt: string;
-  sliderLabel: string;
-  morningLabel: string;
-  sunsetLabel: string;
+
+  alt?: string;
+
+  sliderLabel?: string;
+  morningLabel?: string;
   bluehourLabel?: string;
+  sunsetLabel?: string;
 };
 
 const {
   morningImage = "",
-  sunsetImage = "",
   bluehourImage = "",
+  sunsetImage = "",
   mobileImage = "",
-  alt,
-  sliderLabel,
-  morningLabel,
-  sunsetLabel,
+
+  alt = "",
+
+  sliderLabel = "Sun position",
+  morningLabel = "Morning",
   bluehourLabel = "Blue hour",
+  sunsetLabel = "Sunset",
 } = Astro.props as Props;
 
-const fallbackPoster = morningImage.trim() || bluehourImage.trim() || sunsetImage.trim();
-const hasPoster = Boolean(fallbackPoster);
-const hasSunset = Boolean(sunsetImage.trim() && sunsetImage.trim() !== fallbackPoster);
-const hasBluehour = Boolean(bluehourImage.trim() && bluehourImage.trim() !== fallbackPoster && bluehourImage.trim() !== sunsetImage.trim());
+const pick = (...xs: string[]) => xs.map((s) => String(s ?? "").trim()).find(Boolean) || "";
+
+const poster = pick(morningImage, bluehourImage, sunsetImage);
+const hasPoster = Boolean(poster);
+
+const hasSunset =
+  Boolean(String(sunsetImage ?? "").trim()) && String(sunsetImage ?? "").trim() !== poster;
+
+const hasBluehour =
+  Boolean(String(bluehourImage ?? "").trim()) &&
+  String(bluehourImage ?? "").trim() !== poster &&
+  String(bluehourImage ?? "").trim() !== String(sunsetImage ?? "").trim();
 ---
 
 {hasPoster && (
-  <div class="space-y-3" data-sun-hero data-has-bluehour={hasBluehour ? "true" : "false"} style="--sun:0; --bluehour-opacity:0; --sunset-opacity:0;">
+  <div
+    class="space-y-3"
+    data-sun-hero
+    data-has-bluehour={hasBluehour ? "true" : "false"}
+    style="--sun:0; --bluehour-opacity:0; --sunset-opacity:0;"
+  >
     <div class="sun-hero-frame relative overflow-hidden rounded-2xl border bg-slate-100">
       <picture>
-        {mobileImage && <source media="(max-width: 640px)" srcset={mobileImage} />}
+        {(mobileImage && mobileImage.trim()) ? (
+          <source media="(max-width: 640px)" srcset={mobileImage} />
+        ) : null}
         <img
-          src={fallbackPoster}
+          src={poster}
           alt={alt}
           class="h-full w-full object-cover"
           loading="eager"
@@ -74,24 +93,27 @@ const hasBluehour = Boolean(bluehourImage.trim() && bluehourImage.trim() !== fal
       )}
     </div>
 
-    {hasSunset && (
-      <div class="hidden items-center gap-2 rounded-xl border bg-white/90 px-3 py-2 text-xs sm:gap-3 sm:px-4 sm:text-sm" data-sun-slider-wrap>
-        <span class="shrink-0 opacity-70" data-morning-label>{morningLabel}</span>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value="0"
-          class="h-2 w-full accent-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
-          aria-label={sliderLabel}
-          data-sun-slider
-        />
-        <span class="shrink-0 opacity-70" data-sunset-label>{sunsetLabel}</span>
-      </div>
-    )}
+    <div
+      class="hidden items-center gap-2 rounded-xl border bg-white/90 px-3 py-2 text-xs sm:gap-3 sm:px-4 sm:text-sm"
+      data-sun-slider-wrap
+    >
+      <span class="shrink-0 opacity-70" data-morning-label>{morningLabel}</span>
 
-    {hasBluehour && <span class="sr-only" data-bluehour-label>{bluehourLabel}</span>}
+      <input
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0"
+        aria-label={sliderLabel}
+        class="h-2 w-full cursor-pointer accent-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/60"
+        data-sun-slider
+      />
+
+      <span class="shrink-0 opacity-70" data-sunset-label>{sunsetLabel}</span>
+
+      {hasBluehour && <span class="sr-only" data-bluehour-label>{bluehourLabel}</span>}
+    </div>
   </div>
 )}
 
@@ -104,7 +126,6 @@ const hasBluehour = Boolean(bluehourImage.trim() && bluehourImage.trim() !== fal
     background: radial-gradient(ellipse at center, transparent 52%, rgba(15, 23, 42, 0.18) 100%);
     z-index: 10;
   }
-
   .sun-hero-frame::after {
     content: "";
     position: absolute;
@@ -119,89 +140,62 @@ const hasBluehour = Boolean(bluehourImage.trim() && bluehourImage.trim() !== fal
 
 <script is:inline>
   (() => {
-    document.querySelectorAll('[data-sun-hero]').forEach((root) => {
-      const sliderWrap = root.querySelector('[data-sun-slider-wrap]');
-      const slider = root.querySelector('[data-sun-slider]');
-      if (!sliderWrap || !slider) return;
+    const roots = document.querySelectorAll("[data-sun-hero]");
+    roots.forEach((root) => {
+      const wrap = root.querySelector("[data-sun-slider-wrap]");
+      const slider = root.querySelector("[data-sun-slider]");
+      if (!wrap || !slider) return;
 
-      const hasBluehour = root.getAttribute('data-has-bluehour') === 'true';
-      const morningLabel = root.querySelector('[data-morning-label]')?.textContent?.trim() || 'Morning';
-      const sunsetLabel = root.querySelector('[data-sunset-label]')?.textContent?.trim() || 'Sunset';
-      const bluehourLabel = root.querySelector('[data-bluehour-label]')?.textContent?.trim() || 'Blue hour';
-      const sliderAriaLabel = slider.getAttribute('aria-label') || 'Sun position';
-      const min = Number(slider.min || 0);
-      const max = Number(slider.max || 1);
-      let target = Math.max(min, Math.min(max, Number(slider.value) || 0));
+      // show slider only when JS runs (no-JS remains poster-only)
+      wrap.classList.remove("hidden");
+
+      const hasBluehour = root.getAttribute("data-has-bluehour") === "true";
+
+      const clamp01 = (v) => Math.max(0, Math.min(1, v));
+      const lerp = (a, b, t) => a + (b - a) * t;
+
+      let target = clamp01(Number(slider.value || 0));
       let current = target;
-      let rafId = 0;
+      let raf = 0;
 
-      const getOpacities = (value) => {
+      const setOpacities = (x) => {
+        const v = clamp01(x);
+        root.style.setProperty("--sun", String(v));
+
         if (hasBluehour) {
-          if (value <= 0.5) {
-            return {
-              bluehour: value / 0.5,
-              sunset: 0,
-            };
+          let b = 0, s = 0;
+          if (v <= 0.5) {
+            b = v / 0.5;     // 0..1
+            s = 0;
+          } else {
+            b = 1 - (v - 0.5) / 0.5; // 1..0
+            s = (v - 0.5) / 0.5;     // 0..1
           }
-          return {
-            bluehour: 1 - (value - 0.5) / 0.5,
-            sunset: (value - 0.5) / 0.5,
-          };
+          root.style.setProperty("--bluehour-opacity", String(b));
+          root.style.setProperty("--sunset-opacity", String(s));
+        } else {
+          root.style.setProperty("--sunset-opacity", String(v));
         }
-        return {
-          bluehour: 0,
-          sunset: value,
-        };
       };
 
-      const render = () => {
-        const clamped = Math.max(0, Math.min(1, current));
-        const { bluehour, sunset } = getOpacities(clamped);
-        root.style.setProperty('--sun', String(clamped));
-        root.style.setProperty('--bluehour-opacity', String(bluehour));
-        root.style.setProperty('--sunset-opacity', String(sunset));
-      };
-
-      const updateValueText = (value) => {
-        if (!hasBluehour) {
-          slider.setAttribute('aria-valuetext', `${sliderAriaLabel}: ${value < 0.5 ? morningLabel : sunsetLabel}`);
-          return;
-        }
-        let label = '';
-        if (value < 0.33) label = morningLabel;
-        else if (value < 0.66) label = bluehourLabel;
-        else label = sunsetLabel;
-        slider.setAttribute('aria-valuetext', `${sliderAriaLabel}: ${label}`);
-      };
+      setOpacities(current);
 
       const tick = () => {
-        const delta = target - current;
-        if (Math.abs(delta) < 0.001) {
+        current = lerp(current, target, 0.12);
+        if (Math.abs(current - target) < 0.001) {
           current = target;
-          render();
-          updateValueText(current);
-          rafId = 0;
+          setOpacities(current);
+          raf = 0;
           return;
         }
-        current += delta * 0.16;
-        render();
-        updateValueText(current);
-        rafId = requestAnimationFrame(tick);
+        setOpacities(current);
+        raf = requestAnimationFrame(tick);
       };
 
-      const schedule = () => {
-        if (rafId) return;
-        rafId = requestAnimationFrame(tick);
-      };
-
-      sliderWrap.classList.remove('hidden');
-      sliderWrap.classList.add('flex');
-      slider.addEventListener('input', () => {
-        target = Math.max(min, Math.min(max, Number(slider.value) || 0));
-        schedule();
+      slider.addEventListener("input", () => {
+        target = clamp01(Number(slider.value));
+        if (!raf) raf = requestAnimationFrame(tick);
       });
-      render();
-      updateValueText(current);
     });
   })();
 </script>
