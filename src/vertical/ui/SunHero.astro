@@ -1,32 +1,42 @@
 ---
 type Props = {
   morningImage?: string;
-  sunsetImage?: string;
   bluehourImage?: string;
+  sunsetImage?: string;
   mobileImage?: string;
-  alt: string;
-  sliderLabel: string;
-  morningLabel: string;
-  sunsetLabel: string;
+
+  alt?: string;
+
+  sliderLabel?: string;
+  morningLabel?: string;
   bluehourLabel?: string;
+  sunsetLabel?: string;
 };
 
 const {
   morningImage = "",
-  sunsetImage = "",
   bluehourImage = "",
+  sunsetImage = "",
   mobileImage = "",
-  alt,
-  sliderLabel,
-  morningLabel,
-  sunsetLabel,
+
+  alt = "",
+
+  sliderLabel = "Sun position",
+  morningLabel = "Morning",
   bluehourLabel = "Blue hour",
+  sunsetLabel = "Sunset",
 } = Astro.props as Props;
 
-const fallbackPoster = morningImage.trim() || bluehourImage.trim() || sunsetImage.trim();
-const hasPoster = Boolean(fallbackPoster);
-const hasSunset = Boolean(sunsetImage.trim() && sunsetImage.trim() !== fallbackPoster);
-const hasBluehour = Boolean(bluehourImage.trim() && bluehourImage.trim() !== fallbackPoster && bluehourImage.trim() !== sunsetImage.trim());
+const pick = (...xs: string[]) => xs.map((s) => String(s ?? "").trim()).find(Boolean) || "";
+
+const poster = pick(morningImage, bluehourImage, sunsetImage);
+const hasPoster = Boolean(poster);
+
+const sunset = String(sunsetImage ?? "").trim();
+const bluehour = String(bluehourImage ?? "").trim();
+
+const hasSunset = Boolean(sunset) && sunset !== poster;
+const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sunset;
 ---
 
 {hasPoster && (
@@ -34,30 +44,32 @@ const hasBluehour = Boolean(bluehourImage.trim() && bluehourImage.trim() !== fal
     class="space-y-3"
     data-sun-hero
     data-has-bluehour={hasBluehour ? "true" : "false"}
-    style="--sun:0; --bluehour-opacity:0; --sunset-opacity:0; --px:0px; --py:0px; --fog-shift:0%; --sun-x:50%; --sun-y:16%; --glint-offset:0px; --scroll:0; --scroll-y:0px;"
+    style="--sun:0; --bluehour-opacity:0; --sunset-opacity:0; --px:0px; --py:0px; --fog-shift:0; --sun-x:50%; --sun-y:38%; --glint-offset:0%; --scroll:0; --scroll-y:0px;"
   >
     <div class="sun-hero-frame relative overflow-hidden rounded-2xl border bg-slate-100" data-sun-hero-frame>
-      <picture class="sun-hero-media absolute inset-0 block h-full w-full" data-sun-layer="base">
-        {mobileImage && <source media="(max-width: 640px)" srcset={mobileImage} />}
+      <picture>
+        {(mobileImage && mobileImage.trim()) ? (
+          <source media="(max-width: 640px)" srcset={mobileImage} />
+        ) : null}
         <img
-          src={fallbackPoster}
+          src={poster}
           alt={alt}
-          class="h-full w-full object-cover"
+          class="sun-hero-layer h-full w-full object-cover"
           loading="eager"
           decoding="async"
           width="1600"
           height="900"
+          style="transform: translate3d(var(--px), var(--py), 0);"
         />
       </picture>
 
       {hasBluehour && (
         <img
-          src={bluehourImage}
+          src={bluehour}
           alt=""
           aria-hidden="true"
-          class="sun-hero-media pointer-events-none absolute inset-0 h-full w-full object-cover"
-          data-sun-layer="bluehour"
-          style="opacity: var(--bluehour-opacity);"
+          class="sun-hero-layer pointer-events-none absolute inset-0 h-full w-full object-cover"
+          style="opacity: var(--bluehour-opacity); transform: translate3d(var(--px), var(--py), 0);"
           loading="lazy"
           decoding="async"
           width="1600"
@@ -67,12 +79,11 @@ const hasBluehour = Boolean(bluehourImage.trim() && bluehourImage.trim() !== fal
 
       {hasSunset && (
         <img
-          src={sunsetImage}
+          src={sunset}
           alt=""
           aria-hidden="true"
-          class="sun-hero-media pointer-events-none absolute inset-0 h-full w-full object-cover"
-          data-sun-layer="sunset"
-          style="opacity: var(--sunset-opacity);"
+          class="sun-hero-layer pointer-events-none absolute inset-0 h-full w-full object-cover"
+          style="opacity: var(--sunset-opacity); transform: translate3d(var(--px), var(--py), 0);"
           loading="lazy"
           decoding="async"
           width="1600"
@@ -80,77 +91,47 @@ const hasBluehour = Boolean(bluehourImage.trim() && bluehourImage.trim() !== fal
         />
       )}
 
-      <div class="sun-hero-atmosphere absolute inset-0 pointer-events-none" aria-hidden="true"></div>
-      <div class="sun-hero-sun absolute inset-0 pointer-events-none" aria-hidden="true"></div>
-      <div class="sun-hero-glint absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+      <div class="sun-disc" aria-hidden="true"></div>
+      <div class="sun-glint" aria-hidden="true"></div>
     </div>
 
-    {hasSunset && (
-      <div class="hidden items-center gap-2 rounded-xl border bg-white/90 px-3 py-2 text-xs sm:gap-3 sm:px-4 sm:text-sm" data-sun-slider-wrap>
-        <span class="shrink-0 opacity-70" data-morning-label>{morningLabel}</span>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value="0"
-          class="h-2 w-full accent-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
-          aria-label={sliderLabel}
-          data-sun-slider
-        />
-        <span class="shrink-0 opacity-70" data-sunset-label>{sunsetLabel}</span>
-      </div>
-    )}
+    <div
+      class="hidden flex items-center gap-2 rounded-xl border bg-white/90 px-3 py-2 text-xs sm:gap-3 sm:px-4 sm:text-sm"
+      data-sun-slider-wrap
+    >
+      <span class="shrink-0 opacity-70" data-morning-label>{morningLabel}</span>
 
-    {hasBluehour && <span class="sr-only" data-bluehour-label>{bluehourLabel}</span>}
+      <input
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0"
+        aria-label={sliderLabel}
+        class="h-2 w-full cursor-pointer accent-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/60"
+        data-sun-slider
+      />
+
+      <span class="shrink-0 opacity-70" data-sunset-label>{sunsetLabel}</span>
+
+      {hasBluehour && <span class="sr-only" data-bluehour-label>{bluehourLabel}</span>}
+    </div>
   </div>
 )}
 
 <style>
-  .sun-hero-frame {
-    aspect-ratio: 16 / 9;
-  }
-
-  .sun-hero-media {
-    transform: translate3d(var(--px), var(--py), 0);
-    transition: transform 180ms ease-out;
-    will-change: transform;
-  }
-
-  .sun-hero-atmosphere {
-    background:
-      radial-gradient(120% 80% at calc(50% + var(--fog-shift)) 10%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 45%, transparent 72%),
-      linear-gradient(to top, rgba(2, 6, 23, 0.12), transparent 40%);
-    opacity: calc(0.55 + (var(--scroll) * 0.06));
-    transform: translate3d(calc(var(--px) * 0.35), calc((var(--py) * 0.35) + var(--scroll-y)), 0);
-    transition: transform 180ms ease-out;
-    z-index: 9;
-  }
-
-  .sun-hero-sun {
-    background: radial-gradient(circle at var(--sun-x) var(--sun-y), rgba(255, 244, 214, 0.22) 0%, rgba(255, 230, 180, 0.1) 12%, rgba(255, 219, 158, 0.04) 22%, transparent 34%);
-    opacity: 0.5;
-    transform: translate3d(calc(var(--px) * 0.2), calc(var(--py) * 0.2), 0);
-    transition: transform 180ms ease-out;
-    z-index: 9;
-  }
-
-  .sun-hero-glint {
-    background: linear-gradient(103deg, transparent 44%, rgba(255, 255, 255, 0.08) 49%, rgba(255, 255, 255, 0.03) 54%, transparent 60%);
-    opacity: calc(0.32 + (var(--scroll) * 0.06));
-    transform: translate3d(var(--glint-offset), calc((var(--py) * 0.12) + (var(--scroll-y) * 0.5)), 0);
-    transition: transform 220ms ease-out;
-    mix-blend-mode: screen;
-    z-index: 9;
-  }
-
   .sun-hero-frame::before {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(ellipse at center, transparent 52%, rgba(15, 23, 42, 0.18) 100%);
+    background: radial-gradient(
+      ellipse at center,
+      transparent 52%,
+      rgba(15, 23, 42, calc(0.14 + var(--fog-shift) * 0.10 + var(--scroll) * 0.06)) 100%
+    );
     z-index: 10;
+    transform: translate3d(0, var(--scroll-y), 0);
   }
 
   .sun-hero-frame::after {
@@ -164,173 +145,197 @@ const hasBluehour = Boolean(bluehourImage.trim() && bluehourImage.trim() !== fal
     z-index: 11;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .sun-hero-media,
-    .sun-hero-atmosphere,
-    .sun-hero-sun,
-    .sun-hero-glint {
-      transition: none;
-      transform: none;
-    }
+  .sun-hero-layer {
+    will-change: transform, opacity;
+  }
 
-    .sun-hero-sun,
-    .sun-hero-glint {
-      opacity: 0;
+  .sun-disc {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.22;
+    z-index: 12;
+    background: radial-gradient(
+      circle at var(--sun-x) var(--sun-y),
+      rgba(255, 244, 214, 0.45) 0%,
+      rgba(255, 244, 214, 0.18) 10%,
+      rgba(255, 244, 214, 0.08) 22%,
+      transparent 40%
+    );
+    mix-blend-mode: screen;
+    transform: translate3d(0, var(--scroll-y), 0);
+  }
+
+  .sun-glint {
+    position: absolute;
+    inset: -20%;
+    pointer-events: none;
+    z-index: 13;
+    opacity: calc(0.10 + var(--scroll) * 0.05);
+    transform: translateX(var(--glint-offset)) translateY(calc(var(--scroll-y) * 0.5)) rotate(-10deg);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.10) 45%,
+      rgba(255, 255, 255, 0.22) 50%,
+      rgba(255, 255, 255, 0.10) 55%,
+      transparent 100%
+    );
+    mix-blend-mode: overlay;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sun-disc,
+    .sun-glint {
+      display: none;
     }
   }
 </style>
 
 <script is:inline>
   (() => {
-    document.querySelectorAll('[data-sun-hero]').forEach((root) => {
-      const sliderWrap = root.querySelector('[data-sun-slider-wrap]');
-      const slider = root.querySelector('[data-sun-slider]');
-      if (!sliderWrap || !slider) return;
+    const reduceMotion =
+      window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      const hasBluehour = root.getAttribute('data-has-bluehour') === 'true';
-      const morningLabel = root.querySelector('[data-morning-label]')?.textContent?.trim() || 'Morning';
-      const sunsetLabel = root.querySelector('[data-sunset-label]')?.textContent?.trim() || 'Sunset';
-      const bluehourLabel = root.querySelector('[data-bluehour-label]')?.textContent?.trim() || 'Blue hour';
-      const frame = root.querySelector('[data-sun-hero-frame]');
-      const sliderAriaLabel = slider.getAttribute('aria-label') || 'Sun position';
-      const min = Number(slider.min || 0);
-      const max = Number(slider.max || 1);
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let target = Math.max(min, Math.min(max, Number(slider.value) || 0));
+    const clamp01 = (v) => Math.max(0, Math.min(1, v));
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    document.querySelectorAll("[data-sun-hero]").forEach((root) => {
+      const frame = root.querySelector("[data-sun-hero-frame]");
+      const wrap = root.querySelector("[data-sun-slider-wrap]");
+      const slider = root.querySelector("[data-sun-slider]");
+      if (!frame || !wrap || !slider) return;
+
+      // show slider only when JS runs (no-JS remains poster-only)
+      wrap.classList.remove("hidden");
+
+      const hasBluehour = root.getAttribute("data-has-bluehour") === "true";
+
+      let target = clamp01(Number(slider.value || 0));
       let current = target;
-      let rafId = 0;
-      let scrollRafId = 0;
-      let isInView = true;
+      let raf = 0;
 
-      const getOpacities = (value) => {
+      const setOpacities = (x) => {
+        const v = clamp01(x);
+        root.style.setProperty("--sun", String(v));
+        root.style.setProperty("--fog-shift", String(v));
+
+        // Sun position + glint offset (subtle)
+        const sunX = 32 + v * 42; // 32%..74%
+        const sunY = 34 - v * 8;  // 34%..26%
+        root.style.setProperty("--sun-x", sunX.toFixed(2) + "%");
+        root.style.setProperty("--sun-y", sunY.toFixed(2) + "%");
+        root.style.setProperty("--glint-offset", ((v - 0.5) * 18).toFixed(2) + "%");
+
         if (hasBluehour) {
-          if (value <= 0.5) {
-            return {
-              bluehour: value / 0.5,
-              sunset: 0,
-            };
+          let b = 0, s = 0;
+          if (v <= 0.5) {
+            b = v / 0.5;
+            s = 0;
+          } else {
+            b = 1 - (v - 0.5) / 0.5;
+            s = (v - 0.5) / 0.5;
           }
-          return {
-            bluehour: 1 - (value - 0.5) / 0.5,
-            sunset: (value - 0.5) / 0.5,
-          };
+          root.style.setProperty("--bluehour-opacity", String(b));
+          root.style.setProperty("--sunset-opacity", String(s));
+        } else {
+          root.style.setProperty("--sunset-opacity", String(v));
         }
-        return {
-          bluehour: 0,
-          sunset: value,
-        };
       };
 
-      const render = () => {
-        const clamped = Math.max(0, Math.min(1, current));
-        const { bluehour, sunset } = getOpacities(clamped);
-        root.style.setProperty('--sun', String(clamped));
-        root.style.setProperty('--bluehour-opacity', String(bluehour));
-        root.style.setProperty('--sunset-opacity', String(sunset));
-        root.style.setProperty('--fog-shift', `${((clamped - 0.5) * 10).toFixed(2)}%`);
-        root.style.setProperty('--sun-x', `${(16 + clamped * 68).toFixed(2)}%`);
-        root.style.setProperty('--sun-y', `${(17 + Math.abs(clamped - 0.5) * 8).toFixed(2)}%`);
-        root.style.setProperty('--glint-offset', `${((clamped - 0.5) * 12).toFixed(2)}px`);
-      };
-
-      const updateValueText = (value) => {
-        if (!hasBluehour) {
-          slider.setAttribute('aria-valuetext', `${sliderAriaLabel}: ${value < 0.5 ? morningLabel : sunsetLabel}`);
-          return;
-        }
-        let label = '';
-        if (value < 0.33) label = morningLabel;
-        else if (value < 0.66) label = bluehourLabel;
-        else label = sunsetLabel;
-        slider.setAttribute('aria-valuetext', `${sliderAriaLabel}: ${label}`);
-      };
+      setOpacities(current);
 
       const tick = () => {
-        const delta = target - current;
-        if (Math.abs(delta) < 0.001) {
+        current = lerp(current, target, 0.12);
+        if (Math.abs(current - target) < 0.001) {
           current = target;
-          render();
-          updateValueText(current);
-          rafId = 0;
+          setOpacities(current);
+          raf = 0;
           return;
         }
-        current += delta * 0.16;
-        render();
-        updateValueText(current);
-        rafId = requestAnimationFrame(tick);
+        setOpacities(current);
+        raf = requestAnimationFrame(tick);
       };
 
-      const schedule = () => {
-        if (rafId) return;
-        rafId = requestAnimationFrame(tick);
-      };
+      slider.addEventListener("input", () => {
+        target = clamp01(Number(slider.value));
+        if (!raf) raf = requestAnimationFrame(tick);
+      });
+
+      // Parallax + scroll micro-shift (disabled for reduced motion; paused offscreen)
+      let active = true;
+      let scrollRaf = 0;
 
       const resetParallax = () => {
-        root.style.setProperty('--px', '0px');
-        root.style.setProperty('--py', '0px');
+        root.style.setProperty("--px", "0px");
+        root.style.setProperty("--py", "0px");
       };
 
-      const updateScrollMotion = () => {
-        if (!frame || !isInView || prefersReducedMotion) {
-          root.style.setProperty('--scroll', '0');
-          root.style.setProperty('--scroll-y', '0px');
-          scrollRafId = 0;
+      const resetScroll = () => {
+        root.style.setProperty("--scroll", "0");
+        root.style.setProperty("--scroll-y", "0px");
+      };
+
+      const applyParallax = (clientX, clientY) => {
+        const rect = frame.getBoundingClientRect();
+        const x = (clientX - rect.left) / rect.width - 0.5;
+        const y = (clientY - rect.top) / rect.height - 0.5;
+        const amp = 5; // px
+        root.style.setProperty("--px", (-x * amp).toFixed(2) + "px");
+        root.style.setProperty("--py", (-y * amp).toFixed(2) + "px");
+      };
+
+      const updateScroll = () => {
+        scrollRaf = 0;
+        if (!active || reduceMotion) {
+          resetScroll();
           return;
         }
         const rect = frame.getBoundingClientRect();
         const viewport = window.innerHeight || 1;
-        const progress = Math.max(0, Math.min(1, (viewport - rect.top) / (viewport + rect.height)));
-        const subtle = Math.max(0, Math.min(1, progress * 1.15));
-        root.style.setProperty('--scroll', subtle.toFixed(3));
-        root.style.setProperty('--scroll-y', `${(subtle * 2.4).toFixed(2)}px`);
-        scrollRafId = 0;
+
+        // 0..1 while hero is in/near view
+        const progress = clamp01((viewport - rect.top) / (viewport + rect.height));
+        const subtle = clamp01(progress * 1.15);
+
+        root.style.setProperty("--scroll", subtle.toFixed(3));
+        root.style.setProperty("--scroll-y", (subtle * 2.6).toFixed(2) + "px"); // ~0..2.6px
       };
 
       const onScroll = () => {
-        if (!isInView || scrollRafId) return;
-        scrollRafId = requestAnimationFrame(updateScrollMotion);
+        if (!active || scrollRaf) return;
+        scrollRaf = requestAnimationFrame(updateScroll);
       };
 
-      const handlePointerMove = (event) => {
-        if (!frame || !isInView || prefersReducedMotion) return;
-        const rect = frame.getBoundingClientRect();
-        const x = (event.clientX - rect.left) / rect.width - 0.5;
-        const y = (event.clientY - rect.top) / rect.height - 0.5;
-        const maxShift = 4;
-        root.style.setProperty('--px', `${(-x * maxShift).toFixed(2)}px`);
-        root.style.setProperty('--py', `${(-y * maxShift).toFixed(2)}px`);
-      };
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          isInView = Boolean(entries[0]?.isIntersecting);
-          if (!isInView) {
-            resetParallax();
-            root.style.setProperty('--scroll', '0');
-            root.style.setProperty('--scroll-y', '0px');
-          } else {
-            onScroll();
-          }
-        },
-        { threshold: 0.12 }
-      );
-
-      if (frame && !prefersReducedMotion) {
-        observer.observe(frame);
-        frame.addEventListener('pointermove', handlePointerMove, { passive: true });
-        frame.addEventListener('pointerleave', resetParallax, { passive: true });
-        window.addEventListener('scroll', onScroll, { passive: true });
-      }
-
-      sliderWrap.classList.remove('hidden');
-      sliderWrap.classList.add('flex');
-      slider.addEventListener('input', () => {
-        target = Math.max(min, Math.min(max, Number(slider.value) || 0));
-        schedule();
+      frame.addEventListener("pointermove", (e) => {
+        if (!active || reduceMotion) return;
+        applyParallax(e.clientX, e.clientY);
       });
-      render();
-      updateScrollMotion();
-      updateValueText(current);
+
+      frame.addEventListener("pointerleave", () => {
+        if (reduceMotion) return;
+        resetParallax();
+      });
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          active = Boolean(entry && entry.isIntersecting);
+          if (!active) {
+            resetParallax();
+            resetScroll();
+            return;
+          }
+          onScroll();
+        },
+        { threshold: 0.2 }
+      );
+      io.observe(frame);
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+
+      // initial
+      onScroll();
     });
   })();
 </script>
