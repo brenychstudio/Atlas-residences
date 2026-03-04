@@ -27,7 +27,16 @@ const seoImage = pageSeo?.og_image || ATLAS_ASSETS.og.og01Home1200x630 || ATLAS_
 const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";
 const ogLocale = lang === "es" ? "es_ES" : "en_US";
 
+const typeOrder: Record<string, number> = {
+  brochure: 0,
+  price_list: 1,
+  specs: 2,
+  finishes: 3,
+  legal: 4,
+};
+
 const normalizedDocs = documents
+  .filter((doc) => String(doc.status ?? "published").toLowerCase() === "published")
   .map((doc) => {
     const title = lang === "es" ? doc.title_es : doc.title_en;
     const directUrl = lang === "es" ? doc.url_es : doc.url_en;
@@ -41,17 +50,31 @@ const normalizedDocs = documents
     }
 
     const url = directUrl || fallbackUrl;
+
     const gatedValue = String(doc.gated ?? "").toLowerCase();
     const gated = gatedValue === "true" || gatedValue === "1" || gatedValue === "yes";
 
     return {
       id: doc.id,
-      type: doc.type ?? "document",
+      type: String(doc.type ?? "document").toLowerCase(),
       title,
       url,
       gated,
     };
   })
+  .filter((doc) => doc.title && doc.url)
+  .sort((a, b) => {
+    const orderA = typeOrder[a.type] ?? 999;
+    const orderB = typeOrder[b.type] ?? 999;
+    return orderA - orderB || a.title.localeCompare(b.title);
+  });
+
+const typeText = (type: string) => {
+  if (type === "brochure") return t(lang, "Brochure", "Folleto");
+  if (type === "price_list") return t(lang, "Price list", "Lista de precios");
+  if (type === "specs") return t(lang, "Specs", "Especificaciones");
+  if (type === "finishes") return t(lang, "Finishes", "Acabados");
+  if (type === "legal") return t(lang, "Legal", "Legal");
   .filter((doc) => doc.title && doc.url);
 
 const typeText = (type: string) => {
@@ -89,13 +112,13 @@ const typeText = (type: string) => {
       </p>
     </header>
 
-    <div class="grid gap-3">
+    <div class="grid gap-3 sm:grid-cols-2">
       {normalizedDocs.map((doc) => (
         <article class="rounded-xl border p-4">
           <div class="flex flex-wrap items-center gap-2">
             <p class="text-xs uppercase tracking-wide opacity-70">{typeText(doc.type)}</p>
             {doc.gated && (
-              <span class="rounded-full bg-black px-2 py-1 text-xs font-medium text-white">{t(lang, "Gated", "Con formulario")}</span>
+              <span class="rounded-full bg-black px-2 py-1 text-xs font-medium text-white">{t(lang, "Requires details", "Requiere datos")}</span>
             )}
           </div>
 
@@ -117,6 +140,8 @@ const typeText = (type: string) => {
                 target="_blank"
                 rel="noreferrer"
                 class="inline-flex min-h-11 items-center rounded-lg border px-4 py-2 font-medium"
+                data-direct-download
+                data-doc-id={doc.id}
               >
                 {t(lang, "Download", "Descargar")}
               </a>
@@ -135,7 +160,7 @@ const typeText = (type: string) => {
     <form method="dialog" class="border-b p-4">
       <div class="flex items-center justify-between gap-3">
         <h3 class="text-xl font-semibold">{t(lang, "Request download", "Solicitar descarga")}</h3>
-        <button type="button" id="lead-close" class="min-h-11 min-w-11 rounded-lg border px-3">×</button>
+        <button type="button" id="lead-close" class="min-h-11 min-w-11 rounded-lg border px-3" aria-label={t(lang, "Close", "Cerrar")}>×</button>
       </div>
       <p id="lead-doc-title" class="mt-2 text-sm opacity-80"></p>
     </form>
@@ -143,7 +168,7 @@ const typeText = (type: string) => {
     <form id="lead-form" class="space-y-3 p-4">
       <label class="grid gap-1 text-sm">
         <span>{t(lang, "Name", "Nombre")}</span>
-        <input name="name" class="min-h-11 rounded-lg border px-3" autocomplete="name" />
+        <input name="name" required class="min-h-11 rounded-lg border px-3" autocomplete="name" />
       </label>
 
       <label class="grid gap-1 text-sm">
@@ -157,8 +182,8 @@ const typeText = (type: string) => {
       </label>
 
       <label class="sr-only" aria-hidden="true">
-        Website
-        <input name="website" tabindex="-1" autocomplete="off" />
+        Company
+        <input name="company" tabindex="-1" autocomplete="off" />
       </label>
 
       <label class="flex items-start gap-2 text-sm">
@@ -166,13 +191,13 @@ const typeText = (type: string) => {
         <span>{t(lang, "I agree to be contacted about this request.", "Acepto ser contactado sobre esta solicitud.")}</span>
       </label>
 
-      <button type="submit" class="inline-flex min-h-11 items-center rounded-lg bg-black px-4 py-2 font-medium text-white">
+      <button type="submit" id="lead-submit" class="inline-flex min-h-11 items-center rounded-lg bg-black px-4 py-2 font-medium text-white">
         {t(lang, "Submit", "Enviar")}
       </button>
     </form>
 
     <div id="lead-result" class="hidden space-y-2 border-t p-4">
-      <p class="text-sm font-medium">{t(lang, "Your file is ready.", "Tu archivo está listo.")}</p>
+      <p class="text-sm font-medium">{t(lang, "Success! Your file is ready.", "¡Éxito! Tu archivo está listo.")}</p>
       <a id="lead-open-file" href="#" target="_blank" rel="noreferrer" class="inline-flex min-h-11 items-center rounded-lg border px-4 py-2 font-medium">
         {t(lang, "Open file", "Abrir archivo")}
       </a>
@@ -184,6 +209,8 @@ const typeText = (type: string) => {
   docs: normalizedDocs,
   text: {
     unknown: t(lang, "Document", "Documento"),
+    loading: t(lang, "Sending...", "Enviando..."),
+    submit: t(lang, "Submit", "Enviar"),
   },
 })} />
 
@@ -199,11 +226,16 @@ const typeText = (type: string) => {
     const openFile = document.getElementById("lead-open-file");
     const closeButton = document.getElementById("lead-close");
     const titleNode = document.getElementById("lead-doc-title");
+    const submitButton = document.getElementById("lead-submit");
 
-    if (!dialog || !form || !result || !openFile || !closeButton || !titleNode) return;
+    if (!dialog || !form || !result || !openFile || !closeButton || !titleNode || !submitButton) return;
 
     let activeDoc = null;
     let lastFocused = null;
+
+    const emitEvent = (name, detail) => {
+      window.dispatchEvent(new CustomEvent("atlas_event", { detail: { name, ...detail } }));
+    };
 
     const focusables = () => Array.from(dialog.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
       .filter((el) => !el.hasAttribute("disabled") && el.getAttribute("aria-hidden") !== "true");
@@ -217,6 +249,8 @@ const typeText = (type: string) => {
       result.classList.add("hidden");
       form.classList.remove("hidden");
       form.reset();
+      submitButton.textContent = data.text.submit;
+      submitButton.removeAttribute("disabled");
       dialog.showModal();
       const first = form.querySelector('input[name="name"]') || focusables()[0];
       if (first) first.focus();
@@ -229,11 +263,24 @@ const typeText = (type: string) => {
 
     document.querySelectorAll("[data-open-lead]").forEach((button) => {
       button.addEventListener("click", () => {
-        openLead(button.getAttribute("data-doc-id"));
+        const docId = button.getAttribute("data-doc-id") || "";
+        emitEvent("download_click", { docId, gated: true });
+        openLead(docId);
+      });
+    });
+
+    document.querySelectorAll("[data-direct-download]").forEach((link) => {
+      link.addEventListener("click", () => {
+        const docId = link.getAttribute("data-doc-id") || "";
+        emitEvent("download_click", { docId, gated: false });
       });
     });
 
     closeButton.addEventListener("click", closeLead);
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) closeLead();
+    });
 
     dialog.addEventListener("cancel", (event) => {
       event.preventDefault();
@@ -260,22 +307,32 @@ const typeText = (type: string) => {
       }
     });
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
       if (!activeDoc) return;
+      if (!(form instanceof HTMLFormElement) || !form.reportValidity()) return;
 
       const formData = new FormData(form);
-      const honeypot = String(formData.get("website") || "").trim();
+      const honeypot = String(formData.get("company") || "").trim();
       if (honeypot) {
         closeLead();
         return;
       }
 
-      console.log(`[lead] submit downloads:${activeDoc.id}`);
+      emitEvent("lead_submit", { docId: activeDoc.id });
+
+      submitButton.setAttribute("disabled", "disabled");
+      submitButton.textContent = data.text.loading;
+      await new Promise((resolve) => setTimeout(resolve, 450));
+
+      const name = String(formData.get("name") || "").trim();
+      const email = String(formData.get("email") || "").trim();
+      localStorage.setItem("atlas_lead_last", JSON.stringify({ ts: Date.now(), docId: activeDoc.id, name, email }));
+
       form.classList.add("hidden");
       result.classList.remove("hidden");
       openFile.setAttribute("href", activeDoc.url);
-      window.open(activeDoc.url, "_blank", "noopener,noreferrer");
+      emitEvent("lead_success", { docId: activeDoc.id });
     });
   })();
 </script>
