@@ -1,20 +1,159 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { type Lang, isLang, t } from "../../../content/languages";
+import { getSettings, getUnitById, getUnits, getUnitTypes } from "../../../vertical/cms/sheets";
+import { ATLAS_ASSETS } from "../../../vertical/content/assets";
 
-export function getStaticPaths() {
-  return [];
+export async function getStaticPaths() {
+  const units = await getUnits();
+  const langs: Lang[] = ["en", "es"];
+
+  return units.flatMap((unit) =>
+    langs.map((lang) => ({
+      params: { lang, id: unit.id },
+      props: { lang, id: unit.id },
+    })),
+  );
 }
 
-const langParam = Astro.params.lang ?? "en";
-if (!isLang(langParam)) throw new Error("Invalid lang");
-const lang = langParam as Lang;
-const id = Astro.params.id ?? "";
+const langProp = Astro.props.lang ?? Astro.params.lang ?? "en";
+if (!isLang(langProp)) throw new Error("Invalid lang");
+const lang = langProp as Lang;
+const id = String(Astro.props.id ?? Astro.params.id ?? "");
+
+const settings = await getSettings();
+const unit = await getUnitById(id);
+const unitTypes = await getUnitTypes();
+const unitType = unit?.type_id ? unitTypes.find((item) => item.id === unit.type_id) : undefined;
+
+const coverImage = String(unitType?.cover_image ?? "").trim();
+const planImage = String(unit?.plan_image ?? "").trim();
+const galleryImages = String(unit?.gallery_images ?? "")
+  .split(/[|,]/)
+  .map((item) => item.trim())
+  .filter(Boolean);
+
+const projectName = (lang === "es" ? settings.project_name_es : settings.project_name_en) || "Atlas Residences";
+const beds = unit?.beds || unitType?.beds || "-";
+const baths = unit?.baths || unitType?.baths || "-";
+const area = unit?.area_m2 || unitType?.area_from || "-";
+
+const statusText = (status?: string) => {
+  const normalized = String(status ?? "").toLowerCase();
+  if (normalized === "available") return t(lang, "Available", "Disponible");
+  if (normalized === "reserved") return t(lang, "Reserved", "Reservada");
+  if (normalized === "sold") return t(lang, "Sold", "Vendida");
+  if (normalized === "coming_soon") return t(lang, "Coming soon", "Próximamente");
+  return t(lang, "Unknown", "Sin estado");
+};
+
+const orientationText = (orientation?: string) => {
+  const normalized = String(orientation ?? "").toLowerCase();
+  if (normalized === "sea") return t(lang, "Sea", "Mar");
+  if (normalized === "city") return t(lang, "City", "Ciudad");
+  if (normalized === "courtyard") return t(lang, "Courtyard", "Patio");
+  if (normalized === "mountain") return t(lang, "Mountain", "Montaña");
+  return t(lang, "Unknown", "Sin orientación");
+};
+
+const unitLabel = unit?.number || unit?.id || id;
+const seoTitle = unit
+  ? `${t(lang, "Unit", "Unidad")} ${unitLabel} — ${projectName}`
+  : `${t(lang, "Unit", "Unidad")} — ${projectName}`;
+const seoDescription = unit
+  ? `${beds} ${t(lang, "beds", "dorm.")}, ${baths} ${t(lang, "baths", "baños")}, ${area} m², ${statusText(unit.status)}, ${orientationText(unit.orientation)}.`
+  : t(lang, "Unit details are unavailable.", "Los detalles de la unidad no están disponibles.");
+const seoImage = unit?.plan_image || ATLAS_ASSETS.og.og02Units1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
+const seoNoindex = !unit;
+const ogLocale = lang === "es" ? "es_ES" : "en_US";
 ---
 
-<BaseLayout lang={lang} title={t(lang, "Unit detail | Atlas Residences", "Detalle de unidad | Atlas Residences") }>
-  <section class="space-y-3">
-    <h1 class="text-3xl tracking-tight">{t(lang, "Unit detail", "Detalle de unidad")}</h1>
-    <p class="opacity-80">{t(lang, "Placeholder for unit", "Marcador para unidad")}: {id}</p>
-  </section>
+<BaseLayout lang={lang} title={seoTitle}>
+  <Fragment slot="head">
+    <title>{seoTitle}</title>
+    <meta name="description" content={seoDescription} />
+    <meta property="og:title" content={seoTitle} />
+    <meta property="og:description" content={seoDescription} />
+    <meta property="og:image" content={seoImage} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={seoTitle} />
+    <meta name="twitter:description" content={seoDescription} />
+    <meta name="twitter:image" content={seoImage} />
+    {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
+  </Fragment>
+
+  {!unit ? (
+    <section class="space-y-4 rounded-xl border p-5">
+      <h1 class="text-2xl font-semibold tracking-tight">{t(lang, "Unit not found", "Unidad no encontrada")}</h1>
+      <p class="opacity-80">
+        {t(
+          lang,
+          "This unit is no longer available or the link is incorrect.",
+          "Esta unidad ya no está disponible o el enlace es incorrecto.",
+        )}
+      </p>
+      <a class="inline-flex min-h-11 items-center rounded-lg border px-4 py-2 font-medium" href={`/${lang}/units/`}>
+        {t(lang, "Back to units", "Volver a unidades")}
+      </a>
+    </section>
+  ) : (
+    <section class="space-y-5">
+      <header class="space-y-2">
+        <h1 class="text-3xl tracking-tight">{t(lang, "Unit", "Unidad")} {unit.number || unit.id}</h1>
+        <p class="opacity-80">
+          {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")} {unit.floor || "-"}
+        </p>
+      </header>
+
+      {coverImage && (
+        <img src={coverImage} alt={`${t(lang, "Unit", "Unidad")} ${unit.number || unit.id}`} class="w-full rounded-xl border object-cover" loading="lazy" />
+      )}
+
+      {planImage && (
+        <img src={planImage} alt={`${t(lang, "Unit plan", "Plano de unidad")} ${unit.number || unit.id}`} class="w-full rounded-xl border object-cover" loading="lazy" />
+      )}
+
+      {galleryImages.length > 0 && (
+        <div class="grid gap-3 sm:grid-cols-2">
+          {galleryImages.map((image, index) => (
+            <img src={image} alt={`${t(lang, "Gallery image", "Imagen de galería")} ${index + 1}`} class="w-full rounded-xl border object-cover" loading="lazy" />
+          ))}
+        </div>
+      )}
+
+      <div class="grid gap-3 rounded-xl border p-4 text-sm sm:grid-cols-2">
+        <div>
+          <p class="opacity-70">{t(lang, "Beds / Baths", "Dormitorios / Baños")}</p>
+          <p class="text-base font-medium">{beds} / {baths}</p>
+        </div>
+        <div>
+          <p class="opacity-70">{t(lang, "Area", "Superficie")}</p>
+          <p class="text-base font-medium">{area} m²</p>
+        </div>
+        <div>
+          <p class="opacity-70">{t(lang, "Orientation", "Orientación")}</p>
+          <p class="text-base font-medium">{orientationText(unit.orientation)}</p>
+        </div>
+        <div>
+          <p class="opacity-70">{t(lang, "Status", "Estado")}</p>
+          <p class="text-base font-medium">{statusText(unit.status)}</p>
+        </div>
+        <div class="sm:col-span-2">
+          <p class="opacity-70">{t(lang, "Price", "Precio")}</p>
+          <p class="text-base font-medium">{unit.price_eur ? `€${unit.price_eur}` : t(lang, "Request price", "Solicitar precio")}</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3 sm:flex-row">
+        <a class="inline-flex min-h-11 items-center justify-center rounded-lg bg-black px-5 py-3 font-medium text-white" href={`/${lang}/downloads/`}>
+          {t(lang, "Request price list", "Solicitar lista de precios")}
+        </a>
+        <a class="inline-flex min-h-11 items-center justify-center rounded-lg border px-5 py-3 font-medium" href={`/${lang}/contact/`}>
+          {t(lang, "Book a viewing", "Reservar visita")}
+        </a>
+      </div>
+    </section>
+  )}
 </BaseLayout>

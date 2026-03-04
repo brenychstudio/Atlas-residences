@@ -65,6 +65,59 @@ export const ATLAS_ASSETS = {
 
 export type AtlasAssetPath = (typeof ATLAS_ASSETS)[keyof typeof ATLAS_ASSETS];
 
+function normalizeTypeId(typeId?: string): string {
+  return String(typeId ?? "").toLowerCase();
+}
+
+export function resolvePlanImage(typeId?: string): string {
+  const t = normalizeTypeId(typeId);
+  if (t.includes("t1")) return "/atlas/plans/pl-t1.png";
+  if (t.includes("t2")) return "/atlas/plans/pl-t2.png";
+  if (t.includes("t3")) return "/atlas/plans/pl-t3.png";
+  if (t.includes("t4")) return "/atlas/plans/pl-t4.png";
+  if (t.includes("t5")) return "/atlas/plans/pl-t5.png";
+  if (t.includes("t6")) return "/atlas/plans/pl-t6.png";
+  return "/atlas/plans/pl-t2.png";
+}
+
+export function resolveUnitTypeCover(typeId?: string): string {
+  const t = normalizeTypeId(typeId);
+  if (t.includes("t1") || t.includes("t2")) return ATLAS_ASSETS.renders.exterior.ex01Approach3x2;
+  if (t.includes("t3") || t.includes("t4")) return ATLAS_ASSETS.renders.interior.in01Living3x2;
+  if (t.includes("t5") || t.includes("t6")) return ATLAS_ASSETS.renders.amenities.am01Gym16x9;
+  return ATLAS_ASSETS.renders.exterior.ex02Courtyard3x2;
+}
+
+export function resolveUnitGallery(typeId?: string): string[] {
+  const t = normalizeTypeId(typeId);
+  if (t.includes("t1") || t.includes("t2")) {
+    return [
+      ATLAS_ASSETS.renders.exterior.ex01Approach3x2,
+      ATLAS_ASSETS.renders.exterior.ex03Rooftop16x9,
+      ATLAS_ASSETS.renders.interior.in01Living3x2,
+    ];
+  }
+  if (t.includes("t3") || t.includes("t4")) {
+    return [
+      ATLAS_ASSETS.renders.interior.in01Living3x2,
+      ATLAS_ASSETS.renders.interior.in02Kitchen3x2,
+      ATLAS_ASSETS.renders.exterior.ex02Courtyard3x2,
+    ];
+  }
+  if (t.includes("t5") || t.includes("t6")) {
+    return [
+      ATLAS_ASSETS.renders.exterior.ex03Rooftop16x9,
+      ATLAS_ASSETS.renders.amenities.am01Gym16x9,
+      ATLAS_ASSETS.renders.interior.in05Lobby16x9,
+    ];
+  }
+  return [
+    ATLAS_ASSETS.renders.exterior.ex01Approach3x2,
+    ATLAS_ASSETS.renders.interior.in01Living3x2,
+    ATLAS_ASSETS.renders.amenities.am01Gym16x9,
+  ];
+}
+
 export function asset(path: string): string {
   return path;
 }
