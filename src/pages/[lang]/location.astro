@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../content/languages";
+import { getPageBySlug, getPoi, getSettings } from "../../vertical/cms/sheets";
+import { ATLAS_ASSETS } from "../../vertical/content/assets";
 
 export function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
@@ -9,11 +11,137 @@ export function getStaticPaths() {
 const langParam = Astro.params.lang ?? "en";
 if (!isLang(langParam)) throw new Error("Invalid lang");
 const lang = langParam as Lang;
+
+const p0 = Astro.url.pathname;
+const p = p0.endsWith("/") ? p0 : `${p0}/`;
+const [settings, pageSeo, poi] = await Promise.all([getSettings(), getPageBySlug(p), getPoi()]);
+
+const projectName = (lang === "es" ? settings.project_name_es : settings.project_name_en) || "Atlas Residences";
+const defaultDescription =
+  (lang === "es" ? settings.tagline_es : settings.tagline_en) ||
+  t(lang, "Explore the location around Atlas Residences.", "Explora la ubicación alrededor de Atlas Residences.");
+
+const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Location", "Ubicación")} — ${projectName}`;
+const seoDescription = (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) || defaultDescription;
+const seoImage = pageSeo?.og_image || ATLAS_ASSETS.og.og01Home1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
+const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";
+const ogLocale = lang === "es" ? "es_ES" : "en_US";
+
+const categoryOptions = ["all", "metro", "school", "park", "beach", "shopping", "culture"] as const;
+const requestedCat = (Astro.url.searchParams.get("cat") ?? "all").toLowerCase();
+const activeCat = categoryOptions.includes(requestedCat as (typeof categoryOptions)[number]) ? requestedCat : "all";
+
+const categoryLabel = (category: string) => {
+  if (category === "metro") return t(lang, "Metro", "Metro");
+  if (category === "school") return t(lang, "School", "Colegio");
+  if (category === "park") return t(lang, "Park", "Parque");
+  if (category === "beach") return t(lang, "Beach", "Playa");
+  if (category === "shopping") return t(lang, "Shopping", "Compras");
+  if (category === "culture") return t(lang, "Culture", "Cultura");
+  return t(lang, "Nearby", "Cercano");
+};
+
+const sortedPoi = [...poi].sort((a, b) => Number(a.distance_minutes ?? 9999) - Number(b.distance_minutes ?? 9999));
+const filteredPoi = activeCat === "all" ? sortedPoi : sortedPoi.filter((item) => String(item.category ?? "").toLowerCase() === activeCat);
+
+const buildCatHref = (category: string) => {
+  if (category === "all") return p;
+  const q = new URLSearchParams();
+  q.set("cat", category);
+  return `${p}?${q.toString()}`;
+};
+
+const address = lang === "es" ? settings.address_es : settings.address_en;
+const hasProjectCoords = Boolean(settings.coords_lat && settings.coords_lng);
+const projectMapsHref = hasProjectCoords
+  ? `https://www.google.com/maps?q=${encodeURIComponent(`${settings.coords_lat},${settings.coords_lng}`)}`
+  : "";
 ---
 
-<BaseLayout lang={lang} title={t(lang, "Location | Atlas Residences", "Ubicación | Atlas Residences") }>
-  <section class="space-y-3">
-    <h1 class="text-3xl tracking-tight">{t(lang, "Location", "Ubicación")}</h1>
-    <p class="opacity-80">{t(lang, "Location placeholder.", "Marcador de posición de ubicación.")}</p>
+<BaseLayout lang={lang} title={seoTitle}>
+  <Fragment slot="head">
+    <title>{seoTitle}</title>
+    <meta name="description" content={seoDescription} />
+    <meta property="og:title" content={seoTitle} />
+    <meta property="og:description" content={seoDescription} />
+    <meta property="og:image" content={seoImage} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={seoTitle} />
+    <meta name="twitter:description" content={seoDescription} />
+    <meta name="twitter:image" content={seoImage} />
+    {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
+  </Fragment>
+
+  <section class="space-y-6">
+    <header class="space-y-2">
+      <h1 class="text-3xl tracking-tight">{t(lang, "Location", "Ubicación")}</h1>
+      <p class="text-sm" style="color:var(--muted)">
+        {t(lang, "A curated guide to places you'll reach in minutes.", "Una guía curada de lugares a los que llegarás en minutos.")}
+      </p>
+    </header>
+
+    <div class="rounded-xl p-4" style="border:1px solid var(--border);background:color-mix(in oklab,var(--bg),var(--fg) 2%);">
+      <h2 class="text-sm font-semibold uppercase tracking-wide" style="color:var(--muted)">{t(lang, "Project address", "Dirección del proyecto")}</h2>
+      <p class="mt-2 text-sm">{address || t(lang, "Address coming soon", "Dirección próximamente")}</p>
+      {projectMapsHref && (
+        <a href={projectMapsHref} target="_blank" rel="noreferrer" class="mt-3 inline-flex min-h-11 items-center rounded-lg px-4 py-2 text-sm font-medium" style="border:1px solid var(--border)">
+          {t(lang, "Open in Maps", "Abrir en Maps")}
+        </a>
+      )}
+    </div>
+
+    <nav class="flex flex-wrap gap-2" aria-label={t(lang, "POI categories", "Categorías POI")}>
+      {categoryOptions.map((category) => {
+        const active = activeCat === category;
+        return (
+          <a
+            href={buildCatHref(category)}
+            class="inline-flex min-h-11 items-center rounded-full px-4 py-2 text-sm font-medium"
+            style={active ? "background:var(--fg);color:var(--bg);border:1px solid var(--fg);" : "border:1px solid var(--border);color:var(--fg);"}
+          >
+            {category === "all" ? t(lang, "All", "Todos") : categoryLabel(category)}
+          </a>
+        );
+      })}
+    </nav>
+
+    {filteredPoi.length === 0 ? (
+      <div class="rounded-xl p-5" style="border:1px solid var(--border);">
+        <h2 class="text-lg font-semibold">{t(lang, "Coming soon", "Próximamente")}</h2>
+        <p class="mt-2 text-sm" style="color:var(--muted)">
+          {t(lang, "We're curating nearby highlights for this area.", "Estamos curando los mejores puntos cercanos de esta zona.")}
+        </p>
+      </div>
+    ) : (
+      <ul class="space-y-3">
+        {filteredPoi.map((item) => {
+          const poiName = lang === "es" ? item.name_es : item.name_en;
+          const minutes = Number(item.distance_minutes ?? 0);
+          const hasPoiCoords = Boolean(item.coords_lat && item.coords_lng);
+          const poiMapsHref = hasPoiCoords
+            ? `https://www.google.com/maps?q=${encodeURIComponent(`${item.coords_lat},${item.coords_lng}`)}`
+            : "";
+
+          return (
+            <li class="rounded-xl p-4" style="border:1px solid var(--border);">
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0">
+                  <h3 class="text-base font-semibold break-words">{poiName}</h3>
+                  <p class="mt-1 text-sm" style="color:var(--muted)">{categoryLabel(String(item.category ?? "").toLowerCase())}</p>
+                </div>
+                <p class="shrink-0 text-sm font-medium">{minutes} {t(lang, "min", "min")}</p>
+              </div>
+              {poiMapsHref && (
+                <a href={poiMapsHref} target="_blank" rel="noreferrer" class="mt-3 inline-flex min-h-11 items-center rounded-lg px-4 py-2 text-sm font-medium" style="border:1px solid var(--border)">
+                  {t(lang, "Open", "Abrir")}
+                </a>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    )}
   </section>
 </BaseLayout>
