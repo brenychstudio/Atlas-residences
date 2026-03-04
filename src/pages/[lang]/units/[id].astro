@@ -128,6 +128,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
           alt={`${t(lang, "Unit", "Unidad")} ${unit.number || unit.id}`}
           class="w-full rounded-xl border object-cover"
           loading="lazy"
+          decoding="async"
         />
       )}
 
@@ -137,6 +138,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
           alt={`${t(lang, "Unit plan", "Plano de unidad")} ${unit.number || unit.id}`}
           class="w-full rounded-xl border object-cover"
           loading="lazy"
+          decoding="async"
         />
       )}
 
@@ -148,6 +150,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
               alt={`${t(lang, "Gallery image", "Imagen de galería")} ${index + 1}`}
               class="w-full rounded-xl border object-cover"
               loading="lazy"
+              decoding="async"
             />
           ))}
         </div>

@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../content/languages";
 import { getPageBySlug, getSettings } from "../../vertical/cms/sheets";
 import { ATLAS_ASSETS } from "../../vertical/content/assets";
+import SunHero from "../../vertical/ui/SunHero.astro";
 
 export function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
@@ -26,6 +27,17 @@ const seoDescription = (lang === "es" ? pageSeo?.description_es : pageSeo?.descr
 const seoImage = pageSeo?.og_image || ATLAS_ASSETS.og.og01Home1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
 const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";
 const ogLocale = lang === "es" ? "es_ES" : "en_US";
+
+const heroVariants = {
+  morning: ATLAS_ASSETS.hero.hr01Morning16x9,
+  sunset: ATLAS_ASSETS.hero.hr02Sunset16x9,
+  bluehour: ATLAS_ASSETS.hero.hr03Bluehour16x9,
+  mobile: ATLAS_ASSETS.hero.hr04Mobile9x16,
+} as const;
+
+const defaultHeroVariant: keyof typeof heroVariants = "morning";
+const heroImage = heroVariants[defaultHeroVariant] || ATLAS_ASSETS.hero.hr01Morning16x9;
+const heroMobileImage = heroVariants.mobile;
 ---
 
 <BaseLayout lang={lang} title={seoTitle}>
@@ -44,11 +56,37 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
     {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
   </Fragment>
 
-  <section class="space-y-4">
-    <p class="text-xs uppercase tracking-[0.2em] opacity-60">Atlas Residences</p>
-    <h1 class="text-4xl tracking-tight">{t(lang, "Developer Demo Home", "Inicio demo de desarrollador")}</h1>
-    <p class="max-w-3xl opacity-80">
-      {t(lang, "IA v1 skeleton for the new developer vertical.", "Esqueleto IA v1 para la nueva vertical de desarrollador.")}
-    </p>
+  <section class="space-y-6">
+    <SunHero
+      morningImage={heroImage}
+      bluehourImage={heroVariants.bluehour}
+      sunsetImage={heroVariants.sunset}
+      mobileImage={heroMobileImage}
+      alt={t(lang, "Atlas Residences hero view", "Vista principal de Atlas Residences")}
+      sliderLabel={t(lang, "Sun position", "Posición del sol")}
+      morningLabel={t(lang, "Morning", "Mañana")}
+      bluehourLabel={t(lang, "Blue hour", "Hora azul")}
+      sunsetLabel={t(lang, "Sunset", "Atardecer")}
+    />
+
+    <div class="space-y-4">
+      <p class="text-xs uppercase tracking-[0.2em] opacity-60">Atlas Residences</p>
+      <h1 class="text-3xl tracking-tight sm:text-4xl">{t(lang, "Developer Demo Home", "Inicio demo de desarrollador")}</h1>
+      <p class="max-w-3xl text-sm opacity-80 sm:text-base">
+        {t(lang, "IA v1 skeleton for the new developer vertical.", "Esqueleto IA v1 para la nueva vertical de desarrollador.")}
+      </p>
+    </div>
+
+    <div class="grid gap-3 sm:grid-cols-3">
+      <a class="min-h-11 rounded-xl border px-4 py-3 text-sm transition hover:border-black/40" href={`/${lang}/units/`}>
+        {t(lang, "Browse units", "Explorar unidades")}
+      </a>
+      <a class="min-h-11 rounded-xl border px-4 py-3 text-sm transition hover:border-black/40" href={`/${lang}/masterplan/`}>
+        {t(lang, "View masterplan", "Ver masterplan")}
+      </a>
+      <a class="min-h-11 rounded-xl border px-4 py-3 text-sm transition hover:border-black/40" href={`/${lang}/contact/`}>
+        {t(lang, "Contact sales", "Contactar ventas")}
+      </a>
+    </div>
   </section>
 </BaseLayout>
