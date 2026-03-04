@@ -36,7 +36,7 @@ const initialStatus = ["all", "available", "reserved", "sold", "coming_soon"].in
   : "all";
 
 const [buildings, amenities, units] = await Promise.all([getBuildings(), getAmenities(), getUnits()]);
-const masterplanImage = ATLAS_ASSETS.masterplan?.mp01Wide16x9 || "/atlas/masterplan/mp-01-wide-16x9.png";
+const masterplanImage = String(ATLAS_ASSETS.masterplan?.mp01Wide16x9 || "/atlas/masterplan/mp-01-wide-16x9.png").trim();
 
 const normalizedUnits = units.map((unit) => ({
   buildingId: String(unit.building_id ?? "").toLowerCase(),

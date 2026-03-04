@@ -126,7 +126,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
         const beds = unit.beds || unitType?.beds || "-";
         const baths = unit.baths || unitType?.baths || "-";
         const area = unit.area_m2 || unitType?.area_from || "-";
-        const coverImage = unitType?.cover_image;
+        const coverImage = String(unitType?.cover_image ?? "").trim();
         const status = String(unit.status ?? "").toLowerCase();
         const orientation = String(unit.orientation ?? "").toLowerCase();
         const building = String(unit.building_id ?? "").toLowerCase();
