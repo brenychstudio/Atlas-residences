@@ -32,13 +32,11 @@ const pick = (...xs: string[]) => xs.map((s) => String(s ?? "").trim()).find(Boo
 const poster = pick(morningImage, bluehourImage, sunsetImage);
 const hasPoster = Boolean(poster);
 
-const hasSunset =
-  Boolean(String(sunsetImage ?? "").trim()) && String(sunsetImage ?? "").trim() !== poster;
+const sunset = String(sunsetImage ?? "").trim();
+const bluehour = String(bluehourImage ?? "").trim();
 
-const hasBluehour =
-  Boolean(String(bluehourImage ?? "").trim()) &&
-  String(bluehourImage ?? "").trim() !== poster &&
-  String(bluehourImage ?? "").trim() !== String(sunsetImage ?? "").trim();
+const hasSunset = Boolean(sunset) && sunset !== poster;
+const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sunset;
 ---
 
 {hasPoster && (
@@ -46,9 +44,12 @@ const hasBluehour =
     class="space-y-3"
     data-sun-hero
     data-has-bluehour={hasBluehour ? "true" : "false"}
-    style="--sun:0; --bluehour-opacity:0; --sunset-opacity:0;"
+    style="--sun:0; --bluehour-opacity:0; --sunset-opacity:0; --px:0px; --py:0px; --fog-shift:0;"
   >
-    <div class="sun-hero-frame relative overflow-hidden rounded-2xl border bg-slate-100">
+    <div
+      class="sun-hero-frame relative overflow-hidden rounded-2xl border bg-slate-100"
+      data-sun-hero-frame
+    >
       <picture>
         {(mobileImage && mobileImage.trim()) ? (
           <source media="(max-width: 640px)" srcset={mobileImage} />
@@ -56,21 +57,22 @@ const hasBluehour =
         <img
           src={poster}
           alt={alt}
-          class="h-full w-full object-cover"
+          class="sun-hero-layer h-full w-full object-cover"
           loading="eager"
           decoding="async"
           width="1600"
           height="900"
+          style="transform: translate3d(var(--px), var(--py), 0);"
         />
       </picture>
 
       {hasBluehour && (
         <img
-          src={bluehourImage}
+          src={bluehour}
           alt=""
           aria-hidden="true"
-          class="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          style="opacity: var(--bluehour-opacity);"
+          class="sun-hero-layer pointer-events-none absolute inset-0 h-full w-full object-cover"
+          style="opacity: var(--bluehour-opacity); transform: translate3d(var(--px), var(--py), 0);"
           loading="lazy"
           decoding="async"
           width="1600"
@@ -80,11 +82,11 @@ const hasBluehour =
 
       {hasSunset && (
         <img
-          src={sunsetImage}
+          src={sunset}
           alt=""
           aria-hidden="true"
-          class="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          style="opacity: var(--sunset-opacity);"
+          class="sun-hero-layer pointer-events-none absolute inset-0 h-full w-full object-cover"
+          style="opacity: var(--sunset-opacity); transform: translate3d(var(--px), var(--py), 0);"
           loading="lazy"
           decoding="async"
           width="1600"
@@ -123,7 +125,11 @@ const hasBluehour =
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(ellipse at center, transparent 52%, rgba(15, 23, 42, 0.18) 100%);
+    background: radial-gradient(
+      ellipse at center,
+      transparent 52%,
+      rgba(15, 23, 42, calc(0.14 + var(--fog-shift) * 0.10)) 100%
+    );
     z-index: 10;
   }
   .sun-hero-frame::after {
@@ -136,15 +142,22 @@ const hasBluehour =
     background-size: 2.5px 2.5px;
     z-index: 11;
   }
+  .sun-hero-layer {
+    will-change: transform, opacity;
+  }
 </style>
 
 <script is:inline>
   (() => {
+    const reduceMotion =
+      window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     const roots = document.querySelectorAll("[data-sun-hero]");
     roots.forEach((root) => {
+      const frame = root.querySelector("[data-sun-hero-frame]");
       const wrap = root.querySelector("[data-sun-slider-wrap]");
       const slider = root.querySelector("[data-sun-slider]");
-      if (!wrap || !slider) return;
+      if (!frame || !wrap || !slider) return;
 
       // show slider only when JS runs (no-JS remains poster-only)
       wrap.classList.remove("hidden");
@@ -161,15 +174,16 @@ const hasBluehour =
       const setOpacities = (x) => {
         const v = clamp01(x);
         root.style.setProperty("--sun", String(v));
+        root.style.setProperty("--fog-shift", String(v));
 
         if (hasBluehour) {
           let b = 0, s = 0;
           if (v <= 0.5) {
-            b = v / 0.5;     // 0..1
+            b = v / 0.5;
             s = 0;
           } else {
-            b = 1 - (v - 0.5) / 0.5; // 1..0
-            s = (v - 0.5) / 0.5;     // 0..1
+            b = 1 - (v - 0.5) / 0.5;
+            s = (v - 0.5) / 0.5;
           }
           root.style.setProperty("--bluehour-opacity", String(b));
           root.style.setProperty("--sunset-opacity", String(s));
@@ -196,6 +210,48 @@ const hasBluehour =
         target = clamp01(Number(slider.value));
         if (!raf) raf = requestAnimationFrame(tick);
       });
+
+      // Parallax (very subtle), disabled for reduced motion; paused offscreen.
+      let active = true;
+      let px = 0, py = 0;
+
+      const resetParallax = () => {
+        px = 0; py = 0;
+        root.style.setProperty("--px", "0px");
+        root.style.setProperty("--py", "0px");
+      };
+
+      const applyParallax = (clientX, clientY) => {
+        const rect = frame.getBoundingClientRect();
+        const x = (clientX - rect.left) / rect.width - 0.5;
+        const y = (clientY - rect.top) / rect.height - 0.5;
+        const amp = 5; // px
+        px = (-x * amp);
+        py = (-y * amp);
+        root.style.setProperty("--px", px.toFixed(2) + "px");
+        root.style.setProperty("--py", py.toFixed(2) + "px");
+      };
+
+      const onMove = (e) => {
+        if (!active || reduceMotion) return;
+        applyParallax(e.clientX, e.clientY);
+      };
+
+      frame.addEventListener("pointermove", onMove);
+      frame.addEventListener("pointerleave", () => {
+        if (reduceMotion) return;
+        resetParallax();
+      });
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          active = Boolean(entry && entry.isIntersecting);
+          if (!active) resetParallax();
+        },
+        { threshold: 0.2 }
+      );
+      io.observe(frame);
     });
   })();
 </script>
