@@ -1,4 +1,4 @@
----
+﻿---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../content/languages";
 import { getPageBySlug, getSettings } from "../../vertical/cms/sheets";
@@ -21,7 +21,7 @@ const defaultDescription =
   (lang === "es" ? settings.tagline_es : settings.tagline_en) ||
   t(lang, "Premium residences in Barcelona.", "Residencias premium en Barcelona.");
 
-const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Home", "Inicio")} — ${projectName}`;
+const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Home", "Inicio")} тАФ ${projectName}`;
 const seoDescription = (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) || defaultDescription;
 const seoImage = pageSeo?.og_image || ATLAS_ASSETS.og.og01Home1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
 const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";
