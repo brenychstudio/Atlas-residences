@@ -40,7 +40,12 @@ import {
 } from "./urls";
 
 // demo settings must use ATLAS_ASSETS (no new hardcoded /atlas/... in loader logic)
-import { ATLAS_ASSETS } from "../content/assets";
+import {
+  ATLAS_ASSETS,
+  resolvePlanImage,
+  resolveUnitGallery,
+  resolveUnitTypeCover,
+} from "../content/assets";
 
 type CmsData = {
   // Developer vertical
@@ -287,11 +292,25 @@ async function loadCms(): Promise<CmsData> {
   }
   const settings = settingsRows[0] ?? demoSettings();
 
+  const normalizedUnitTypes = unit_types.map((unitType) => ({
+    ...unitType,
+    cover_image: String(unitType.cover_image ?? "").trim() || resolveUnitTypeCover(unitType.id),
+  }));
+
+  const normalizedUnits = units.map((unit) => {
+    const gallery = String(unit.gallery_images ?? "").trim();
+    return {
+      ...unit,
+      plan_image: String(unit.plan_image ?? "").trim() || resolvePlanImage(unit.type_id),
+      gallery_images: gallery || resolveUnitGallery(unit.type_id).join("|"),
+    };
+  });
+
   return {
     settings,
     buildings: sortByOrder(onlyPublished(buildings)),
-    unit_types: sortByOrder(onlyPublished(unit_types)),
-    units: sortByNumericKey(units, "sort"),
+    unit_types: sortByOrder(onlyPublished(normalizedUnitTypes)),
+    units: sortByNumericKey(normalizedUnits, "sort"),
 
     amenities: sortByOrder(onlyPublished(amenities)),
     poi: sortByOrder(onlyPublished(poi)),
