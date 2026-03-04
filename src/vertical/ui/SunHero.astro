@@ -44,7 +44,7 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
     class="space-y-3"
     data-sun-hero
     data-has-bluehour={hasBluehour ? "true" : "false"}
-    style="--sun:0; --bluehour-opacity:0; --sunset-opacity:0; --px:0px; --py:0px; --fog-shift:0; --sun-x:50%; --sun-y:38%; --glint-offset:0%;"
+    style="--sun:0; --bluehour-opacity:0; --sunset-opacity:0; --px:0px; --py:0px; --fog-shift:0; --sun-x:50%; --sun-y:38%; --glint-offset:0%; --scroll:0; --scroll-y:0px;"
   >
     <div class="sun-hero-frame relative overflow-hidden rounded-2xl border bg-slate-100" data-sun-hero-frame>
       <picture>
@@ -96,7 +96,7 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
     </div>
 
     <div
-      class="hidden items-center gap-2 rounded-xl border bg-white/90 px-3 py-2 text-xs sm:gap-3 sm:px-4 sm:text-sm"
+      class="hidden flex items-center gap-2 rounded-xl border bg-white/90 px-3 py-2 text-xs sm:gap-3 sm:px-4 sm:text-sm"
       data-sun-slider-wrap
     >
       <span class="shrink-0 opacity-70" data-morning-label>{morningLabel}</span>
@@ -128,10 +128,12 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
     background: radial-gradient(
       ellipse at center,
       transparent 52%,
-      rgba(15, 23, 42, calc(0.14 + var(--fog-shift) * 0.10)) 100%
+      rgba(15, 23, 42, calc(0.14 + var(--fog-shift) * 0.10 + var(--scroll) * 0.06)) 100%
     );
     z-index: 10;
+    transform: translate3d(0, var(--scroll-y), 0);
   }
+
   .sun-hero-frame::after {
     content: "";
     position: absolute;
@@ -161,6 +163,7 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
       transparent 40%
     );
     mix-blend-mode: screen;
+    transform: translate3d(0, var(--scroll-y), 0);
   }
 
   .sun-glint {
@@ -168,8 +171,8 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
     inset: -20%;
     pointer-events: none;
     z-index: 13;
-    opacity: 0.10;
-    transform: translateX(var(--glint-offset)) rotate(-10deg);
+    opacity: calc(0.10 + var(--scroll) * 0.05);
+    transform: translateX(var(--glint-offset)) translateY(calc(var(--scroll-y) * 0.5)) rotate(-10deg);
     background: linear-gradient(
       90deg,
       transparent 0%,
@@ -194,8 +197,10 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
     const reduceMotion =
       window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const roots = document.querySelectorAll("[data-sun-hero]");
-    roots.forEach((root) => {
+    const clamp01 = (v) => Math.max(0, Math.min(1, v));
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    document.querySelectorAll("[data-sun-hero]").forEach((root) => {
       const frame = root.querySelector("[data-sun-hero-frame]");
       const wrap = root.querySelector("[data-sun-slider-wrap]");
       const slider = root.querySelector("[data-sun-slider]");
@@ -206,9 +211,6 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
 
       const hasBluehour = root.getAttribute("data-has-bluehour") === "true";
 
-      const clamp01 = (v) => Math.max(0, Math.min(1, v));
-      const lerp = (a, b, t) => a + (b - a) * t;
-
       let target = clamp01(Number(slider.value || 0));
       let current = target;
       let raf = 0;
@@ -218,7 +220,7 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
         root.style.setProperty("--sun", String(v));
         root.style.setProperty("--fog-shift", String(v));
 
-        // sun position + glint offset (subtle)
+        // Sun position + glint offset (subtle)
         const sunX = 32 + v * 42; // 32%..74%
         const sunY = 34 - v * 8;  // 34%..26%
         root.style.setProperty("--sun-x", sunX.toFixed(2) + "%");
@@ -260,12 +262,18 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
         if (!raf) raf = requestAnimationFrame(tick);
       });
 
-      // Parallax (very subtle), disabled for reduced motion; paused offscreen.
+      // Parallax + scroll micro-shift (disabled for reduced motion; paused offscreen)
       let active = true;
+      let scrollRaf = 0;
 
       const resetParallax = () => {
         root.style.setProperty("--px", "0px");
         root.style.setProperty("--py", "0px");
+      };
+
+      const resetScroll = () => {
+        root.style.setProperty("--scroll", "0");
+        root.style.setProperty("--scroll-y", "0px");
       };
 
       const applyParallax = (clientX, clientY) => {
@@ -275,6 +283,28 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
         const amp = 5; // px
         root.style.setProperty("--px", (-x * amp).toFixed(2) + "px");
         root.style.setProperty("--py", (-y * amp).toFixed(2) + "px");
+      };
+
+      const updateScroll = () => {
+        scrollRaf = 0;
+        if (!active || reduceMotion) {
+          resetScroll();
+          return;
+        }
+        const rect = frame.getBoundingClientRect();
+        const viewport = window.innerHeight || 1;
+
+        // 0..1 while hero is in/near view
+        const progress = clamp01((viewport - rect.top) / (viewport + rect.height));
+        const subtle = clamp01(progress * 1.15);
+
+        root.style.setProperty("--scroll", subtle.toFixed(3));
+        root.style.setProperty("--scroll-y", (subtle * 2.6).toFixed(2) + "px"); // ~0..2.6px
+      };
+
+      const onScroll = () => {
+        if (!active || scrollRaf) return;
+        scrollRaf = requestAnimationFrame(updateScroll);
       };
 
       frame.addEventListener("pointermove", (e) => {
@@ -291,11 +321,21 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
         (entries) => {
           const entry = entries[0];
           active = Boolean(entry && entry.isIntersecting);
-          if (!active) resetParallax();
+          if (!active) {
+            resetParallax();
+            resetScroll();
+            return;
+          }
+          onScroll();
         },
         { threshold: 0.2 }
       );
       io.observe(frame);
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+
+      // initial
+      onScroll();
     });
   })();
 </script>

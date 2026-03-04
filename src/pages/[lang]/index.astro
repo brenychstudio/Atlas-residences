@@ -77,15 +77,18 @@ const heroMobileImage = heroVariants.mobile;
       </p>
     </div>
 
-    <div class="grid gap-3 sm:grid-cols-3">
-      <a class="min-h-11 rounded-xl border px-4 py-3 text-sm transition hover:border-black/40" href={`/${lang}/units/`}>
+    <div class="grid gap-2 sm:grid-cols-3 sm:gap-3">
+      <a class="group flex min-h-11 items-center justify-between rounded-xl border px-4 py-3 text-sm transition hover:border-black/40 hover:bg-black/[0.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2" href={`/${lang}/units/`}>
         {t(lang, "Browse units", "Explorar unidades")}
+        <span class="text-xs opacity-0 transition group-hover:opacity-60">→</span>
       </a>
-      <a class="min-h-11 rounded-xl border px-4 py-3 text-sm transition hover:border-black/40" href={`/${lang}/masterplan/`}>
+      <a class="group flex min-h-11 items-center justify-between rounded-xl border px-4 py-3 text-sm transition hover:border-black/40 hover:bg-black/[0.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2" href={`/${lang}/masterplan/`}>
         {t(lang, "View masterplan", "Ver masterplan")}
+        <span class="text-xs opacity-0 transition group-hover:opacity-60">→</span>
       </a>
-      <a class="min-h-11 rounded-xl border px-4 py-3 text-sm transition hover:border-black/40" href={`/${lang}/contact/`}>
+      <a class="group flex min-h-11 items-center justify-between rounded-xl border px-4 py-3 text-sm transition hover:border-black/40 hover:bg-black/[0.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2" href={`/${lang}/contact/`}>
         {t(lang, "Contact sales", "Contactar ventas")}
+        <span class="text-xs opacity-0 transition group-hover:opacity-60">→</span>
       </a>
     </div>
   </section>
