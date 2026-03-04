@@ -44,12 +44,9 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
     class="space-y-3"
     data-sun-hero
     data-has-bluehour={hasBluehour ? "true" : "false"}
-    style="--sun:0; --bluehour-opacity:0; --sunset-opacity:0; --px:0px; --py:0px; --fog-shift:0;"
+    style="--sun:0; --bluehour-opacity:0; --sunset-opacity:0; --px:0px; --py:0px; --fog-shift:0; --sun-x:50%; --sun-y:38%; --glint-offset:0%;"
   >
-    <div
-      class="sun-hero-frame relative overflow-hidden rounded-2xl border bg-slate-100"
-      data-sun-hero-frame
-    >
+    <div class="sun-hero-frame relative overflow-hidden rounded-2xl border bg-slate-100" data-sun-hero-frame>
       <picture>
         {(mobileImage && mobileImage.trim()) ? (
           <source media="(max-width: 640px)" srcset={mobileImage} />
@@ -93,6 +90,9 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
           height="900"
         />
       )}
+
+      <div class="sun-disc" aria-hidden="true"></div>
+      <div class="sun-glint" aria-hidden="true"></div>
     </div>
 
     <div
@@ -142,8 +142,50 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
     background-size: 2.5px 2.5px;
     z-index: 11;
   }
+
   .sun-hero-layer {
     will-change: transform, opacity;
+  }
+
+  .sun-disc {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.22;
+    z-index: 12;
+    background: radial-gradient(
+      circle at var(--sun-x) var(--sun-y),
+      rgba(255, 244, 214, 0.45) 0%,
+      rgba(255, 244, 214, 0.18) 10%,
+      rgba(255, 244, 214, 0.08) 22%,
+      transparent 40%
+    );
+    mix-blend-mode: screen;
+  }
+
+  .sun-glint {
+    position: absolute;
+    inset: -20%;
+    pointer-events: none;
+    z-index: 13;
+    opacity: 0.10;
+    transform: translateX(var(--glint-offset)) rotate(-10deg);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.10) 45%,
+      rgba(255, 255, 255, 0.22) 50%,
+      rgba(255, 255, 255, 0.10) 55%,
+      transparent 100%
+    );
+    mix-blend-mode: overlay;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sun-disc,
+    .sun-glint {
+      display: none;
+    }
   }
 </style>
 
@@ -175,6 +217,13 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
         const v = clamp01(x);
         root.style.setProperty("--sun", String(v));
         root.style.setProperty("--fog-shift", String(v));
+
+        // sun position + glint offset (subtle)
+        const sunX = 32 + v * 42; // 32%..74%
+        const sunY = 34 - v * 8;  // 34%..26%
+        root.style.setProperty("--sun-x", sunX.toFixed(2) + "%");
+        root.style.setProperty("--sun-y", sunY.toFixed(2) + "%");
+        root.style.setProperty("--glint-offset", ((v - 0.5) * 18).toFixed(2) + "%");
 
         if (hasBluehour) {
           let b = 0, s = 0;
@@ -213,10 +262,8 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
 
       // Parallax (very subtle), disabled for reduced motion; paused offscreen.
       let active = true;
-      let px = 0, py = 0;
 
       const resetParallax = () => {
-        px = 0; py = 0;
         root.style.setProperty("--px", "0px");
         root.style.setProperty("--py", "0px");
       };
@@ -226,18 +273,15 @@ const hasBluehour = Boolean(bluehour) && bluehour !== poster && bluehour !== sun
         const x = (clientX - rect.left) / rect.width - 0.5;
         const y = (clientY - rect.top) / rect.height - 0.5;
         const amp = 5; // px
-        px = (-x * amp);
-        py = (-y * amp);
-        root.style.setProperty("--px", px.toFixed(2) + "px");
-        root.style.setProperty("--py", py.toFixed(2) + "px");
+        root.style.setProperty("--px", (-x * amp).toFixed(2) + "px");
+        root.style.setProperty("--py", (-y * amp).toFixed(2) + "px");
       };
 
-      const onMove = (e) => {
+      frame.addEventListener("pointermove", (e) => {
         if (!active || reduceMotion) return;
         applyParallax(e.clientX, e.clientY);
-      };
+      });
 
-      frame.addEventListener("pointermove", onMove);
       frame.addEventListener("pointerleave", () => {
         if (reduceMotion) return;
         resetParallax();
