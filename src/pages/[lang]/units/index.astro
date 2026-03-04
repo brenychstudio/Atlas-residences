@@ -51,15 +51,6 @@ const statusText = (status?: string) => {
   return t(lang, "Unknown", "Sin estado");
 };
 
-const orientationText = (orientation?: string) => {
-  const normalized = String(orientation ?? "").toLowerCase();
-  if (normalized === "sea") return t(lang, "Sea", "Mar");
-  if (normalized === "city") return t(lang, "City", "Ciudad");
-  if (normalized === "courtyard") return t(lang, "Courtyard", "Patio");
-  if (normalized === "mountain") return t(lang, "Mountain", "Montaña");
-  return t(lang, "Unknown", "Sin orientación");
-};
-
 const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
 ---
 
@@ -135,6 +126,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
         const beds = unit.beds || unitType?.beds || "-";
         const baths = unit.baths || unitType?.baths || "-";
         const area = unit.area_m2 || unitType?.area_from || "-";
+        const coverImage = unitType?.cover_image;
         const status = String(unit.status ?? "").toLowerCase();
         const orientation = String(unit.orientation ?? "").toLowerCase();
         const building = String(unit.building_id ?? "").toLowerCase();
@@ -143,41 +135,55 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
         return (
           <a
             href={buildUnitsHref(unit.id)}
-            class="unit-card min-h-11 overflow-hidden rounded-xl border p-4 transition hover:border-black/40"
+            class="unit-card group min-h-11 overflow-hidden rounded-xl border transition hover:border-black/40 hover:shadow-sm"
             data-beds={beds}
             data-status={status || "unknown"}
             data-orientation={orientation || "unknown"}
             data-building={building || "unknown"}
           >
-            <div class="flex items-start justify-between gap-3">
-              <h2 class="text-lg font-semibold leading-tight break-words">
-                {t(lang, "Unit", "Unidad")} {unit.number || unit.id}
-              </h2>
-              <span class={`rounded-full px-2.5 py-1 text-xs font-medium ${statusClass}`}>{statusText(unit.status)}</span>
+            {coverImage && (
+              <div class="aspect-[4/3] overflow-hidden border-b bg-slate-100">
+                <img
+                  src={coverImage}
+                  alt={`${t(lang, "Unit", "Unidad")} ${unit.number || unit.id}`}
+                  class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            )}
+
+            <div class="space-y-3 p-4">
+              <div class="flex items-start justify-between gap-3">
+                <h2 class="text-lg font-semibold leading-tight break-words">
+                  {t(lang, "Unit", "Unidad")} {unit.number || unit.id}
+                </h2>
+                <span class={`rounded-full px-2.5 py-1 text-xs font-medium ${statusClass}`}>{statusText(unit.status)}</span>
+              </div>
+
+              <p class="text-sm opacity-80">
+                {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")} {unit.floor || "-"}
+              </p>
+
+              <dl class="grid grid-cols-2 gap-2 text-sm">
+                <div>
+                  <dt class="opacity-70">{t(lang, "Beds/Baths", "Dorm./Baños")}</dt>
+                  <dd class="font-medium">{beds}/{baths}</dd>
+                </div>
+                <div>
+                  <dt class="opacity-70">{t(lang, "Area", "Superficie")}</dt>
+                  <dd class="font-medium">{area} m²</dd>
+                </div>
+                <div>
+                  <dt class="opacity-70">{t(lang, "Status", "Estado")}</dt>
+                  <dd class="font-medium">{statusText(unit.status)}</dd>
+                </div>
+                <div>
+                  <dt class="opacity-70">{t(lang, "Price", "Precio")}</dt>
+                  <dd class="font-medium">{unit.price_eur ? `€${unit.price_eur}` : t(lang, "Request price", "Solicitar precio")}</dd>
+                </div>
+              </dl>
             </div>
-
-            <p class="mt-1 text-sm opacity-80">
-              {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")} {unit.floor || "-"}
-            </p>
-
-            <dl class="mt-3 grid grid-cols-2 gap-2 text-sm">
-              <div>
-                <dt class="opacity-70">{t(lang, "Beds/Baths", "Dorm./Baños")}</dt>
-                <dd class="font-medium">{beds}/{baths}</dd>
-              </div>
-              <div>
-                <dt class="opacity-70">{t(lang, "Area", "Superficie")}</dt>
-                <dd class="font-medium">{area} m²</dd>
-              </div>
-              <div>
-                <dt class="opacity-70">{t(lang, "Orientation", "Orientación")}</dt>
-                <dd class="font-medium">{orientationText(unit.orientation)}</dd>
-              </div>
-              <div>
-                <dt class="opacity-70">{t(lang, "Price", "Precio")}</dt>
-                <dd class="font-medium">{unit.price_eur ? `€${unit.price_eur}` : t(lang, "Request price", "Solicitar precio")}</dd>
-              </div>
-            </dl>
           </a>
         );
       })}
