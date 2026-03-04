@@ -14,6 +14,7 @@ const lang = langParam as Lang;
 const settings = await getSettings();
 const brochureUrl = String((lang === "es" ? settings.brochure_url_es : settings.brochure_url_en) ?? "").trim();
 const priceListUrl = String((lang === "es" ? settings.price_list_url_es : settings.price_list_url_en) ?? "").trim();
+const hasDownloads = Boolean(brochureUrl || priceListUrl);
 ---
 
 <BaseLayout lang={lang} title={t(lang, "Downloads | Atlas Residences", "Descargas | Atlas Residences") }>
@@ -23,6 +24,7 @@ const priceListUrl = String((lang === "es" ? settings.price_list_url_es : settin
       <p class="opacity-80">{t(lang, "Sales documents and brochures.", "Documentos comerciales y folletos.")}</p>
     </header>
 
+    {hasDownloads ? (
     <div class="grid gap-3 sm:grid-cols-2">
       <a
         class="group overflow-hidden rounded-xl border transition hover:border-black/40"
@@ -64,5 +66,15 @@ const priceListUrl = String((lang === "es" ? settings.price_list_url_es : settin
         </div>
       </a>
     </div>
+    ) : (
+      <div class="space-y-3 rounded-xl border bg-slate-50 p-5">
+        <p class="text-sm opacity-80">
+          {t(lang, "Downloads will be available shortly.", "Las descargas estarán disponibles en breve.")}
+        </p>
+        <a class="inline-flex min-h-11 items-center rounded-lg border px-4 py-2 text-sm font-medium transition hover:border-black/40" href={`/${lang}/contact/`}>
+          {t(lang, "Contact sales", "Contactar ventas")}
+        </a>
+      </div>
+    )}
   </section>
 </BaseLayout>
