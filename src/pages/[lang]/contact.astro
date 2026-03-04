@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../content/languages";
+import { getPageBySlug, getSettings } from "../../vertical/cms/sheets";
+import { ATLAS_ASSETS } from "../../vertical/content/assets";
 
 export function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
@@ -9,11 +11,211 @@ export function getStaticPaths() {
 const langParam = Astro.params.lang ?? "en";
 if (!isLang(langParam)) throw new Error("Invalid lang");
 const lang = langParam as Lang;
+
+const settings = await getSettings();
+
+const p0 = Astro.url.pathname;
+const p = p0.endsWith("/") ? p0 : `${p0}/`;
+const pageSeo = await getPageBySlug(p);
+
+const projectName = (lang === "es" ? settings.project_name_es : settings.project_name_en) || "Atlas Residences";
+const defaultDescription =
+  (lang === "es" ? settings.tagline_es : settings.tagline_en) ||
+  t(lang, "Book a viewing and contact Atlas Residences.", "Reserva una visita y contacta con Atlas Residences.");
+
+const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Contact", "Contacto")} — ${projectName}`;
+const seoDescription = (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) || defaultDescription;
+const seoImage = pageSeo?.og_image || ATLAS_ASSETS.og.og01Home1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
+const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";
+const ogLocale = lang === "es" ? "es_ES" : "en_US";
+
+const rawIntent = (Astro.url.searchParams.get("intent") ?? "viewing").toLowerCase();
+const intent = ["viewing", "whatsapp", "call"].includes(rawIntent) ? rawIntent : "viewing";
+
+const phone = settings.phone ?? "";
+const whatsappRaw = (settings.whatsapp ?? "").replace(/[^\d+]/g, "");
+const whatsappPhone = whatsappRaw.replace(/^\+/, "");
+const email = settings.email ?? "";
+const address = lang === "es" ? settings.address_es ?? "" : settings.address_en ?? "";
+
+const waMessage =
+  intent === "whatsapp"
+    ? t(lang, "Hi, I want to chat on WhatsApp about Atlas Residences.", "Hola, quiero contactar por WhatsApp sobre Atlas Residences.")
+    : t(lang, "Hi, I want to book a viewing at Atlas Residences.", "Hola, quiero reservar una visita en Atlas Residences.");
+
+const whatsappHref = whatsappPhone ? `https://wa.me/${whatsappPhone}?text=${encodeURIComponent(waMessage)}` : "";
+const callHref = phone ? `tel:${phone}` : "";
+const emailHref = email ? `mailto:${email}` : "";
+
+const hasCoords = Boolean(settings.coords_lat && settings.coords_lng);
+const mapsHref = hasCoords
+  ? `https://www.google.com/maps?q=${encodeURIComponent(`${settings.coords_lat},${settings.coords_lng}`)}`
+  : "";
 ---
 
-<BaseLayout lang={lang} title={t(lang, "Contact | Atlas Residences", "Contacto | Atlas Residences") }>
-  <section class="space-y-3">
-    <h1 class="text-3xl tracking-tight">{t(lang, "Contact", "Contacto")}</h1>
-    <p class="opacity-80">{t(lang, "Contact placeholder.", "Marcador de posición de contacto.")}</p>
+<BaseLayout lang={lang} title={seoTitle}>
+  <Fragment slot="head">
+    <title>{seoTitle}</title>
+    <meta name="description" content={seoDescription} />
+    <meta property="og:title" content={seoTitle} />
+    <meta property="og:description" content={seoDescription} />
+    <meta property="og:image" content={seoImage} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={ogLocale} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={seoTitle} />
+    <meta name="twitter:description" content={seoDescription} />
+    <meta name="twitter:image" content={seoImage} />
+    {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
+  </Fragment>
+
+  <section class="space-y-6">
+    <header class="space-y-2">
+      <h1 class="text-3xl tracking-tight">{t(lang, "Book a viewing", "Reservar visita")}</h1>
+      <p class="text-sm opacity-80">
+        {t(lang, "Share your details and our team will contact you shortly.", "Comparte tus datos y nuestro equipo te contactará en breve.")}
+      </p>
+    </header>
+
+    <div class="grid gap-3 sm:grid-cols-3">
+      {whatsappHref ? (
+        <a
+          href={whatsappHref}
+          target="_blank"
+          rel="noreferrer"
+          class={`inline-flex min-h-11 items-center justify-center rounded-lg border px-4 py-3 text-sm font-medium ${intent === "whatsapp" ? "bg-black text-white border-black" : ""}`}
+        >
+          {t(lang, "WhatsApp", "WhatsApp")}
+        </a>
+      ) : (
+        <span class="inline-flex min-h-11 items-center justify-center rounded-lg border px-4 py-3 text-sm opacity-50">{t(lang, "WhatsApp unavailable", "WhatsApp no disponible")}</span>
+      )}
+
+      {callHref ? (
+        <a
+          href={callHref}
+          class={`inline-flex min-h-11 items-center justify-center rounded-lg border px-4 py-3 text-sm font-medium ${intent === "call" ? "bg-black text-white border-black" : ""}`}
+        >
+          {t(lang, "Call", "Llamar")}
+        </a>
+      ) : (
+        <span class="inline-flex min-h-11 items-center justify-center rounded-lg border px-4 py-3 text-sm opacity-50">{t(lang, "Call unavailable", "Llamada no disponible")}</span>
+      )}
+
+      {emailHref ? (
+        <a href={emailHref} class="inline-flex min-h-11 items-center justify-center rounded-lg border px-4 py-3 text-sm font-medium">
+          {t(lang, "Email", "Email")}
+        </a>
+      ) : (
+        <span class="inline-flex min-h-11 items-center justify-center rounded-lg border px-4 py-3 text-sm opacity-50">{t(lang, "Email unavailable", "Email no disponible")}</span>
+      )}
+    </div>
+
+    <div class="rounded-xl border p-4 space-y-2">
+      <h2 class="text-lg font-semibold">{t(lang, "Address", "Dirección")}</h2>
+      <p class="text-sm opacity-80">{address || t(lang, "Address not available", "Dirección no disponible")}</p>
+      {mapsHref && (
+        <a href={mapsHref} target="_blank" rel="noreferrer" class="inline-flex min-h-11 items-center rounded-lg border px-4 py-2 text-sm font-medium">
+          {t(lang, "Open in Maps", "Abrir en Maps")}
+        </a>
+      )}
+    </div>
+
+    <form id="contact-form" class="space-y-4 rounded-xl border p-4" novalidate>
+      <input type="hidden" name="intent" value={intent} />
+      <label class="grid gap-1 text-sm">
+        <span>{t(lang, "Name", "Nombre")} *</span>
+        <input name="name" required class="min-h-11 rounded-lg border px-3" autocomplete="name" />
+      </label>
+
+      <label class="grid gap-1 text-sm">
+        <span>{t(lang, "Email", "Correo")} *</span>
+        <input name="email" type="email" required class="min-h-11 rounded-lg border px-3" autocomplete="email" />
+      </label>
+
+      <label class="grid gap-1 text-sm">
+        <span>{t(lang, "Phone", "Teléfono")}</span>
+        <input name="phone" class="min-h-11 rounded-lg border px-3" autocomplete="tel" />
+      </label>
+
+      <label class="grid gap-1 text-sm">
+        <span>{t(lang, "Preferred language", "Idioma preferido")}</span>
+        <select name="preferred_language" class="min-h-11 rounded-lg border px-3">
+          <option value={lang}>{lang.toUpperCase()}</option>
+          <option value={lang === "en" ? "es" : "en"}>{lang === "en" ? "ES" : "EN"}</option>
+        </select>
+      </label>
+
+      <label class="grid gap-1 text-sm">
+        <span>{t(lang, "Message", "Mensaje")}</span>
+        <textarea
+          name="message"
+          rows={4}
+          class="rounded-lg border px-3 py-2"
+          placeholder={
+            intent === "call"
+              ? t(lang, "Please call me back to arrange a viewing.", "Por favor, llámenme para organizar una visita.")
+              : intent === "whatsapp"
+                ? t(lang, "I prefer to continue on WhatsApp.", "Prefiero continuar por WhatsApp.")
+                : t(lang, "I am interested in booking a viewing.", "Estoy interesado en reservar una visita.")
+          }
+        />
+      </label>
+
+      <label class="sr-only" aria-hidden="true">
+        Company
+        <input name="company" tabindex="-1" autocomplete="off" />
+      </label>
+
+      <label class="flex items-start gap-2 text-sm">
+        <input name="consent" type="checkbox" required class="mt-1 h-4 w-4" />
+        <span>{t(lang, "I agree to be contacted about this request.", "Acepto ser contactado sobre esta solicitud.")} *</span>
+      </label>
+
+      <button type="submit" class="inline-flex min-h-11 items-center rounded-lg bg-black px-4 py-2 font-medium text-white">
+        {t(lang, "Send request", "Enviar solicitud")}
+      </button>
+    </form>
+
+    <section id="contact-success" class="hidden space-y-3 rounded-xl border p-4" aria-live="polite">
+      <h2 class="text-xl font-semibold">{t(lang, "Thanks!", "¡Gracias!")}</h2>
+      <p class="text-sm opacity-80">{t(lang, "We'll contact you shortly.", "Te contactaremos en breve.")}</p>
+      <div class="flex flex-col gap-2 sm:flex-row">
+        <a href={`/${lang}/units/`} class="inline-flex min-h-11 items-center justify-center rounded-lg border px-4 py-2 font-medium">
+          {t(lang, "Back to Units", "Volver a Unidades")}
+        </a>
+        <a href={`/${lang}/downloads/`} class="inline-flex min-h-11 items-center justify-center rounded-lg bg-black px-4 py-2 font-medium text-white">
+          {t(lang, "Download brochure", "Descargar folleto")}
+        </a>
+      </div>
+    </section>
   </section>
 </BaseLayout>
+
+<script id="contact-page-data" type="application/json" set:html={JSON.stringify({ intent })} />
+
+<script is:inline>
+  (() => {
+    const dataEl = document.getElementById("contact-page-data");
+    const form = document.getElementById("contact-form");
+    const success = document.getElementById("contact-success");
+    if (!dataEl || !form || !success) return;
+
+    const data = JSON.parse(dataEl.textContent || "{}");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!(form instanceof HTMLFormElement)) return;
+      if (!form.reportValidity()) return;
+
+      const formData = new FormData(form);
+      const honeypot = String(formData.get("company") || "").trim();
+
+      form.classList.add("hidden");
+      success.classList.remove("hidden");
+
+      if (honeypot) return;
+      console.log(`[lead] submit contact intent:${data.intent || "viewing"}`);
+    });
+  })();
+</script>
