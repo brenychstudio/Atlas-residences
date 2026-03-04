@@ -1,36 +1,60 @@
 ---
 type Props = {
   morningImage?: string;
+  bluehourImage?: string;
   sunsetImage?: string;
   mobileImage?: string;
-  alt: string;
-  sliderLabel: string;
-  morningLabel: string;
-  sunsetLabel: string;
+
+  alt?: string;
+
+  sliderLabel?: string;
+  morningLabel?: string;
+  bluehourLabel?: string;
+  sunsetLabel?: string;
 };
 
 const {
   morningImage = "",
+  bluehourImage = "",
   sunsetImage = "",
   mobileImage = "",
-  alt,
-  sliderLabel,
-  morningLabel,
-  sunsetLabel,
+
+  alt = "",
+
+  sliderLabel = "Sun position",
+  morningLabel = "Morning",
+  bluehourLabel = "Blue hour",
+  sunsetLabel = "Sunset",
 } = Astro.props as Props;
 
-const fallbackPoster = morningImage.trim() || sunsetImage.trim();
-const hasPoster = Boolean(fallbackPoster);
-const hasSunset = Boolean(sunsetImage.trim() && sunsetImage.trim() !== fallbackPoster);
+const pick = (...xs: string[]) => xs.map((s) => String(s ?? "").trim()).find(Boolean) || "";
+
+const poster = pick(morningImage, bluehourImage, sunsetImage);
+const hasPoster = Boolean(poster);
+
+const hasSunset =
+  Boolean(String(sunsetImage ?? "").trim()) && String(sunsetImage ?? "").trim() !== poster;
+
+const hasBluehour =
+  Boolean(String(bluehourImage ?? "").trim()) &&
+  String(bluehourImage ?? "").trim() !== poster &&
+  String(bluehourImage ?? "").trim() !== String(sunsetImage ?? "").trim();
 ---
 
 {hasPoster && (
-  <div class="space-y-3" data-sun-hero style="--sun:0;">
-    <div class="relative overflow-hidden rounded-2xl border bg-slate-100">
+  <div
+    class="space-y-3"
+    data-sun-hero
+    data-has-bluehour={hasBluehour ? "true" : "false"}
+    style="--sun:0; --bluehour-opacity:0; --sunset-opacity:0;"
+  >
+    <div class="sun-hero-frame relative overflow-hidden rounded-2xl border bg-slate-100">
       <picture>
-        {mobileImage && <source media="(max-width: 640px)" srcset={mobileImage} />}
+        {(mobileImage && mobileImage.trim()) ? (
+          <source media="(max-width: 640px)" srcset={mobileImage} />
+        ) : null}
         <img
-          src={fallbackPoster}
+          src={poster}
           alt={alt}
           class="h-full w-full object-cover"
           loading="eager"
@@ -40,13 +64,27 @@ const hasSunset = Boolean(sunsetImage.trim() && sunsetImage.trim() !== fallbackP
         />
       </picture>
 
+      {hasBluehour && (
+        <img
+          src={bluehourImage}
+          alt=""
+          aria-hidden="true"
+          class="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          style="opacity: var(--bluehour-opacity);"
+          loading="lazy"
+          decoding="async"
+          width="1600"
+          height="900"
+        />
+      )}
+
       {hasSunset && (
         <img
           src={sunsetImage}
           alt=""
           aria-hidden="true"
-          class="pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-          style="opacity: var(--sun);"
+          class="pointer-events-none absolute inset-0 h-full w-full object-cover"
+          style="opacity: var(--sunset-opacity);"
           loading="lazy"
           decoding="async"
           width="1600"
@@ -55,39 +93,109 @@ const hasSunset = Boolean(sunsetImage.trim() && sunsetImage.trim() !== fallbackP
       )}
     </div>
 
-    {hasSunset && (
-      <div class="hidden items-center gap-3 rounded-xl border bg-white/90 px-3 py-2 text-xs sm:text-sm" data-sun-slider-wrap>
-        <span class="shrink-0 opacity-70">{morningLabel}</span>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value="0"
-          class="h-2 w-full accent-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
-          aria-label={sliderLabel}
-          data-sun-slider
-        />
-        <span class="shrink-0 opacity-70">{sunsetLabel}</span>
-      </div>
-    )}
+    <div
+      class="hidden items-center gap-2 rounded-xl border bg-white/90 px-3 py-2 text-xs sm:gap-3 sm:px-4 sm:text-sm"
+      data-sun-slider-wrap
+    >
+      <span class="shrink-0 opacity-70" data-morning-label>{morningLabel}</span>
+
+      <input
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0"
+        aria-label={sliderLabel}
+        class="h-2 w-full cursor-pointer accent-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/60"
+        data-sun-slider
+      />
+
+      <span class="shrink-0 opacity-70" data-sunset-label>{sunsetLabel}</span>
+
+      {hasBluehour && <span class="sr-only" data-bluehour-label>{bluehourLabel}</span>}
+    </div>
   </div>
 )}
 
+<style>
+  .sun-hero-frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 52%, rgba(15, 23, 42, 0.18) 100%);
+    z-index: 10;
+  }
+  .sun-hero-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.45) 0.45px, transparent 0.55px);
+    background-size: 2.5px 2.5px;
+    z-index: 11;
+  }
+</style>
+
 <script is:inline>
   (() => {
-    document.querySelectorAll('[data-sun-hero]').forEach((root) => {
-      const sliderWrap = root.querySelector('[data-sun-slider-wrap]');
-      const slider = root.querySelector('[data-sun-slider]');
-      if (!sliderWrap || !slider) return;
-      sliderWrap.classList.remove('hidden');
-      sliderWrap.classList.add('flex');
-      const update = () => {
-        const value = Math.max(0, Math.min(1, Number(slider.value) || 0));
-        root.style.setProperty('--sun', String(value));
+    const roots = document.querySelectorAll("[data-sun-hero]");
+    roots.forEach((root) => {
+      const wrap = root.querySelector("[data-sun-slider-wrap]");
+      const slider = root.querySelector("[data-sun-slider]");
+      if (!wrap || !slider) return;
+
+      // show slider only when JS runs (no-JS remains poster-only)
+      wrap.classList.remove("hidden");
+
+      const hasBluehour = root.getAttribute("data-has-bluehour") === "true";
+
+      const clamp01 = (v) => Math.max(0, Math.min(1, v));
+      const lerp = (a, b, t) => a + (b - a) * t;
+
+      let target = clamp01(Number(slider.value || 0));
+      let current = target;
+      let raf = 0;
+
+      const setOpacities = (x) => {
+        const v = clamp01(x);
+        root.style.setProperty("--sun", String(v));
+
+        if (hasBluehour) {
+          let b = 0, s = 0;
+          if (v <= 0.5) {
+            b = v / 0.5;     // 0..1
+            s = 0;
+          } else {
+            b = 1 - (v - 0.5) / 0.5; // 1..0
+            s = (v - 0.5) / 0.5;     // 0..1
+          }
+          root.style.setProperty("--bluehour-opacity", String(b));
+          root.style.setProperty("--sunset-opacity", String(s));
+        } else {
+          root.style.setProperty("--sunset-opacity", String(v));
+        }
       };
-      slider.addEventListener('input', update);
-      update();
+
+      setOpacities(current);
+
+      const tick = () => {
+        current = lerp(current, target, 0.12);
+        if (Math.abs(current - target) < 0.001) {
+          current = target;
+          setOpacities(current);
+          raf = 0;
+          return;
+        }
+        setOpacities(current);
+        raf = requestAnimationFrame(tick);
+      };
+
+      slider.addEventListener("input", () => {
+        target = clamp01(Number(slider.value));
+        if (!raf) raf = requestAnimationFrame(tick);
+      });
     });
   })();
 </script>
