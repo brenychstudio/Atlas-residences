@@ -50,6 +50,7 @@ const normalizedDocs = documents
     }
 
     const url = directUrl || fallbackUrl;
+
     const gatedValue = String(doc.gated ?? "").toLowerCase();
     const gated = gatedValue === "true" || gatedValue === "1" || gatedValue === "yes";
 
@@ -65,8 +66,7 @@ const normalizedDocs = documents
   .sort((a, b) => {
     const orderA = typeOrder[a.type] ?? 999;
     const orderB = typeOrder[b.type] ?? 999;
-    if (orderA !== orderB) return orderA - orderB;
-    return a.title.localeCompare(b.title);
+    return orderA - orderB || a.title.localeCompare(b.title);
   });
 
 const typeText = (type: string) => {
@@ -75,6 +75,15 @@ const typeText = (type: string) => {
   if (type === "specs") return t(lang, "Specs", "Especificaciones");
   if (type === "finishes") return t(lang, "Finishes", "Acabados");
   if (type === "legal") return t(lang, "Legal", "Legal");
+  .filter((doc) => doc.title && doc.url);
+
+const typeText = (type: string) => {
+  const normalized = String(type).toLowerCase();
+  if (normalized === "brochure") return t(lang, "Brochure", "Folleto");
+  if (normalized === "price_list") return t(lang, "Price list", "Lista de precios");
+  if (normalized === "specs") return t(lang, "Specs", "Especificaciones");
+  if (normalized === "finishes") return t(lang, "Finishes", "Acabados");
+  if (normalized === "legal") return t(lang, "Legal", "Legal");
   return t(lang, "Document", "Documento");
 };
 ---
@@ -324,7 +333,6 @@ const typeText = (type: string) => {
       result.classList.remove("hidden");
       openFile.setAttribute("href", activeDoc.url);
       emitEvent("lead_success", { docId: activeDoc.id });
-      window.open(activeDoc.url, "_blank", "noopener,noreferrer");
     });
   })();
 </script>
