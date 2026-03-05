@@ -2,7 +2,9 @@
 // FILE: src/pages/[lang]/units/[id].astro
 // FULL REPLACE
 
-import BaseLayout from "../../../layouts/BaseLayout.astro";
+import BaseLayout from "../../../core/layouts/BaseLayout.astro";
+import DeveloperHeader from "../../../vertical/ui/DeveloperHeader.astro";
+import StickyCTA from "../../../vertical/ui/StickyCTA.astro";
 import { type Lang, isLang, t } from "../../../content/languages";
 import { getSettings, getUnitById, getUnits, getUnitTypes } from "../../../vertical/cms/sheets";
 import { ATLAS_ASSETS } from "../../../vertical/content/assets";
@@ -62,37 +64,41 @@ const orientationText = (orientation?: string) => {
 };
 
 const unitLabel = unit?.number || unit?.id || id;
+const canonicalPath = `/${lang}/units/${id}/`;
+const seoUrl = Astro.site ? new URL(canonicalPath, Astro.site).toString() : canonicalPath;
 
 const seoTitle = unit
   ? `${t(lang, "Unit", "Unidad")} ${unitLabel} — ${projectName}`
   : `${t(lang, "Unit", "Unidad")} — ${projectName}`;
 
 const seoDescription = unit
-  ? `${beds} ${t(lang, "beds", "dorm.")}, ${baths} ${t(lang, "baths", "baños")}, ${area} m², ${statusText(
-      unit.status,
-    )}, ${orientationText(unit.orientation)}.`
+  ? `${beds} ${t(lang, "beds", "dorm.")}, ${baths} ${t(lang, "baths", "baños")}, ${area} m²${unit?.price_eur ? `, €${unit.price_eur}` : ""}.`
   : t(lang, "Unit details are unavailable.", "Los detalles de la unidad no están disponibles.");
 
-// Prefer plan image (already resolved), then OG units, then masterplan
-const seoImage = planImage || ATLAS_ASSETS.og.og02Units1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
+// Prefer gallery cover/first image, then type cover, then OG units, then masterplan.
+const seoImage =
+  galleryImages[0] || coverImage || ATLAS_ASSETS.og.og02Units1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
 
 const seoNoindex = !unit;
 const ogLocale = lang === "es" ? "es_ES" : "en_US";
 ---
 
 <BaseLayout lang={lang} title={seoTitle}>
+  <DeveloperHeader slot="header" lang={lang} pathname={Astro.url.pathname} />
   <Fragment slot="head">
     <title>{seoTitle}</title>
     <meta name="description" content={seoDescription} />
     <meta property="og:title" content={seoTitle} />
     <meta property="og:description" content={seoDescription} />
     <meta property="og:image" content={seoImage} />
+    <meta property="og:url" content={seoUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={ogLocale} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={seoTitle} />
     <meta name="twitter:description" content={seoDescription} />
     <meta name="twitter:image" content={seoImage} />
+    <meta name="twitter:url" content={seoUrl} />
     {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
   </Fragment>
 
@@ -199,4 +205,5 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
       </div>
     </section>
   )}
+  <StickyCTA lang={lang} />
 </BaseLayout>
