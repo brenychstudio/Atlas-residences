@@ -73,7 +73,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
   <section class="space-y-5">
     <header class="space-y-2">
       <h1 class="text-3xl tracking-tight">{t(lang, "Units", "Unidades")}</h1>
-      <p id="units-summary" class="text-sm opacity-80">{units.length} {t(lang, "units", "unidades")}</p>
+      <p id="units-summary" class="text-sm leading-relaxed opacity-80">{units.length} {t(lang, "units", "unidades")}</p>
       <p id="active-filters" class="text-sm opacity-70">{t(lang, "All filters", "Todos los filtros")}</p>
     </header>
 
@@ -81,41 +81,41 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
       <div class="space-y-1">
         <p class="text-sm font-medium">{t(lang, "Building", "Bloque")}</p>
         <div class="flex flex-wrap gap-2" data-filter="building">
-          <a data-value="all" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "All", "Todos")}</a>
-          <a data-value="a" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">A</a>
-          <a data-value="b" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">B</a>
+          <a data-value="all" class="ui-chip" href="#">{t(lang, "All", "Todos")}</a>
+          <a data-value="a" class="ui-chip" href="#">A</a>
+          <a data-value="b" class="ui-chip" href="#">B</a>
         </div>
       </div>
       <div class="space-y-1">
         <p class="text-sm font-medium">{t(lang, "Beds", "Dormitorios")}</p>
         <div class="flex flex-wrap gap-2" data-filter="beds">
-          <a data-value="all" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "All", "Todos")}</a>
-          <a data-value="1" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">1</a>
-          <a data-value="2" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">2</a>
-          <a data-value="3" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">3</a>
-          <a data-value="4" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">4</a>
+          <a data-value="all" class="ui-chip" href="#">{t(lang, "All", "Todos")}</a>
+          <a data-value="1" class="ui-chip" href="#">1</a>
+          <a data-value="2" class="ui-chip" href="#">2</a>
+          <a data-value="3" class="ui-chip" href="#">3</a>
+          <a data-value="4" class="ui-chip" href="#">4</a>
         </div>
       </div>
 
       <div class="space-y-1">
         <p class="text-sm font-medium">{t(lang, "Status", "Estado")}</p>
         <div class="flex flex-wrap gap-2" data-filter="status">
-          <a data-value="all" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "All", "Todos")}</a>
-          <a data-value="available" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Available", "Disponible")}</a>
-          <a data-value="reserved" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Reserved", "Reservada")}</a>
-          <a data-value="sold" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Sold", "Vendida")}</a>
-          <a data-value="coming_soon" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Coming soon", "Próximamente")}</a>
+          <a data-value="all" class="ui-chip" href="#">{t(lang, "All", "Todos")}</a>
+          <a data-value="available" class="ui-chip" href="#">{t(lang, "Available", "Disponible")}</a>
+          <a data-value="reserved" class="ui-chip" href="#">{t(lang, "Reserved", "Reservada")}</a>
+          <a data-value="sold" class="ui-chip" href="#">{t(lang, "Sold", "Vendida")}</a>
+          <a data-value="coming_soon" class="ui-chip" href="#">{t(lang, "Coming soon", "Próximamente")}</a>
         </div>
       </div>
 
       <div class="space-y-1">
         <p class="text-sm font-medium">{t(lang, "Orientation", "Orientación")}</p>
         <div class="flex flex-wrap gap-2" data-filter="orientation">
-          <a data-value="all" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "All", "Todos")}</a>
-          <a data-value="sea" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Sea", "Mar")}</a>
-          <a data-value="city" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "City", "Ciudad")}</a>
-          <a data-value="courtyard" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Courtyard", "Patio")}</a>
-          <a data-value="mountain" class="min-h-11 rounded-full border px-4 py-2 text-sm" href="#">{t(lang, "Mountain", "Montaña")}</a>
+          <a data-value="all" class="ui-chip" href="#">{t(lang, "All", "Todos")}</a>
+          <a data-value="sea" class="ui-chip" href="#">{t(lang, "Sea", "Mar")}</a>
+          <a data-value="city" class="ui-chip" href="#">{t(lang, "City", "Ciudad")}</a>
+          <a data-value="courtyard" class="ui-chip" href="#">{t(lang, "Courtyard", "Patio")}</a>
+          <a data-value="mountain" class="ui-chip" href="#">{t(lang, "Mountain", "Montaña")}</a>
         </div>
       </div>
     </div>
@@ -135,7 +135,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
         return (
           <a
             href={buildUnitsHref(unit.id)}
-            class="unit-card group min-h-11 overflow-hidden rounded-xl border transition hover:border-black/40 hover:shadow-sm"
+            class="unit-card ui-card group min-h-11 overflow-hidden rounded-xl"
             data-beds={beds}
             data-status={status || "unknown"}
             data-orientation={orientation || "unknown"}
@@ -153,7 +153,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
               </div>
             )}
 
-            <div class="space-y-3 p-4">
+            <div class="space-y-3.5 p-4">
               <div class="flex items-start justify-between gap-3">
                 <h2 class="text-lg font-semibold leading-tight break-words">
                   {t(lang, "Unit", "Unidad")} {unit.number || unit.id}
@@ -161,11 +161,11 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
                 <span class={`rounded-full px-2.5 py-1 text-xs font-medium ${statusClass}`}>{statusText(unit.status)}</span>
               </div>
 
-              <p class="text-sm opacity-80">
+              <p class="text-sm leading-relaxed opacity-80">
                 {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")} {unit.floor || "-"}
               </p>
 
-              <dl class="grid grid-cols-2 gap-2 text-sm">
+              <dl class="grid grid-cols-2 gap-x-3 gap-y-2 text-sm">
                 <div>
                   <dt class="opacity-70">{t(lang, "Beds/Baths", "Dorm./Baños")}</dt>
                   <dd class="font-medium">{beds}/{baths}</dd>
@@ -235,9 +235,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
           const next = { ...filters, [key]: value };
           link.setAttribute("href", buildQuery(next));
           const active = filters[key] === value;
-          link.classList.toggle("bg-black", active);
-          link.classList.toggle("text-white", active);
-          link.classList.toggle("border-black", active);
+          link.classList.toggle("is-active", active);
         });
       });
     };

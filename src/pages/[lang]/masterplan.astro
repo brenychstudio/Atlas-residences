@@ -106,21 +106,21 @@ const amenityCategoryText = (category?: string) => {
       <div class="space-y-1">
         <p class="text-sm font-medium">{t(lang, "Beds", "Dormitorios")}</p>
         <div class="flex flex-wrap gap-2" data-filter="beds">
-          <a href="#" data-value="all" class="min-h-11 rounded-full border px-4 py-2 text-sm">{t(lang, "All", "Todos")}</a>
-          <a href="#" data-value="1" class="min-h-11 rounded-full border px-4 py-2 text-sm">1</a>
-          <a href="#" data-value="2" class="min-h-11 rounded-full border px-4 py-2 text-sm">2</a>
-          <a href="#" data-value="3" class="min-h-11 rounded-full border px-4 py-2 text-sm">3</a>
-          <a href="#" data-value="4" class="min-h-11 rounded-full border px-4 py-2 text-sm">4</a>
+          <a href="#" data-value="all" class="ui-chip">{t(lang, "All", "Todos")}</a>
+          <a href="#" data-value="1" class="ui-chip">1</a>
+          <a href="#" data-value="2" class="ui-chip">2</a>
+          <a href="#" data-value="3" class="ui-chip">3</a>
+          <a href="#" data-value="4" class="ui-chip">4</a>
         </div>
       </div>
       <div class="space-y-1">
         <p class="text-sm font-medium">{t(lang, "Status", "Estado")}</p>
         <div class="flex flex-wrap gap-2" data-filter="status">
-          <a href="#" data-value="all" class="min-h-11 rounded-full border px-4 py-2 text-sm">{t(lang, "All", "Todos")}</a>
-          <a href="#" data-value="available" class="min-h-11 rounded-full border px-4 py-2 text-sm">{t(lang, "Available", "Disponible")}</a>
-          <a href="#" data-value="reserved" class="min-h-11 rounded-full border px-4 py-2 text-sm">{t(lang, "Reserved", "Reservada")}</a>
-          <a href="#" data-value="sold" class="min-h-11 rounded-full border px-4 py-2 text-sm">{t(lang, "Sold", "Vendida")}</a>
-          <a href="#" data-value="coming_soon" class="min-h-11 rounded-full border px-4 py-2 text-sm">{t(lang, "Coming soon", "Próximamente")}</a>
+          <a href="#" data-value="all" class="ui-chip">{t(lang, "All", "Todos")}</a>
+          <a href="#" data-value="available" class="ui-chip">{t(lang, "Available", "Disponible")}</a>
+          <a href="#" data-value="reserved" class="ui-chip">{t(lang, "Reserved", "Reservada")}</a>
+          <a href="#" data-value="sold" class="ui-chip">{t(lang, "Sold", "Vendida")}</a>
+          <a href="#" data-value="coming_soon" class="ui-chip">{t(lang, "Coming soon", "Próximamente")}</a>
         </div>
       </div>
     </div>
@@ -201,10 +201,10 @@ const amenityCategoryText = (category?: string) => {
         </div>
       </dl>
       <div class="flex flex-col gap-2 sm:flex-row">
-        <a id="view-units-link" class="inline-flex min-h-11 items-center rounded-lg bg-black px-4 py-2 font-medium text-white" href={`/${lang}/units/`}>
+        <a id="view-units-link" class="ui-btn ui-btn--primary inline-flex items-center" href={`/${lang}/units/`}>
           {t(lang, "View units", "Ver unidades")}
         </a>
-        <a id="contact-sales-link" class="inline-flex min-h-11 items-center rounded-lg border px-4 py-2 font-medium" href={`/${lang}/contact/?source=masterplan`}>
+        <a id="contact-sales-link" class="ui-btn inline-flex items-center" href={`/${lang}/contact/?source=masterplan`}>
           {t(lang, "Contact sales", "Contactar ventas")}
         </a>
       </div>
@@ -273,9 +273,7 @@ const amenityCategoryText = (category?: string) => {
           const next = { ...filters, [key]: value };
           link.setAttribute("href", buildQuery(next));
           const active = filters[key] === value;
-          link.classList.toggle("bg-black", active);
-          link.classList.toggle("text-white", active);
-          link.classList.toggle("border-black", active);
+          link.classList.toggle("is-active", active);
         });
       });
     };

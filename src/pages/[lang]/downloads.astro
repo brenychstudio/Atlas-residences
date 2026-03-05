@@ -28,7 +28,7 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
     <div class="grid gap-3 sm:grid-cols-2">
       {brochureUrl && (
         <a
-          class="group overflow-hidden rounded-xl border transition hover:border-black/40"
+          class="ui-card group overflow-hidden rounded-xl"
           href={brochureUrl}
         >
           <img
@@ -47,7 +47,7 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
 
       {priceListUrl && (
         <a
-          class="group overflow-hidden rounded-xl border transition hover:border-black/40"
+          class="ui-card group overflow-hidden rounded-xl"
           href={priceListUrl}
         >
           <img
@@ -65,11 +65,11 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
       )}
     </div>
     ) : (
-      <div class="space-y-3 rounded-xl border bg-slate-50 p-5">
+      <div class="ui-card space-y-3 rounded-xl bg-slate-50 p-5">
         <p class="text-sm opacity-80">
           {t(lang, "Downloads will be available shortly.", "Las descargas estarán disponibles en breve.")}
         </p>
-        <a class="inline-flex min-h-11 items-center rounded-lg border px-4 py-2 text-sm font-medium transition hover:border-black/40" href={`/${lang}/contact/?source=downloads`}>
+        <a class="ui-btn inline-flex items-center text-sm" href={`/${lang}/contact/?source=downloads`}>
           {t(lang, "Contact sales", "Contactar ventas")}
         </a>
       </div>
