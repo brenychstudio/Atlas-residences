@@ -24,6 +24,7 @@
   --text-h3: clamp(1.2rem, 1.6vw, 1.5rem);
   --tap-target-min: 44px;
   --ui-focus-ring: color-mix(in oklab, var(--fg), transparent 84%);
+  --ui-control-height: 2.75rem;
 }
 
 @layer base {
@@ -125,7 +126,13 @@
   input,
   select,
   textarea {
-    min-height: var(--tap-target-min);
+    min-height: max(var(--tap-target-min), var(--ui-control-height));
+  }
+
+  :is(a, button, input, select, textarea):focus-visible {
+    outline: 2px solid color-mix(in oklab, var(--fg), white 12%);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px var(--ui-focus-ring);
   }
 
   main {
