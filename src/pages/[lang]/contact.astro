@@ -42,14 +42,28 @@ const utmTerm = (Astro.url.searchParams.get("utm_term") ?? "").trim();
 const utmContent = (Astro.url.searchParams.get("utm_content") ?? "").trim();
 const gclid = (Astro.url.searchParams.get("gclid") ?? "").trim();
 const fbclid = (Astro.url.searchParams.get("fbclid") ?? "").trim();
+const page = Astro.url.pathname;
 const sent = Astro.url.searchParams.get("sent") === "1";
 const error = Astro.url.searchParams.get("error") === "1";
+const analyticsContext = {
+  ...(source ? { source } : {}),
+  ...(building ? { building } : {}),
+  ...(unit ? { unit } : {}),
+  lang,
+  page,
+  ...(utmSource ? { utm_source: utmSource } : {}),
+  ...(utmMedium ? { utm_medium: utmMedium } : {}),
+  ...(utmCampaign ? { utm_campaign: utmCampaign } : {}),
+  ...(utmTerm ? { utm_term: utmTerm } : {}),
+  ...(utmContent ? { utm_content: utmContent } : {}),
+  ...(gclid ? { gclid } : {}),
+  ...(fbclid ? { fbclid } : {}),
+};
 
 const formAction = (import.meta.env.PUBLIC_CONTACT_FORM_ACTION ?? "").trim();
 const formMethod = (import.meta.env.PUBLIC_CONTACT_FORM_METHOD ?? "POST").trim() || "POST";
 const hasFormAction = Boolean(formAction);
 const isFormspreeCompatible = hasFormAction && formAction.toLowerCase().includes("formspree.io");
-const page = Astro.url.pathname;
 const contactSentPath = `/${lang}/contact/?sent=1`;
 const formspreeNext = Astro.url.origin && Astro.url.origin !== "null" ? new URL(contactSentPath, Astro.url.origin).toString() : contactSentPath;
 const formspreeSubject = ["Atlas Residences lead", source ? `source=${source}` : "", building ? `building=${building}` : "", unit ? `unit=${unit}` : ""]
@@ -373,6 +387,16 @@ const selectionSummary = [
         buildingRow?.classList.toggle("hidden", !building);
         unitRow?.classList.toggle("hidden", !unit);
         details?.classList.toggle("hidden", !(cleanSource || building || unit));
+      })();
+    </script>
+
+    <script define:vars={{ analyticsContext, sent, error }}>
+      (() => {
+        const dataLayer = (window.dataLayer = window.dataLayer || []);
+        const pushEvent = (event) => dataLayer.push({ event, ...analyticsContext });
+        pushEvent("atlas_contact_form_view");
+        if (sent) pushEvent("atlas_contact_form_sent");
+        if (error) pushEvent("atlas_contact_form_error");
       })();
     </script>
 
