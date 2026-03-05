@@ -77,6 +77,24 @@ const hasCoords = Boolean(settings.coords_lat && settings.coords_lng);
 const mapsHref = hasCoords
   ? `https://www.google.com/maps?q=${encodeURIComponent(`${settings.coords_lat},${settings.coords_lng}`)}`
   : "";
+
+const sourceContext =
+  source === "home"
+    ? t(lang, "from the homepage", "desde la página principal")
+    : source === "masterplan"
+      ? t(lang, "from the masterplan", "desde el plan maestro")
+      : source === "unit"
+        ? t(lang, "from a unit inquiry", "desde una consulta de unidad")
+        : source === "downloads"
+          ? t(lang, "from downloads", "desde descargas")
+          : "";
+
+const selectionSummary = [
+  building ? `${t(lang, "Tower", "Torre")} ${building.toUpperCase()}` : "",
+  unit ? `${t(lang, "Unit", "Unidad")} ${unit.toUpperCase()}` : "",
+]
+  .filter(Boolean)
+  .join(" • ");
 ---
 
 <BaseLayout lang={lang} title={seoTitle}>
@@ -152,11 +170,23 @@ const mapsHref = hasCoords
     )}
 
     {sent && (
-      <p class="rounded-xl border p-4 text-sm opacity-90">{t(lang, "Your request was sent successfully. Our team will contact you shortly.", "Tu solicitud fue enviada con éxito. Nuestro equipo te contactará en breve.")}</p>
+      <div class="rounded-xl border p-4 space-y-1">
+        <p class="text-sm font-medium">{t(lang, "Request received", "Solicitud recibida")}</p>
+        <p class="text-sm opacity-80">
+          {t(lang, "Thank you. Our team will contact you shortly to continue your inquiry.", "Gracias. Nuestro equipo te contactará en breve para continuar con tu consulta.")}
+        </p>
+        {sourceContext && <p class="text-xs opacity-70">{t(lang, "Follow-up noted", "Seguimiento registrado")}: {sourceContext}.</p>}
+        {selectionSummary && <p class="text-xs opacity-70">{selectionSummary}</p>}
+      </div>
     )}
 
     {error && (
-      <p class="rounded-xl border p-4 text-sm opacity-90">{t(lang, "We could not send your request. Please try again in a moment.", "No pudimos enviar tu solicitud. Por favor, inténtalo de nuevo en un momento.")}</p>
+      <div class="rounded-xl border p-4 space-y-1">
+        <p class="text-sm font-medium">{t(lang, "We couldn’t send your request", "No pudimos enviar tu solicitud")}</p>
+        <p class="text-sm opacity-80">
+          {t(lang, "Please try again in a moment, or contact us directly by WhatsApp, phone, or email.", "Por favor, inténtalo de nuevo en un momento, o contáctanos directamente por WhatsApp, llamada o email.")}
+        </p>
+      </div>
     )}
 
     {!hasFormAction && (
