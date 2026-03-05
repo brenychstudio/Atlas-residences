@@ -103,7 +103,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
   </Fragment>
 
   {!unit ? (
-    <section class="space-y-4 rounded-xl border p-5">
+    <section class="ui-card space-y-4 rounded-xl p-5">
       <h1 class="text-2xl font-semibold tracking-tight">{t(lang, "Unit not found", "Unidad no encontrada")}</h1>
       <p class="opacity-80">
         {t(
@@ -112,7 +112,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
           "Esta unidad ya no está disponible o el enlace es incorrecto.",
         )}
       </p>
-      <a class="inline-flex min-h-11 items-center rounded-lg border px-4 py-2 font-medium" href={`/${lang}/units/`}>
+      <a class="ui-btn inline-flex items-center" href={`/${lang}/units/`}>
         {t(lang, "Back to units", "Volver a unidades")}
       </a>
     </section>
@@ -162,7 +162,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
         </div>
       )}
 
-      <div class="grid gap-3 rounded-xl border p-4 text-sm sm:grid-cols-2">
+      <div class="ui-card grid gap-3 rounded-xl p-4 text-sm sm:grid-cols-2">
         <div>
           <p class="opacity-70">{t(lang, "Beds / Baths", "Dormitorios / Baños")}</p>
           <p class="text-base font-medium">
@@ -191,13 +191,13 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
 
       <div class="flex flex-col gap-3 sm:flex-row">
         <a
-          class="inline-flex min-h-11 items-center justify-center rounded-lg bg-black px-5 py-3 font-medium text-white"
+          class="ui-btn ui-btn--primary inline-flex items-center justify-center px-5"
           href={`/${lang}/downloads/`}
         >
           {t(lang, "Request price list", "Solicitar lista de precios")}
         </a>
         <a
-          class="inline-flex min-h-11 items-center justify-center rounded-lg border px-5 py-3 font-medium"
+          class="ui-btn inline-flex items-center justify-center px-5"
           href={`/${lang}/contact/?source=unit&unit=${encodeURIComponent(String(unit.id ?? ""))}`}
         >
           {t(lang, "Book a viewing", "Reservar visita")}

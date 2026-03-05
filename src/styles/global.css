@@ -16,6 +16,7 @@
   --space-page-y: clamp(1.25rem, 3vw, 2.5rem);
   --content-max: 72rem;
   --tap-target-min: 44px;
+  --ui-focus-ring: color-mix(in oklab, var(--fg), transparent 84%);
 }
 
 @layer base {

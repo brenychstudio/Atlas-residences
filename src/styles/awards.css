@@ -64,3 +64,108 @@ p {
   width: min(100% - 2rem, var(--container-max));
   margin-inline: auto;
 }
+
+.ui-card {
+  border: 1px solid color-mix(in oklab, var(--border), white 6%);
+  background: color-mix(in oklab, var(--card), transparent 2%);
+  box-shadow: 0 6px 20px rgba(23, 23, 22, 0.045);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.ui-card:hover {
+  border-color: color-mix(in oklab, var(--fg), white 72%);
+  box-shadow: 0 10px 28px rgba(23, 23, 22, 0.08);
+  transform: translateY(-1px);
+}
+
+.ui-card:focus-visible,
+.ui-card:focus-within {
+  border-color: color-mix(in oklab, var(--fg), white 58%);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--fg), transparent 88%), 0 10px 28px rgba(23, 23, 22, 0.1);
+}
+
+.ui-chip {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in oklab, var(--border), white 10%);
+  padding: 0.45rem 0.95rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: color-mix(in oklab, var(--fg), transparent 8%);
+  background: color-mix(in oklab, var(--surface), transparent 6%);
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+}
+
+.ui-chip:hover {
+  border-color: color-mix(in oklab, var(--fg), white 72%);
+  background: color-mix(in oklab, var(--surface), white 18%);
+}
+
+.ui-chip.is-active {
+  border-color: color-mix(in oklab, var(--fg), white 18%);
+  color: #fff;
+  background: color-mix(in oklab, var(--fg), black 8%);
+}
+
+.ui-chip:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--fg), transparent 84%);
+}
+
+.ui-btn {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-control);
+  border: 1px solid color-mix(in oklab, var(--border), white 8%);
+  padding: 0.6rem 1.05rem;
+  font-weight: 500;
+  line-height: 1.2;
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+}
+
+.ui-btn:hover {
+  border-color: color-mix(in oklab, var(--fg), white 68%);
+}
+
+.ui-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--fg), transparent 84%);
+}
+
+.ui-btn:disabled,
+.ui-btn[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.ui-btn--primary {
+  border-color: color-mix(in oklab, var(--fg), black 10%);
+  background: color-mix(in oklab, var(--fg), black 6%);
+  color: #fff;
+}
+
+.ui-btn--primary:hover {
+  border-color: color-mix(in oklab, var(--fg), black 22%);
+  background: color-mix(in oklab, var(--fg), black 14%);
+}
+
+.ui-field {
+  border-color: color-mix(in oklab, var(--border), white 10%);
+  background: color-mix(in oklab, var(--surface), transparent 4%);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.ui-field:hover {
+  border-color: color-mix(in oklab, var(--fg), white 76%);
+}
+
+.ui-field:focus-visible {
+  border-color: color-mix(in oklab, var(--fg), white 62%);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--fg), transparent 86%);
+}
