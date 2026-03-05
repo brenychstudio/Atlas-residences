@@ -1,5 +1,7 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import BaseLayout from "../../core/layouts/BaseLayout.astro";
+import DeveloperHeader from "../../vertical/ui/DeveloperHeader.astro";
+import StickyCTA from "../../vertical/ui/StickyCTA.astro";
 import { LANGS, type Lang, isLang, t } from "../../content/languages";
 import { getAmenities, getBuildings, getPageBySlug, getSettings, getUnits } from "../../vertical/cms/sheets";
 import { ATLAS_ASSETS } from "../../vertical/content/assets";
@@ -17,12 +19,13 @@ const p = p0.endsWith("/") ? p0 : `${p0}/`;
 const [settings, pageSeo] = await Promise.all([getSettings(), getPageBySlug(p)]);
 
 const projectName = (lang === "es" ? settings.project_name_es : settings.project_name_en) || "Atlas Residences";
-const defaultDescription =
-  (lang === "es" ? settings.tagline_es : settings.tagline_en) ||
-  t(lang, "Explore Atlas residences on the masterplan.", "Explora Atlas Residences en el plan maestro.");
+const canonicalPath = `/${lang}/masterplan/`;
+const seoUrl = Astro.site ? new URL(canonicalPath, Astro.site).toString() : canonicalPath;
 
 const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Masterplan", "Plan maestro")} — ${projectName}`;
-const seoDescription = (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) || defaultDescription;
+const seoDescription =
+  (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) ||
+  t(lang, "Masterplan overview for Atlas Residences.", "Resumen del plan maestro de Atlas Residences.");
 const seoImage = pageSeo?.og_image || ATLAS_ASSETS.masterplan.mp01Wide16x9 || ATLAS_ASSETS.og.og01Home1200x630;
 const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";
 const ogLocale = lang === "es" ? "es_ES" : "en_US";
@@ -75,18 +78,21 @@ const amenityCategoryText = (category?: string) => {
 ---
 
 <BaseLayout lang={lang} title={seoTitle}>
+  <DeveloperHeader slot="header" lang={lang} pathname={Astro.url.pathname} />
   <Fragment slot="head">
     <title>{seoTitle}</title>
     <meta name="description" content={seoDescription} />
     <meta property="og:title" content={seoTitle} />
     <meta property="og:description" content={seoDescription} />
     <meta property="og:image" content={seoImage} />
+    <meta property="og:url" content={seoUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={ogLocale} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={seoTitle} />
     <meta name="twitter:description" content={seoDescription} />
     <meta name="twitter:image" content={seoImage} />
+    <meta name="twitter:url" content={seoUrl} />
     {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
   </Fragment>
 
@@ -209,6 +215,7 @@ const amenityCategoryText = (category?: string) => {
       <p id="amenity-category" class="text-sm opacity-80 break-words">{t(lang, "Tap an amenity hotspot.", "Toca un hotspot de amenidad.")}</p>
     </div>
   </section>
+  <StickyCTA lang={lang} />
 </BaseLayout>
 
 <script id="masterplan-data" type="application/json" set:html={JSON.stringify({
