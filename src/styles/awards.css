@@ -5,13 +5,18 @@
   --border: #d9d6d0;
   --surface: rgba(254, 254, 254, 0.9);
   --surface-2: rgba(249, 248, 244, 0.92);
+  --selection: color-mix(in oklab, var(--fg), transparent 84%);
 
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
-  --radius-xl: 999px;
+  --radius-xl: 1rem;
+  --radius-card: 1rem;
+  --radius-control: 0.75rem;
+  --radius-pill: 9999px;
 
-  --shadow-sm: 0 4px 14px rgba(23, 23, 22, 0.06);
+  --shadow-soft: 0 4px 14px rgba(23, 23, 22, 0.06);
+  --shadow-sm: var(--shadow-soft);
   --shadow-md: 0 12px 36px rgba(23, 23, 22, 0.1);
 
   --container-max: 1120px;
@@ -40,9 +45,9 @@ h1,
 h2,
 h3 {
   font-family: var(--font-serif);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.018em;
   font-weight: 500;
-  line-height: 1.08;
+  line-height: 1.12;
 }
 
 p {

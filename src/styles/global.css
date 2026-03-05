@@ -36,10 +36,20 @@
   body {
     margin: 0;
     font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.55;
+    letter-spacing: 0.002em;
     color: var(--fg);
     background: var(--bg);
     text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     @apply antialiased;
+  }
+
+  ::selection {
+    background: var(--selection);
+    color: var(--fg);
   }
 
   h1,
@@ -49,8 +59,8 @@
   h5,
   h6 {
     font-family: var(--font-serif);
-    letter-spacing: -0.015em;
-    line-height: 1.1;
+    letter-spacing: -0.014em;
+    line-height: 1.12;
     text-wrap: balance;
   }
 
@@ -74,7 +84,6 @@
     height: auto;
   }
 
-  a,
   button,
   [role="button"],
   input,
