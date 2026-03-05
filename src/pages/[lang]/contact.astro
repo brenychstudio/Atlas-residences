@@ -195,7 +195,7 @@ const selectionSummary = [
       </p>
     )}
 
-    <form id="contact-form" class="space-y-4 rounded-xl border p-4" novalidate action={hasFormAction ? formAction : undefined} method={hasFormAction ? formMethod : undefined}>
+    <form id="contact-form" class="space-y-4 rounded-xl border p-4" action={hasFormAction ? formAction : undefined} method={hasFormAction ? formMethod : undefined}>
       <input type="hidden" name="intent" value={intent} />
       <input type="hidden" name="source" value={source} />
       <input type="hidden" name="building" value={building} />
@@ -209,12 +209,12 @@ const selectionSummary = [
 
       <label class="grid gap-1 text-sm">
         <span>{t(lang, "Email", "Correo")} *</span>
-        <input name="email" type="email" required class="min-h-11 rounded-lg border px-3" autocomplete="email" />
+        <input name="email" type="email" required class="min-h-11 rounded-lg border px-3" autocomplete="email" inputmode="email" />
       </label>
 
       <label class="grid gap-1 text-sm">
         <span>{t(lang, "Phone", "Teléfono")}</span>
-        <input name="phone" class="min-h-11 rounded-lg border px-3" autocomplete="tel" />
+        <input name="phone" type="tel" class="min-h-11 rounded-lg border px-3" autocomplete="tel" inputmode="tel" />
       </label>
 
       <label class="grid gap-1 text-sm">
@@ -226,10 +226,13 @@ const selectionSummary = [
       </label>
 
       <label class="grid gap-1 text-sm">
-        <span>{t(lang, "Message", "Mensaje")}</span>
+        <span>{t(lang, "Message", "Mensaje")} *</span>
         <textarea
           name="message"
           rows={4}
+          required
+          minlength={10}
+          maxlength={2000}
           class="rounded-lg border px-3 py-2"
           placeholder={
             intent === "call"
