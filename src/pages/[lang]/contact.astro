@@ -31,10 +31,31 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
 
 const rawIntent = (Astro.url.searchParams.get("intent") ?? "viewing").toLowerCase();
 const intent = ["viewing", "whatsapp", "call"].includes(rawIntent) ? rawIntent : "viewing";
-const sourceParam = (Astro.url.searchParams.get("source") ?? "").toLowerCase();
+const sourceParam = (Astro.url.searchParams.get("source") ?? "").trim().toLowerCase();
 const source = ["home", "masterplan", "unit", "downloads"].includes(sourceParam) ? sourceParam : "";
 const building = (Astro.url.searchParams.get("building") ?? "").trim();
 const unit = (Astro.url.searchParams.get("unit") ?? "").trim();
+const normalizedSource = source || "direct";
+const normalizedBuilding = building;
+const normalizedUnit = unit;
+const normalizedIntent =
+  normalizedSource === "unit" && normalizedUnit
+    ? "unit_inquiry"
+    : normalizedSource === "masterplan" && normalizedBuilding
+      ? "building_inquiry"
+      : normalizedSource === "downloads"
+        ? "downloads_request"
+        : normalizedSource === "home"
+          ? "homepage_inquiry"
+          : "sales_inquiry";
+const leadContext = [
+  `source=${normalizedSource}`,
+  `intent=${normalizedIntent}`,
+  normalizedBuilding ? `building=${normalizedBuilding}` : "",
+  normalizedUnit ? `unit=${normalizedUnit}` : "",
+]
+  .filter(Boolean)
+  .join(" | ");
 const utmSource = (Astro.url.searchParams.get("utm_source") ?? "").trim();
 const utmMedium = (Astro.url.searchParams.get("utm_medium") ?? "").trim();
 const utmCampaign = (Astro.url.searchParams.get("utm_campaign") ?? "").trim();
@@ -66,7 +87,7 @@ const hasFormAction = Boolean(formAction);
 const isFormspreeCompatible = hasFormAction && formAction.toLowerCase().includes("formspree.io");
 const contactSentPath = `/${lang}/contact/?sent=1`;
 const formspreeNext = Astro.url.origin && Astro.url.origin !== "null" ? new URL(contactSentPath, Astro.url.origin).toString() : contactSentPath;
-const formspreeSubject = ["Atlas Residences lead", source ? `source=${source}` : "", building ? `building=${building}` : "", unit ? `unit=${unit}` : ""]
+const formspreeSubject = ["Atlas Residences lead", normalizedSource ? `source=${normalizedSource}` : "", normalizedBuilding ? `building=${normalizedBuilding}` : "", normalizedUnit ? `unit=${normalizedUnit}` : ""]
   .filter(Boolean)
   .join(" · ");
 
@@ -240,10 +261,11 @@ const selectionSummary = [
     )}
 
     <form id="contact-form" class="space-y-4 rounded-xl border p-4" action={hasFormAction ? formAction : undefined} method={hasFormAction ? formMethod : undefined}>
-      <input type="hidden" name="intent" value={intent} />
+      <input type="hidden" name="intent" value={normalizedIntent} />
       <input type="hidden" name="source" value={source} />
       <input type="hidden" name="building" value={building} />
       <input type="hidden" name="unit" value={unit} />
+      <input type="hidden" name="lead_context" value={leadContext} />
       <input type="hidden" name="lang" value={lang} />
       <input type="hidden" name="page" value={page} />
       {utmSource && <input type="hidden" name="utm_source" value={utmSource} data-attribution="true" />}
@@ -323,22 +345,41 @@ const selectionSummary = [
         const form = document.getElementById("contact-form");
         if (!form) return;
 
-        const allowedIntents = new Set(["viewing", "whatsapp", "call"]);
         const allowedSources = new Set(["home", "masterplan", "unit", "downloads"]);
-        const intent = (params.get("intent") || "").toLowerCase();
-        const source = (params.get("source") || "").toLowerCase();
+        const source = (params.get("source") || "").trim().toLowerCase();
         const building = (params.get("building") || "").trim();
         const unit = (params.get("unit") || "").trim();
+        const cleanSource = allowedSources.has(source) ? source : "";
+        const normalizedSource = cleanSource || "direct";
+        const normalizedIntent =
+          normalizedSource === "unit" && unit
+            ? "unit_inquiry"
+            : normalizedSource === "masterplan" && building
+              ? "building_inquiry"
+              : normalizedSource === "downloads"
+                ? "downloads_request"
+                : normalizedSource === "home"
+                  ? "homepage_inquiry"
+                  : "sales_inquiry";
+        const leadContext = [
+          `source=${normalizedSource}`,
+          `intent=${normalizedIntent}`,
+          building ? `building=${building}` : "",
+          unit ? `unit=${unit}` : "",
+        ]
+          .filter(Boolean)
+          .join(" | ");
 
         const setHidden = (name, value) => {
           const input = form.querySelector(`input[name="${name}"]`);
           if (input) input.value = value;
         };
 
-        setHidden("intent", allowedIntents.has(intent) ? intent : "viewing");
-        setHidden("source", allowedSources.has(source) ? source : "");
+        setHidden("intent", normalizedIntent);
+        setHidden("source", cleanSource);
         setHidden("building", building);
         setHidden("unit", unit);
+        setHidden("lead_context", leadContext);
         setHidden("page", window.location.pathname);
 
         ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "fbclid"].forEach((name) => {
@@ -360,8 +401,7 @@ const selectionSummary = [
 
         const subjectInput = form.querySelector("input[data-formspree-subject='true']");
         if (subjectInput) {
-          const leadSource = allowedSources.has(source) ? source : "";
-          const subjectParts = ["Atlas Residences lead", leadSource ? `source=${leadSource}` : "", building ? `building=${building}` : "", unit ? `unit=${unit}` : ""];
+          const subjectParts = ["Atlas Residences lead", `source=${normalizedSource}`, building ? `building=${building}` : "", unit ? `unit=${unit}` : ""];
           subjectInput.value = subjectParts.filter(Boolean).join(" · ");
         }
 
@@ -379,7 +419,6 @@ const selectionSummary = [
         const sourceValue = document.getElementById("contact-sent-source");
         const buildingValue = document.getElementById("contact-sent-building");
         const unitValue = document.getElementById("contact-sent-unit");
-        const cleanSource = allowedSources.has(source) ? source : "";
         if (sourceValue) sourceValue.textContent = cleanSource;
         if (buildingValue) buildingValue.textContent = building;
         if (unitValue) unitValue.textContent = unit;
