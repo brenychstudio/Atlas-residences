@@ -18,6 +18,9 @@
   --shadow-soft: 0 4px 14px rgba(23, 23, 22, 0.06);
   --shadow-sm: var(--shadow-soft);
   --shadow-md: 0 12px 36px rgba(23, 23, 22, 0.1);
+  --shadow-card: 0 8px 22px rgba(23, 23, 22, 0.055);
+  --shadow-card-hover: 0 12px 30px rgba(23, 23, 22, 0.085);
+  --control-height: 2.75rem;
 
   --container-max: 1120px;
   --header-height: 4.75rem;
@@ -92,16 +95,17 @@ p {
 }
 
 .ui-card {
+  border-radius: var(--radius-card);
   border: 1px solid color-mix(in oklab, var(--border), var(--fg) 8%);
   background: color-mix(in oklab, var(--card), transparent 2%);
-  box-shadow: 0 6px 20px rgba(23, 23, 22, 0.045);
+  box-shadow: var(--shadow-card);
   transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
 .ui-card:hover {
   border-color: color-mix(in oklab, var(--fg), white 72%);
-  box-shadow: 0 10px 28px rgba(23, 23, 22, 0.08);
-  transform: translateY(-1px);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
 }
 
 .ui-card:focus-visible,
@@ -112,12 +116,12 @@ p {
 
 .ui-chip {
   display: inline-flex;
-  min-height: 2.5rem;
+  min-height: 2.4rem;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-pill);
   border: 1px solid color-mix(in oklab, var(--border), white 10%);
-  padding: 0.45rem 0.95rem;
+  padding: 0.48rem 0.98rem;
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.2;
@@ -129,12 +133,14 @@ p {
 .ui-chip:hover {
   border-color: color-mix(in oklab, var(--fg), white 72%);
   background: color-mix(in oklab, var(--surface), white 18%);
+  box-shadow: 0 1px 0 rgba(23, 23, 22, 0.05);
 }
 
 .ui-chip.is-active {
   border-color: color-mix(in oklab, var(--fg), white 18%);
   color: #fff;
   background: color-mix(in oklab, var(--fg), black 8%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .ui-chip:focus-visible {
@@ -144,12 +150,12 @@ p {
 
 .ui-btn {
   display: inline-flex;
-  min-height: 2.75rem;
+  min-height: var(--control-height);
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-control);
   border: 1px solid color-mix(in oklab, var(--border), white 8%);
-  padding: 0.6rem 1.05rem;
+  padding: 0.62rem 1.08rem;
   font-weight: 500;
   line-height: 1.2;
   transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
@@ -157,6 +163,11 @@ p {
 
 .ui-btn:hover {
   border-color: color-mix(in oklab, var(--fg), white 68%);
+  transform: translateY(-1px);
+}
+
+.ui-btn:active {
+  transform: translateY(0);
 }
 
 .ui-btn:focus-visible {
@@ -181,10 +192,30 @@ p {
   background: color-mix(in oklab, var(--fg), black 14%);
 }
 
+.ui-btn:not(.ui-btn--primary) {
+  background: color-mix(in oklab, var(--surface), transparent 6%);
+  color: color-mix(in oklab, var(--fg), transparent 6%);
+}
+
+.ui-btn:not(.ui-btn--primary):hover {
+  background: color-mix(in oklab, var(--surface), white 22%);
+}
+
 .ui-field {
+  min-height: var(--control-height);
   border-color: color-mix(in oklab, var(--border), white 10%);
   background: color-mix(in oklab, var(--surface), transparent 4%);
+  padding-inline: 0.9rem;
   transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+textarea.ui-field {
+  min-height: 6.75rem;
+  padding-block: 0.62rem;
+}
+
+.ui-field::placeholder {
+  color: color-mix(in oklab, var(--muted), white 28%);
 }
 
 .ui-field:hover {
@@ -194,4 +225,21 @@ p {
 .ui-field:focus-visible {
   border-color: color-mix(in oklab, var(--fg), white 62%);
   box-shadow: 0 0 0 3px color-mix(in oklab, var(--fg), transparent 86%);
+}
+
+#building-panel,
+#amenity-panel,
+#contact-form {
+  border-radius: var(--radius-card);
+  border-color: color-mix(in oklab, var(--border), var(--fg) 8%);
+  background: color-mix(in oklab, var(--surface), transparent 2%);
+  box-shadow: var(--shadow-card);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+#building-panel:hover,
+#amenity-panel:hover,
+#contact-form:hover {
+  border-color: color-mix(in oklab, var(--fg), white 72%);
+  box-shadow: var(--shadow-card-hover);
 }
