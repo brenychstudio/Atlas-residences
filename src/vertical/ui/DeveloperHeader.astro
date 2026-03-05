@@ -30,23 +30,23 @@ function isActive(href: string) {
 
 <header
   data-dev-header
-  class="sticky top-0 z-50 border-b border-[color:color-mix(in_oklab,var(--border),var(--fg)_14%)] bg-[color:var(--surface)]/90 backdrop-blur-md"
+  class="sticky top-0 z-50 border-b border-[color:color-mix(in_oklab,var(--border),var(--fg)_10%)] bg-[color:var(--surface)]/92 backdrop-blur-md"
 >
-  <div class="mx-auto flex w-full max-w-[72rem] items-center justify-between gap-4 px-4 py-3 md:px-6">
+  <div class="mx-auto flex w-full max-w-[72rem] items-center justify-between gap-4 px-4 py-3.5 md:px-6">
     <a
       href={`/${L}/`}
-      class="inline-flex min-h-[44px] items-center text-xs uppercase tracking-[0.18em] text-[color:var(--fg)]"
+      class="inline-flex min-h-[44px] items-center text-[0.72rem] uppercase tracking-[0.2em] text-[color:var(--fg)]"
     >
       Atlas Residences
     </a>
 
-    <nav class="hidden items-center gap-2 md:flex">
+    <nav class="hidden items-center gap-2.5 md:flex">
       {nav.map((item) => {
         const active = isActive(item.href);
         return (
           <a
             href={item.href}
-            class={`inline-flex min-h-[42px] items-center rounded-[var(--radius-pill)] border px-4 text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/25 ${
+            class={`inline-flex min-h-[42px] items-center rounded-[var(--radius-pill)] border px-4 text-[0.92rem] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/25 ${
               active
                 ? "border-[color:var(--fg)] bg-[color:var(--fg)] text-[color:var(--bg)]"
                 : "border-[color:color-mix(in_oklab,var(--border),var(--fg)_12%)] bg-[color:var(--surface-2)] text-[color:var(--muted)] hover:border-[color:var(--fg)]/35 hover:bg-white hover:text-[color:var(--fg)]"
@@ -59,7 +59,7 @@ function isActive(href: string) {
       })}
     </nav>
 
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2.5">
       <nav
         class="inline-flex min-h-[44px] items-center rounded-[var(--radius-pill)] border border-[color:color-mix(in_oklab,var(--border),var(--fg)_14%)] bg-[color:var(--surface-2)] p-1"
         aria-label="Switch language"
@@ -100,7 +100,7 @@ function isActive(href: string) {
     </div>
   </div>
 
-  <nav class="mx-auto flex w-full max-w-[72rem] items-center gap-2 overflow-x-auto px-4 pb-3 md:hidden">
+  <nav class="mx-auto flex w-full max-w-[72rem] items-center gap-2 overflow-x-auto px-4 pb-3.5 md:hidden">
     {nav.map((item) => {
       const active = isActive(item.href);
       return (
