@@ -281,3 +281,64 @@ textarea.ui-field {
   border-color: color-mix(in oklab, var(--fg), white 72%);
   box-shadow: var(--shadow-card-hover);
 }
+
+.units-filters [data-filter] .ui-chip {
+  min-height: 2.3rem;
+  padding: 0.44rem 0.92rem;
+  font-size: 0.84rem;
+  color: color-mix(in oklab, var(--fg), white 32%);
+  background: color-mix(in oklab, var(--surface), var(--bg) 22%);
+}
+
+.units-filters [data-filter] .ui-chip.is-active {
+  color: #fff;
+  background: color-mix(in oklab, var(--fg), black 2%);
+}
+
+.unit-card {
+  box-shadow: 0 6px 18px rgba(23, 23, 22, 0.05);
+}
+
+.unit-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(23, 23, 22, 0.07);
+}
+
+.unit-card__status {
+  border: 1px solid color-mix(in oklab, currentColor, white 72%);
+  letter-spacing: 0.02em;
+}
+
+.unit-meta dd {
+  color: color-mix(in oklab, var(--fg), transparent 4%);
+}
+
+.unit-detail-headline {
+  padding-bottom: 0.15rem;
+  border-bottom: 1px solid color-mix(in oklab, var(--border), white 24%);
+}
+
+.unit-detail-specs {
+  gap: 0.95rem;
+}
+
+.unit-detail-specs p + p {
+  margin-top: 0.18rem;
+}
+
+.unit-cta-row .ui-btn {
+  min-height: 2.9rem;
+  flex: 1;
+}
+
+.unit-cta-row .ui-btn:not(.ui-btn--primary) {
+  background: color-mix(in oklab, var(--surface), white 10%);
+}
+
+.unit-detail-gallery {
+  align-items: start;
+}
+
+.unit-detail-media {
+  background: color-mix(in oklab, var(--surface-2), white 16%);
+}
