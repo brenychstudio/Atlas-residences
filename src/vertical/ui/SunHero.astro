@@ -1,0 +1,346 @@
+---
+// STABILITY LOCK (canonical implementation):
+// - This file is canonical for Home hero behavior.
+// - Do NOT change data attributes, CSS custom properties, or inline script flow without intentional redesign.
+// - Do NOT remove poster-first fallback behavior.
+type Props = {
+  morningImage?: string;
+  sunsetImage?: string;
+  bluehourImage?: string;
+  mobileImage?: string;
+  alt: string;
+  sliderLabel: string;
+  morningLabel: string;
+  sunsetLabel: string;
+  bluehourLabel?: string;
+};
+
+const {
+  morningImage = "",
+  sunsetImage = "",
+  bluehourImage = "",
+  mobileImage = "",
+  alt,
+  sliderLabel,
+  morningLabel,
+  sunsetLabel,
+  bluehourLabel = "Blue hour",
+} = Astro.props as Props;
+
+const morningSrc = morningImage.trim();
+const bluehourSrc = bluehourImage.trim();
+const sunsetSrc = sunsetImage.trim();
+const mobileSrc = mobileImage.trim();
+
+const fallbackPoster = morningSrc || bluehourSrc || sunsetSrc;
+const hasPoster = Boolean(fallbackPoster);
+const hasSunset = Boolean(sunsetSrc && sunsetSrc !== fallbackPoster);
+const hasBluehour = Boolean(bluehourSrc && bluehourSrc !== fallbackPoster && bluehourSrc !== sunsetSrc);
+---
+
+{hasPoster && (
+  <div
+    class="space-y-3"
+    data-sun-hero
+    data-has-bluehour={hasBluehour ? "true" : "false"}
+    style="--sun:0; --bluehour-opacity:0; --sunset-opacity:0; --px:0px; --py:0px; --fog-shift:0%; --sun-x:50%; --sun-y:16%; --glint-offset:0px; --scroll:0; --scroll-y:0px;"
+  >
+    <div class="sun-hero-frame relative overflow-hidden rounded-2xl border bg-slate-100" data-sun-hero-frame>
+      <picture class="sun-hero-media absolute inset-0 block h-full w-full" data-sun-layer="base">
+        {mobileSrc && <source media="(max-width: 640px)" srcset={mobileSrc} />}
+        <img
+          src={fallbackPoster}
+          alt={alt}
+          class="h-full w-full object-cover"
+          loading="eager"
+          decoding="async"
+          width="1600"
+          height="900"
+        />
+      </picture>
+
+      {hasBluehour && (
+        <img
+          src={bluehourSrc}
+          alt=""
+          aria-hidden="true"
+          class="sun-hero-media pointer-events-none absolute inset-0 h-full w-full object-cover"
+          data-sun-layer="bluehour"
+          style="opacity: var(--bluehour-opacity);"
+          loading="lazy"
+          decoding="async"
+          width="1600"
+          height="900"
+        />
+      )}
+
+      {hasSunset && (
+        <img
+          src={sunsetSrc}
+          alt=""
+          aria-hidden="true"
+          class="sun-hero-media pointer-events-none absolute inset-0 h-full w-full object-cover"
+          data-sun-layer="sunset"
+          style="opacity: var(--sunset-opacity);"
+          loading="lazy"
+          decoding="async"
+          width="1600"
+          height="900"
+        />
+      )}
+
+      <div class="sun-hero-atmosphere absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+      <div class="sun-hero-sun absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+      <div class="sun-hero-glint absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+    </div>
+
+    {hasSunset && (
+      <div class="hidden items-center gap-2 rounded-xl border bg-white/90 px-3 py-2 text-xs sm:gap-3 sm:px-4 sm:text-sm" data-sun-slider-wrap>
+        <span class="shrink-0 opacity-70" data-morning-label>{morningLabel}</span>
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0"
+          class="h-2 w-full accent-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+          aria-label={sliderLabel}
+          data-sun-slider
+        />
+        <span class="shrink-0 opacity-70" data-sunset-label>{sunsetLabel}</span>
+      </div>
+    )}
+
+    {hasBluehour && <span class="sr-only" data-bluehour-label>{bluehourLabel}</span>}
+  </div>
+)}
+
+<style>
+  .sun-hero-frame {
+    aspect-ratio: 16 / 9;
+  }
+
+  .sun-hero-media {
+    transform: translate3d(var(--px), var(--py), 0);
+    transition: transform 180ms ease-out;
+    will-change: transform;
+  }
+
+  .sun-hero-atmosphere {
+    background:
+      radial-gradient(120% 80% at calc(50% + var(--fog-shift)) 10%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 45%, transparent 72%),
+      linear-gradient(to top, rgba(2, 6, 23, 0.12), transparent 40%);
+    opacity: calc(0.55 + (var(--scroll) * 0.06));
+    transform: translate3d(calc(var(--px) * 0.35), calc((var(--py) * 0.35) + var(--scroll-y)), 0);
+    transition: transform 180ms ease-out;
+    z-index: 9;
+  }
+
+  .sun-hero-sun {
+    background: radial-gradient(circle at var(--sun-x) var(--sun-y), rgba(255, 244, 214, 0.22) 0%, rgba(255, 230, 180, 0.1) 12%, rgba(255, 219, 158, 0.04) 22%, transparent 34%);
+    opacity: 0.5;
+    transform: translate3d(calc(var(--px) * 0.2), calc(var(--py) * 0.2), 0);
+    transition: transform 180ms ease-out;
+    z-index: 9;
+  }
+
+  .sun-hero-glint {
+    background: linear-gradient(103deg, transparent 44%, rgba(255, 255, 255, 0.08) 49%, rgba(255, 255, 255, 0.03) 54%, transparent 60%);
+    opacity: calc(0.32 + (var(--scroll) * 0.06));
+    transform: translate3d(var(--glint-offset), calc((var(--py) * 0.12) + (var(--scroll-y) * 0.5)), 0);
+    transition: transform 220ms ease-out;
+    mix-blend-mode: screen;
+    z-index: 9;
+  }
+
+  .sun-hero-frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 52%, rgba(15, 23, 42, 0.18) 100%);
+    z-index: 10;
+  }
+
+  .sun-hero-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.45) 0.45px, transparent 0.55px);
+    background-size: 2.5px 2.5px;
+    z-index: 11;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sun-hero-media,
+    .sun-hero-atmosphere,
+    .sun-hero-sun,
+    .sun-hero-glint {
+      transition: none;
+      transform: none;
+    }
+
+    .sun-hero-sun,
+    .sun-hero-glint {
+      opacity: 0;
+    }
+  }
+</style>
+
+<!-- STABILITY LOCK (canonical): Do NOT change script flow, data attributes, or CSS variable contract without intentional redesign. -->
+<script is:inline>
+  (() => {
+    document.querySelectorAll('[data-sun-hero]').forEach((root) => {
+      const sliderWrap = root.querySelector('[data-sun-slider-wrap]');
+      const slider = root.querySelector('[data-sun-slider]');
+      if (!sliderWrap || !slider) return;
+
+      const hasBluehour = root.getAttribute('data-has-bluehour') === 'true';
+      const morningLabel = root.querySelector('[data-morning-label]')?.textContent?.trim() || 'Morning';
+      const sunsetLabel = root.querySelector('[data-sunset-label]')?.textContent?.trim() || 'Sunset';
+      const bluehourLabel = root.querySelector('[data-bluehour-label]')?.textContent?.trim() || 'Blue hour';
+      const frame = root.querySelector('[data-sun-hero-frame]');
+      const sliderAriaLabel = slider.getAttribute('aria-label') || 'Sun position';
+      const min = Number(slider.min || 0);
+      const max = Number(slider.max || 1);
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let target = Math.max(min, Math.min(max, Number(slider.value) || 0));
+      let current = target;
+      let rafId = 0;
+      let scrollRafId = 0;
+      let isInView = true;
+
+      const getOpacities = (value) => {
+        if (hasBluehour) {
+          if (value <= 0.5) {
+            return {
+              bluehour: value / 0.5,
+              sunset: 0,
+            };
+          }
+          return {
+            bluehour: 1 - (value - 0.5) / 0.5,
+            sunset: (value - 0.5) / 0.5,
+          };
+        }
+        return {
+          bluehour: 0,
+          sunset: value,
+        };
+      };
+
+      const render = () => {
+        const clamped = Math.max(0, Math.min(1, current));
+        const { bluehour, sunset } = getOpacities(clamped);
+        root.style.setProperty('--sun', String(clamped));
+        root.style.setProperty('--bluehour-opacity', String(bluehour));
+        root.style.setProperty('--sunset-opacity', String(sunset));
+        root.style.setProperty('--fog-shift', `${((clamped - 0.5) * 10).toFixed(2)}%`);
+        root.style.setProperty('--sun-x', `${(16 + clamped * 68).toFixed(2)}%`);
+        root.style.setProperty('--sun-y', `${(17 + Math.abs(clamped - 0.5) * 8).toFixed(2)}%`);
+        root.style.setProperty('--glint-offset', `${((clamped - 0.5) * 12).toFixed(2)}px`);
+      };
+
+      const updateValueText = (value) => {
+        if (!hasBluehour) {
+          slider.setAttribute('aria-valuetext', `${sliderAriaLabel}: ${value < 0.5 ? morningLabel : sunsetLabel}`);
+          return;
+        }
+        let label = '';
+        if (value < 0.33) label = morningLabel;
+        else if (value < 0.66) label = bluehourLabel;
+        else label = sunsetLabel;
+        slider.setAttribute('aria-valuetext', `${sliderAriaLabel}: ${label}`);
+      };
+
+      const tick = () => {
+        const delta = target - current;
+        if (Math.abs(delta) < 0.001) {
+          current = target;
+          render();
+          updateValueText(current);
+          rafId = 0;
+          return;
+        }
+        current += delta * 0.16;
+        render();
+        updateValueText(current);
+        rafId = requestAnimationFrame(tick);
+      };
+
+      const schedule = () => {
+        if (rafId) return;
+        rafId = requestAnimationFrame(tick);
+      };
+
+      const resetParallax = () => {
+        root.style.setProperty('--px', '0px');
+        root.style.setProperty('--py', '0px');
+      };
+
+      const updateScrollMotion = () => {
+        if (!frame || !isInView || prefersReducedMotion) {
+          root.style.setProperty('--scroll', '0');
+          root.style.setProperty('--scroll-y', '0px');
+          scrollRafId = 0;
+          return;
+        }
+        const rect = frame.getBoundingClientRect();
+        const viewport = window.innerHeight || 1;
+        const progress = Math.max(0, Math.min(1, (viewport - rect.top) / (viewport + rect.height)));
+        const subtle = Math.max(0, Math.min(1, progress * 1.15));
+        root.style.setProperty('--scroll', subtle.toFixed(3));
+        root.style.setProperty('--scroll-y', `${(subtle * 2.4).toFixed(2)}px`);
+        scrollRafId = 0;
+      };
+
+      const onScroll = () => {
+        if (!isInView || scrollRafId) return;
+        scrollRafId = requestAnimationFrame(updateScrollMotion);
+      };
+
+      const handlePointerMove = (event) => {
+        if (!frame || !isInView || prefersReducedMotion) return;
+        const rect = frame.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
+        const maxShift = 4;
+        root.style.setProperty('--px', `${(-x * maxShift).toFixed(2)}px`);
+        root.style.setProperty('--py', `${(-y * maxShift).toFixed(2)}px`);
+      };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          isInView = Boolean(entries[0]?.isIntersecting);
+          if (!isInView) {
+            resetParallax();
+            root.style.setProperty('--scroll', '0');
+            root.style.setProperty('--scroll-y', '0px');
+          } else {
+            onScroll();
+          }
+        },
+        { threshold: 0.12 }
+      );
+
+      if (frame && !prefersReducedMotion) {
+        observer.observe(frame);
+        frame.addEventListener('pointermove', handlePointerMove, { passive: true });
+        frame.addEventListener('pointerleave', resetParallax, { passive: true });
+        window.addEventListener('scroll', onScroll, { passive: true });
+      }
+
+      sliderWrap.classList.remove('hidden');
+      sliderWrap.classList.add('flex');
+      slider.addEventListener('input', () => {
+        target = Math.max(min, Math.min(max, Number(slider.value) || 0));
+        schedule();
+      });
+      render();
+      updateScrollMotion();
+      updateValueText(current);
+    });
+  })();
+</script>
