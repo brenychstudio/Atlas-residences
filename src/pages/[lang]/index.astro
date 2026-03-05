@@ -28,6 +28,8 @@ const seoImage = pageSeo?.og_image || ATLAS_ASSETS.og.og01Home1200x630 || ATLAS_
 const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";
 const ogLocale = lang === "es" ? "es_ES" : "en_US";
 
+// STABILITY LOCK (canonical): heroVariants mapping + SunHero wiring are canonical.
+// Do NOT change variant keys or SunHero prop names/order lightly.
 const heroVariants = {
   morning: ATLAS_ASSETS.hero.hr01Morning16x9,
   sunset: ATLAS_ASSETS.hero.hr02Sunset16x9,
@@ -57,6 +59,7 @@ const heroMobileImage = heroVariants.mobile;
   </Fragment>
 
   <section class="space-y-6">
+    {/* STABILITY LOCK (canonical): keep SunHero prop contract/order stable unless intentional redesign. */}
     <SunHero
       morningImage={heroImage}
       bluehourImage={heroVariants.bluehour}

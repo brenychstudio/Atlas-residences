@@ -1,4 +1,9 @@
 ---
+// STABILITY LOCK (canonical implementation):
+// - This file is canonical for Home hero behavior.
+// - Do NOT change data attributes, CSS custom properties, or inline script flow without intentional redesign.
+// - Do NOT remove poster-first fallback behavior.
+
 type Props = {
   morningImage?: string;
   bluehourImage?: string;
@@ -40,7 +45,7 @@ const hasPoster = Boolean(poster);
 const hasSunset = Boolean(sunsetSrc) && sunsetSrc !== poster;
 const hasBluehour = Boolean(bluehourSrc) && bluehourSrc !== poster && bluehourSrc !== sunsetSrc;
 
-// показуємо слайдер тільки якщо є що змішувати
+// show slider only when there is something to blend
 const hasBlend = hasSunset || hasBluehour;
 ---
 
@@ -199,6 +204,7 @@ const hasBlend = hasSunset || hasBluehour;
   }
 </style>
 
+<!-- STABILITY LOCK (canonical): Do NOT change script flow, data attributes, or CSS variable contract without intentional redesign. -->
 <script is:inline>
   (() => {
     const reduceMotion =
