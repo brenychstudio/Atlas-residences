@@ -83,10 +83,12 @@ const analyticsContext = {
 
 const formAction = (import.meta.env.PUBLIC_CONTACT_FORM_ACTION ?? "").trim();
 const formMethod = (import.meta.env.PUBLIC_CONTACT_FORM_METHOD ?? "POST").trim() || "POST";
+const siteUrlRaw = import.meta.env.PUBLIC_SITE_URL;
+const siteOrigin = siteUrlRaw && String(siteUrlRaw).trim() ? String(siteUrlRaw).trim().replace(/\/+$/, "") : "";
 const hasFormAction = Boolean(formAction);
 const isFormspreeCompatible = hasFormAction && formAction.toLowerCase().includes("formspree.io");
 const contactSentPath = `/${lang}/contact/?sent=1`;
-const formspreeNext = Astro.url.origin && Astro.url.origin !== "null" ? new URL(contactSentPath, Astro.url.origin).toString() : contactSentPath;
+const formspreeNext = siteOrigin ? `${siteOrigin}${contactSentPath}` : contactSentPath;
 const formspreeSubject = ["Atlas Residences lead", normalizedSource ? `source=${normalizedSource}` : "", normalizedBuilding ? `building=${normalizedBuilding}` : "", normalizedUnit ? `unit=${normalizedUnit}` : ""]
   .filter(Boolean)
   .join(" · ");
