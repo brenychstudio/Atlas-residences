@@ -182,8 +182,7 @@ const selectionSummary = [
       <p class="rounded-xl border p-4 text-sm opacity-90">{contextMessage}</p>
     )}
 
-    {sent && (
-      <div class="rounded-2xl border bg-neutral-50/60 p-5 md:p-6 space-y-4">
+    <div id="contact-sent-notice" class={`rounded-2xl border bg-neutral-50/60 p-5 md:p-6 space-y-4 ${sent ? "" : "hidden"}`} role="status" aria-live="polite">
         <div class="space-y-2">
           <p class="inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] opacity-80">
             {t(lang, "Confirmation", "Confirmación")}
@@ -194,42 +193,31 @@ const selectionSummary = [
           </p>
         </div>
 
-        {(source || building || unit) && (
-          <div class="rounded-xl border bg-white/80 px-3 py-2.5 text-xs space-y-1.5">
+        <div id="contact-sent-details" class={`rounded-xl border bg-white/80 px-3 py-2.5 text-xs space-y-1.5 ${(source || building || unit) ? "" : "hidden"}`}>
             <p class="font-medium uppercase tracking-[0.08em] opacity-70">{t(lang, "Inquiry details", "Detalles de la consulta")}</p>
             <dl class="space-y-1">
-              {source && (
-                <div class="flex items-center justify-between gap-2">
+                <div id="contact-sent-source-row" class={`flex items-center justify-between gap-2 ${source ? "" : "hidden"}`}>
                   <dt class="opacity-60">{t(lang, "Source", "Origen")}</dt>
-                  <dd class="font-medium uppercase">{source}</dd>
+                  <dd id="contact-sent-source" class="font-medium uppercase">{source}</dd>
                 </div>
-              )}
-              {building && (
-                <div class="flex items-center justify-between gap-2">
+                <div id="contact-sent-building-row" class={`flex items-center justify-between gap-2 ${building ? "" : "hidden"}`}>
                   <dt class="opacity-60">{t(lang, "Tower", "Torre")}</dt>
-                  <dd class="font-medium uppercase">{building}</dd>
+                  <dd id="contact-sent-building" class="font-medium uppercase">{building}</dd>
                 </div>
-              )}
-              {unit && (
-                <div class="flex items-center justify-between gap-2">
+                <div id="contact-sent-unit-row" class={`flex items-center justify-between gap-2 ${unit ? "" : "hidden"}`}>
                   <dt class="opacity-60">{t(lang, "Unit", "Unidad")}</dt>
-                  <dd class="font-medium uppercase">{unit}</dd>
+                  <dd id="contact-sent-unit" class="font-medium uppercase">{unit}</dd>
                 </div>
-              )}
             </dl>
           </div>
-        )}
       </div>
-    )}
 
-    {error && (
-      <div class="rounded-xl border p-4 space-y-1">
+    <div id="contact-error-notice" class={`rounded-xl border p-4 space-y-1 ${error ? "" : "hidden"}`} role="alert">
         <p class="text-sm font-medium">{t(lang, "We couldn’t send your request", "No pudimos enviar tu solicitud")}</p>
         <p class="text-sm opacity-80">
           {t(lang, "Please try again in a moment, or contact us directly by WhatsApp, phone, or email.", "Por favor, inténtalo de nuevo en un momento, o contáctanos directamente por WhatsApp, llamada o email.")}
         </p>
       </div>
-    )}
 
     {!hasFormAction && (
       <p class="rounded-xl border p-4 text-sm opacity-80">
@@ -244,16 +232,16 @@ const selectionSummary = [
       <input type="hidden" name="unit" value={unit} />
       <input type="hidden" name="lang" value={lang} />
       <input type="hidden" name="page" value={page} />
-      {utmSource && <input type="hidden" name="utm_source" value={utmSource} />}
-      {utmMedium && <input type="hidden" name="utm_medium" value={utmMedium} />}
-      {utmCampaign && <input type="hidden" name="utm_campaign" value={utmCampaign} />}
-      {utmTerm && <input type="hidden" name="utm_term" value={utmTerm} />}
-      {utmContent && <input type="hidden" name="utm_content" value={utmContent} />}
-      {gclid && <input type="hidden" name="gclid" value={gclid} />}
-      {fbclid && <input type="hidden" name="fbclid" value={fbclid} />}
+      {utmSource && <input type="hidden" name="utm_source" value={utmSource} data-attribution="true" />}
+      {utmMedium && <input type="hidden" name="utm_medium" value={utmMedium} data-attribution="true" />}
+      {utmCampaign && <input type="hidden" name="utm_campaign" value={utmCampaign} data-attribution="true" />}
+      {utmTerm && <input type="hidden" name="utm_term" value={utmTerm} data-attribution="true" />}
+      {utmContent && <input type="hidden" name="utm_content" value={utmContent} data-attribution="true" />}
+      {gclid && <input type="hidden" name="gclid" value={gclid} data-attribution="true" />}
+      {fbclid && <input type="hidden" name="fbclid" value={fbclid} data-attribution="true" />}
       {isFormspreeCompatible && (
         <>
-          <input type="hidden" name="_subject" value={formspreeSubject} />
+          <input type="hidden" name="_subject" value={formspreeSubject} data-formspree-subject="true" />
           <input type="hidden" name="_next" value={formspreeNext} />
           <input type="text" name="_gotcha" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true" />
         </>
@@ -314,6 +302,79 @@ const selectionSummary = [
         {t(lang, "Send request", "Enviar solicitud")}
       </button>
     </form>
+
+    <script>
+      (() => {
+        const params = new URLSearchParams(window.location.search);
+        const form = document.getElementById("contact-form");
+        if (!form) return;
+
+        const allowedIntents = new Set(["viewing", "whatsapp", "call"]);
+        const allowedSources = new Set(["home", "masterplan", "unit", "downloads"]);
+        const intent = (params.get("intent") || "").toLowerCase();
+        const source = (params.get("source") || "").toLowerCase();
+        const building = (params.get("building") || "").trim();
+        const unit = (params.get("unit") || "").trim();
+
+        const setHidden = (name, value) => {
+          const input = form.querySelector(`input[name="${name}"]`);
+          if (input) input.value = value;
+        };
+
+        setHidden("intent", allowedIntents.has(intent) ? intent : "viewing");
+        setHidden("source", allowedSources.has(source) ? source : "");
+        setHidden("building", building);
+        setHidden("unit", unit);
+        setHidden("page", window.location.pathname);
+
+        ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "fbclid"].forEach((name) => {
+          const value = (params.get(name) || "").trim();
+          let input = form.querySelector(`input[name="${name}"]`);
+          if (!value) {
+            input?.remove();
+            return;
+          }
+          if (!input) {
+            input = document.createElement("input");
+            input.type = "hidden";
+            input.name = name;
+            input.setAttribute("data-attribution", "true");
+            form.prepend(input);
+          }
+          input.value = value;
+        });
+
+        const subjectInput = form.querySelector("input[data-formspree-subject='true']");
+        if (subjectInput) {
+          const leadSource = allowedSources.has(source) ? source : "";
+          const subjectParts = ["Atlas Residences lead", leadSource ? `source=${leadSource}` : "", building ? `building=${building}` : "", unit ? `unit=${unit}` : ""];
+          subjectInput.value = subjectParts.filter(Boolean).join(" · ");
+        }
+
+        const sent = params.get("sent") === "1";
+        const error = params.get("error") === "1";
+        const sentNotice = document.getElementById("contact-sent-notice");
+        const errorNotice = document.getElementById("contact-error-notice");
+        sentNotice?.classList.toggle("hidden", !sent);
+        errorNotice?.classList.toggle("hidden", !error);
+
+        const details = document.getElementById("contact-sent-details");
+        const sourceRow = document.getElementById("contact-sent-source-row");
+        const buildingRow = document.getElementById("contact-sent-building-row");
+        const unitRow = document.getElementById("contact-sent-unit-row");
+        const sourceValue = document.getElementById("contact-sent-source");
+        const buildingValue = document.getElementById("contact-sent-building");
+        const unitValue = document.getElementById("contact-sent-unit");
+        const cleanSource = allowedSources.has(source) ? source : "";
+        if (sourceValue) sourceValue.textContent = cleanSource;
+        if (buildingValue) buildingValue.textContent = building;
+        if (unitValue) unitValue.textContent = unit;
+        sourceRow?.classList.toggle("hidden", !cleanSource);
+        buildingRow?.classList.toggle("hidden", !building);
+        unitRow?.classList.toggle("hidden", !unit);
+        details?.classList.toggle("hidden", !(cleanSource || building || unit));
+      })();
+    </script>
 
     <section id="contact-success" class="hidden space-y-3 rounded-xl border p-4" aria-live="polite">
       <h2 class="text-xl font-semibold">{t(lang, "Thanks!", "¡Gracias!")}</h2>
