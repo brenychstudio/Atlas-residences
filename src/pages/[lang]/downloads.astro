@@ -26,12 +26,11 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
 
     {hasDownloads ? (
     <div class="grid gap-3 sm:grid-cols-2">
-      <a
-        class="group overflow-hidden rounded-xl border transition hover:border-black/40"
-        href={brochureUrl || "#"}
-        aria-disabled={!brochureUrl}
-      >
-        {brochureUrl && (
+      {brochureUrl && (
+        <a
+          class="group overflow-hidden rounded-xl border transition hover:border-black/40"
+          href={brochureUrl}
+        >
           <img
             src={brochureUrl}
             alt={t(lang, "Project brochure cover", "Portada del folleto del proyecto")}
@@ -39,19 +38,18 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
             loading="lazy"
             decoding="async"
           />
-        )}
-        <div class="p-4">
-          <p class="text-sm font-medium">{t(lang, "Project brochure", "Folleto del proyecto")}</p>
-          <p class="text-xs opacity-70">{brochureUrl ? t(lang, "Open document", "Abrir documento") : t(lang, "Unavailable", "No disponible")}</p>
-        </div>
-      </a>
+          <div class="p-4">
+            <p class="text-sm font-medium">{t(lang, "Project brochure", "Folleto del proyecto")}</p>
+            <p class="text-xs opacity-70">{t(lang, "Open document", "Abrir documento")}</p>
+          </div>
+        </a>
+      )}
 
-      <a
-        class="group overflow-hidden rounded-xl border transition hover:border-black/40"
-        href={priceListUrl || "#"}
-        aria-disabled={!priceListUrl}
-      >
-        {priceListUrl && (
+      {priceListUrl && (
+        <a
+          class="group overflow-hidden rounded-xl border transition hover:border-black/40"
+          href={priceListUrl}
+        >
           <img
             src={priceListUrl}
             alt={t(lang, "Price list cover", "Portada de lista de precios")}
@@ -59,12 +57,12 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
             loading="lazy"
             decoding="async"
           />
-        )}
-        <div class="p-4">
-          <p class="text-sm font-medium">{t(lang, "Price list", "Lista de precios")}</p>
-          <p class="text-xs opacity-70">{priceListUrl ? t(lang, "Open document", "Abrir documento") : t(lang, "Unavailable", "No disponible")}</p>
-        </div>
-      </a>
+          <div class="p-4">
+            <p class="text-sm font-medium">{t(lang, "Price list", "Lista de precios")}</p>
+            <p class="text-xs opacity-70">{t(lang, "Open document", "Abrir documento")}</p>
+          </div>
+        </a>
+      )}
     </div>
     ) : (
       <div class="space-y-3 rounded-xl border bg-slate-50 p-5">

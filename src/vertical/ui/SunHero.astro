@@ -11,7 +11,6 @@ type Props = {
   mobileImage?: string;
 
   alt?: string;
-
   sliderLabel?: string;
   morningLabel?: string;
   bluehourLabel?: string;
@@ -131,7 +130,9 @@ const hasBlend = hasSunset || hasBluehour;
 )}
 
 <style>
-  .sun-hero-frame { aspect-ratio: 16 / 9; }
+  .sun-hero-frame {
+    aspect-ratio: 16 / 9;
+  }
 
   .sun-hero-layer {
     will-change: transform, opacity;
@@ -199,8 +200,14 @@ const hasBlend = hasSunset || hasBluehour;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .sun-hero-layer { transition: none; }
-    .sun-disc, .sun-glint { display: none; }
+    .sun-hero-layer {
+      transition: none;
+    }
+
+    .sun-disc,
+    .sun-glint {
+      display: none;
+    }
   }
 </style>
 
@@ -239,14 +246,16 @@ const hasBlend = hasSunset || hasBluehour;
         root.style.setProperty("--sun", String(v));
         root.style.setProperty("--fog-shift", String(v));
 
-        const sunX = 32 + v * 42; // 32%..74%
-        const sunY = 34 - v * 8;  // 34%..26%
-        root.style.setProperty("--sun-x", sunX.toFixed(2) + "%");
-        root.style.setProperty("--sun-y", sunY.toFixed(2) + "%");
-        root.style.setProperty("--glint-offset", ((v - 0.5) * 18).toFixed(2) + "%");
+        const sunX = 32 + v * 42;
+        const sunY = 34 - v * 8;
+        root.style.setProperty("--sun-x", `${sunX.toFixed(2)}%`);
+        root.style.setProperty("--sun-y", `${sunY.toFixed(2)}%`);
+        root.style.setProperty("--glint-offset", `${((v - 0.5) * 18).toFixed(2)}%`);
 
         if (hasBluehour) {
-          let b = 0, s = 0;
+          let b = 0;
+          let s = 0;
+
           if (v <= 0.5) {
             b = v / 0.5;
             s = 0;
@@ -254,6 +263,7 @@ const hasBlend = hasSunset || hasBluehour;
             b = 1 - (v - 0.5) / 0.5;
             s = (v - 0.5) / 0.5;
           }
+
           root.style.setProperty("--bluehour-opacity", String(b));
           root.style.setProperty("--sunset-opacity", String(s));
         } else {
@@ -264,16 +274,22 @@ const hasBlend = hasSunset || hasBluehour;
 
       const setValueText = (v) => {
         const x = clamp01(v);
+
         if (!hasBluehour) {
-          slider.setAttribute("aria-valuetext", `${ariaBase}: ${x < 0.5 ? morningText : sunsetText}`);
+          slider.setAttribute(
+            "aria-valuetext",
+            `${ariaBase}: ${x < 0.5 ? morningText : sunsetText}`
+          );
           return;
         }
+
         const label = x < 0.33 ? morningText : x < 0.66 ? bluehourText : sunsetText;
         slider.setAttribute("aria-valuetext", `${ariaBase}: ${label}`);
       };
 
       const tick = () => {
         current = lerp(current, target, 0.12);
+
         if (Math.abs(current - target) < 0.001) {
           current = target;
           setOpacities(current);
@@ -281,6 +297,7 @@ const hasBlend = hasSunset || hasBluehour;
           raf = 0;
           return;
         }
+
         setOpacities(current);
         setValueText(current);
         raf = requestAnimationFrame(tick);
@@ -291,7 +308,6 @@ const hasBlend = hasSunset || hasBluehour;
         if (!raf) raf = requestAnimationFrame(tick);
       });
 
-      // Parallax + scroll micro-shift (disabled for reduced motion; paused offscreen)
       let active = true;
       let scrollRaf = 0;
 
@@ -309,13 +325,15 @@ const hasBlend = hasSunset || hasBluehour;
         const rect = frame.getBoundingClientRect();
         const x = (clientX - rect.left) / rect.width - 0.5;
         const y = (clientY - rect.top) / rect.height - 0.5;
-        const amp = 5; // px
-        root.style.setProperty("--px", (-x * amp).toFixed(2) + "px");
-        root.style.setProperty("--py", (-y * amp).toFixed(2) + "px");
+        const amp = 5;
+
+        root.style.setProperty("--px", `${(-x * amp).toFixed(2)}px`);
+        root.style.setProperty("--py", `${(-y * amp).toFixed(2)}px`);
       };
 
       const updateScroll = () => {
         scrollRaf = 0;
+
         if (!active || reduceMotion) {
           resetScroll();
           return;
@@ -323,12 +341,11 @@ const hasBlend = hasSunset || hasBluehour;
 
         const rect = frame.getBoundingClientRect();
         const viewport = window.innerHeight || 1;
-
         const progress = clamp01((viewport - rect.top) / (viewport + rect.height));
         const subtle = clamp01(progress * 1.15);
 
         root.style.setProperty("--scroll", subtle.toFixed(3));
-        root.style.setProperty("--scroll-y", (subtle * 2.6).toFixed(2) + "px");
+        root.style.setProperty("--scroll-y", `${(subtle * 2.6).toFixed(2)}px`);
       };
 
       const onScroll = () => {
@@ -336,31 +353,43 @@ const hasBlend = hasSunset || hasBluehour;
         scrollRaf = requestAnimationFrame(updateScroll);
       };
 
-      frame.addEventListener("pointermove", (e) => {
-        if (!active || reduceMotion) return;
-        applyParallax(e.clientX, e.clientY);
-      }, { passive: true });
+      frame.addEventListener(
+        "pointermove",
+        (e) => {
+          if (!active || reduceMotion) return;
+          applyParallax(e.clientX, e.clientY);
+        },
+        { passive: true }
+      );
 
-      frame.addEventListener("pointerleave", () => {
-        if (reduceMotion) return;
-        resetParallax();
-      }, { passive: true });
-
-      const io = new IntersectionObserver((entries) => {
-        const entry = entries[0];
-        active = Boolean(entry && entry.isIntersecting);
-        if (!active) {
+      frame.addEventListener(
+        "pointerleave",
+        () => {
+          if (reduceMotion) return;
           resetParallax();
-          resetScroll();
-          return;
-        }
-        onScroll();
-      }, { threshold: 0.2 });
+        },
+        { passive: true }
+      );
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          active = Boolean(entry && entry.isIntersecting);
+
+          if (!active) {
+            resetParallax();
+            resetScroll();
+            return;
+          }
+
+          onScroll();
+        },
+        { threshold: 0.2 }
+      );
 
       io.observe(frame);
       window.addEventListener("scroll", onScroll, { passive: true });
 
-      // init
       setOpacities(current);
       setValueText(current);
       onScroll();
