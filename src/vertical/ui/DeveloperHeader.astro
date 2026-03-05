@@ -29,6 +29,7 @@ function isActive(href: string) {
 ---
 
 <header
+  data-dev-header
   class="sticky top-0 z-50 border-b border-[color:color-mix(in_oklab,var(--border),var(--fg)_14%)] bg-[color:var(--surface)]/90 backdrop-blur-md"
 >
   <div class="mx-auto flex w-full max-w-[72rem] items-center justify-between gap-4 px-4 py-3 md:px-6">
@@ -45,7 +46,7 @@ function isActive(href: string) {
         return (
           <a
             href={item.href}
-            class={`inline-flex min-h-[42px] items-center rounded-full border px-4 text-sm transition-colors duration-200 ${
+            class={`inline-flex min-h-[42px] items-center rounded-[var(--radius-pill)] border px-4 text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/25 ${
               active
                 ? "border-[color:var(--fg)] bg-[color:var(--fg)] text-[color:var(--bg)]"
                 : "border-[color:color-mix(in_oklab,var(--border),var(--fg)_12%)] bg-[color:var(--surface-2)] text-[color:var(--muted)] hover:border-[color:var(--fg)]/35 hover:bg-white hover:text-[color:var(--fg)]"
@@ -60,14 +61,14 @@ function isActive(href: string) {
 
     <div class="flex items-center gap-3">
       <nav
-        class="inline-flex min-h-[44px] items-center rounded-full border border-[color:color-mix(in_oklab,var(--border),var(--fg)_14%)] bg-[color:var(--surface-2)] p-1"
+        class="inline-flex min-h-[44px] items-center rounded-[var(--radius-pill)] border border-[color:color-mix(in_oklab,var(--border),var(--fg)_14%)] bg-[color:var(--surface-2)] p-1"
         aria-label="Switch language"
         data-lang-switcher
       >
         <a
           href={pathForLang("en")}
           data-lang="en"
-          class={`inline-flex min-h-[34px] items-center rounded-full border px-3 text-xs font-medium transition-colors duration-200 ${
+          class={`inline-flex min-h-[34px] items-center rounded-[var(--radius-pill)] border px-3 text-xs font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/25 ${
             pathLang === "en"
               ? "border-[color:var(--fg)] bg-[color:var(--fg)] text-[color:var(--bg)]"
               : "border-transparent text-[color:var(--muted)] hover:border-[color:var(--fg)]/20 hover:text-[color:var(--fg)]"
@@ -79,7 +80,7 @@ function isActive(href: string) {
         <a
           href={pathForLang("es")}
           data-lang="es"
-          class={`inline-flex min-h-[34px] items-center rounded-full border px-3 text-xs font-medium transition-colors duration-200 ${
+          class={`inline-flex min-h-[34px] items-center rounded-[var(--radius-pill)] border px-3 text-xs font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/25 ${
             pathLang === "es"
               ? "border-[color:var(--fg)] bg-[color:var(--fg)] text-[color:var(--bg)]"
               : "border-transparent text-[color:var(--muted)] hover:border-[color:var(--fg)]/20 hover:text-[color:var(--fg)]"
@@ -92,7 +93,7 @@ function isActive(href: string) {
 
       <a
         href={`/${L}/contact/`}
-        class="inline-flex min-h-[44px] items-center rounded-full border border-[color:color-mix(in_oklab,var(--border),var(--fg)_14%)] bg-[color:var(--surface-2)] px-4 text-sm text-[color:var(--fg)] transition-colors duration-200 hover:border-[color:var(--fg)]/40 hover:bg-white"
+        class="inline-flex min-h-[44px] items-center rounded-[var(--radius-pill)] border border-[color:color-mix(in_oklab,var(--border),var(--fg)_14%)] bg-[color:var(--surface-2)] px-4 text-sm text-[color:var(--fg)] transition-colors duration-200 hover:border-[color:var(--fg)]/40 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/25"
       >
         {t(L, "Book a viewing", "Reservar visita")}
       </a>
@@ -105,7 +106,7 @@ function isActive(href: string) {
       return (
         <a
           href={item.href}
-          class={`inline-flex min-h-[42px] shrink-0 items-center rounded-full border px-4 text-sm transition-colors duration-200 ${
+          class={`inline-flex min-h-[42px] shrink-0 items-center rounded-[var(--radius-pill)] border px-4 text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/25 ${
             active
               ? "border-[color:var(--fg)] bg-[color:var(--fg)] text-[color:var(--bg)]"
               : "border-[color:color-mix(in_oklab,var(--border),var(--fg)_12%)] bg-[color:var(--surface-2)] text-[color:var(--muted)]"
