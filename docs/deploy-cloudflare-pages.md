@@ -23,3 +23,6 @@ Test these routes after deploy:
 - `/en/contact/?source=home`
 - `/en/contact/?sent=1`
 - `/es/contact/?source=downloads`
+
+## Production smoke test
+After production deploy, follow `docs/prod-smoke-checklist.md` and run `node scripts/smoke-prod.mjs https://<site-origin>` to validate contact form wiring, attribution fields, analytics markers, and OG tags.
