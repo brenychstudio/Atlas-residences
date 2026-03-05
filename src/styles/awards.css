@@ -20,6 +20,7 @@
   --shadow-md: 0 12px 36px rgba(23, 23, 22, 0.1);
 
   --container-max: 1120px;
+  --header-height: 4.75rem;
 
   --font-sans: Inter, "Avenir Next", Avenir, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", Times,
@@ -45,13 +46,14 @@ h1,
 h2,
 h3 {
   font-family: var(--font-serif);
-  letter-spacing: -0.018em;
-  font-weight: 500;
-  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 520;
+  line-height: 1.08;
 }
 
 p {
-  max-width: 68ch;
+  max-width: 66ch;
+  color: color-mix(in oklab, var(--fg), var(--muted) 40%);
 }
 
 :is(a, button, input, select, textarea):focus-visible {
@@ -65,8 +67,32 @@ p {
   margin-inline: auto;
 }
 
+
+.awards-flow {
+  display: grid;
+  gap: 0;
+}
+
+.awards-flow > * {
+  min-width: 0;
+}
+
+[data-dev-main] {
+  width: min(100% - 2rem, var(--container-max));
+  margin-inline: auto;
+  padding-top: clamp(1.4rem, 2vw, 2rem);
+}
+
+[data-dev-main] > section {
+  scroll-margin-top: calc(var(--header-height) + 1rem);
+}
+
+[data-dev-main] > section + section {
+  margin-top: clamp(2rem, 4.2vw, 4rem);
+}
+
 .ui-card {
-  border: 1px solid color-mix(in oklab, var(--border), white 6%);
+  border: 1px solid color-mix(in oklab, var(--border), var(--fg) 8%);
   background: color-mix(in oklab, var(--card), transparent 2%);
   box-shadow: 0 6px 20px rgba(23, 23, 22, 0.045);
   transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
