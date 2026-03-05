@@ -11,6 +11,7 @@ type Props = {
   mobileImage?: string;
 
   alt?: string;
+
   sliderLabel?: string;
   morningLabel?: string;
   bluehourLabel?: string;
@@ -44,7 +45,7 @@ const hasPoster = Boolean(poster);
 const hasSunset = Boolean(sunsetSrc) && sunsetSrc !== poster;
 const hasBluehour = Boolean(bluehourSrc) && bluehourSrc !== poster && bluehourSrc !== sunsetSrc;
 
-// показуємо слайдер тільки якщо є що змішувати
+// show slider only when there is something to blend
 const hasBlend = hasSunset || hasBluehour;
 ---
 
@@ -130,9 +131,7 @@ const hasBlend = hasSunset || hasBluehour;
 )}
 
 <style>
-  .sun-hero-frame {
-    aspect-ratio: 16 / 9;
-  }
+  .sun-hero-frame { aspect-ratio: 16 / 9; }
 
   .sun-hero-layer {
     will-change: transform, opacity;
@@ -200,14 +199,8 @@ const hasBlend = hasSunset || hasBluehour;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .sun-hero-layer {
-      transition: none;
-    }
-
-    .sun-disc,
-    .sun-glint {
-      display: none;
-    }
+    .sun-hero-layer { transition: none; }
+    .sun-disc, .sun-glint { display: none; }
   }
 </style>
 
@@ -224,3 +217,153 @@ const hasBlend = hasSunset || hasBluehour;
       const frame = root.querySelector("[data-sun-hero-frame]");
       const wrap = root.querySelector("[data-sun-slider-wrap]");
       const slider = root.querySelector("[data-sun-slider]");
+      if (!frame || !wrap || !slider) return;
+
+      // show slider only when JS runs
+      wrap.classList.remove("hidden");
+      wrap.classList.add("flex");
+
+      const hasBluehour = root.getAttribute("data-has-bluehour") === "true";
+      const morningText = (root.querySelector("[data-morning-label]")?.textContent || "Morning").trim();
+      const sunsetText = (root.querySelector("[data-sunset-label]")?.textContent || "Sunset").trim();
+      const bluehourText = (root.querySelector("[data-bluehour-label]")?.textContent || "Blue hour").trim();
+      const ariaBase = slider.getAttribute("aria-label") || "Sun position";
+
+      let target = clamp01(Number(slider.value || 0));
+      let current = target;
+      let raf = 0;
+
+      const setOpacities = (x) => {
+        const v = clamp01(x);
+
+        root.style.setProperty("--sun", String(v));
+        root.style.setProperty("--fog-shift", String(v));
+
+        const sunX = 32 + v * 42; // 32%..74%
+        const sunY = 34 - v * 8;  // 34%..26%
+        root.style.setProperty("--sun-x", sunX.toFixed(2) + "%");
+        root.style.setProperty("--sun-y", sunY.toFixed(2) + "%");
+        root.style.setProperty("--glint-offset", ((v - 0.5) * 18).toFixed(2) + "%");
+
+        if (hasBluehour) {
+          let b = 0, s = 0;
+          if (v <= 0.5) {
+            b = v / 0.5;
+            s = 0;
+          } else {
+            b = 1 - (v - 0.5) / 0.5;
+            s = (v - 0.5) / 0.5;
+          }
+          root.style.setProperty("--bluehour-opacity", String(b));
+          root.style.setProperty("--sunset-opacity", String(s));
+        } else {
+          root.style.setProperty("--bluehour-opacity", "0");
+          root.style.setProperty("--sunset-opacity", String(v));
+        }
+      };
+
+      const setValueText = (v) => {
+        const x = clamp01(v);
+        if (!hasBluehour) {
+          slider.setAttribute("aria-valuetext", `${ariaBase}: ${x < 0.5 ? morningText : sunsetText}`);
+          return;
+        }
+        const label = x < 0.33 ? morningText : x < 0.66 ? bluehourText : sunsetText;
+        slider.setAttribute("aria-valuetext", `${ariaBase}: ${label}`);
+      };
+
+      const tick = () => {
+        current = lerp(current, target, 0.12);
+        if (Math.abs(current - target) < 0.001) {
+          current = target;
+          setOpacities(current);
+          setValueText(current);
+          raf = 0;
+          return;
+        }
+        setOpacities(current);
+        setValueText(current);
+        raf = requestAnimationFrame(tick);
+      };
+
+      slider.addEventListener("input", () => {
+        target = clamp01(Number(slider.value));
+        if (!raf) raf = requestAnimationFrame(tick);
+      });
+
+      // Parallax + scroll micro-shift (disabled for reduced motion; paused offscreen)
+      let active = true;
+      let scrollRaf = 0;
+
+      const resetParallax = () => {
+        root.style.setProperty("--px", "0px");
+        root.style.setProperty("--py", "0px");
+      };
+
+      const resetScroll = () => {
+        root.style.setProperty("--scroll", "0");
+        root.style.setProperty("--scroll-y", "0px");
+      };
+
+      const applyParallax = (clientX, clientY) => {
+        const rect = frame.getBoundingClientRect();
+        const x = (clientX - rect.left) / rect.width - 0.5;
+        const y = (clientY - rect.top) / rect.height - 0.5;
+        const amp = 5; // px
+        root.style.setProperty("--px", (-x * amp).toFixed(2) + "px");
+        root.style.setProperty("--py", (-y * amp).toFixed(2) + "px");
+      };
+
+      const updateScroll = () => {
+        scrollRaf = 0;
+        if (!active || reduceMotion) {
+          resetScroll();
+          return;
+        }
+
+        const rect = frame.getBoundingClientRect();
+        const viewport = window.innerHeight || 1;
+
+        const progress = clamp01((viewport - rect.top) / (viewport + rect.height));
+        const subtle = clamp01(progress * 1.15);
+
+        root.style.setProperty("--scroll", subtle.toFixed(3));
+        root.style.setProperty("--scroll-y", (subtle * 2.6).toFixed(2) + "px");
+      };
+
+      const onScroll = () => {
+        if (!active || scrollRaf) return;
+        scrollRaf = requestAnimationFrame(updateScroll);
+      };
+
+      frame.addEventListener("pointermove", (e) => {
+        if (!active || reduceMotion) return;
+        applyParallax(e.clientX, e.clientY);
+      }, { passive: true });
+
+      frame.addEventListener("pointerleave", () => {
+        if (reduceMotion) return;
+        resetParallax();
+      }, { passive: true });
+
+      const io = new IntersectionObserver((entries) => {
+        const entry = entries[0];
+        active = Boolean(entry && entry.isIntersecting);
+        if (!active) {
+          resetParallax();
+          resetScroll();
+          return;
+        }
+        onScroll();
+      }, { threshold: 0.2 });
+
+      io.observe(frame);
+      window.addEventListener("scroll", onScroll, { passive: true });
+
+      // init
+      setOpacities(current);
+      setValueText(current);
+      onScroll();
+    });
+  })();
+</script>
