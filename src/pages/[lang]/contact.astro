@@ -35,6 +35,13 @@ const sourceParam = (Astro.url.searchParams.get("source") ?? "").toLowerCase();
 const source = ["home", "masterplan", "unit"].includes(sourceParam) ? sourceParam : "";
 const building = (Astro.url.searchParams.get("building") ?? "").trim();
 const unit = (Astro.url.searchParams.get("unit") ?? "").trim();
+const sent = Astro.url.searchParams.get("sent") === "1";
+const error = Astro.url.searchParams.get("error") === "1";
+
+const formAction = (import.meta.env.PUBLIC_CONTACT_FORM_ACTION ?? "").trim();
+const formMethod = (import.meta.env.PUBLIC_CONTACT_FORM_METHOD ?? "POST").trim() || "POST";
+const hasFormAction = Boolean(formAction);
+const page = Astro.url.pathname;
 
 const contextMessage =
   source === "masterplan" && building
@@ -142,11 +149,27 @@ const mapsHref = hasCoords
       <p class="rounded-xl border p-4 text-sm opacity-90">{contextMessage}</p>
     )}
 
-    <form id="contact-form" class="space-y-4 rounded-xl border p-4" novalidate>
+    {sent && (
+      <p class="rounded-xl border p-4 text-sm opacity-90">{t(lang, "Your request was sent successfully. Our team will contact you shortly.", "Tu solicitud fue enviada con éxito. Nuestro equipo te contactará en breve.")}</p>
+    )}
+
+    {error && (
+      <p class="rounded-xl border p-4 text-sm opacity-90">{t(lang, "We could not send your request. Please try again in a moment.", "No pudimos enviar tu solicitud. Por favor, inténtalo de nuevo en un momento.")}</p>
+    )}
+
+    {!hasFormAction && (
+      <p class="rounded-xl border p-4 text-sm opacity-80">
+        {t(lang, "Contact routing is not connected yet. You can still review the form in this demo.", "El enrutamiento de contacto aún no está conectado. Puedes revisar el formulario en esta demo.")}
+      </p>
+    )}
+
+    <form id="contact-form" class="space-y-4 rounded-xl border p-4" novalidate action={hasFormAction ? formAction : undefined} method={hasFormAction ? formMethod : undefined}>
       <input type="hidden" name="intent" value={intent} />
       <input type="hidden" name="source" value={source} />
       <input type="hidden" name="building" value={building} />
       <input type="hidden" name="unit" value={unit} />
+      <input type="hidden" name="lang" value={lang} />
+      <input type="hidden" name="page" value={page} />
       <label class="grid gap-1 text-sm">
         <span>{t(lang, "Name", "Nombre")} *</span>
         <input name="name" required class="min-h-11 rounded-lg border px-3" autocomplete="name" />
@@ -196,7 +219,7 @@ const mapsHref = hasCoords
         <span>{t(lang, "I agree to be contacted about this request.", "Acepto ser contactado sobre esta solicitud.")} *</span>
       </label>
 
-      <button type="submit" class="inline-flex min-h-11 items-center rounded-lg bg-black px-4 py-2 font-medium text-white">
+      <button type={hasFormAction ? "submit" : "button"} class="inline-flex min-h-11 items-center rounded-lg bg-black px-4 py-2 font-medium text-white">
         {t(lang, "Send request", "Enviar solicitud")}
       </button>
     </form>
@@ -215,31 +238,3 @@ const mapsHref = hasCoords
     </section>
   </section>
 </BaseLayout>
-
-<script id="contact-page-data" type="application/json" set:html={JSON.stringify({ intent })} />
-
-<script is:inline>
-  (() => {
-    const dataEl = document.getElementById("contact-page-data");
-    const form = document.getElementById("contact-form");
-    const success = document.getElementById("contact-success");
-    if (!dataEl || !form || !success) return;
-
-    const data = JSON.parse(dataEl.textContent || "{}");
-
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      if (!(form instanceof HTMLFormElement)) return;
-      if (!form.reportValidity()) return;
-
-      const formData = new FormData(form);
-      const honeypot = String(formData.get("company") || "").trim();
-
-      form.classList.add("hidden");
-      success.classList.remove("hidden");
-
-      if (honeypot) return;
-      console.log(`[lead] submit contact intent:${data.intent || "viewing"}`);
-    });
-  })();
-</script>
