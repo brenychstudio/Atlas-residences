@@ -105,7 +105,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
   {!unit ? (
     <section class="ui-card space-y-4 rounded-xl p-5">
       <h1 class="text-2xl font-semibold tracking-tight">{t(lang, "Unit not found", "Unidad no encontrada")}</h1>
-      <p class="opacity-80">
+      <p class="text-sm opacity-75">
         {t(
           lang,
           "This unit is no longer available or the link is incorrect.",
@@ -117,12 +117,12 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
       </a>
     </section>
   ) : (
-    <section class="space-y-5">
-      <header class="space-y-2">
+    <section class="space-y-6">
+      <header class="unit-detail-headline space-y-3">
         <h1 class="text-3xl tracking-tight">
           {t(lang, "Unit", "Unidad")} {unit.number || unit.id}
         </h1>
-        <p class="opacity-80">
+        <p class="text-sm opacity-75">
           {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")}{" "}
           {unit.floor || "-"}
         </p>
@@ -132,7 +132,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
         <img
           src={coverImage}
           alt={`${t(lang, "Unit", "Unidad")} ${unit.number || unit.id}`}
-          class="w-full rounded-xl border object-cover"
+          class="w-full rounded-xl border object-cover unit-detail-media"
           loading="lazy"
           decoding="async"
         />
@@ -142,19 +142,19 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
         <img
           src={planImage}
           alt={`${t(lang, "Unit plan", "Plano de unidad")} ${unit.number || unit.id}`}
-          class="w-full rounded-xl border object-cover"
+          class="w-full rounded-xl border object-cover unit-detail-media"
           loading="lazy"
           decoding="async"
         />
       )}
 
       {galleryImages.length > 0 && (
-        <div class="grid gap-3 sm:grid-cols-2">
+        <div class="grid gap-4 sm:grid-cols-2 unit-detail-gallery">
           {galleryImages.map((image, index) => (
             <img
               src={image}
               alt={`${t(lang, "Gallery image", "Imagen de galería")} ${index + 1}`}
-              class="w-full rounded-xl border object-cover"
+              class="w-full rounded-xl border object-cover unit-detail-media"
               loading="lazy"
               decoding="async"
             />
@@ -162,42 +162,42 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
         </div>
       )}
 
-      <div class="ui-card grid gap-3 rounded-xl p-4 text-sm sm:grid-cols-2">
+      <div class="unit-detail-specs ui-card grid gap-3 rounded-xl p-5 text-sm sm:grid-cols-2">
         <div>
-          <p class="opacity-70">{t(lang, "Beds / Baths", "Dormitorios / Baños")}</p>
+          <p class="opacity-65">{t(lang, "Beds / Baths", "Dormitorios / Baños")}</p>
           <p class="text-base font-medium">
             {beds} / {baths}
           </p>
         </div>
         <div>
-          <p class="opacity-70">{t(lang, "Area", "Superficie")}</p>
+          <p class="opacity-65">{t(lang, "Area", "Superficie")}</p>
           <p class="text-base font-medium">{area} m²</p>
         </div>
         <div>
-          <p class="opacity-70">{t(lang, "Orientation", "Orientación")}</p>
+          <p class="opacity-65">{t(lang, "Orientation", "Orientación")}</p>
           <p class="text-base font-medium">{orientationText(unit.orientation)}</p>
         </div>
         <div>
-          <p class="opacity-70">{t(lang, "Status", "Estado")}</p>
+          <p class="opacity-65">{t(lang, "Status", "Estado")}</p>
           <p class="text-base font-medium">{statusText(unit.status)}</p>
         </div>
         <div class="sm:col-span-2">
-          <p class="opacity-70">{t(lang, "Price", "Precio")}</p>
+          <p class="opacity-65">{t(lang, "Price", "Precio")}</p>
           <p class="text-base font-medium">
             {unit.price_eur ? `€${unit.price_eur}` : t(lang, "Request price", "Solicitar precio")}
           </p>
         </div>
       </div>
 
-      <div class="flex flex-col gap-3 sm:flex-row">
+      <div class="unit-cta-row flex flex-col gap-3 sm:flex-row">
         <a
-          class="ui-btn ui-btn--primary inline-flex items-center justify-center px-5"
+          class="ui-btn ui-btn--primary inline-flex items-center justify-center px-6"
           href={`/${lang}/downloads/`}
         >
           {t(lang, "Request price list", "Solicitar lista de precios")}
         </a>
         <a
-          class="ui-btn inline-flex items-center justify-center px-5"
+          class="ui-btn inline-flex items-center justify-center px-6"
           href={`/${lang}/contact/?source=unit&unit=${encodeURIComponent(String(unit.id ?? ""))}`}
         >
           {t(lang, "Book a viewing", "Reservar visita")}
