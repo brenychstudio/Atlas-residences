@@ -32,7 +32,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
 const rawIntent = (Astro.url.searchParams.get("intent") ?? "viewing").toLowerCase();
 const intent = ["viewing", "whatsapp", "call"].includes(rawIntent) ? rawIntent : "viewing";
 const sourceParam = (Astro.url.searchParams.get("source") ?? "").toLowerCase();
-const source = ["home", "masterplan", "unit"].includes(sourceParam) ? sourceParam : "";
+const source = ["home", "masterplan", "unit", "downloads"].includes(sourceParam) ? sourceParam : "";
 const building = (Astro.url.searchParams.get("building") ?? "").trim();
 const unit = (Astro.url.searchParams.get("unit") ?? "").trim();
 const sent = Astro.url.searchParams.get("sent") === "1";
@@ -52,8 +52,10 @@ const contextMessage =
         ? t(lang, "Request a viewing or sales consultation.", "Solicita una visita o asesoría comercial.")
         : source === "masterplan"
           ? t(lang, "Request a viewing from the masterplan.", "Solicita una visita desde el plan maestro.")
-          : source === "unit"
-            ? t(lang, "Request details or a viewing for this unit.", "Solicita detalles o una visita para esta unidad.")
+        : source === "unit"
+          ? t(lang, "Request details or a viewing for this unit.", "Solicita detalles o una visita para esta unidad.")
+          : source === "downloads"
+            ? t(lang, "Get help with brochures, pricing, and downloadable materials.", "Recibe ayuda con folletos, precios y material descargable.")
             : "";
 
 const phone = settings.phone ?? "";
