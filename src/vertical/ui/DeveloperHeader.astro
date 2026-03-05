@@ -16,6 +16,12 @@ const nav = [
   { href: `/${L}/contact/`, label: t(L, "Contact", "Contacto") },
 ];
 
+const pathLang = Astro.url.pathname.match(/^\/(en|es)(?=\/|$)/)?.[1] as Lang | undefined;
+
+function pathForLang(nextLang: Lang) {
+  return Astro.url.pathname.replace(/^\/(en|es)(?=\/|$)/, `/${nextLang}`);
+}
+
 function isActive(href: string) {
   if (href === `/${L}/`) return pathname === href;
   return pathname.startsWith(href);
@@ -37,10 +43,10 @@ function isActive(href: string) {
         return (
           <a
             href={item.href}
-            class={`inline-flex min-h-[44px] items-center rounded-full px-3 text-sm transition ${
+            class={`inline-flex min-h-[44px] items-center rounded-full border px-3 text-sm transition ${
               active
-                ? "bg-[color:var(--fg)] text-[color:var(--bg)]"
-                : "text-[color:var(--muted)] hover:text-[color:var(--fg)]"
+                ? "border-[color:var(--fg)] bg-[color:var(--fg)] text-[color:var(--bg)]"
+                : "border-[var(--border)] text-[color:var(--muted)] hover:border-[color:var(--accent)] hover:text-[color:var(--fg)]"
             }`}
             aria-current={active ? "page" : undefined}
           >
@@ -50,12 +56,45 @@ function isActive(href: string) {
       })}
     </nav>
 
-    <a
-      href={`/${L}/contact/`}
-      class="inline-flex min-h-[44px] items-center rounded-full border border-[var(--border)] px-4 text-sm text-[color:var(--fg)] transition hover:border-[color:var(--accent)]"
-    >
-      {t(L, "Book a viewing", "Reservar visita")}
-    </a>
+    <div class="flex items-center gap-2">
+      <nav
+        class="inline-flex min-h-[44px] items-center rounded-full border border-[var(--border)] p-1"
+        aria-label="Switch language"
+        data-lang-switcher
+      >
+        <a
+          href={pathForLang("en")}
+          data-lang="en"
+          class={`inline-flex min-h-[34px] items-center rounded-full px-3 text-xs font-medium transition ${
+            pathLang === "en"
+              ? "bg-[color:var(--fg)] text-[color:var(--bg)]"
+              : "text-[color:var(--muted)] hover:text-[color:var(--fg)]"
+          }`}
+          aria-current={pathLang === "en" ? "page" : undefined}
+        >
+          EN
+        </a>
+        <a
+          href={pathForLang("es")}
+          data-lang="es"
+          class={`inline-flex min-h-[34px] items-center rounded-full px-3 text-xs font-medium transition ${
+            pathLang === "es"
+              ? "bg-[color:var(--fg)] text-[color:var(--bg)]"
+              : "text-[color:var(--muted)] hover:text-[color:var(--fg)]"
+          }`}
+          aria-current={pathLang === "es" ? "page" : undefined}
+        >
+          ES
+        </a>
+      </nav>
+
+      <a
+        href={`/${L}/contact/`}
+        class="inline-flex min-h-[44px] items-center rounded-full border border-[var(--border)] px-4 text-sm text-[color:var(--fg)] transition hover:border-[color:var(--accent)]"
+      >
+        {t(L, "Book a viewing", "Reservar visita")}
+      </a>
+    </div>
   </div>
 
   <nav class="mx-auto flex w-full max-w-[72rem] items-center gap-2 overflow-x-auto px-4 pb-3 md:hidden">
@@ -77,3 +116,22 @@ function isActive(href: string) {
     })}
   </nav>
 </header>
+
+<script>
+  const switcher = document.querySelector("[data-lang-switcher]");
+
+  if (switcher) {
+    const match = window.location.pathname.match(/^\/(en|es)(?=\/|$)/);
+    const currentLang = match?.[1] ?? "en";
+
+    switcher.querySelectorAll("a[data-lang]").forEach((link) => {
+      const nextLang = link.getAttribute("data-lang");
+      if (!nextLang) return;
+
+      const nextPath = window.location.pathname.replace(/^\/(en|es)(?=\/|$)/, `/${nextLang}`);
+      link.setAttribute("href", `${nextPath}${window.location.search}`);
+      if (currentLang === nextLang) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
+    });
+  }
+</script>
