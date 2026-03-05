@@ -176,13 +176,42 @@ const selectionSummary = [
     )}
 
     {sent && (
-      <div class="rounded-xl border p-4 space-y-1">
-        <p class="text-sm font-medium">{t(lang, "Request received", "Solicitud recibida")}</p>
-        <p class="text-sm opacity-80">
-          {t(lang, "Thank you. Our team will contact you shortly to continue your inquiry.", "Gracias. Nuestro equipo te contactará en breve para continuar con tu consulta.")}
-        </p>
-        {sourceContext && <p class="text-xs opacity-70">{t(lang, "Follow-up noted", "Seguimiento registrado")}: {sourceContext}.</p>}
-        {selectionSummary && <p class="text-xs opacity-70">{selectionSummary}</p>}
+      <div class="rounded-2xl border bg-neutral-50/60 p-5 md:p-6 space-y-4">
+        <div class="space-y-2">
+          <p class="inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] opacity-80">
+            {t(lang, "Confirmation", "Confirmación")}
+          </p>
+          <h2 class="text-lg font-semibold md:text-xl">{t(lang, "Your request has been received", "Hemos recibido tu solicitud")}</h2>
+          <p class="text-sm leading-relaxed opacity-80">
+            {t(lang, "Thank you for your interest in Atlas Residences. A sales advisor will follow up shortly with the next steps.", "Gracias por tu interés en Atlas Residences. Un asesor comercial te contactará en breve con los próximos pasos.")}
+          </p>
+        </div>
+
+        {(source || building || unit) && (
+          <div class="rounded-xl border bg-white/80 px-3 py-2.5 text-xs space-y-1.5">
+            <p class="font-medium uppercase tracking-[0.08em] opacity-70">{t(lang, "Inquiry details", "Detalles de la consulta")}</p>
+            <dl class="space-y-1">
+              {source && (
+                <div class="flex items-center justify-between gap-2">
+                  <dt class="opacity-60">{t(lang, "Source", "Origen")}</dt>
+                  <dd class="font-medium uppercase">{source}</dd>
+                </div>
+              )}
+              {building && (
+                <div class="flex items-center justify-between gap-2">
+                  <dt class="opacity-60">{t(lang, "Tower", "Torre")}</dt>
+                  <dd class="font-medium uppercase">{building}</dd>
+                </div>
+              )}
+              {unit && (
+                <div class="flex items-center justify-between gap-2">
+                  <dt class="opacity-60">{t(lang, "Unit", "Unidad")}</dt>
+                  <dd class="font-medium uppercase">{unit}</dd>
+                </div>
+              )}
+            </dl>
+          </div>
+        )}
       </div>
     )}
 
