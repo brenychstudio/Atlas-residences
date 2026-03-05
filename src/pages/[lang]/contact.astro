@@ -35,6 +35,13 @@ const sourceParam = (Astro.url.searchParams.get("source") ?? "").toLowerCase();
 const source = ["home", "masterplan", "unit", "downloads"].includes(sourceParam) ? sourceParam : "";
 const building = (Astro.url.searchParams.get("building") ?? "").trim();
 const unit = (Astro.url.searchParams.get("unit") ?? "").trim();
+const utmSource = (Astro.url.searchParams.get("utm_source") ?? "").trim();
+const utmMedium = (Astro.url.searchParams.get("utm_medium") ?? "").trim();
+const utmCampaign = (Astro.url.searchParams.get("utm_campaign") ?? "").trim();
+const utmTerm = (Astro.url.searchParams.get("utm_term") ?? "").trim();
+const utmContent = (Astro.url.searchParams.get("utm_content") ?? "").trim();
+const gclid = (Astro.url.searchParams.get("gclid") ?? "").trim();
+const fbclid = (Astro.url.searchParams.get("fbclid") ?? "").trim();
 const sent = Astro.url.searchParams.get("sent") === "1";
 const error = Astro.url.searchParams.get("error") === "1";
 
@@ -237,6 +244,13 @@ const selectionSummary = [
       <input type="hidden" name="unit" value={unit} />
       <input type="hidden" name="lang" value={lang} />
       <input type="hidden" name="page" value={page} />
+      {utmSource && <input type="hidden" name="utm_source" value={utmSource} />}
+      {utmMedium && <input type="hidden" name="utm_medium" value={utmMedium} />}
+      {utmCampaign && <input type="hidden" name="utm_campaign" value={utmCampaign} />}
+      {utmTerm && <input type="hidden" name="utm_term" value={utmTerm} />}
+      {utmContent && <input type="hidden" name="utm_content" value={utmContent} />}
+      {gclid && <input type="hidden" name="gclid" value={gclid} />}
+      {fbclid && <input type="hidden" name="fbclid" value={fbclid} />}
       {isFormspreeCompatible && (
         <>
           <input type="hidden" name="_subject" value={formspreeSubject} />
