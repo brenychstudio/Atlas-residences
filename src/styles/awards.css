@@ -1,0 +1,61 @@
+:root {
+  --bg: #f7f7f4;
+  --fg: #171716;
+  --muted: #6f6c67;
+  --border: #d9d6d0;
+  --surface: rgba(254, 254, 254, 0.9);
+  --surface-2: rgba(249, 248, 244, 0.92);
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 999px;
+
+  --shadow-sm: 0 4px 14px rgba(23, 23, 22, 0.06);
+  --shadow-md: 0 12px 36px rgba(23, 23, 22, 0.1);
+
+  --container-max: 1120px;
+
+  --font-sans: Inter, "Avenir Next", Avenir, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman", Times,
+    serif;
+
+  --card: var(--surface);
+}
+
+html {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif);
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  line-height: 1.08;
+}
+
+p {
+  max-width: 68ch;
+}
+
+:is(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--fg), white 12%);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--bg), transparent 10%);
+}
+
+.container-awards {
+  width: min(100% - 2rem, var(--container-max));
+  margin-inline: auto;
+}
