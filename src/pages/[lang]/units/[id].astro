@@ -192,7 +192,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
         </a>
         <a
           class="inline-flex min-h-11 items-center justify-center rounded-lg border px-5 py-3 font-medium"
-          href={`/${lang}/contact/`}
+          href={`/${lang}/contact/?source=unit&unit=${encodeURIComponent(String(unit.id ?? ""))}`}
         >
           {t(lang, "Book a viewing", "Reservar visita")}
         </a>

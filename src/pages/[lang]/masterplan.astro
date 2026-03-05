@@ -194,9 +194,14 @@ const amenityCategoryText = (category?: string) => {
           <dd id="status-coming_soon" class="font-medium">0</dd>
         </div>
       </dl>
-      <a id="view-units-link" class="inline-flex min-h-11 items-center rounded-lg bg-black px-4 py-2 font-medium text-white" href={`/${lang}/units/`}>
-        {t(lang, "View units", "Ver unidades")}
-      </a>
+      <div class="flex flex-col gap-2 sm:flex-row">
+        <a id="view-units-link" class="inline-flex min-h-11 items-center rounded-lg bg-black px-4 py-2 font-medium text-white" href={`/${lang}/units/`}>
+          {t(lang, "View units", "Ver unidades")}
+        </a>
+        <a id="contact-sales-link" class="inline-flex min-h-11 items-center rounded-lg border px-4 py-2 font-medium" href={`/${lang}/contact/?source=masterplan`}>
+          {t(lang, "Contact sales", "Contactar ventas")}
+        </a>
+      </div>
     </div>
 
     <div id="amenity-panel" class="space-y-1 overflow-hidden rounded-xl border p-4">
@@ -306,6 +311,13 @@ const amenityCategoryText = (category?: string) => {
 
       const unitsLink = document.getElementById("view-units-link");
       if (unitsLink) unitsLink.setAttribute("href", `/${data.lang}/units/${buildQuery({ ...filters, building: buildingId }).replace(window.location.pathname, "")}`);
+
+      const contactLink = document.getElementById("contact-sales-link");
+      if (contactLink) {
+        const query = new URLSearchParams({ source: "masterplan" });
+        if (buildingId) query.set("building", buildingId);
+        contactLink.setAttribute("href", `/${data.lang}/contact/?${query.toString()}`);
+      }
 
       document.querySelectorAll(".masterplan-building").forEach((button) => {
         const active = button.getAttribute("data-building-id") === buildingId;

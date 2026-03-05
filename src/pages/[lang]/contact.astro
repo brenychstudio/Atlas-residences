@@ -31,6 +31,23 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
 
 const rawIntent = (Astro.url.searchParams.get("intent") ?? "viewing").toLowerCase();
 const intent = ["viewing", "whatsapp", "call"].includes(rawIntent) ? rawIntent : "viewing";
+const sourceParam = (Astro.url.searchParams.get("source") ?? "").toLowerCase();
+const source = ["home", "masterplan", "unit"].includes(sourceParam) ? sourceParam : "";
+const building = (Astro.url.searchParams.get("building") ?? "").trim();
+const unit = (Astro.url.searchParams.get("unit") ?? "").trim();
+
+const contextMessage =
+  source === "masterplan" && building
+    ? t(lang, `Request a viewing for Tower ${building.toUpperCase()}.`, `Solicita una visita para la Torre ${building.toUpperCase()}.`)
+    : source === "unit" && unit
+      ? t(lang, `Request details or a viewing for unit ${unit.toUpperCase()}.`, `Solicita detalles o una visita para la unidad ${unit.toUpperCase()}.`)
+      : source === "home"
+        ? t(lang, "Request a viewing or sales consultation.", "Solicita una visita o asesoría comercial.")
+        : source === "masterplan"
+          ? t(lang, "Request a viewing from the masterplan.", "Solicita una visita desde el plan maestro.")
+          : source === "unit"
+            ? t(lang, "Request details or a viewing for this unit.", "Solicita detalles o una visita para esta unidad.")
+            : "";
 
 const phone = settings.phone ?? "";
 const whatsappRaw = (settings.whatsapp ?? "").replace(/[^\d+]/g, "");
@@ -121,8 +138,15 @@ const mapsHref = hasCoords
       )}
     </div>
 
+    {contextMessage && (
+      <p class="rounded-xl border p-4 text-sm opacity-90">{contextMessage}</p>
+    )}
+
     <form id="contact-form" class="space-y-4 rounded-xl border p-4" novalidate>
       <input type="hidden" name="intent" value={intent} />
+      <input type="hidden" name="source" value={source} />
+      <input type="hidden" name="building" value={building} />
+      <input type="hidden" name="unit" value={unit} />
       <label class="grid gap-1 text-sm">
         <span>{t(lang, "Name", "Nombre")} *</span>
         <input name="name" required class="min-h-11 rounded-lg border px-3" autocomplete="name" />
