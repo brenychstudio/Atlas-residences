@@ -41,7 +41,13 @@ const error = Astro.url.searchParams.get("error") === "1";
 const formAction = (import.meta.env.PUBLIC_CONTACT_FORM_ACTION ?? "").trim();
 const formMethod = (import.meta.env.PUBLIC_CONTACT_FORM_METHOD ?? "POST").trim() || "POST";
 const hasFormAction = Boolean(formAction);
+const isFormspreeCompatible = hasFormAction && formAction.toLowerCase().includes("formspree.io");
 const page = Astro.url.pathname;
+const contactSentPath = `/${lang}/contact/?sent=1`;
+const formspreeNext = Astro.url.origin && Astro.url.origin !== "null" ? new URL(contactSentPath, Astro.url.origin).toString() : contactSentPath;
+const formspreeSubject = ["Atlas Residences lead", source ? `source=${source}` : "", building ? `building=${building}` : "", unit ? `unit=${unit}` : ""]
+  .filter(Boolean)
+  .join(" · ");
 
 const contextMessage =
   source === "masterplan" && building
@@ -202,6 +208,13 @@ const selectionSummary = [
       <input type="hidden" name="unit" value={unit} />
       <input type="hidden" name="lang" value={lang} />
       <input type="hidden" name="page" value={page} />
+      {isFormspreeCompatible && (
+        <>
+          <input type="hidden" name="_subject" value={formspreeSubject} />
+          <input type="hidden" name="_next" value={formspreeNext} />
+          <input type="text" name="_gotcha" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        </>
+      )}
       <label class="grid gap-1 text-sm">
         <span>{t(lang, "Name", "Nombre")} *</span>
         <input name="name" required class="min-h-11 rounded-lg border px-3" autocomplete="name" />
