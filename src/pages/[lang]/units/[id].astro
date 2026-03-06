@@ -73,7 +73,7 @@ const seoTitle = unit
 
 const seoDescription = unit
   ? `${beds} ${t(lang, "beds", "dorm.")}, ${baths} ${t(lang, "baths", "baños")}, ${area} m²${unit?.price_eur ? `, €${unit.price_eur}` : ""}.`
-  : t(lang, "Unit details are unavailable.", "Los detalles de la unidad no están disponibles.");
+  : t(lang, "Residence details are unavailable.", "Los detalles de la unidad no están disponibles.");
 
 // Prefer gallery cover/first image, then type cover, then OG units, then masterplan.
 const seoImage =
@@ -108,8 +108,8 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
       <p class="text-sm opacity-75">
         {t(
           lang,
-          "This unit is no longer available or the link is incorrect.",
-          "Esta unidad ya no está disponible o el enlace es incorrecto.",
+          "This residence is no longer available or the link is incorrect.",
+          "Esta residencia ya no está disponible o el enlace es incorrecto.",
         )}
       </p>
       <a class="ui-btn inline-flex items-center" href={`/${lang}/units/`}>
@@ -156,7 +156,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
 
       <div class="unit-detail-summary ui-card rounded-xl p-4 sm:p-5">
         <header class="unit-detail-headline space-y-2">
-          <p class="unit-detail-kicker">{t(lang, "Unit details", "Detalles de unidad")}</p>
+          <p class="unit-detail-kicker">{t(lang, "Residence details", "Detalles de la residencia")}</p>
           <h1 class="text-3xl tracking-tight">
             {t(lang, "Unit", "Unidad")} {unit.number || unit.id}
           </h1>
@@ -185,7 +185,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
 
         <div class="unit-detail-spec-grid mt-3.5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
           <div class="unit-detail-stat">
-            <p class="unit-detail-label">{t(lang, "Beds / Baths", "Dormitorios / Baños")}</p>
+            <p class="unit-detail-label">{t(lang, "Bedrooms / Bathrooms", "Dormitorios / baños")}</p>
             <p class="unit-detail-value text-base font-medium">
               {beds} / {baths}
             </p>
@@ -201,7 +201,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
             class="ui-btn cta-secondary inline-flex items-center justify-center px-6"
             href={`/${lang}/downloads/`}
           >
-            {t(lang, "Request price list", "Solicitar lista de precios")}
+            {t(lang, "Request pricing", "Solicitar precios")}
           </a>
           <a
             class="ui-btn ui-btn--primary cta-primary inline-flex items-center justify-center px-6"
