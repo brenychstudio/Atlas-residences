@@ -59,7 +59,7 @@ const heroMobileImage = heroVariants.mobile;
     {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
   </Fragment>
 
-  <section class="space-y-6 sm:space-y-8 md:space-y-10">
+  <section class="space-y-5 sm:space-y-6 md:space-y-8">
     {/* STABILITY LOCK (canonical): keep SunHero prop contract/order stable unless intentional redesign. */}
     <HeroStage>
       <SunHero
@@ -75,7 +75,7 @@ const heroMobileImage = heroVariants.mobile;
       />
     </HeroStage>
 
-    <div class="max-w-3xl space-y-3.5 sm:space-y-5">
+    <div class="max-w-3xl space-y-3 sm:space-y-4">
       <p class="text-[11px] uppercase tracking-[0.22em] text-black/60">{t(lang, "ATLAS RESIDENCES", "ATLAS RESIDENCES")}</p>
       <h1 class="text-3xl tracking-tight sm:text-4xl md:text-5xl">{t(lang, "Atlas Residences", "Atlas Residences")}</h1>
       <p class="max-w-2xl text-sm leading-relaxed text-black/75 sm:text-base">
@@ -87,7 +87,7 @@ const heroMobileImage = heroVariants.mobile;
       </p>
     </div>
 
-    <div class="cta-cluster cta-inline grid gap-2.5 sm:grid-cols-3 sm:gap-3 md:max-w-4xl md:items-stretch">
+    <div class="cta-cluster cta-inline grid gap-2.5 sm:grid-cols-3 sm:gap-2.5 md:max-w-4xl md:items-stretch">
       <a class="cta-primary group flex min-h-12 items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition" href={`/${lang}/units/`}>
         {t(lang, "Explore available residences", "Explorar residencias disponibles")}
         <span class="cta-arrow text-xs transition">→</span>
@@ -102,7 +102,7 @@ const heroMobileImage = heroVariants.mobile;
       </a>
     </div>
 
-    <p class="text-[11px] uppercase tracking-[0.12em] text-black/55 sm:text-xs">
+    <p class="pt-0.5 text-[11px] uppercase tracking-[0.12em] text-black/55 sm:text-xs">
       {t(lang, "Live inventory · Masterplan view · Request a viewing", "Inventario en vivo · Masterplan · Reservar visita")}
     </p>
   </section>
