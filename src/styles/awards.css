@@ -342,3 +342,71 @@ textarea.ui-field {
 .unit-detail-media {
   background: color-mix(in oklab, var(--surface-2), white 16%);
 }
+
+.masterplan-layout {
+  gap: clamp(1.1rem, 2.2vw, 1.8rem);
+}
+
+.masterplan-filters {
+  align-items: start;
+  padding-bottom: 0.2rem;
+}
+
+.masterplan-filters [data-filter] .ui-chip {
+  min-height: 2.3rem;
+  padding: 0.44rem 0.9rem;
+  background: color-mix(in oklab, var(--surface), var(--bg) 24%);
+  color: color-mix(in oklab, var(--fg), white 30%);
+}
+
+.masterplan-filters [data-filter] .ui-chip.is-active {
+  background: color-mix(in oklab, var(--fg), black 4%);
+}
+
+.masterplan-map-card {
+  border-color: color-mix(in oklab, var(--border), var(--fg) 9%);
+  box-shadow: 0 8px 20px rgba(23, 23, 22, 0.055);
+}
+
+.masterplan-panel {
+  border-color: color-mix(in oklab, var(--border), var(--fg) 8%);
+}
+
+.masterplan-panel-stats dt {
+  margin-bottom: 0.15rem;
+}
+
+.masterplan-panel-stats dd {
+  font-size: 1.05rem;
+}
+
+.masterplan-cta-row .ui-btn {
+  min-height: 2.85rem;
+}
+
+.location-layout {
+  gap: clamp(1.2rem, 2.3vw, 1.9rem);
+}
+
+.location-intro-card {
+  box-shadow: 0 6px 18px rgba(23, 23, 22, 0.045);
+}
+
+.location-filters .ui-chip {
+  min-height: 2.35rem;
+  padding: 0.45rem 0.96rem;
+}
+
+.poi-list {
+  gap: 0.82rem;
+}
+
+.poi-row {
+  background: color-mix(in oklab, var(--surface), transparent 3%);
+  border: 1px solid color-mix(in oklab, var(--border), var(--fg) 6%);
+}
+
+.poi-row .ui-btn {
+  min-height: 2.55rem;
+  padding-inline: 0.9rem;
+}

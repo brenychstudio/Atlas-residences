@@ -74,32 +74,31 @@ const projectMapsHref = hasProjectCoords
     {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
   </Fragment>
 
-  <section class="space-y-6">
-    <header class="space-y-2">
+  <section class="location-layout space-y-6">
+    <header class="space-y-2.5">
       <h1 class="text-3xl tracking-tight">{t(lang, "Location", "Ubicación")}</h1>
       <p class="text-sm" style="color:var(--muted)">
         {t(lang, "A curated guide to places you'll reach in minutes.", "Una guía curada de lugares a los que llegarás en minutos.")}
       </p>
     </header>
 
-    <div class="rounded-xl p-4" style="border:1px solid var(--border);background:color-mix(in oklab,var(--bg),var(--fg) 2%);">
+    <div class="location-intro-card rounded-xl p-4 sm:p-5" style="border:1px solid var(--border);background:color-mix(in oklab,var(--bg),var(--fg) 2%);">
       <h2 class="text-sm font-semibold uppercase tracking-wide" style="color:var(--muted)">{t(lang, "Project address", "Dirección del proyecto")}</h2>
       <p class="mt-2 text-sm">{address || t(lang, "Address coming soon", "Dirección próximamente")}</p>
       {projectMapsHref && (
-        <a href={projectMapsHref} target="_blank" rel="noreferrer" class="mt-3 inline-flex min-h-11 items-center rounded-lg px-4 py-2 text-sm font-medium" style="border:1px solid var(--border)">
+        <a href={projectMapsHref} target="_blank" rel="noreferrer" class="ui-btn mt-3 inline-flex items-center text-sm font-medium">
           {t(lang, "Open in Maps", "Abrir en Maps")}
         </a>
       )}
     </div>
 
-    <nav class="flex flex-wrap gap-2" aria-label={t(lang, "POI categories", "Categorías POI")}>
+    <nav class="location-filters flex flex-wrap gap-2" aria-label={t(lang, "POI categories", "Categorías POI")}>
       {categoryOptions.map((category) => {
         const active = activeCat === category;
         return (
           <a
             href={buildCatHref(category)}
-            class="inline-flex min-h-11 items-center rounded-full px-4 py-2 text-sm font-medium"
-            style={active ? "background:var(--fg);color:var(--bg);border:1px solid var(--fg);" : "border:1px solid var(--border);color:var(--fg);"}
+            class={`ui-chip ${active ? "is-active" : ""}`}
           >
             {category === "all" ? t(lang, "All", "Todos") : categoryLabel(category)}
           </a>
@@ -115,7 +114,7 @@ const projectMapsHref = hasProjectCoords
         </p>
       </div>
     ) : (
-      <ul class="space-y-3">
+      <ul class="poi-list space-y-3">
         {filteredPoi.map((item) => {
           const poiName = lang === "es" ? item.name_es : item.name_en;
           const minutes = Number(item.distance_minutes ?? 0);
@@ -125,16 +124,16 @@ const projectMapsHref = hasProjectCoords
             : "";
 
           return (
-            <li class="rounded-xl p-4" style="border:1px solid var(--border);">
+            <li class="poi-row rounded-xl p-4">
               <div class="flex items-start justify-between gap-3">
                 <div class="min-w-0">
-                  <h3 class="text-base font-semibold break-words">{poiName}</h3>
+                  <h3 class="text-base font-semibold tracking-tight break-words">{poiName}</h3>
                   <p class="mt-1 text-sm" style="color:var(--muted)">{categoryLabel(String(item.category ?? "").toLowerCase())}</p>
                 </div>
-                <p class="shrink-0 text-sm font-medium">{minutes} {t(lang, "min", "min")}</p>
+                <p class="shrink-0 text-sm font-medium" style="color:color-mix(in oklab,var(--fg),var(--muted) 26%);">{minutes} {t(lang, "min", "min")}</p>
               </div>
               {poiMapsHref && (
-                <a href={poiMapsHref} target="_blank" rel="noreferrer" class="mt-3 inline-flex min-h-11 items-center rounded-lg px-4 py-2 text-sm font-medium" style="border:1px solid var(--border)">
+                <a href={poiMapsHref} target="_blank" rel="noreferrer" class="ui-btn mt-3 inline-flex items-center text-sm font-medium">
                   {t(lang, "Open", "Abrir")}
                 </a>
               )}
