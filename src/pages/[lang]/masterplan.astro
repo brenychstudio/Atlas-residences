@@ -102,7 +102,7 @@ const amenityCategoryText = (category?: string) => {
       <p class="text-sm opacity-80">{t(lang, "Tap a building to inspect live inventory.", "Toca un bloque para ver el inventario en vivo.")}</p>
     </header>
 
-    <div class="masterplan-filters grid gap-3.5 sm:grid-cols-2" id="masterplan-filters">
+    <div class="masterplan-filters grid gap-3 sm:grid-cols-2" id="masterplan-filters">
       <div class="space-y-1">
         <p class="text-sm font-medium tracking-wide">{t(lang, "Beds", "Dormitorios")}</p>
         <div class="flex flex-wrap gap-2" data-filter="beds">
@@ -179,7 +179,7 @@ const amenityCategoryText = (category?: string) => {
       </div>
     </div>
 
-    <div id="building-panel" class="masterplan-panel space-y-3 overflow-hidden rounded-xl border p-4 sm:p-5">
+    <div id="building-panel" class="masterplan-panel space-y-3.5 overflow-hidden rounded-xl border p-4 sm:p-5">
       <h2 id="building-name" class="text-xl font-semibold tracking-tight break-words">{t(lang, "Select a building", "Selecciona un bloque")}</h2>
       <p id="building-meta" class="text-sm opacity-80 break-words">{t(lang, "Tap a building hotspot to see details.", "Toca un hotspot para ver los detalles.")}</p>
       <dl class="masterplan-panel-stats grid gap-2.5 text-sm sm:grid-cols-2">
@@ -200,7 +200,7 @@ const amenityCategoryText = (category?: string) => {
           <dd id="status-coming_soon" class="font-medium">0</dd>
         </div>
       </dl>
-      <div class="masterplan-cta-row flex flex-col gap-2.5 sm:flex-row">
+      <div class="masterplan-cta-row flex flex-col gap-2.5 sm:flex-row sm:items-center">
         <a id="view-units-link" class="ui-btn ui-btn--primary inline-flex items-center" href={`/${lang}/units/`}>
           {t(lang, "View units", "Ver unidades")}
         </a>
@@ -210,7 +210,7 @@ const amenityCategoryText = (category?: string) => {
       </div>
     </div>
 
-    <div id="amenity-panel" class="masterplan-panel space-y-1 overflow-hidden rounded-xl border p-4 sm:p-5">
+    <div id="amenity-panel" class="masterplan-panel space-y-1.5 overflow-hidden rounded-xl border p-4 sm:p-5">
       <h3 id="amenity-name" class="text-lg font-semibold break-words">{t(lang, "Amenity", "Amenidad")}</h3>
       <p id="amenity-category" class="text-sm opacity-80 break-words">{t(lang, "Tap an amenity hotspot.", "Toca un hotspot de amenidad.")}</p>
     </div>

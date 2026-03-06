@@ -25,7 +25,7 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
     </header>
 
     {hasDownloads ? (
-    <div class="downloads-grid grid gap-4 sm:grid-cols-2">
+    <div class="downloads-grid grid gap-4 sm:grid-cols-2 sm:gap-4">
       {brochureUrl && (
         <a
           class="download-card ui-card group flex h-full flex-col overflow-hidden rounded-xl"
@@ -38,7 +38,7 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
             loading="lazy"
             decoding="async"
           />
-          <div class="mt-auto space-y-2 p-4 sm:p-5">
+          <div class="mt-auto space-y-2.5 p-4 sm:p-5">
             <p class="text-sm font-semibold">{t(lang, "Project brochure", "Folleto del proyecto")}</p>
             <p class="text-xs opacity-70">{t(lang, "Sales material", "Material comercial")}</p>
             <p class="text-xs font-medium uppercase tracking-[0.1em] opacity-75">{t(lang, "Open document", "Abrir documento")}</p>
@@ -58,7 +58,7 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
             loading="lazy"
             decoding="async"
           />
-          <div class="mt-auto space-y-2 p-4 sm:p-5">
+          <div class="mt-auto space-y-2.5 p-4 sm:p-5">
             <p class="text-sm font-semibold">{t(lang, "Price list", "Lista de precios")}</p>
             <p class="text-xs opacity-70">{t(lang, "Sales material", "Material comercial")}</p>
             <p class="text-xs font-medium uppercase tracking-[0.1em] opacity-75">{t(lang, "Open document", "Abrir documento")}</p>

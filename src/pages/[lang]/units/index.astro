@@ -77,7 +77,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
       <p id="active-filters" class="text-sm opacity-70">{t(lang, "All filters", "Todos los filtros")}</p>
     </header>
 
-    <div class="units-filters grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5" id="units-filters">
+    <div class="units-filters grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4" id="units-filters">
       <div class="space-y-2">
         <p class="text-sm font-medium tracking-wide opacity-80">{t(lang, "Building", "Bloque")}</p>
         <div class="flex flex-wrap gap-2" data-filter="building">
@@ -120,7 +120,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
       </div>
     </div>
 
-    <div id="units-grid" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-initial-building={initialBuilding}>
+    <div id="units-grid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-initial-building={initialBuilding}>
       {units.map((unit) => {
         const unitType = unit.type_id ? unitTypeById.get(unit.type_id) : undefined;
         const beds = unit.beds || unitType?.beds || "-";
@@ -158,14 +158,14 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
                 <h2 class="text-lg font-semibold leading-tight break-words text-slate-900">
                   {t(lang, "Unit", "Unidad")} {unit.number || unit.id}
                 </h2>
-                <span class={`unit-card__status rounded-full px-2.5 py-1 text-xs font-medium ${statusClass}`}>{statusText(unit.status)}</span>
+                <span class={`unit-card__status inline-flex min-h-7 items-center rounded-full px-2.5 py-1 text-xs font-medium ${statusClass}`}>{statusText(unit.status)}</span>
               </div>
 
               <p class="text-sm leading-relaxed opacity-75">
                 {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")} {unit.floor || "-"}
               </p>
 
-              <dl class="unit-meta grid grid-cols-2 gap-x-3 gap-y-2.5 text-sm">
+              <dl class="unit-meta grid grid-cols-2 gap-x-3 gap-y-2 text-sm">
                 <div>
                   <dt class="opacity-65">{t(lang, "Beds/Baths", "Dorm./Baños")}</dt>
                   <dd class="font-medium">{beds}/{baths}</dd>

@@ -18,8 +18,8 @@
   --shadow-soft: 0 4px 14px rgba(23, 23, 22, 0.06);
   --shadow-sm: var(--shadow-soft);
   --shadow-md: 0 12px 36px rgba(23, 23, 22, 0.1);
-  --shadow-card: 0 8px 22px rgba(23, 23, 22, 0.055);
-  --shadow-card-hover: 0 12px 30px rgba(23, 23, 22, 0.085);
+  --shadow-card: 0 8px 20px rgba(23, 23, 22, 0.05);
+  --shadow-card-hover: 0 12px 28px rgba(23, 23, 22, 0.08);
   --control-height: 2.75rem;
 
   --container-max: 72rem;
@@ -134,7 +134,7 @@ small,
 
 .ui-card {
   border-radius: var(--radius-card);
-  border: 1px solid color-mix(in oklab, var(--border), var(--fg) 8%);
+  border: 1px solid color-mix(in oklab, var(--border), var(--fg) 11%);
   background: color-mix(in oklab, var(--card), transparent 2%);
   box-shadow: var(--shadow-card);
   transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
@@ -158,7 +158,7 @@ small,
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-pill);
-  border: 1px solid color-mix(in oklab, var(--border), white 10%);
+  border: 1px solid color-mix(in oklab, var(--border), var(--fg) 9%);
   padding: 0.48rem 0.98rem;
   font-size: 0.875rem;
   font-weight: 500;
@@ -192,7 +192,7 @@ small,
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-control);
-  border: 1px solid color-mix(in oklab, var(--border), white 8%);
+  border: 1px solid color-mix(in oklab, var(--border), var(--fg) 10%);
   padding: 0.62rem 1.08rem;
   font-weight: 500;
   line-height: 1.2;
@@ -241,7 +241,7 @@ small,
 
 .ui-field {
   min-height: var(--control-height);
-  border-color: color-mix(in oklab, var(--border), white 10%);
+  border-color: color-mix(in oklab, var(--border), var(--fg) 9%);
   background: color-mix(in oklab, var(--surface), transparent 4%);
   padding-inline: 0.9rem;
   transition: border-color 150ms ease, box-shadow 150ms ease;
