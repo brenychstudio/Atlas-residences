@@ -1,4 +1,10 @@
-<div data-hero-stage data-hero-signature="hybrid" data-hero-debug="false" class="hero-stage relative">
+<div
+  data-hero-stage
+  data-hero-signature="hybrid"
+  data-hero-depth="readable"
+  data-hero-debug="false"
+  class="hero-stage relative"
+>
   <div data-hero-stage-content>
     <slot />
   </div>
@@ -28,10 +34,10 @@
   }
 
   .hero-stage [data-webgl-hero] {
-    z-index: 14;
+    z-index: 13;
     mix-blend-mode: screen;
-    opacity: var(--hero-canvas-opacity, 0.9);
-    filter: saturate(var(--hero-canvas-sat, 1.08)) contrast(1.02);
+    opacity: var(--hero-canvas-opacity, 0.94);
+    filter: saturate(var(--hero-canvas-sat, 1.12)) contrast(var(--hero-canvas-contrast, 1.04));
   }
 
   .hero-stage [data-hero-overlay] {
@@ -44,40 +50,47 @@
   }
 
   .hero-stage [data-hero-overlay="veil"] {
-    z-index: 15;
-    background:
-      radial-gradient(
-        140% 90% at calc(var(--hero-sun-x, 50) * 1%) calc(var(--hero-sun-y, 30) * 1%),
-        color-mix(in oklab, var(--hero-veil-rgb, rgba(196, 220, 255, 0.2)), transparent 52%) 0%,
-        transparent 66%
-      ),
-      linear-gradient(
-        180deg,
-        color-mix(in oklab, var(--hero-veil-rgb, rgba(180, 205, 245, 0.14)), transparent 40%) 0%,
-        transparent 74%
-      );
-    mix-blend-mode: screen;
-    opacity: var(--hero-veil-opacity, 0);
-    transform: translate3d(var(--hero-veil-x, 0px), var(--hero-veil-y, 0px), 0) scale(1.03);
-  }
-
-  .hero-stage [data-hero-overlay="glint"] {
     z-index: 16;
     background:
       radial-gradient(
-        44% 30% at calc(var(--hero-glint-x, 52) * 1%) calc(var(--hero-glint-y, 36) * 1%),
-        color-mix(in oklab, var(--hero-glint-rgb, rgba(255, 236, 204, 0.34)), transparent 42%) 0%,
+        130% 78% at calc(var(--hero-sun-x, 50) * 1%) calc(var(--hero-sun-y, 30) * 1%),
+        color-mix(in oklab, var(--hero-veil-rgb, rgba(196, 220, 255, 0.2)), transparent 50%) 0%,
+        transparent 62%
+      ),
+      linear-gradient(
+        180deg,
+        transparent 12%,
+        color-mix(in oklab, var(--hero-veil-rgb, rgba(180, 205, 245, 0.16)), transparent 38%) 58%,
+        transparent 92%
+      );
+    mix-blend-mode: screen;
+    opacity: var(--hero-veil-opacity, 0);
+    transform: translate3d(var(--hero-veil-x, 0px), var(--hero-veil-y, 0px), 0) scale(1.045);
+    filter: blur(var(--hero-veil-blur, 1.2px));
+  }
+
+  .hero-stage [data-hero-overlay="glint"] {
+    z-index: 15;
+    background:
+      radial-gradient(
+        52% 34% at calc(var(--hero-glint-x, 52) * 1%) calc(var(--hero-glint-y, 36) * 1%),
+        color-mix(in oklab, var(--hero-glint-rgb, rgba(255, 236, 204, 0.34)), transparent 38%) 0%,
         transparent 78%
+      ),
+      radial-gradient(
+        76% 26% at calc(var(--hero-mid-x, 50) * 1%) calc(var(--hero-mid-y, 66) * 1%),
+        color-mix(in oklab, var(--hero-mid-rgb, rgba(235, 210, 172, 0.3)), transparent 56%) 0%,
+        transparent 82%
       ),
       linear-gradient(
         100deg,
         transparent 14%,
-        color-mix(in oklab, var(--hero-glint-rgb, rgba(247, 229, 208, 0.22)), transparent 70%) 48%,
+        color-mix(in oklab, var(--hero-glint-rgb, rgba(247, 229, 208, 0.24)), transparent 66%) 48%,
         transparent 85%
       );
-    mix-blend-mode: soft-light;
+    mix-blend-mode: screen;
     opacity: var(--hero-glint-opacity, 0);
-    transform: translate3d(var(--hero-glint-parallax-x, 0px), var(--hero-glint-parallax-y, 0px), 0) scale(1.04);
+    transform: translate3d(var(--hero-glint-parallax-x, 0px), var(--hero-glint-parallax-y, 0px), 0) scale(1.025);
     filter: blur(var(--hero-glint-blur, 1.3px));
   }
 </style>
@@ -122,6 +135,11 @@
       stage.style.setProperty("--hero-glint-blur", `${state.glintBlur.toFixed(2)}px`);
       stage.style.setProperty("--hero-veil-rgb", state.veilColor);
       stage.style.setProperty("--hero-glint-rgb", state.glintColor);
+      stage.style.setProperty("--hero-mid-rgb", state.midColor);
+      stage.style.setProperty("--hero-mid-x", `${(state.midX * 100).toFixed(2)}`);
+      stage.style.setProperty("--hero-mid-y", `${(state.midY * 100).toFixed(2)}`);
+      stage.style.setProperty("--hero-canvas-contrast", state.canvasContrast.toFixed(3));
+      stage.style.setProperty("--hero-veil-blur", `${state.veilBlur.toFixed(2)}px`);
     };
 
     setDebugState(false, "fallback");
@@ -191,13 +209,13 @@
         float blue = clamp(u_bluehour, 0.0, 1.0);
         float sunset = clamp(u_sunset, 0.0, 1.0);
 
-        float glow = exp(-(8.2 - sunset * 1.3 + blue * 0.45) * distance(p, glowPos));
-        float bloom = exp(-(3.4 - sunset * 1.15 + blue * 0.34) * distance(p, glowPos));
-        float hazeLayer = exp(-(2.45 - sunset * 0.58 + blue * 0.43) * distance(p, hazePos));
-        float skyLayer = exp(-(1.48 - blue * 0.25 + sunset * 0.19) * distance(p, skyPos));
+        float glow = exp(-(7.5 - sunset * 1.45 + blue * 0.55) * distance(p, glowPos));
+        float bloom = exp(-(3.0 - sunset * 1.25 + blue * 0.4) * distance(p, glowPos));
+        float hazeLayer = exp(-(2.0 - sunset * 0.45 + blue * 0.58) * distance(p, hazePos));
+        float skyLayer = exp(-(1.2 - blue * 0.3 + sunset * 0.2) * distance(p, skyPos));
 
         float horizon = smoothstep(0.14, 0.88, uv.y);
-        float haze = (1.0 - horizon) * (0.14 + blue * 0.1 + sunset * 0.16 - dayBlend * 0.014);
+        float haze = (1.0 - horizon) * (0.16 + blue * 0.14 + sunset * 0.2 - dayBlend * 0.024);
 
         float edge = smoothstep(0.76, 0.26, length(p));
         float vignette = (1.0 - edge) * 0.08;
@@ -205,7 +223,7 @@
         float drift = sin(u_time * 0.22 + uv.x * 4.2) * 0.009;
         float scrollTint = clamp(u_scroll, 0.0, 1.0) * (0.065 + blue * 0.044 + sunset * 0.061);
         float sunMix = clamp(u_sun_mix, 0.0, 1.0);
-        float debugBoost = 1.0 + u_debug * 0.16;
+        float debugBoost = 1.0 + u_debug * 0.32;
 
         vec3 coolDay = vec3(0.78, 0.9, 1.0);
         vec3 blueHour = vec3(0.5, 0.62, 0.88);
@@ -214,11 +232,11 @@
         vec3 ambient = mix(coolDay, blueHour, blue * 0.95 + sunMix * 0.04);
         ambient = mix(ambient, warmSunset, sunset * 0.92);
 
-        float glowIntensity = (0.175 + dayBlend * 0.05 + sunset * 0.19 + sunMix * 0.055 + blue * 0.03) * debugBoost;
-        float bloomIntensity = (0.09 + sunset * 0.11 + blue * 0.055) * debugBoost;
-        float hazeIntensity = (0.07 + blue * 0.04 + sunset * 0.056) * debugBoost;
-        float skyIntensity = (0.055 + dayBlend * 0.025 + blue * 0.048) * debugBoost;
-        float ambientIntensity = (0.09 + dayBlend * 0.03 + blue * 0.05 + sunset * 0.07) * debugBoost;
+        float glowIntensity = (0.22 + dayBlend * 0.045 + sunset * 0.24 + sunMix * 0.08 + blue * 0.05) * debugBoost;
+        float bloomIntensity = (0.11 + sunset * 0.14 + blue * 0.08) * debugBoost;
+        float hazeIntensity = (0.1 + blue * 0.08 + sunset * 0.07) * debugBoost;
+        float skyIntensity = (0.08 + dayBlend * 0.04 + blue * 0.075) * debugBoost;
+        float ambientIntensity = (0.11 + dayBlend * 0.02 + blue * 0.08 + sunset * 0.11) * debugBoost;
 
         vec3 skyColor = mix(coolDay, blueHour, blue * 0.92 + sunMix * 0.08);
         skyColor = mix(skyColor, warmSunset, sunset * 0.72);
@@ -230,13 +248,13 @@
           + skyColor * skyLayer * skyIntensity;
 
         float alpha = clamp(
-          glow * (0.15 + sunset * 0.125 + sunMix * 0.038)
-          + bloom * (0.082 + sunset * 0.064 + blue * 0.03)
-          + hazeLayer * (0.05 + sunset * 0.045 + blue * 0.018)
-          + skyLayer * (0.03 + blue * 0.03)
+          glow * (0.17 + sunset * 0.14 + sunMix * 0.05)
+          + bloom * (0.1 + sunset * 0.08 + blue * 0.05)
+          + hazeLayer * (0.07 + sunset * 0.06 + blue * 0.03)
+          + skyLayer * (0.045 + blue * 0.04)
           + (haze + vignette) * ambientIntensity,
           0.0,
-          0.38
+          0.48
         );
         gl_FragColor = vec4(color, alpha);
       }
@@ -315,15 +333,20 @@
       glintOpacity: 0,
       canvasOpacity: 0.92,
       canvasSaturation: 1.08,
+      canvasContrast: 1.04,
       veilX: 0,
       veilY: 0,
+      veilBlur: 1.2,
       glintParallaxX: 0,
       glintParallaxY: 0,
       glintBlur: 1.35,
       veilColor: "rgba(198, 220, 255, 0.22)",
       glintColor: "rgba(248, 233, 210, 0.3)",
+      midColor: "rgba(228, 222, 208, 0.24)",
       glintX: 0.52,
       glintY: 0.36,
+      midX: 0.5,
+      midY: 0.66,
     };
 
     const lerp = (from, to, t) => from + (to - from) * t;
@@ -375,7 +398,7 @@
       const targetSunset = readVarNumber("--sunset-opacity", 0);
 
       const modeBlend = Math.max(targetBlueHour, targetSunset);
-      const debugBoost = debugIntensity ? 1.16 : 1;
+      const debugBoost = debugIntensity ? 1.45 : 1;
 
       pointerX = lerp(pointerX, pointerTargetX, 0.11);
       pointerY = lerp(pointerY, pointerTargetY, 0.11);
@@ -398,32 +421,44 @@
       const pointerDeepCenterX = pointerDeepX - 0.5;
       const pointerDeepCenterY = pointerDeepY - 0.5;
 
-      const veilTarget = (0.15 + state.sunset * 0.1 + state.blueHour * 0.08 + state.sunMix * 0.06) * debugBoost;
-      const glintTarget = (0.11 + state.sunset * 0.13 + state.blueHour * 0.09 + state.sunMix * 0.045) * debugBoost;
-      const canvasTarget = (0.92 + modeBlend * 0.07 + state.sunset * 0.03) * (debugIntensity ? 1.04 : 1);
-      const satTarget = 1.06 + state.sunset * 0.1 + state.blueHour * 0.06;
+      const dayOpen = 1 - Math.max(state.blueHour, state.sunset);
+      const veilTarget =
+        (0.08 + state.scroll * 0.03 + state.sunset * 0.11 + state.blueHour * 0.16 + state.sunMix * 0.04 - dayOpen * 0.03) *
+        debugBoost;
+      const glintTarget =
+        (0.14 + state.sunset * 0.22 + state.blueHour * 0.11 + state.sunMix * 0.07 + state.scroll * 0.04) * debugBoost;
+      const canvasTarget = (0.9 + modeBlend * 0.11 + state.sunset * 0.06 + state.scroll * 0.03) * (debugIntensity ? 1.08 : 1);
+      const satTarget = 1.08 + state.sunset * 0.16 + state.blueHour * 0.14;
+      const contrastTarget = 1.03 + state.blueHour * 0.12 + state.sunset * 0.1;
 
       state.veilOpacity = lerp(state.veilOpacity, veilTarget, 0.08);
       state.glintOpacity = lerp(state.glintOpacity, glintTarget, 0.08);
       state.canvasOpacity = lerp(state.canvasOpacity, canvasTarget, 0.08);
       state.canvasSaturation = lerp(state.canvasSaturation, satTarget, 0.08);
-      state.veilX = lerp(state.veilX, pointerDeepCenterX * 16 + state.scroll * 4, 0.08);
-      state.veilY = lerp(state.veilY, pointerDeepCenterY * 10 - state.scroll * 3, 0.08);
-      state.glintParallaxX = lerp(state.glintParallaxX, pointerSoftCenterX * 24 + state.sunset * 5 - state.blueHour * 4, 0.1);
-      state.glintParallaxY = lerp(state.glintParallaxY, pointerSoftCenterY * 16 + state.sunset * 2, 0.1);
-      state.glintBlur = lerp(state.glintBlur, 1.2 + state.blueHour * 0.7 + state.sunset * 0.4, 0.08);
-      state.glintX = lerp(state.glintX, state.sunX * 0.78 + 0.18 + pointerSoftCenterX * 0.08, 0.09);
-      state.glintY = lerp(state.glintY, state.sunY * 0.72 + 0.14 + pointerSoftCenterY * 0.06, 0.09);
+      state.canvasContrast = lerp(state.canvasContrast, contrastTarget, 0.08);
+      state.veilX = lerp(state.veilX, pointerCenterX * 28 + state.scroll * 8 + state.sunset * 4, 0.08);
+      state.veilY = lerp(state.veilY, pointerCenterY * 18 - state.scroll * 5 - state.blueHour * 2, 0.08);
+      state.veilBlur = lerp(state.veilBlur, 1.1 + state.blueHour * 0.9 + state.sunset * 0.45, 0.08);
+      state.glintParallaxX = lerp(state.glintParallaxX, pointerSoftCenterX * 16 + state.sunset * 8 - state.blueHour * 5, 0.1);
+      state.glintParallaxY = lerp(state.glintParallaxY, pointerSoftCenterY * 10 + state.sunset * 4 - state.scroll * 2, 0.1);
+      state.glintBlur = lerp(state.glintBlur, 1.15 + state.blueHour * 0.55 + state.sunset * 0.35, 0.08);
+      state.glintX = lerp(state.glintX, state.sunX * 0.8 + 0.16 + pointerSoftCenterX * 0.06, 0.09);
+      state.glintY = lerp(state.glintY, state.sunY * 0.7 + 0.16 + pointerSoftCenterY * 0.05, 0.09);
+      state.midX = lerp(state.midX, state.sunX * 0.58 + 0.24 + pointerDeepCenterX * 0.045, 0.07);
+      state.midY = lerp(state.midY, 0.64 + state.scroll * 0.06 - state.sunset * 0.05 + pointerDeepCenterY * 0.04, 0.07);
 
       if (state.sunset >= 0.16) {
-        state.veilColor = "rgba(245, 192, 142, 0.3)";
-        state.glintColor = "rgba(255, 216, 162, 0.38)";
+        state.veilColor = "rgba(242, 183, 132, 0.34)";
+        state.glintColor = "rgba(255, 206, 144, 0.47)";
+        state.midColor = "rgba(255, 182, 104, 0.33)";
       } else if (state.blueHour >= 0.14) {
-        state.veilColor = "rgba(136, 164, 222, 0.28)";
-        state.glintColor = "rgba(172, 196, 245, 0.32)";
+        state.veilColor = "rgba(120, 152, 214, 0.34)";
+        state.glintColor = "rgba(154, 182, 237, 0.37)";
+        state.midColor = "rgba(124, 144, 214, 0.31)";
       } else {
-        state.veilColor = "rgba(198, 221, 255, 0.22)";
-        state.glintColor = "rgba(241, 236, 224, 0.27)";
+        state.veilColor = "rgba(188, 216, 255, 0.2)";
+        state.glintColor = "rgba(248, 238, 220, 0.31)";
+        state.midColor = "rgba(226, 236, 255, 0.22)";
       }
 
       stage.dataset.webglMode = resolveMode(targetBlueHour, targetSunset);
