@@ -24,7 +24,17 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
       <p class="max-w-2xl text-sm opacity-80">{t(lang, "Sales documents and brochures.", "Documentos comerciales y folletos.")}</p>
     </header>
 
+    <div class="cta-cluster cta-inline flex flex-col gap-2.5 sm:flex-row sm:items-center">
+      <a class="cta-primary ui-btn ui-btn--primary inline-flex items-center justify-center" href={`/${lang}/contact/?source=downloads`}>
+        {t(lang, "Request sales assistance", "Solicitar asesoría comercial")}
+      </a>
+      <a class="cta-secondary ui-btn inline-flex items-center justify-center" href={`/${lang}/units/`}>
+        {t(lang, "Review available units", "Revisar unidades disponibles")}
+      </a>
+    </div>
+
     {hasDownloads ? (
+
     <div class="downloads-grid grid gap-4 sm:grid-cols-2 sm:gap-4">
       {brochureUrl && (
         <a
@@ -71,7 +81,7 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
         <p class="text-sm opacity-80">
           {t(lang, "Downloads will be available shortly.", "Las descargas estarán disponibles en breve.")}
         </p>
-        <a class="ui-btn inline-flex items-center text-sm" href={`/${lang}/contact/?source=downloads`}>
+        <a class="ui-btn cta-secondary inline-flex items-center text-sm" href={`/${lang}/contact/?source=downloads`}>
           {t(lang, "Contact sales", "Contactar ventas")}
         </a>
       </div>
