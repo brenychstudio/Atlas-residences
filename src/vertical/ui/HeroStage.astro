@@ -18,7 +18,8 @@
   .hero-stage [data-webgl-hero] {
     z-index: 14;
     mix-blend-mode: screen;
-    opacity: 0.9;
+    opacity: 0.86;
+    filter: saturate(1.04) contrast(1.01);
   }
 </style>
 
@@ -65,6 +66,8 @@
       uniform vec2 u_resolution;
       uniform float u_time;
       uniform vec2 u_pointer;
+      uniform vec2 u_pointer_soft;
+      uniform vec2 u_pointer_deep;
       uniform vec2 u_sun;
       uniform float u_scroll;
       uniform float u_sun_mix;
@@ -80,14 +83,22 @@
 
         vec2 sun = u_sun;
         sun.x *= ratio;
-        vec2 glowPos = vec2(sun.x, u_sun.y) + (u_pointer - 0.5) * vec2(0.018, 0.012);
+        vec2 pointerFront = (u_pointer - 0.5) * vec2(0.03, 0.018);
+        vec2 pointerMid = (u_pointer_soft - 0.5) * vec2(0.018, 0.012);
+        vec2 pointerBack = (u_pointer_deep - 0.5) * vec2(0.009, 0.006);
+
+        vec2 glowPos = vec2(sun.x, u_sun.y) + pointerMid;
+        vec2 hazePos = vec2(sun.x * 0.85, u_sun.y * 0.96 + 0.03) + pointerFront;
+        vec2 skyPos = vec2(sun.x * 0.68, u_sun.y * 1.05 + 0.05) + pointerBack;
 
         float dayBlend = clamp(1.0 - u_sun_mix, 0.0, 1.0);
         float blue = clamp(u_bluehour, 0.0, 1.0);
         float sunset = clamp(u_sunset, 0.0, 1.0);
 
-        float glow = exp(-(11.6 - sunset * 2.3 + blue * 0.6) * distance(p, glowPos));
-        float bloom = exp(-(4.8 - sunset * 1.1 + blue * 0.2) * distance(p, glowPos));
+        float glow = exp(-(11.0 - sunset * 2.0 + blue * 0.45) * distance(p, glowPos));
+        float bloom = exp(-(4.4 - sunset * 1.0 + blue * 0.18) * distance(p, glowPos));
+        float hazeLayer = exp(-(3.4 - sunset * 0.55 + blue * 0.25) * distance(p, hazePos));
+        float skyLayer = exp(-(2.0 - blue * 0.32 + sunset * 0.16) * distance(p, skyPos));
 
         float horizon = smoothstep(0.12, 0.86, uv.y);
         float haze = (1.0 - horizon) * (0.10 + blue * 0.05 + sunset * 0.075 - dayBlend * 0.008);
@@ -95,7 +106,7 @@
         float edge = smoothstep(0.75, 0.28, length(p));
         float vignette = (1.0 - edge) * 0.09;
 
-        float drift = sin(u_time * 0.2 + uv.x * 4.0) * 0.01;
+        float drift = sin(u_time * 0.2 + uv.x * 4.0) * 0.008;
         float scrollTint = clamp(u_scroll, 0.0, 1.0) * (0.05 + blue * 0.025 + sunset * 0.03);
         float sunMix = clamp(u_sun_mix, 0.0, 1.0);
 
@@ -106,13 +117,30 @@
         vec3 ambient = mix(coolDay, blueHour, blue);
         ambient = mix(ambient, warmSunset, sunset * 0.85);
 
-        float glowIntensity = 0.14 + dayBlend * 0.04 + sunset * 0.14 + sunMix * 0.05 + blue * 0.015;
-        float bloomIntensity = 0.075 + sunset * 0.085 + blue * 0.03;
-        float ambientIntensity = 0.082 + dayBlend * 0.022 + blue * 0.042 + sunset * 0.055;
+        float glowIntensity = 0.135 + dayBlend * 0.036 + sunset * 0.13 + sunMix * 0.044 + blue * 0.015;
+        float bloomIntensity = 0.07 + sunset * 0.075 + blue * 0.028;
+        float hazeIntensity = 0.05 + blue * 0.018 + sunset * 0.03;
+        float skyIntensity = 0.045 + dayBlend * 0.02 + blue * 0.03;
+        float ambientIntensity = 0.075 + dayBlend * 0.02 + blue * 0.036 + sunset * 0.048;
 
-        vec3 color = ambient * (haze + drift + scrollTint) + warmSunset * glow * glowIntensity + ambient * bloom * bloomIntensity;
+        vec3 skyColor = mix(coolDay, blueHour, blue * 0.86 + sunMix * 0.08);
+        skyColor = mix(skyColor, warmSunset, sunset * 0.68);
 
-        float alpha = clamp(glow * (0.13 + sunset * 0.13 + sunMix * 0.04) + bloom * (0.065 + sunset * 0.05 + blue * 0.01) + (haze + vignette) * ambientIntensity, 0.0, 0.28);
+        vec3 color = ambient * (haze + drift + scrollTint)
+          + warmSunset * glow * glowIntensity
+          + ambient * bloom * bloomIntensity
+          + ambient * hazeLayer * hazeIntensity
+          + skyColor * skyLayer * skyIntensity;
+
+        float alpha = clamp(
+          glow * (0.12 + sunset * 0.11 + sunMix * 0.03)
+          + bloom * (0.06 + sunset * 0.045 + blue * 0.01)
+          + hazeLayer * (0.03 + sunset * 0.03)
+          + skyLayer * (0.02 + blue * 0.02)
+          + (haze + vignette) * ambientIntensity,
+          0.0,
+          0.28
+        );
         gl_FragColor = vec4(color, alpha);
       }
     `;
@@ -141,6 +169,7 @@
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return;
 
     setDebugState(true, "morning");
+    stage.dataset.webglDepth = "cinematic";
 
     gl.useProgram(program);
 
@@ -155,6 +184,8 @@
     const uResolution = gl.getUniformLocation(program, "u_resolution");
     const uTime = gl.getUniformLocation(program, "u_time");
     const uPointer = gl.getUniformLocation(program, "u_pointer");
+    const uPointerSoft = gl.getUniformLocation(program, "u_pointer_soft");
+    const uPointerDeep = gl.getUniformLocation(program, "u_pointer_deep");
     const uSun = gl.getUniformLocation(program, "u_sun");
     const uScroll = gl.getUniformLocation(program, "u_scroll");
     const uSunMix = gl.getUniformLocation(program, "u_sun_mix");
@@ -166,6 +197,10 @@
 
     let pointerX = 0.5;
     let pointerY = 0.4;
+    let pointerSoftX = 0.5;
+    let pointerSoftY = 0.4;
+    let pointerDeepX = 0.5;
+    let pointerDeepY = 0.4;
     let pointerTargetX = 0.5;
     let pointerTargetY = 0.4;
     let inView = false;
@@ -229,8 +264,12 @@
       const targetBlueHour = readVarNumber("--bluehour-opacity", 0);
       const targetSunset = readVarNumber("--sunset-opacity", 0);
 
-      pointerX = lerp(pointerX, pointerTargetX, 0.08);
-      pointerY = lerp(pointerY, pointerTargetY, 0.08);
+      pointerX = lerp(pointerX, pointerTargetX, 0.1);
+      pointerY = lerp(pointerY, pointerTargetY, 0.1);
+      pointerSoftX = lerp(pointerSoftX, pointerTargetX, 0.075);
+      pointerSoftY = lerp(pointerSoftY, pointerTargetY, 0.075);
+      pointerDeepX = lerp(pointerDeepX, pointerTargetX, 0.05);
+      pointerDeepY = lerp(pointerDeepY, pointerTargetY, 0.05);
 
       state.sunX = lerp(state.sunX, targetSunX, 0.09);
       state.sunY = lerp(state.sunY, targetSunY, 0.09);
@@ -244,6 +283,8 @@
       gl.uniform2f(uResolution, canvas.width, canvas.height);
       gl.uniform1f(uTime, time * 0.001);
       gl.uniform2f(uPointer, pointerX, pointerY);
+      gl.uniform2f(uPointerSoft, pointerSoftX, pointerSoftY);
+      gl.uniform2f(uPointerDeep, pointerDeepX, pointerDeepY);
       gl.uniform2f(uSun, state.sunX - 0.5, 1.0 - state.sunY);
       gl.uniform1f(uScroll, state.scroll);
       gl.uniform1f(uSunMix, state.sunMix);
