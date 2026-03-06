@@ -74,8 +74,8 @@ const projectMapsHref = hasProjectCoords
     {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
   </Fragment>
 
-  <section class="location-layout space-y-5 sm:space-y-6">
-    <header class="space-y-2.5">
+  <section class="location-layout space-y-4 sm:space-y-5">
+    <header class="space-y-2">
       <h1 class="text-3xl tracking-tight">{t(lang, "Location", "Ubicación")}</h1>
       <p class="text-sm" style="color:var(--muted)">
         {t(lang, "A curated guide to places you'll reach in minutes.", "Una guía curada de lugares a los que llegarás en minutos.")}
@@ -84,15 +84,15 @@ const projectMapsHref = hasProjectCoords
 
     <div class="location-intro-card rounded-xl p-4 sm:p-5" style="border:1px solid var(--ui-border-soft);background:color-mix(in oklab,var(--bg),var(--fg) 2%);">
       <h2 class="text-sm font-semibold uppercase tracking-wide" style="color:var(--muted)">{t(lang, "Project address", "Dirección del proyecto")}</h2>
-      <p class="mt-2 text-sm">{address || t(lang, "Address coming soon", "Dirección próximamente")}</p>
+      <p class="mt-1.5 text-sm">{address || t(lang, "Address coming soon", "Dirección próximamente")}</p>
       {projectMapsHref && (
-        <a href={projectMapsHref} target="_blank" rel="noreferrer" class="ui-btn mt-3 inline-flex items-center text-sm font-medium">
+        <a href={projectMapsHref} target="_blank" rel="noreferrer" class="ui-btn mt-2.5 inline-flex items-center text-sm font-medium">
           {t(lang, "Open in Maps", "Abrir en Maps")}
         </a>
       )}
     </div>
 
-    <nav class="location-filters flex flex-wrap gap-2.5" aria-label={t(lang, "POI categories", "Categorías POI")}>
+    <nav class="location-filters flex flex-wrap gap-2" aria-label={t(lang, "POI categories", "Categorías POI")}>
       {categoryOptions.map((category) => {
         const active = activeCat === category;
         return (
@@ -114,7 +114,7 @@ const projectMapsHref = hasProjectCoords
         </p>
       </div>
     ) : (
-      <ul class="poi-list space-y-3">
+      <ul class="poi-list space-y-2.5">
         {filteredPoi.map((item) => {
           const poiName = lang === "es" ? item.name_es : item.name_en;
           const minutes = Number(item.distance_minutes ?? 0);
@@ -125,15 +125,15 @@ const projectMapsHref = hasProjectCoords
 
           return (
             <li class="poi-row rounded-xl p-4 sm:p-5" style="border:1px solid var(--ui-border-soft);background:color-mix(in oklab,var(--bg),white 55%);">
-              <div class="flex flex-wrap items-start justify-between gap-2.5">
+              <div class="flex flex-wrap items-start justify-between gap-2">
                 <div class="min-w-0">
                   <h3 class="text-base font-semibold tracking-tight break-words">{poiName}</h3>
-                  <p class="mt-1 text-sm" style="color:var(--muted)">{categoryLabel(String(item.category ?? "").toLowerCase())}</p>
+                  <p class="mt-0.5 text-sm" style="color:var(--muted)">{categoryLabel(String(item.category ?? "").toLowerCase())}</p>
                 </div>
                 <p class="shrink-0 text-sm font-medium" style="color:color-mix(in oklab,var(--fg),var(--muted) 26%);">{minutes} {t(lang, "min", "min")}</p>
               </div>
               {poiMapsHref && (
-                <a href={poiMapsHref} target="_blank" rel="noreferrer" class="ui-btn mt-3 inline-flex items-center text-sm font-medium">
+                <a href={poiMapsHref} target="_blank" rel="noreferrer" class="ui-btn mt-2.5 inline-flex items-center text-sm font-medium">
                   {t(lang, "Open", "Abrir")}
                 </a>
               )}

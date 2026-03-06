@@ -163,15 +163,15 @@ const selectionSummary = [
     {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
   </Fragment>
 
-  <section class="space-y-6 sm:space-y-7">
-    <header class="space-y-3">
+  <section class="space-y-5 sm:space-y-6">
+    <header class="space-y-2.5">
       <h1 class="text-3xl tracking-tight">{t(lang, "Book a viewing", "Reservar visita")}</h1>
       <p class="max-w-2xl text-sm opacity-80">
         {t(lang, "Share your details and our team will contact you shortly.", "Comparte tus datos y nuestro equipo te contactará en breve.")}
       </p>
     </header>
 
-    <div class="contact-cta-row cta-cluster grid gap-2.5 sm:grid-cols-3 sm:gap-3 sm:items-stretch">
+    <div class="contact-cta-row cta-cluster grid gap-2 sm:grid-cols-3 sm:gap-2.5 sm:items-stretch">
       {whatsappHref ? (
         <a
           href={whatsappHref}
@@ -205,7 +205,7 @@ const selectionSummary = [
       )}
     </div>
 
-    <div class="contact-panel rounded-xl border p-4 space-y-3.5 sm:p-5">
+    <div class="contact-panel rounded-xl border p-4 space-y-3 sm:p-5">
       <h2 class="text-lg font-semibold">{t(lang, "Address", "Dirección")}</h2>
       <p class="text-sm opacity-80">{address || t(lang, "Address not available", "Dirección no disponible")}</p>
       {mapsHref && (
@@ -219,8 +219,8 @@ const selectionSummary = [
       <p class="contact-panel rounded-xl border px-4 py-4 text-sm opacity-90 sm:px-5">{contextMessage}</p>
     )}
 
-    <div id="contact-sent-notice" class={`contact-status rounded-2xl border bg-neutral-50/60 p-5 md:p-6 space-y-4 ${sent ? "" : "hidden"}`} role="status" aria-live="polite">
-        <div class="space-y-2">
+    <div id="contact-sent-notice" class={`contact-status rounded-2xl border bg-neutral-50/60 p-5 md:p-6 space-y-3.5 ${sent ? "" : "hidden"}`} role="status" aria-live="polite">
+        <div class="space-y-1.5">
           <p class="inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] opacity-80">
             {t(lang, "Confirmation", "Confirmación")}
           </p>
@@ -249,7 +249,7 @@ const selectionSummary = [
           </div>
       </div>
 
-    <div id="contact-error-notice" class={`contact-status rounded-xl border px-5 py-4 space-y-1.5 ${error ? "" : "hidden"}`} role="alert">
+    <div id="contact-error-notice" class={`contact-status rounded-xl border px-5 py-4 space-y-1 ${error ? "" : "hidden"}`} role="alert">
         <p class="text-sm font-medium">{t(lang, "We couldn’t send your request", "No pudimos enviar tu solicitud")}</p>
         <p class="text-sm opacity-80">
           {t(lang, "Please try again in a moment, or contact us directly by WhatsApp, phone, or email.", "Por favor, inténtalo de nuevo en un momento, o contáctanos directamente por WhatsApp, llamada o email.")}
@@ -262,7 +262,7 @@ const selectionSummary = [
       </p>
     )}
 
-    <form id="contact-form" class="contact-panel space-y-5 rounded-xl border p-4 sm:p-5 md:p-6" action={hasFormAction ? formAction : undefined} method={hasFormAction ? formMethod : undefined}>
+    <form id="contact-form" class="contact-panel space-y-4 rounded-xl border p-4 sm:p-5 md:p-6" action={hasFormAction ? formAction : undefined} method={hasFormAction ? formMethod : undefined}>
       <input type="hidden" name="intent" value={normalizedIntent} />
       <input type="hidden" name="source" value={source} />
       <input type="hidden" name="building" value={building} />
@@ -284,7 +284,7 @@ const selectionSummary = [
           <input type="text" name="_gotcha" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true" />
         </>
       )}
-      <div class="contact-form-grid grid gap-3.5 md:grid-cols-2 md:gap-4">
+      <div class="contact-form-grid grid gap-3 md:grid-cols-2 md:gap-3.5">
         <label class="grid gap-1.5 text-sm">
           <span>{t(lang, "Name", "Nombre")} *</span>
           <input name="name" required class="min-h-11 w-full rounded-lg border px-3 ui-field" autocomplete="name" />
@@ -333,7 +333,7 @@ const selectionSummary = [
         <input name="company" tabindex="-1" autocomplete="off" />
       </label>
 
-      <label class="flex items-start gap-2.5 text-sm leading-relaxed">
+      <label class="flex items-start gap-2 text-sm leading-relaxed">
         <input name="consent" type="checkbox" required class="mt-1 h-4 w-4" />
         <span>{t(lang, "I agree to be contacted about this request.", "Acepto ser contactado sobre esta solicitud.")} *</span>
       </label>
@@ -443,10 +443,10 @@ const selectionSummary = [
       })();
     </script>
 
-    <section id="contact-success" class="hidden space-y-3 rounded-xl border p-4" aria-live="polite">
+    <section id="contact-success" class="hidden space-y-2.5 rounded-xl border p-4" aria-live="polite">
       <h2 class="text-xl font-semibold">{t(lang, "Thanks!", "¡Gracias!")}</h2>
       <p class="text-sm opacity-80">{t(lang, "We'll contact you shortly.", "Te contactaremos en breve.")}</p>
-      <div class="cta-cluster cta-inline flex flex-col gap-2 sm:flex-row">
+      <div class="cta-cluster cta-inline flex flex-col gap-1.5 sm:flex-row">
         <a href={`/${lang}/units/`} class="ui-btn cta-secondary inline-flex items-center justify-center">
           {t(lang, "Back to Units", "Volver a Unidades")}
         </a>
