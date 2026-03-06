@@ -171,37 +171,37 @@ const selectionSummary = [
       </p>
     </header>
 
-    <div class="contact-cta-row grid gap-2.5 sm:grid-cols-3 sm:gap-3 sm:items-stretch">
+    <div class="contact-cta-row cta-cluster grid gap-2.5 sm:grid-cols-3 sm:gap-3 sm:items-stretch">
       {whatsappHref ? (
         <a
           href={whatsappHref}
           target="_blank"
           rel="noreferrer"
-          class={`inline-flex min-h-11 items-center justify-center rounded-lg border px-4 py-3 text-sm font-medium ${intent === "whatsapp" ? "bg-black text-white border-black" : ""}`}
+          class={`cta-tertiary inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm font-medium ${intent === "whatsapp" ? "is-active" : ""}`}
         >
           {t(lang, "WhatsApp", "WhatsApp")}
         </a>
       ) : (
-        <span class="inline-flex min-h-11 items-center justify-center rounded-lg border px-4 py-3 text-sm opacity-50">{t(lang, "WhatsApp unavailable", "WhatsApp no disponible")}</span>
+        <span class="cta-tertiary is-disabled inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm opacity-50">{t(lang, "WhatsApp unavailable", "WhatsApp no disponible")}</span>
       )}
 
       {callHref ? (
         <a
           href={callHref}
-          class={`inline-flex min-h-11 items-center justify-center rounded-lg border px-4 py-3 text-sm font-medium ${intent === "call" ? "bg-black text-white border-black" : ""}`}
+          class={`cta-tertiary inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm font-medium ${intent === "call" ? "is-active" : ""}`}
         >
           {t(lang, "Call", "Llamar")}
         </a>
       ) : (
-        <span class="inline-flex min-h-11 items-center justify-center rounded-lg border px-4 py-3 text-sm opacity-50">{t(lang, "Call unavailable", "Llamada no disponible")}</span>
+        <span class="cta-tertiary is-disabled inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm opacity-50">{t(lang, "Call unavailable", "Llamada no disponible")}</span>
       )}
 
       {emailHref ? (
-        <a href={emailHref} class="inline-flex min-h-11 items-center justify-center rounded-lg border px-4 py-3 text-sm font-medium">
+        <a href={emailHref} class="cta-tertiary inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm font-medium">
           {t(lang, "Email", "Email")}
         </a>
       ) : (
-        <span class="inline-flex min-h-11 items-center justify-center rounded-lg border px-4 py-3 text-sm opacity-50">{t(lang, "Email unavailable", "Email no disponible")}</span>
+        <span class="cta-tertiary is-disabled inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm opacity-50">{t(lang, "Email unavailable", "Email no disponible")}</span>
       )}
     </div>
 
@@ -209,7 +209,7 @@ const selectionSummary = [
       <h2 class="text-lg font-semibold">{t(lang, "Address", "Dirección")}</h2>
       <p class="text-sm opacity-80">{address || t(lang, "Address not available", "Dirección no disponible")}</p>
       {mapsHref && (
-        <a href={mapsHref} target="_blank" rel="noreferrer" class="ui-btn inline-flex items-center text-sm">
+        <a href={mapsHref} target="_blank" rel="noreferrer" class="ui-btn cta-secondary inline-flex items-center text-sm">
           {t(lang, "Open in Maps", "Abrir en Maps")}
         </a>
       )}
@@ -338,7 +338,7 @@ const selectionSummary = [
         <span>{t(lang, "I agree to be contacted about this request.", "Acepto ser contactado sobre esta solicitud.")} *</span>
       </label>
 
-      <button type={hasFormAction ? "submit" : "button"} class="ui-btn ui-btn--primary inline-flex w-full items-center justify-center sm:w-auto">
+      <button type={hasFormAction ? "submit" : "button"} class="ui-btn ui-btn--primary cta-primary inline-flex w-full items-center justify-center sm:w-auto">
         {t(lang, "Send request", "Enviar solicitud")}
       </button>
     </form>
@@ -446,11 +446,11 @@ const selectionSummary = [
     <section id="contact-success" class="hidden space-y-3 rounded-xl border p-4" aria-live="polite">
       <h2 class="text-xl font-semibold">{t(lang, "Thanks!", "¡Gracias!")}</h2>
       <p class="text-sm opacity-80">{t(lang, "We'll contact you shortly.", "Te contactaremos en breve.")}</p>
-      <div class="flex flex-col gap-2 sm:flex-row">
-        <a href={`/${lang}/units/`} class="ui-btn inline-flex items-center justify-center">
+      <div class="cta-cluster cta-inline flex flex-col gap-2 sm:flex-row">
+        <a href={`/${lang}/units/`} class="ui-btn cta-secondary inline-flex items-center justify-center">
           {t(lang, "Back to Units", "Volver a Unidades")}
         </a>
-        <a href={`/${lang}/downloads/`} class="ui-btn ui-btn--primary inline-flex items-center justify-center">
+        <a href={`/${lang}/downloads/`} class="ui-btn ui-btn--primary cta-primary inline-flex items-center justify-center">
           {t(lang, "Download brochure", "Descargar folleto")}
         </a>
       </div>

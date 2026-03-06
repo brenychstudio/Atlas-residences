@@ -87,18 +87,18 @@ const heroMobileImage = heroVariants.mobile;
       </p>
     </div>
 
-    <div class="grid gap-2.5 sm:grid-cols-3 sm:gap-3 md:max-w-4xl md:items-stretch">
-      <a class="group flex min-h-12 items-center justify-between rounded-xl bg-black px-4 py-3 text-sm font-medium text-white transition hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2" href={`/${lang}/units/`}>
-        {t(lang, "Browse units", "Explorar unidades")}
-        <span class="text-xs opacity-60 transition group-hover:translate-x-0.5">→</span>
+    <div class="cta-cluster cta-inline grid gap-2.5 sm:grid-cols-3 sm:gap-3 md:max-w-4xl md:items-stretch">
+      <a class="cta-primary group flex min-h-12 items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition" href={`/${lang}/units/`}>
+        {t(lang, "Explore available residences", "Explorar residencias disponibles")}
+        <span class="cta-arrow text-xs transition">→</span>
       </a>
-      <a class="group flex min-h-12 items-center justify-between rounded-xl border border-black/20 bg-white px-4 py-3 text-sm font-medium text-black/85 transition hover:border-black/40 hover:bg-black/[0.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2" href={`/${lang}/masterplan/`}>
+      <a class="cta-secondary group flex min-h-12 items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition" href={`/${lang}/masterplan/`}>
         {t(lang, "View masterplan", "Ver masterplan")}
-        <span class="text-xs opacity-40 transition group-hover:opacity-70">→</span>
+        <span class="cta-arrow text-xs transition">→</span>
       </a>
-      <a class="group flex min-h-12 items-center justify-between rounded-xl border border-black/20 bg-white px-4 py-3 text-sm font-medium text-black/85 transition hover:border-black/40 hover:bg-black/[0.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2" href={`/${lang}/contact/?source=home`}>
-        {t(lang, "Contact sales", "Contactar ventas")}
-        <span class="text-xs opacity-40 transition group-hover:opacity-70">→</span>
+      <a class="cta-tertiary group flex min-h-12 items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition" href={`/${lang}/contact/?source=home`}>
+        {t(lang, "Talk with sales", "Hablar con ventas")}
+        <span class="cta-arrow text-xs transition">→</span>
       </a>
     </div>
 

@@ -200,11 +200,11 @@ const amenityCategoryText = (category?: string) => {
           <dd id="status-coming_soon" class="font-medium">0</dd>
         </div>
       </dl>
-      <div class="masterplan-cta-row flex flex-col gap-2.5 sm:flex-row sm:items-center">
-        <a id="view-units-link" class="ui-btn ui-btn--primary inline-flex items-center" href={`/${lang}/units/`}>
+      <div class="masterplan-cta-row cta-cluster cta-inline flex flex-col gap-2.5 sm:flex-row sm:items-center">
+        <a id="view-units-link" class="ui-btn ui-btn--primary cta-primary inline-flex items-center" href={`/${lang}/units/`}>
           {t(lang, "View units", "Ver unidades")}
         </a>
-        <a id="contact-sales-link" class="ui-btn inline-flex items-center" href={`/${lang}/contact/?source=masterplan`}>
+        <a id="contact-sales-link" class="ui-btn cta-secondary inline-flex items-center" href={`/${lang}/contact/?source=masterplan`}>
           {t(lang, "Contact sales", "Contactar ventas")}
         </a>
       </div>

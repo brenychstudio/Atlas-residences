@@ -196,15 +196,15 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
           </div>
         </div>
 
-        <div class="unit-detail-cta-row unit-cta-row mt-5 flex flex-col gap-2.5 sm:flex-row sm:items-center">
+        <div class="unit-detail-cta-row unit-cta-row cta-cluster cta-inline mt-5 flex flex-col gap-2.5 sm:flex-row sm:items-center">
           <a
-            class="ui-btn ui-btn--primary inline-flex items-center justify-center px-6"
+            class="ui-btn cta-secondary inline-flex items-center justify-center px-6"
             href={`/${lang}/downloads/`}
           >
             {t(lang, "Request price list", "Solicitar lista de precios")}
           </a>
           <a
-            class="ui-btn inline-flex items-center justify-center px-6"
+            class="ui-btn ui-btn--primary cta-primary inline-flex items-center justify-center px-6"
             href={`/${lang}/contact/?source=unit&unit=${encodeURIComponent(String(unit.id ?? ""))}`}
           >
             {t(lang, "Book a viewing", "Reservar visita")}

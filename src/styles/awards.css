@@ -219,6 +219,86 @@ small,
   cursor: not-allowed;
 }
 
+
+.cta-cluster {
+  gap: 0.72rem;
+}
+
+.cta-inline {
+  align-items: stretch;
+}
+
+.cta-primary,
+.cta-secondary,
+.cta-tertiary {
+  min-height: var(--control-height);
+  border-radius: var(--radius-control);
+  border-width: 1px;
+  border-style: solid;
+  padding-inline: 1rem;
+  font-weight: 560;
+  line-height: 1.2;
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.cta-primary {
+  border-color: color-mix(in oklab, var(--fg), black 14%);
+  background: color-mix(in oklab, var(--fg), black 8%);
+  color: #fff;
+}
+
+.cta-primary:hover {
+  border-color: color-mix(in oklab, var(--fg), black 24%);
+  background: color-mix(in oklab, var(--fg), black 14%);
+}
+
+.cta-secondary {
+  border-color: color-mix(in oklab, var(--border), var(--fg) 16%);
+  background: color-mix(in oklab, var(--surface), transparent 2%);
+  color: color-mix(in oklab, var(--fg), transparent 10%);
+}
+
+.cta-secondary:hover {
+  border-color: color-mix(in oklab, var(--fg), white 62%);
+  background: color-mix(in oklab, var(--surface), white 18%);
+}
+
+.cta-tertiary {
+  border-color: color-mix(in oklab, var(--border), var(--fg) 8%);
+  background: color-mix(in oklab, var(--surface), transparent 14%);
+  color: color-mix(in oklab, var(--fg), transparent 24%);
+}
+
+.cta-tertiary:hover {
+  border-color: color-mix(in oklab, var(--border), var(--fg) 18%);
+  background: color-mix(in oklab, var(--surface), transparent 4%);
+  color: color-mix(in oklab, var(--fg), transparent 14%);
+}
+
+.cta-tertiary.is-active {
+  border-color: color-mix(in oklab, var(--fg), white 8%);
+  background: color-mix(in oklab, var(--fg), black 8%);
+  color: #fff;
+}
+
+.cta-tertiary.is-disabled {
+  pointer-events: none;
+}
+
+.cta-arrow {
+  opacity: 0.42;
+}
+
+:is(.cta-primary, .cta-secondary, .cta-tertiary):hover .cta-arrow {
+  opacity: 0.74;
+  transform: translateX(2px);
+}
+
+.cta-bar {
+  border-color: color-mix(in oklab, var(--border), var(--fg) 6%);
+  background: color-mix(in oklab, var(--surface-2), transparent 3%);
+}
+
 .ui-btn--primary {
   border-color: color-mix(in oklab, var(--fg), black 10%);
   background: color-mix(in oklab, var(--fg), black 6%);

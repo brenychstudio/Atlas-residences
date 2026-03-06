@@ -77,6 +77,15 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
       <p id="active-filters" class="text-sm opacity-70">{t(lang, "All filters", "Todos los filtros")}</p>
     </header>
 
+    <div class="cta-cluster cta-inline flex flex-col gap-2.5 sm:flex-row sm:items-center">
+      <a class="cta-primary ui-btn ui-btn--primary inline-flex items-center justify-center" href={`/${lang}/contact/?source=unit`}>
+        {t(lang, "Book a viewing", "Reservar visita")}
+      </a>
+      <a class="cta-secondary ui-btn inline-flex items-center justify-center" href={`/${lang}/masterplan/`}>
+        {t(lang, "Review masterplan", "Revisar plan maestro")}
+      </a>
+    </div>
+
     <div class="units-filters grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4" id="units-filters">
       <div class="space-y-2">
         <p class="text-sm font-medium tracking-wide opacity-80">{t(lang, "Building", "Bloque")}</p>
