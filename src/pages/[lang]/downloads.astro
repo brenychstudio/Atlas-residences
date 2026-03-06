@@ -18,17 +18,17 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
 ---
 
 <BaseLayout lang={lang} title={t(lang, "Downloads | Atlas Residences", "Descargas | Atlas Residences") }>
-  <section class="space-y-5">
-    <header class="space-y-2">
+  <section class="downloads-shell space-y-7">
+    <header class="downloads-head space-y-2">
       <h1 class="text-3xl tracking-tight">{t(lang, "Downloads", "Descargas")}</h1>
-      <p class="opacity-80">{t(lang, "Sales documents and brochures.", "Documentos comerciales y folletos.")}</p>
+      <p class="max-w-2xl text-sm opacity-80">{t(lang, "Sales documents and brochures.", "Documentos comerciales y folletos.")}</p>
     </header>
 
     {hasDownloads ? (
-    <div class="grid gap-3 sm:grid-cols-2">
+    <div class="downloads-grid grid gap-4 sm:grid-cols-2">
       {brochureUrl && (
         <a
-          class="ui-card group overflow-hidden rounded-xl"
+          class="download-card ui-card group overflow-hidden rounded-xl"
           href={brochureUrl}
         >
           <img
@@ -38,16 +38,17 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
             loading="lazy"
             decoding="async"
           />
-          <div class="p-4">
-            <p class="text-sm font-medium">{t(lang, "Project brochure", "Folleto del proyecto")}</p>
-            <p class="text-xs opacity-70">{t(lang, "Open document", "Abrir documento")}</p>
+          <div class="space-y-2 p-5">
+            <p class="text-sm font-semibold">{t(lang, "Project brochure", "Folleto del proyecto")}</p>
+            <p class="text-xs opacity-70">{t(lang, "Sales material", "Material comercial")}</p>
+            <p class="text-xs font-medium uppercase tracking-[0.1em] opacity-75">{t(lang, "Open document", "Abrir documento")}</p>
           </div>
         </a>
       )}
 
       {priceListUrl && (
         <a
-          class="ui-card group overflow-hidden rounded-xl"
+          class="download-card ui-card group overflow-hidden rounded-xl"
           href={priceListUrl}
         >
           <img
@@ -57,15 +58,16 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
             loading="lazy"
             decoding="async"
           />
-          <div class="p-4">
-            <p class="text-sm font-medium">{t(lang, "Price list", "Lista de precios")}</p>
-            <p class="text-xs opacity-70">{t(lang, "Open document", "Abrir documento")}</p>
+          <div class="space-y-2 p-5">
+            <p class="text-sm font-semibold">{t(lang, "Price list", "Lista de precios")}</p>
+            <p class="text-xs opacity-70">{t(lang, "Sales material", "Material comercial")}</p>
+            <p class="text-xs font-medium uppercase tracking-[0.1em] opacity-75">{t(lang, "Open document", "Abrir documento")}</p>
           </div>
         </a>
       )}
     </div>
     ) : (
-      <div class="ui-card space-y-3 rounded-xl bg-slate-50 p-5">
+      <div class="downloads-empty ui-card space-y-4 rounded-xl p-6">
         <p class="text-sm opacity-80">
           {t(lang, "Downloads will be available shortly.", "Las descargas estarán disponibles en breve.")}
         </p>

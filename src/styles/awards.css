@@ -410,3 +410,40 @@ textarea.ui-field {
   min-height: 2.55rem;
   padding-inline: 0.9rem;
 }
+
+.downloads-shell {
+  gap: clamp(1.5rem, 3vw, 2.2rem);
+}
+
+.downloads-grid {
+  gap: clamp(0.95rem, 2vw, 1.2rem);
+}
+
+.download-card {
+  background: color-mix(in oklab, var(--surface), white 14%);
+}
+
+.download-card img {
+  border-bottom: 1px solid color-mix(in oklab, var(--border), white 18%);
+}
+
+.downloads-empty {
+  border-color: color-mix(in oklab, var(--border), var(--fg) 5%);
+  background: color-mix(in oklab, var(--surface-2), white 10%);
+}
+
+.contact-panel,
+.contact-status {
+  border-color: color-mix(in oklab, var(--border), var(--fg) 8%);
+  background: color-mix(in oklab, var(--surface), transparent 2%);
+  box-shadow: var(--shadow-card);
+}
+
+.contact-form-grid > label > span {
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.contact-cta-row > :is(a, span) {
+  background: color-mix(in oklab, var(--surface), transparent 3%);
+}
