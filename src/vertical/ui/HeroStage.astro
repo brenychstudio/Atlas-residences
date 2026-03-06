@@ -27,6 +27,13 @@
     const stage = document.currentScript?.previousElementSibling;
     if (!(stage instanceof HTMLElement) || !stage.matches("[data-hero-stage]")) return;
 
+    const setDebugState = (active, mode) => {
+      stage.dataset.webglActive = active ? "true" : "false";
+      stage.dataset.webglMode = mode;
+    };
+
+    setDebugState(false, "fallback");
+
     const canvas = stage.querySelector("[data-webgl-hero]");
     if (!(canvas instanceof HTMLCanvasElement)) return;
 
@@ -79,33 +86,33 @@
         float blue = clamp(u_bluehour, 0.0, 1.0);
         float sunset = clamp(u_sunset, 0.0, 1.0);
 
-        float glow = exp(-(13.0 - sunset * 2.0) * distance(p, glowPos));
-        float bloom = exp(-(5.8 - sunset * 1.2) * distance(p, glowPos));
+        float glow = exp(-(11.6 - sunset * 2.3 + blue * 0.6) * distance(p, glowPos));
+        float bloom = exp(-(4.8 - sunset * 1.1 + blue * 0.2) * distance(p, glowPos));
 
         float horizon = smoothstep(0.12, 0.86, uv.y);
-        float haze = (1.0 - horizon) * (0.08 + blue * 0.03 + sunset * 0.05 - dayBlend * 0.01);
+        float haze = (1.0 - horizon) * (0.10 + blue * 0.05 + sunset * 0.075 - dayBlend * 0.008);
 
         float edge = smoothstep(0.75, 0.28, length(p));
         float vignette = (1.0 - edge) * 0.09;
 
         float drift = sin(u_time * 0.2 + uv.x * 4.0) * 0.01;
-        float scrollTint = clamp(u_scroll, 0.0, 1.0) * (0.04 + blue * 0.01 + sunset * 0.02);
+        float scrollTint = clamp(u_scroll, 0.0, 1.0) * (0.05 + blue * 0.025 + sunset * 0.03);
         float sunMix = clamp(u_sun_mix, 0.0, 1.0);
 
-        vec3 coolDay = vec3(0.72, 0.82, 0.95);
-        vec3 blueHour = vec3(0.66, 0.74, 0.90);
-        vec3 warmSunset = vec3(1.0, 0.87, 0.70);
+        vec3 coolDay = vec3(0.74, 0.86, 0.99);
+        vec3 blueHour = vec3(0.60, 0.71, 0.91);
+        vec3 warmSunset = vec3(1.0, 0.83, 0.62);
 
         vec3 ambient = mix(coolDay, blueHour, blue);
         ambient = mix(ambient, warmSunset, sunset * 0.85);
 
-        float glowIntensity = 0.10 + dayBlend * 0.03 + sunset * 0.10 + sunMix * 0.04;
-        float bloomIntensity = 0.05 + sunset * 0.06 + blue * 0.01;
-        float ambientIntensity = 0.065 + dayBlend * 0.02 + blue * 0.02 + sunset * 0.03;
+        float glowIntensity = 0.14 + dayBlend * 0.04 + sunset * 0.14 + sunMix * 0.05 + blue * 0.015;
+        float bloomIntensity = 0.075 + sunset * 0.085 + blue * 0.03;
+        float ambientIntensity = 0.082 + dayBlend * 0.022 + blue * 0.042 + sunset * 0.055;
 
         vec3 color = ambient * (haze + drift + scrollTint) + warmSunset * glow * glowIntensity + ambient * bloom * bloomIntensity;
 
-        float alpha = clamp(glow * (0.10 + sunset * 0.10 + sunMix * 0.03) + bloom * (0.05 + sunset * 0.03) + (haze + vignette) * ambientIntensity, 0.0, 0.2);
+        float alpha = clamp(glow * (0.13 + sunset * 0.13 + sunMix * 0.04) + bloom * (0.065 + sunset * 0.05 + blue * 0.01) + (haze + vignette) * ambientIntensity, 0.0, 0.28);
         gl_FragColor = vec4(color, alpha);
       }
     `;
@@ -132,6 +139,8 @@
     gl.attachShader(program, fragment);
     gl.linkProgram(program);
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return;
+
+    setDebugState(true, "morning");
 
     gl.useProgram(program);
 
@@ -173,6 +182,12 @@
     };
 
     const lerp = (from, to, t) => from + (to - from) * t;
+
+    const resolveMode = (blueHour, sunset) => {
+      if (sunset >= 0.16) return "sunset";
+      if (blueHour >= 0.14) return "bluehour";
+      return "morning";
+    };
 
     const readVarNumber = (name, fallback) => {
       if (!(sunRoot instanceof HTMLElement)) return fallback;
@@ -223,6 +238,8 @@
       state.scroll = lerp(state.scroll, targetScroll, 0.07);
       state.blueHour = lerp(state.blueHour, targetBlueHour, 0.08);
       state.sunset = lerp(state.sunset, targetSunset, 0.08);
+
+      stage.dataset.webglMode = resolveMode(targetBlueHour, targetSunset);
 
       gl.uniform2f(uResolution, canvas.width, canvas.height);
       gl.uniform1f(uTime, time * 0.001);
