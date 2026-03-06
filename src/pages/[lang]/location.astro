@@ -78,21 +78,21 @@ const projectMapsHref = hasProjectCoords
     <header class="space-y-2">
       <h1 class="text-3xl tracking-tight">{t(lang, "Location", "Ubicación")}</h1>
       <p class="text-sm" style="color:var(--muted)">
-        {t(lang, "A curated guide to places you'll reach in minutes.", "Una guía curada de lugares a los que llegarás en minutos.")}
+        {t(lang, "A curated selection of places you can reach in minutes.", "Una selección cuidada de lugares a los que llegarás en minutos.")}
       </p>
     </header>
 
     <div class="location-intro-card rounded-xl p-4 sm:p-5" style="border:1px solid var(--ui-border-soft);background:color-mix(in oklab,var(--bg),var(--fg) 2%);">
-      <h2 class="text-sm font-semibold uppercase tracking-wide" style="color:var(--muted)">{t(lang, "Project address", "Dirección del proyecto")}</h2>
-      <p class="mt-1.5 text-sm">{address || t(lang, "Address coming soon", "Dirección próximamente")}</p>
+      <h2 class="text-sm font-semibold uppercase tracking-wide" style="color:var(--muted)">{t(lang, "Residence address", "Dirección de la residencia")}</h2>
+      <p class="mt-1.5 text-sm">{address || t(lang, "Address available soon", "Dirección disponible pronto")}</p>
       {projectMapsHref && (
         <a href={projectMapsHref} target="_blank" rel="noreferrer" class="ui-btn mt-2.5 inline-flex items-center text-sm font-medium">
-          {t(lang, "Open in Maps", "Abrir en Maps")}
+          {t(lang, "View in Maps", "Ver en Maps")}
         </a>
       )}
     </div>
 
-    <nav class="location-filters flex flex-wrap gap-2" aria-label={t(lang, "POI categories", "Categorías POI")}>
+    <nav class="location-filters flex flex-wrap gap-2" aria-label={t(lang, "Nearby categories", "Categorías cercanas")}>
       {categoryOptions.map((category) => {
         const active = activeCat === category;
         return (
@@ -110,7 +110,7 @@ const projectMapsHref = hasProjectCoords
       <div class="rounded-xl p-5" style="border:1px solid var(--ui-border-soft);">
         <h2 class="text-lg font-semibold">{t(lang, "Coming soon", "Próximamente")}</h2>
         <p class="mt-2 text-sm" style="color:var(--muted)">
-          {t(lang, "We're curating nearby highlights for this area.", "Estamos curando los mejores puntos cercanos de esta zona.")}
+          {t(lang, "Nearby highlights for this area will be available soon.", "Los puntos de interés cercanos de esta zona estarán disponibles pronto.")}
         </p>
       </div>
     ) : (
@@ -134,7 +134,7 @@ const projectMapsHref = hasProjectCoords
               </div>
               {poiMapsHref && (
                 <a href={poiMapsHref} target="_blank" rel="noreferrer" class="ui-btn mt-2.5 inline-flex items-center text-sm font-medium">
-                  {t(lang, "Open", "Abrir")}
+                  {t(lang, "View on map", "Ver en mapa")}
                 </a>
               )}
             </li>

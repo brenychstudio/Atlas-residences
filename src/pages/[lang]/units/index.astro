@@ -74,7 +74,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
     <header class="space-y-1.5">
       <h1 class="text-3xl tracking-tight">{t(lang, "Units", "Unidades")}</h1>
       <p id="units-summary" class="text-sm leading-relaxed opacity-80">{units.length} {t(lang, "units", "unidades")}</p>
-      <p id="active-filters" class="text-sm opacity-70">{t(lang, "All filters", "Todos los filtros")}</p>
+      <p id="active-filters" class="text-sm opacity-70">{t(lang, "No filters applied", "Sin filtros aplicados")}</p>
     </header>
 
     <div class="cta-cluster cta-inline flex flex-col gap-2 sm:flex-row sm:items-center">
@@ -82,13 +82,13 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
         {t(lang, "Book a viewing", "Reservar visita")}
       </a>
       <a class="cta-secondary ui-btn inline-flex items-center justify-center" href={`/${lang}/masterplan/`}>
-        {t(lang, "Review masterplan", "Revisar plan maestro")}
+        {t(lang, "View masterplan", "Ver plan maestro")}
       </a>
     </div>
 
     <div class="units-filters grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3.5" id="units-filters">
       <div class="space-y-1.5">
-        <p class="text-sm font-medium tracking-wide opacity-80">{t(lang, "Building", "Bloque")}</p>
+        <p class="text-sm font-medium tracking-wide opacity-80">{t(lang, "Tower", "Torre")}</p>
         <div class="flex flex-wrap gap-2" data-filter="building">
           <a data-value="all" class="ui-chip" href="#">{t(lang, "All", "Todos")}</a>
           <a data-value="a" class="ui-chip" href="#">A</a>
@@ -171,7 +171,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
               </div>
 
               <p class="text-sm leading-relaxed opacity-75">
-                {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")} {unit.floor || "-"}
+                {t(lang, "Tower", "Torre")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")} {unit.floor || "-"}
               </p>
 
               <dl class="unit-meta grid grid-cols-2 gap-x-3 gap-y-1.5 text-sm">
@@ -216,11 +216,11 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
     }
 
     const text = {
-      allFilters: { en: "All filters", es: "Todos los filtros" },
-      filteredBy: { en: "Filtered by", es: "Filtrado por" },
+      allFilters: { en: "No filters applied", es: "Sin filtros aplicados" },
+      filteredBy: { en: "Refined by", es: "Refinado por" },
       units: { en: "units", es: "unidades" },
-      building: { en: "building", es: "bloque" },
-      beds: { en: "beds", es: "dorm." },
+      building: { en: "tower", es: "torre" },
+      beds: { en: "bedrooms", es: "dormitorios" },
       status: { en: "status", es: "estado" },
       orientation: { en: "orientation", es: "orientación" }
     };

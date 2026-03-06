@@ -21,15 +21,15 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
   <section class="downloads-shell space-y-5 sm:space-y-6">
     <header class="downloads-head space-y-1.5">
       <h1 class="text-3xl tracking-tight">{t(lang, "Downloads", "Descargas")}</h1>
-      <p class="max-w-2xl text-sm opacity-80">{t(lang, "Sales documents and brochures.", "Documentos comerciales y folletos.")}</p>
+      <p class="max-w-2xl text-sm opacity-80">{t(lang, "Brochures and sales documents in one place.", "Folletos y documentos comerciales en un solo lugar.")}</p>
     </header>
 
     <div class="cta-cluster cta-inline flex flex-col gap-2 sm:flex-row sm:items-center">
       <a class="cta-primary ui-btn ui-btn--primary inline-flex items-center justify-center" href={`/${lang}/contact/?source=downloads`}>
-        {t(lang, "Request sales assistance", "Solicitar asesoría comercial")}
+        {t(lang, "Speak with sales", "Hablar con ventas")}
       </a>
       <a class="cta-secondary ui-btn inline-flex items-center justify-center" href={`/${lang}/units/`}>
-        {t(lang, "Review available units", "Revisar unidades disponibles")}
+        {t(lang, "Browse available units", "Explorar unidades disponibles")}
       </a>
     </div>
 
@@ -50,8 +50,8 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
           />
           <div class="mt-auto space-y-2 p-4 sm:p-5">
             <p class="text-sm font-semibold">{t(lang, "Project brochure", "Folleto del proyecto")}</p>
-            <p class="text-xs opacity-70">{t(lang, "Sales material", "Material comercial")}</p>
-            <p class="text-xs font-medium uppercase tracking-[0.1em] opacity-75">{t(lang, "Open document", "Abrir documento")}</p>
+            <p class="text-xs opacity-70">{t(lang, "Sales document", "Documento comercial")}</p>
+            <p class="text-xs font-medium uppercase tracking-[0.1em] opacity-75">{t(lang, "View document", "Ver documento")}</p>
           </div>
         </a>
       )}
@@ -70,8 +70,8 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
           />
           <div class="mt-auto space-y-2 p-4 sm:p-5">
             <p class="text-sm font-semibold">{t(lang, "Price list", "Lista de precios")}</p>
-            <p class="text-xs opacity-70">{t(lang, "Sales material", "Material comercial")}</p>
-            <p class="text-xs font-medium uppercase tracking-[0.1em] opacity-75">{t(lang, "Open document", "Abrir documento")}</p>
+            <p class="text-xs opacity-70">{t(lang, "Sales document", "Documento comercial")}</p>
+            <p class="text-xs font-medium uppercase tracking-[0.1em] opacity-75">{t(lang, "View document", "Ver documento")}</p>
           </div>
         </a>
       )}
@@ -79,7 +79,7 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
     ) : (
       <div class="downloads-empty ui-card space-y-3 rounded-xl p-5 sm:p-6">
         <p class="text-sm opacity-80">
-          {t(lang, "Downloads will be available shortly.", "Las descargas estarán disponibles en breve.")}
+          {t(lang, "Downloads will be available soon.", "Las descargas estarán disponibles pronto.")}
         </p>
         <a class="ui-btn cta-secondary inline-flex items-center text-sm" href={`/${lang}/contact/?source=downloads`}>
           {t(lang, "Contact sales", "Contactar ventas")}

@@ -167,7 +167,7 @@ const selectionSummary = [
     <header class="space-y-2.5">
       <h1 class="text-3xl tracking-tight">{t(lang, "Book a viewing", "Reservar visita")}</h1>
       <p class="max-w-2xl text-sm opacity-80">
-        {t(lang, "Share your details and our team will contact you shortly.", "Comparte tus datos y nuestro equipo te contactará en breve.")}
+        {t(lang, "Share your details and our sales team will follow up shortly.", "Comparte tus datos y nuestro equipo comercial te contactará en breve.")}
       </p>
     </header>
 
@@ -182,7 +182,7 @@ const selectionSummary = [
           {t(lang, "WhatsApp", "WhatsApp")}
         </a>
       ) : (
-        <span class="cta-tertiary is-disabled inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm opacity-50">{t(lang, "WhatsApp unavailable", "WhatsApp no disponible")}</span>
+        <span class="cta-tertiary is-disabled inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm opacity-50">{t(lang, "WhatsApp currently unavailable", "WhatsApp no disponible por el momento")}</span>
       )}
 
       {callHref ? (
@@ -193,7 +193,7 @@ const selectionSummary = [
           {t(lang, "Call", "Llamar")}
         </a>
       ) : (
-        <span class="cta-tertiary is-disabled inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm opacity-50">{t(lang, "Call unavailable", "Llamada no disponible")}</span>
+        <span class="cta-tertiary is-disabled inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm opacity-50">{t(lang, "Phone currently unavailable", "Llamadas no disponibles por el momento")}</span>
       )}
 
       {emailHref ? (
@@ -201,13 +201,13 @@ const selectionSummary = [
           {t(lang, "Email", "Email")}
         </a>
       ) : (
-        <span class="cta-tertiary is-disabled inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm opacity-50">{t(lang, "Email unavailable", "Email no disponible")}</span>
+        <span class="cta-tertiary is-disabled inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm opacity-50">{t(lang, "Email currently unavailable", "Email no disponible por el momento")}</span>
       )}
     </div>
 
     <div class="contact-panel rounded-xl border p-4 space-y-3 sm:p-5">
-      <h2 class="text-lg font-semibold">{t(lang, "Address", "Dirección")}</h2>
-      <p class="text-sm opacity-80">{address || t(lang, "Address not available", "Dirección no disponible")}</p>
+      <h2 class="text-lg font-semibold">{t(lang, "Sales gallery", "Sala de ventas")}</h2>
+      <p class="text-sm opacity-80">{address || t(lang, "Sales gallery not available", "Sala de ventas no disponible")}</p>
       {mapsHref && (
         <a href={mapsHref} target="_blank" rel="noreferrer" class="ui-btn cta-secondary inline-flex items-center text-sm">
           {t(lang, "Open in Maps", "Abrir en Maps")}
@@ -224,14 +224,14 @@ const selectionSummary = [
           <p class="inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] opacity-80">
             {t(lang, "Confirmation", "Confirmación")}
           </p>
-          <h2 class="text-lg font-semibold md:text-xl">{t(lang, "Your request has been received", "Hemos recibido tu solicitud")}</h2>
+          <h2 class="text-lg font-semibold md:text-xl">{t(lang, "Your request is confirmed", "Tu solicitud está confirmada")}</h2>
           <p class="text-sm leading-relaxed opacity-80">
-            {t(lang, "Thank you for your interest in Atlas Residences. A sales advisor will follow up shortly with the next steps.", "Gracias por tu interés en Atlas Residences. Un asesor comercial te contactará en breve con los próximos pasos.")}
+            {t(lang, "Thank you for your interest in Atlas Residences. A sales advisor will contact you shortly with next steps.", "Gracias por tu interés en Atlas Residences. Un asesor comercial te contactará en breve con los siguientes pasos.")}
           </p>
         </div>
 
         <div id="contact-sent-details" class={`rounded-xl border bg-white/80 px-3 py-2.5 text-xs space-y-1.5 ${(source || building || unit) ? "" : "hidden"}`}>
-            <p class="font-medium uppercase tracking-[0.08em] opacity-70">{t(lang, "Inquiry details", "Detalles de la consulta")}</p>
+            <p class="font-medium uppercase tracking-[0.08em] opacity-70">{t(lang, "Request details", "Detalles de la solicitud")}</p>
             <dl class="space-y-1">
                 <div id="contact-sent-source-row" class={`flex items-center justify-between gap-2 ${source ? "" : "hidden"}`}>
                   <dt class="opacity-60">{t(lang, "Source", "Origen")}</dt>
@@ -250,15 +250,15 @@ const selectionSummary = [
       </div>
 
     <div id="contact-error-notice" class={`contact-status rounded-xl border px-5 py-4 space-y-1 ${error ? "" : "hidden"}`} role="alert">
-        <p class="text-sm font-medium">{t(lang, "We couldn’t send your request", "No pudimos enviar tu solicitud")}</p>
+        <p class="text-sm font-medium">{t(lang, "Your request could not be sent", "No se pudo enviar tu solicitud")}</p>
         <p class="text-sm opacity-80">
-          {t(lang, "Please try again in a moment, or contact us directly by WhatsApp, phone, or email.", "Por favor, inténtalo de nuevo en un momento, o contáctanos directamente por WhatsApp, llamada o email.")}
+          {t(lang, "Please try again in a moment, or contact us directly via WhatsApp, phone, or email.", "Por favor, inténtalo de nuevo en un momento o contáctanos directamente por WhatsApp, llamada o email.")}
         </p>
       </div>
 
     {!hasFormAction && (
       <p class="contact-status rounded-xl border px-5 py-4 text-sm opacity-80">
-        {t(lang, "Contact routing is not connected yet. You can still review the form in this demo.", "El enrutamiento de contacto aún no está conectado. Puedes revisar el formulario en esta demo.")}
+        {t(lang, "Contact routing is not connected yet. You can still review this form preview.", "El enrutamiento de contacto aún no está conectado. Aun así, puedes revisar esta vista previa del formulario.")}
       </p>
     )}
 
@@ -320,10 +320,10 @@ const selectionSummary = [
           class="w-full rounded-lg border px-3 py-2 ui-field"
           placeholder={
             intent === "call"
-              ? t(lang, "Please call me back to arrange a viewing.", "Por favor, llámenme para organizar una visita.")
+              ? t(lang, "Please call me back to arrange a private viewing.", "Por favor, llámenme para organizar una visita privada.")
               : intent === "whatsapp"
                 ? t(lang, "I prefer to continue on WhatsApp.", "Prefiero continuar por WhatsApp.")
-                : t(lang, "I am interested in booking a viewing.", "Estoy interesado en reservar una visita.")
+                : t(lang, "I would like to arrange a viewing.", "Me gustaría organizar una visita.")
           }
         />
       </label>
@@ -335,11 +335,11 @@ const selectionSummary = [
 
       <label class="flex items-start gap-2 text-sm leading-relaxed">
         <input name="consent" type="checkbox" required class="mt-1 h-4 w-4" />
-        <span>{t(lang, "I agree to be contacted about this request.", "Acepto ser contactado sobre esta solicitud.")} *</span>
+        <span>{t(lang, "I agree to be contacted regarding this request.", "Acepto ser contactado en relación con esta solicitud.")} *</span>
       </label>
 
       <button type={hasFormAction ? "submit" : "button"} class="ui-btn ui-btn--primary cta-primary inline-flex w-full items-center justify-center sm:w-auto">
-        {t(lang, "Send request", "Enviar solicitud")}
+        {t(lang, "Submit request", "Enviar solicitud")}
       </button>
     </form>
 
@@ -445,10 +445,10 @@ const selectionSummary = [
 
     <section id="contact-success" class="hidden space-y-2.5 rounded-xl border p-4" aria-live="polite">
       <h2 class="text-xl font-semibold">{t(lang, "Thanks!", "¡Gracias!")}</h2>
-      <p class="text-sm opacity-80">{t(lang, "We'll contact you shortly.", "Te contactaremos en breve.")}</p>
+      <p class="text-sm opacity-80">{t(lang, "Our team will contact you shortly.", "Nuestro equipo te contactará en breve.")}</p>
       <div class="cta-cluster cta-inline flex flex-col gap-1.5 sm:flex-row">
         <a href={`/${lang}/units/`} class="ui-btn cta-secondary inline-flex items-center justify-center">
-          {t(lang, "Back to Units", "Volver a Unidades")}
+          {t(lang, "Back to units", "Volver a unidades")}
         </a>
         <a href={`/${lang}/downloads/`} class="ui-btn ui-btn--primary cta-primary inline-flex items-center justify-center">
           {t(lang, "Download brochure", "Descargar folleto")}

@@ -98,8 +98,8 @@ const amenityCategoryText = (category?: string) => {
 
   <section class="masterplan-layout space-y-4 sm:space-y-5">
     <header class="space-y-2">
-      <h1 class="text-3xl tracking-tight">{t(lang, "Cinematic masterplan", "Plan maestro cinemático")}</h1>
-      <p class="text-sm opacity-80">{t(lang, "Tap a building to inspect live inventory.", "Toca un bloque para ver el inventario en vivo.")}</p>
+      <h1 class="text-3xl tracking-tight">{t(lang, "Masterplan overview", "Resumen del plan maestro")}</h1>
+      <p class="text-sm opacity-80">{t(lang, "Select a building to review live availability.", "Selecciona un bloque para revisar la disponibilidad en vivo.")}</p>
     </header>
 
     <div class="masterplan-filters grid gap-2.5 sm:grid-cols-2 sm:gap-3" id="masterplan-filters">
@@ -181,7 +181,7 @@ const amenityCategoryText = (category?: string) => {
 
     <div id="building-panel" class="masterplan-panel space-y-3 overflow-hidden rounded-xl border p-4 sm:p-5">
       <h2 id="building-name" class="text-xl font-semibold tracking-tight break-words">{t(lang, "Select a building", "Selecciona un bloque")}</h2>
-      <p id="building-meta" class="text-sm opacity-80 break-words">{t(lang, "Tap a building hotspot to see details.", "Toca un hotspot para ver los detalles.")}</p>
+      <p id="building-meta" class="text-sm opacity-80 break-words">{t(lang, "Select a building hotspot to view details.", "Selecciona un hotspot del bloque para ver los detalles.")}</p>
       <dl class="masterplan-panel-stats grid gap-2 text-sm sm:grid-cols-2">
         <div>
           <dt class="opacity-70">{t(lang, "Available", "Disponible")}</dt>
@@ -202,17 +202,17 @@ const amenityCategoryText = (category?: string) => {
       </dl>
       <div class="masterplan-cta-row cta-cluster cta-inline flex flex-col gap-2 sm:flex-row sm:items-center">
         <a id="view-units-link" class="ui-btn ui-btn--primary cta-primary inline-flex items-center" href={`/${lang}/units/`}>
-          {t(lang, "View units", "Ver unidades")}
+          {t(lang, "Browse units", "Explorar unidades")}
         </a>
         <a id="contact-sales-link" class="ui-btn cta-secondary inline-flex items-center" href={`/${lang}/contact/?source=masterplan`}>
-          {t(lang, "Contact sales", "Contactar ventas")}
+          {t(lang, "Speak with sales", "Hablar con ventas")}
         </a>
       </div>
     </div>
 
     <div id="amenity-panel" class="masterplan-panel space-y-1 overflow-hidden rounded-xl border p-4 sm:p-5">
       <h3 id="amenity-name" class="text-lg font-semibold break-words">{t(lang, "Amenity", "Amenidad")}</h3>
-      <p id="amenity-category" class="text-sm opacity-80 break-words">{t(lang, "Tap an amenity hotspot.", "Toca un hotspot de amenidad.")}</p>
+      <p id="amenity-category" class="text-sm opacity-80 break-words">{t(lang, "Select an amenity hotspot for details.", "Selecciona un hotspot de amenidad para ver detalles.")}</p>
     </div>
   </section>
   <StickyCTA lang={lang} />
