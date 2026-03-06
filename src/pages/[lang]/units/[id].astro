@@ -117,91 +117,99 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
       </a>
     </section>
   ) : (
-    <section class="space-y-5 sm:space-y-6">
-      <header class="unit-detail-headline space-y-3">
-        <h1 class="text-3xl tracking-tight">
-          {t(lang, "Unit", "Unidad")} {unit.number || unit.id}
-        </h1>
-        <p class="text-sm opacity-75">
-          {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")}{" "}
-          {unit.floor || "-"}
-        </p>
-      </header>
+    <section class="unit-detail-flow space-y-5 sm:space-y-6">
+      <div class="unit-detail-gallery-stack space-y-3.5 sm:space-y-4">
+        {coverImage && (
+          <img
+            src={coverImage}
+            alt={`${t(lang, "Unit", "Unidad")} ${unit.number || unit.id}`}
+            class="w-full rounded-xl border object-cover unit-detail-media"
+            loading="lazy"
+            decoding="async"
+          />
+        )}
 
-      {coverImage && (
-        <img
-          src={coverImage}
-          alt={`${t(lang, "Unit", "Unidad")} ${unit.number || unit.id}`}
-          class="w-full rounded-xl border object-cover unit-detail-media"
-          loading="lazy"
-          decoding="async"
-        />
-      )}
+        {planImage && (
+          <img
+            src={planImage}
+            alt={`${t(lang, "Unit plan", "Plano de unidad")} ${unit.number || unit.id}`}
+            class="w-full rounded-xl border object-cover unit-detail-media"
+            loading="lazy"
+            decoding="async"
+          />
+        )}
 
-      {planImage && (
-        <img
-          src={planImage}
-          alt={`${t(lang, "Unit plan", "Plano de unidad")} ${unit.number || unit.id}`}
-          class="w-full rounded-xl border object-cover unit-detail-media"
-          loading="lazy"
-          decoding="async"
-        />
-      )}
-
-      {galleryImages.length > 0 && (
-        <div class="grid gap-3.5 sm:grid-cols-2 unit-detail-gallery">
-          {galleryImages.map((image, index) => (
-            <img
-              src={image}
-              alt={`${t(lang, "Gallery image", "Imagen de galería")} ${index + 1}`}
-              class="w-full rounded-xl border object-cover unit-detail-media"
-              loading="lazy"
-              decoding="async"
-            />
-          ))}
-        </div>
-      )}
-
-      <div class="unit-detail-specs ui-card grid gap-3.5 rounded-xl p-4 text-sm sm:grid-cols-2 sm:p-5">
-        <div>
-          <p class="opacity-65">{t(lang, "Beds / Baths", "Dormitorios / Baños")}</p>
-          <p class="text-base font-medium">
-            {beds} / {baths}
-          </p>
-        </div>
-        <div>
-          <p class="opacity-65">{t(lang, "Area", "Superficie")}</p>
-          <p class="text-base font-medium">{area} m²</p>
-        </div>
-        <div>
-          <p class="opacity-65">{t(lang, "Orientation", "Orientación")}</p>
-          <p class="text-base font-medium">{orientationText(unit.orientation)}</p>
-        </div>
-        <div>
-          <p class="opacity-65">{t(lang, "Status", "Estado")}</p>
-          <p class="text-base font-medium">{statusText(unit.status)}</p>
-        </div>
-        <div class="sm:col-span-2">
-          <p class="opacity-65">{t(lang, "Price", "Precio")}</p>
-          <p class="text-base font-medium">
-            {unit.price_eur ? `€${unit.price_eur}` : t(lang, "Request price", "Solicitar precio")}
-          </p>
-        </div>
+        {galleryImages.length > 0 && (
+          <div class="grid gap-3.5 sm:grid-cols-2 unit-detail-gallery">
+            {galleryImages.map((image, index) => (
+              <img
+                src={image}
+                alt={`${t(lang, "Gallery image", "Imagen de galería")} ${index + 1}`}
+                class="w-full rounded-xl border object-cover unit-detail-media"
+                loading="lazy"
+                decoding="async"
+              />
+            ))}
+          </div>
+        )}
       </div>
 
-      <div class="unit-cta-row flex flex-col gap-2.5 sm:flex-row sm:items-center">
-        <a
-          class="ui-btn ui-btn--primary inline-flex items-center justify-center px-6"
-          href={`/${lang}/downloads/`}
-        >
-          {t(lang, "Request price list", "Solicitar lista de precios")}
-        </a>
-        <a
-          class="ui-btn inline-flex items-center justify-center px-6"
-          href={`/${lang}/contact/?source=unit&unit=${encodeURIComponent(String(unit.id ?? ""))}`}
-        >
-          {t(lang, "Book a viewing", "Reservar visita")}
-        </a>
+      <div class="unit-detail-summary ui-card rounded-xl p-4 sm:p-5">
+        <header class="unit-detail-headline space-y-2.5">
+          <p class="unit-detail-kicker">{t(lang, "Unit details", "Detalles de unidad")}</p>
+          <h1 class="text-3xl tracking-tight">
+            {t(lang, "Unit", "Unidad")} {unit.number || unit.id}
+          </h1>
+          <p class="unit-detail-context text-sm">
+            {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")}{" "}
+            {unit.floor || "-"}
+          </p>
+        </header>
+
+        <div class="unit-detail-meta mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div class="unit-detail-stat unit-detail-price">
+            <p class="unit-detail-label">{t(lang, "Price", "Precio")}</p>
+            <p class="unit-detail-value text-xl font-semibold">
+              {unit.price_eur ? `€${unit.price_eur}` : t(lang, "Request price", "Solicitar precio")}
+            </p>
+          </div>
+          <div class="unit-detail-stat unit-detail-status">
+            <p class="unit-detail-label">{t(lang, "Status", "Estado")}</p>
+            <p class="unit-detail-value text-lg font-medium">{statusText(unit.status)}</p>
+          </div>
+          <div class="unit-detail-stat unit-detail-area">
+            <p class="unit-detail-label">{t(lang, "Area", "Superficie")}</p>
+            <p class="unit-detail-value text-lg font-medium">{area} m²</p>
+          </div>
+        </div>
+
+        <div class="unit-detail-spec-grid mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div class="unit-detail-stat">
+            <p class="unit-detail-label">{t(lang, "Beds / Baths", "Dormitorios / Baños")}</p>
+            <p class="unit-detail-value text-base font-medium">
+              {beds} / {baths}
+            </p>
+          </div>
+          <div class="unit-detail-stat">
+            <p class="unit-detail-label">{t(lang, "Orientation", "Orientación")}</p>
+            <p class="unit-detail-value text-base font-medium">{orientationText(unit.orientation)}</p>
+          </div>
+        </div>
+
+        <div class="unit-detail-cta-row unit-cta-row mt-5 flex flex-col gap-2.5 sm:flex-row sm:items-center">
+          <a
+            class="ui-btn ui-btn--primary inline-flex items-center justify-center px-6"
+            href={`/${lang}/downloads/`}
+          >
+            {t(lang, "Request price list", "Solicitar lista de precios")}
+          </a>
+          <a
+            class="ui-btn inline-flex items-center justify-center px-6"
+            href={`/${lang}/contact/?source=unit&unit=${encodeURIComponent(String(unit.id ?? ""))}`}
+          >
+            {t(lang, "Book a viewing", "Reservar visita")}
+          </a>
+        </div>
       </div>
     </section>
   )}
