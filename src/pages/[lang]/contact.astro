@@ -163,7 +163,7 @@ const selectionSummary = [
     {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
   </Fragment>
 
-  <section class="space-y-7">
+  <section class="space-y-6 sm:space-y-7">
     <header class="space-y-3">
       <h1 class="text-3xl tracking-tight">{t(lang, "Book a viewing", "Reservar visita")}</h1>
       <p class="max-w-2xl text-sm opacity-80">
@@ -171,7 +171,7 @@ const selectionSummary = [
       </p>
     </header>
 
-    <div class="contact-cta-row grid gap-3 sm:grid-cols-3">
+    <div class="contact-cta-row grid gap-2.5 sm:grid-cols-3 sm:gap-3">
       {whatsappHref ? (
         <a
           href={whatsappHref}
@@ -205,7 +205,7 @@ const selectionSummary = [
       )}
     </div>
 
-    <div class="contact-panel rounded-xl border p-5 space-y-3">
+    <div class="contact-panel rounded-xl border p-4 space-y-3 sm:p-5">
       <h2 class="text-lg font-semibold">{t(lang, "Address", "Dirección")}</h2>
       <p class="text-sm opacity-80">{address || t(lang, "Address not available", "Dirección no disponible")}</p>
       {mapsHref && (
@@ -216,7 +216,7 @@ const selectionSummary = [
     </div>
 
     {contextMessage && (
-      <p class="contact-panel rounded-xl border px-5 py-4 text-sm opacity-90">{contextMessage}</p>
+      <p class="contact-panel rounded-xl border px-4 py-4 text-sm opacity-90 sm:px-5">{contextMessage}</p>
     )}
 
     <div id="contact-sent-notice" class={`contact-status rounded-2xl border bg-neutral-50/60 p-5 md:p-6 space-y-4 ${sent ? "" : "hidden"}`} role="status" aria-live="polite">
@@ -262,7 +262,7 @@ const selectionSummary = [
       </p>
     )}
 
-    <form id="contact-form" class="contact-panel space-y-5 rounded-xl border p-5 md:p-6" action={hasFormAction ? formAction : undefined} method={hasFormAction ? formMethod : undefined}>
+    <form id="contact-form" class="contact-panel space-y-5 rounded-xl border p-4 sm:p-5 md:p-6" action={hasFormAction ? formAction : undefined} method={hasFormAction ? formMethod : undefined}>
       <input type="hidden" name="intent" value={normalizedIntent} />
       <input type="hidden" name="source" value={source} />
       <input type="hidden" name="building" value={building} />
@@ -284,25 +284,25 @@ const selectionSummary = [
           <input type="text" name="_gotcha" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true" />
         </>
       )}
-      <div class="contact-form-grid grid gap-4 md:grid-cols-2">
+      <div class="contact-form-grid grid gap-3.5 md:grid-cols-2 md:gap-4">
         <label class="grid gap-1.5 text-sm">
           <span>{t(lang, "Name", "Nombre")} *</span>
-          <input name="name" required class="min-h-11 rounded-lg border px-3 ui-field" autocomplete="name" />
+          <input name="name" required class="min-h-11 w-full rounded-lg border px-3 ui-field" autocomplete="name" />
         </label>
 
         <label class="grid gap-1.5 text-sm">
           <span>{t(lang, "Email", "Correo")} *</span>
-          <input name="email" type="email" required class="min-h-11 rounded-lg border px-3 ui-field" autocomplete="email" inputmode="email" />
+          <input name="email" type="email" required class="min-h-11 w-full rounded-lg border px-3 ui-field" autocomplete="email" inputmode="email" />
         </label>
 
         <label class="grid gap-1.5 text-sm">
           <span>{t(lang, "Phone", "Teléfono")}</span>
-          <input name="phone" type="tel" class="min-h-11 rounded-lg border px-3 ui-field" autocomplete="tel" inputmode="tel" />
+          <input name="phone" type="tel" class="min-h-11 w-full rounded-lg border px-3 ui-field" autocomplete="tel" inputmode="tel" />
         </label>
 
         <label class="grid gap-1.5 text-sm">
           <span>{t(lang, "Preferred language", "Idioma preferido")}</span>
-          <select name="preferred_language" class="min-h-11 rounded-lg border px-3 ui-field">
+          <select name="preferred_language" class="min-h-11 w-full rounded-lg border px-3 ui-field">
             <option value={lang}>{lang.toUpperCase()}</option>
             <option value={lang === "en" ? "es" : "en"}>{lang === "en" ? "ES" : "EN"}</option>
           </select>
@@ -317,7 +317,7 @@ const selectionSummary = [
           required
           minlength={10}
           maxlength={2000}
-          class="rounded-lg border px-3 py-2 ui-field"
+          class="w-full rounded-lg border px-3 py-2 ui-field"
           placeholder={
             intent === "call"
               ? t(lang, "Please call me back to arrange a viewing.", "Por favor, llámenme para organizar una visita.")
@@ -333,7 +333,7 @@ const selectionSummary = [
         <input name="company" tabindex="-1" autocomplete="off" />
       </label>
 
-      <label class="flex items-start gap-2.5 text-sm">
+      <label class="flex items-start gap-2.5 text-sm leading-relaxed">
         <input name="consent" type="checkbox" required class="mt-1 h-4 w-4" />
         <span>{t(lang, "I agree to be contacted about this request.", "Acepto ser contactado sobre esta solicitud.")} *</span>
       </label>

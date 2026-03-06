@@ -70,14 +70,14 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
     {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
   </Fragment>
 
-  <section class="space-y-5">
+  <section class="space-y-5 sm:space-y-6">
     <header class="space-y-2">
       <h1 class="text-3xl tracking-tight">{t(lang, "Units", "Unidades")}</h1>
       <p id="units-summary" class="text-sm leading-relaxed opacity-80">{units.length} {t(lang, "units", "unidades")}</p>
       <p id="active-filters" class="text-sm opacity-70">{t(lang, "All filters", "Todos los filtros")}</p>
     </header>
 
-    <div class="units-filters grid gap-4 sm:grid-cols-2 lg:grid-cols-4" id="units-filters">
+    <div class="units-filters grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5" id="units-filters">
       <div class="space-y-2">
         <p class="text-sm font-medium tracking-wide opacity-80">{t(lang, "Building", "Bloque")}</p>
         <div class="flex flex-wrap gap-2" data-filter="building">
@@ -153,8 +153,8 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
               </div>
             )}
 
-            <div class="unit-card__content space-y-3.5 p-4 md:p-5">
-              <div class="flex items-start justify-between gap-3">
+            <div class="unit-card__content space-y-3.5 p-4 sm:p-4 md:p-5">
+              <div class="flex flex-wrap items-start justify-between gap-2.5">
                 <h2 class="text-lg font-semibold leading-tight break-words text-slate-900">
                   {t(lang, "Unit", "Unidad")} {unit.number || unit.id}
                 </h2>
