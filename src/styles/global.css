@@ -34,6 +34,8 @@
   --tap-target-min: 44px;
   --ui-focus-ring: color-mix(in oklab, var(--fg), transparent 84%);
   --ui-control-height: 2.75rem;
+  --ui-border-soft: color-mix(in oklab, var(--border), var(--fg) 8%);
+  --ui-border-strong: color-mix(in oklab, var(--border), var(--fg) 16%);
 }
 
 @layer base {

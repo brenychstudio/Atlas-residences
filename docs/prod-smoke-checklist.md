@@ -1,29 +1,40 @@
 # Production deploy + smoke checklist
 
-## A) Cloudflare Pages settings
-1. Set **Production branch** to `main`.
-2. Set **Build command** to `npm run build`.
-3. Set **Build output directory** to `dist`.
+## 1) Cloudflare Pages configuration
+- Production branch is `main`.
+- Build command is `npm run build`.
+- Build output directory is `dist`.
 
-## B) Environment variables (Production + Preview)
-Configure these variables in both environments:
-- `PUBLIC_SITE_URL=https://<your-domain-or-pages-url>` (no trailing slash)
+## 2) Environment variables (Production + Preview)
+Set the same values in both environments:
 - `PUBLIC_CONTACT_FORM_ACTION=...`
 - `PUBLIC_CONTACT_FORM_METHOD=POST`
+- `PUBLIC_SITE_URL=https://<your-domain-or-pages-url>`
 
-## C) After deploy
-1. Run the smoke script:
-   ```bash
-   node scripts/smoke-prod.mjs https://<site-origin>
-   ```
-2. Run a quick manual 2-minute check:
-   - `/en/`
-   - `/en/units/`
-   - `/en/masterplan/`
-   - `/en/downloads/`
-   - `/en/contact/?source=home`
+## 3) Automated smoke script
+Run after deploy:
+```bash
+node scripts/smoke-prod.mjs https://<site-origin>
+```
 
-## D) Form provider verification notes
-- The smoke script is provider-agnostic and verifies the contact form wiring + hidden lead and attribution fields.
-- If the rendered form action includes `formspree.io`, the script additionally checks for Formspree helper fields: `_subject`, `_next`, and `_gotcha`.
-- If the form action is not Formspree, those fields are intentionally skipped.
+## 4) Manual visual + contact sanity
+Check these routes:
+- `/en/`
+- `/en/masterplan/`
+- `/en/units/`
+- `/en/location/`
+- `/en/downloads/`
+- `/en/contact/`
+- `/en/contact/?sent=1`
+- `/en/contact/?error=1`
+- `/es/`
+- `/es/masterplan/`
+- `/es/units/`
+- `/es/location/`
+- `/es/downloads/`
+- `/es/contact/`
+
+## 5) Contact form verification notes
+- Smoke script validates contact form action/method, hidden lead fields, attribution fields, analytics markers, and OG metadata.
+- If action contains `formspree.io`, it must also validate `_subject`, `_next`, and `_gotcha`.
+- If action is not Formspree, those helper fields are intentionally not required.

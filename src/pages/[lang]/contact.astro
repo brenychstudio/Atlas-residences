@@ -171,7 +171,7 @@ const selectionSummary = [
       </p>
     </header>
 
-    <div class="contact-cta-row grid gap-2.5 sm:grid-cols-3 sm:gap-3">
+    <div class="contact-cta-row grid gap-2.5 sm:grid-cols-3 sm:gap-3 sm:items-stretch">
       {whatsappHref ? (
         <a
           href={whatsappHref}
@@ -205,7 +205,7 @@ const selectionSummary = [
       )}
     </div>
 
-    <div class="contact-panel rounded-xl border p-4 space-y-3 sm:p-5">
+    <div class="contact-panel rounded-xl border p-4 space-y-3.5 sm:p-5">
       <h2 class="text-lg font-semibold">{t(lang, "Address", "Dirección")}</h2>
       <p class="text-sm opacity-80">{address || t(lang, "Address not available", "Dirección no disponible")}</p>
       {mapsHref && (

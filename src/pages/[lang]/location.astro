@@ -82,7 +82,7 @@ const projectMapsHref = hasProjectCoords
       </p>
     </header>
 
-    <div class="location-intro-card rounded-xl p-4 sm:p-5" style="border:1px solid var(--border);background:color-mix(in oklab,var(--bg),var(--fg) 2%);">
+    <div class="location-intro-card rounded-xl p-4 sm:p-5" style="border:1px solid var(--ui-border-soft);background:color-mix(in oklab,var(--bg),var(--fg) 2%);">
       <h2 class="text-sm font-semibold uppercase tracking-wide" style="color:var(--muted)">{t(lang, "Project address", "Dirección del proyecto")}</h2>
       <p class="mt-2 text-sm">{address || t(lang, "Address coming soon", "Dirección próximamente")}</p>
       {projectMapsHref && (
@@ -107,7 +107,7 @@ const projectMapsHref = hasProjectCoords
     </nav>
 
     {filteredPoi.length === 0 ? (
-      <div class="rounded-xl p-5" style="border:1px solid var(--border);">
+      <div class="rounded-xl p-5" style="border:1px solid var(--ui-border-soft);">
         <h2 class="text-lg font-semibold">{t(lang, "Coming soon", "Próximamente")}</h2>
         <p class="mt-2 text-sm" style="color:var(--muted)">
           {t(lang, "We're curating nearby highlights for this area.", "Estamos curando los mejores puntos cercanos de esta zona.")}
@@ -124,7 +124,7 @@ const projectMapsHref = hasProjectCoords
             : "";
 
           return (
-            <li class="poi-row rounded-xl p-4 sm:p-5">
+            <li class="poi-row rounded-xl p-4 sm:p-5" style="border:1px solid var(--ui-border-soft);background:color-mix(in oklab,var(--bg),white 55%);">
               <div class="flex flex-wrap items-start justify-between gap-2.5">
                 <div class="min-w-0">
                   <h3 class="text-base font-semibold tracking-tight break-words">{poiName}</h3>
