@@ -533,9 +533,34 @@ textarea.ui-field {
 }
 
 [data-hero-stage][data-hero-signature="hybrid"][data-webgl-active="true"] [data-hero-overlay="glint"] {
-  mix-blend-mode: soft-light;
+  mix-blend-mode: screen;
 }
 
 [data-hero-stage][data-hero-signature="hybrid"][data-hero-debug="true"] {
   --hero-canvas-sat: 1.16;
+}
+
+/* Signature hero layered depth helpers (scoped) */
+[data-hero-stage][data-hero-signature="hybrid"] {
+  --hero-layer-back-opacity: 0.96;
+  --hero-layer-mid-opacity: 1;
+  --hero-layer-front-opacity: 1;
+}
+
+[data-hero-stage][data-hero-signature="hybrid"] [data-webgl-hero] {
+  opacity: calc(var(--hero-canvas-opacity, 0.94) * var(--hero-layer-back-opacity));
+}
+
+[data-hero-stage][data-hero-signature="hybrid"] [data-hero-overlay="glint"] {
+  opacity: calc(var(--hero-glint-opacity, 0) * var(--hero-layer-mid-opacity));
+}
+
+[data-hero-stage][data-hero-signature="hybrid"] [data-hero-overlay="veil"] {
+  opacity: calc(var(--hero-veil-opacity, 0) * var(--hero-layer-front-opacity));
+}
+
+[data-hero-stage][data-hero-signature="hybrid"][data-hero-debug="true"] {
+  --hero-layer-back-opacity: 1.08;
+  --hero-layer-mid-opacity: 1.18;
+  --hero-layer-front-opacity: 1.2;
 }
