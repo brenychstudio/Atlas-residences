@@ -12,10 +12,13 @@
 <style>
   .hero-stage {
     position: relative;
+    isolation: isolate;
   }
 
   .hero-stage [data-webgl-hero] {
     z-index: 14;
+    mix-blend-mode: screen;
+    opacity: 0.9;
   }
 </style>
 
@@ -58,6 +61,8 @@
       uniform vec2 u_sun;
       uniform float u_scroll;
       uniform float u_sun_mix;
+      uniform float u_bluehour;
+      uniform float u_sunset;
 
       void main() {
         vec2 uv = v_uv;
@@ -70,24 +75,37 @@
         sun.x *= ratio;
         vec2 glowPos = vec2(sun.x, u_sun.y) + (u_pointer - 0.5) * vec2(0.018, 0.012);
 
-        float glow = exp(-12.0 * distance(p, glowPos));
-        float bloom = exp(-5.0 * distance(p, glowPos));
+        float dayBlend = clamp(1.0 - u_sun_mix, 0.0, 1.0);
+        float blue = clamp(u_bluehour, 0.0, 1.0);
+        float sunset = clamp(u_sunset, 0.0, 1.0);
+
+        float glow = exp(-(13.0 - sunset * 2.0) * distance(p, glowPos));
+        float bloom = exp(-(5.8 - sunset * 1.2) * distance(p, glowPos));
 
         float horizon = smoothstep(0.12, 0.86, uv.y);
-        float haze = (1.0 - horizon) * 0.11;
+        float haze = (1.0 - horizon) * (0.08 + blue * 0.03 + sunset * 0.05 - dayBlend * 0.01);
 
         float edge = smoothstep(0.75, 0.28, length(p));
-        float vignette = (1.0 - edge) * 0.11;
+        float vignette = (1.0 - edge) * 0.09;
 
         float drift = sin(u_time * 0.2 + uv.x * 4.0) * 0.01;
-        float scrollTint = clamp(u_scroll, 0.0, 1.0) * 0.06;
+        float scrollTint = clamp(u_scroll, 0.0, 1.0) * (0.04 + blue * 0.01 + sunset * 0.02);
         float sunMix = clamp(u_sun_mix, 0.0, 1.0);
 
-        vec3 warm = vec3(1.0, 0.90, 0.72);
-        vec3 hazeCol = vec3(0.82, 0.88, 0.94);
-        vec3 color = warm * glow * (0.16 + sunMix * 0.07) + warm * bloom * 0.08 + hazeCol * (haze + drift + scrollTint);
+        vec3 coolDay = vec3(0.72, 0.82, 0.95);
+        vec3 blueHour = vec3(0.66, 0.74, 0.90);
+        vec3 warmSunset = vec3(1.0, 0.87, 0.70);
 
-        float alpha = clamp(glow * (0.14 + sunMix * 0.08) + bloom * 0.08 + haze + vignette, 0.0, 0.22);
+        vec3 ambient = mix(coolDay, blueHour, blue);
+        ambient = mix(ambient, warmSunset, sunset * 0.85);
+
+        float glowIntensity = 0.10 + dayBlend * 0.03 + sunset * 0.10 + sunMix * 0.04;
+        float bloomIntensity = 0.05 + sunset * 0.06 + blue * 0.01;
+        float ambientIntensity = 0.065 + dayBlend * 0.02 + blue * 0.02 + sunset * 0.03;
+
+        vec3 color = ambient * (haze + drift + scrollTint) + warmSunset * glow * glowIntensity + ambient * bloom * bloomIntensity;
+
+        float alpha = clamp(glow * (0.10 + sunset * 0.10 + sunMix * 0.03) + bloom * (0.05 + sunset * 0.03) + (haze + vignette) * ambientIntensity, 0.0, 0.2);
         gl_FragColor = vec4(color, alpha);
       }
     `;
@@ -131,14 +149,30 @@
     const uSun = gl.getUniformLocation(program, "u_sun");
     const uScroll = gl.getUniformLocation(program, "u_scroll");
     const uSunMix = gl.getUniformLocation(program, "u_sun_mix");
+    const uBlueHour = gl.getUniformLocation(program, "u_bluehour");
+    const uSunset = gl.getUniformLocation(program, "u_sunset");
 
     const frame = stage.querySelector("[data-sun-hero-frame]");
     const sunRoot = stage.querySelector("[data-sun-hero]");
 
     let pointerX = 0.5;
     let pointerY = 0.4;
+    let pointerTargetX = 0.5;
+    let pointerTargetY = 0.4;
     let inView = false;
+    let isVisible = document.visibilityState !== "hidden";
     let raf = 0;
+
+    const state = {
+      sunX: 0.5,
+      sunY: 0.7,
+      sunMix: 0,
+      scroll: 0,
+      blueHour: 0,
+      sunset: 0,
+    };
+
+    const lerp = (from, to, t) => from + (to - from) * t;
 
     const readVarNumber = (name, fallback) => {
       if (!(sunRoot instanceof HTMLElement)) return fallback;
@@ -170,27 +204,41 @@
     };
 
     const draw = (time) => {
-      if (!inView) return;
+      if (!inView || !isVisible) return;
 
       updateCanvasBounds();
-      const sunX = readVarNumber("--sun-x", 50) / 100;
-      const sunY = readVarNumber("--sun-y", 30) / 100;
-      const sunMix = readVarNumber("--sun", 0);
-      const scroll = readVarNumber("--scroll", 0);
+      const targetSunX = readVarNumber("--sun-x", 50) / 100;
+      const targetSunY = readVarNumber("--sun-y", 30) / 100;
+      const targetSunMix = readVarNumber("--sun", 0);
+      const targetScroll = readVarNumber("--scroll", 0);
+      const targetBlueHour = readVarNumber("--bluehour-opacity", 0);
+      const targetSunset = readVarNumber("--sunset-opacity", 0);
+
+      pointerX = lerp(pointerX, pointerTargetX, 0.08);
+      pointerY = lerp(pointerY, pointerTargetY, 0.08);
+
+      state.sunX = lerp(state.sunX, targetSunX, 0.09);
+      state.sunY = lerp(state.sunY, targetSunY, 0.09);
+      state.sunMix = lerp(state.sunMix, targetSunMix, 0.07);
+      state.scroll = lerp(state.scroll, targetScroll, 0.07);
+      state.blueHour = lerp(state.blueHour, targetBlueHour, 0.08);
+      state.sunset = lerp(state.sunset, targetSunset, 0.08);
 
       gl.uniform2f(uResolution, canvas.width, canvas.height);
       gl.uniform1f(uTime, time * 0.001);
       gl.uniform2f(uPointer, pointerX, pointerY);
-      gl.uniform2f(uSun, sunX - 0.5, 1.0 - sunY);
-      gl.uniform1f(uScroll, scroll);
-      gl.uniform1f(uSunMix, sunMix);
+      gl.uniform2f(uSun, state.sunX - 0.5, 1.0 - state.sunY);
+      gl.uniform1f(uScroll, state.scroll);
+      gl.uniform1f(uSunMix, state.sunMix);
+      gl.uniform1f(uBlueHour, state.blueHour);
+      gl.uniform1f(uSunset, state.sunset);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
       raf = window.requestAnimationFrame(draw);
     };
 
     const start = () => {
-      if (raf) return;
+      if (raf || !inView || !isVisible) return;
       canvas.classList.remove("hidden");
       raf = window.requestAnimationFrame(draw);
     };
@@ -206,8 +254,8 @@
       if (!(frame instanceof HTMLElement)) return;
       const rect = frame.getBoundingClientRect();
       if (!rect.width || !rect.height) return;
-      pointerX = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
-      pointerY = Math.min(1, Math.max(0, (event.clientY - rect.top) / rect.height));
+      pointerTargetX = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
+      pointerTargetY = Math.min(1, Math.max(0, (event.clientY - rect.top) / rect.height));
     });
 
     const observer = new IntersectionObserver(
@@ -221,6 +269,13 @@
 
     observer.observe(stage);
     updateCanvasBounds();
+
+    document.addEventListener("visibilitychange", () => {
+      isVisible = document.visibilityState !== "hidden";
+      if (isVisible) start();
+      else stop();
+    });
+
     window.addEventListener("resize", updateCanvasBounds, { passive: true });
     window.addEventListener("scroll", updateCanvasBounds, { passive: true });
   })();
