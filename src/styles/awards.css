@@ -447,3 +447,74 @@ textarea.ui-field {
 .contact-cta-row > :is(a, span) {
   background: color-mix(in oklab, var(--surface), transparent 3%);
 }
+
+@media (max-width: 64rem) {
+  [data-dev-header] nav.md\:hidden {
+    padding-bottom: 0.75rem;
+  }
+
+  .masterplan-filters,
+  .units-filters {
+    gap: 0.85rem;
+  }
+
+  .masterplan-filters [data-filter],
+  .units-filters [data-filter],
+  .location-filters {
+    row-gap: 0.5rem;
+  }
+
+  .unit-card__content {
+    gap: 0.8rem;
+  }
+
+  .download-card {
+    min-height: 100%;
+  }
+}
+
+@media (max-width: 48rem) {
+  .ui-chip {
+    min-height: 2.28rem;
+    padding-inline: 0.88rem;
+    font-size: 0.82rem;
+  }
+
+  .masterplan-cta-row .ui-btn,
+  .unit-cta-row .ui-btn,
+  .contact-cta-row > :is(a, span) {
+    width: 100%;
+  }
+
+  .contact-status dd {
+    text-align: right;
+    max-width: 58%;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-form-grid {
+    gap: 0.82rem;
+  }
+
+  .downloads-grid,
+  .unit-detail-gallery {
+    gap: 0.82rem;
+  }
+}
+
+@media (max-width: 30rem) {
+  .masterplan-building,
+  .masterplan-amenity {
+    min-height: 2.7rem;
+    min-width: 2.7rem;
+  }
+
+  .unit-card__status {
+    white-space: nowrap;
+  }
+
+  .poi-row .ui-btn,
+  .download-card .ui-btn {
+    width: 100%;
+  }
+}

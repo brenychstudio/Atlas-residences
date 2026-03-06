@@ -58,7 +58,7 @@ const heroMobileImage = heroVariants.mobile;
     {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
   </Fragment>
 
-  <section class="space-y-8 sm:space-y-10">
+  <section class="space-y-6 sm:space-y-8 md:space-y-10">
     {/* STABILITY LOCK (canonical): keep SunHero prop contract/order stable unless intentional redesign. */}
     <SunHero
       morningImage={heroImage}
@@ -72,7 +72,7 @@ const heroMobileImage = heroVariants.mobile;
       sunsetLabel={t(lang, "Sunset", "Atardecer")}
     />
 
-    <div class="max-w-3xl space-y-4 sm:space-y-5">
+    <div class="max-w-3xl space-y-3.5 sm:space-y-5">
       <p class="text-[11px] uppercase tracking-[0.22em] text-black/60">{t(lang, "ATLAS RESIDENCES", "ATLAS RESIDENCES")}</p>
       <h1 class="text-3xl tracking-tight sm:text-4xl md:text-5xl">{t(lang, "Atlas Residences", "Atlas Residences")}</h1>
       <p class="max-w-2xl text-sm leading-relaxed text-black/75 sm:text-base">
@@ -84,7 +84,7 @@ const heroMobileImage = heroVariants.mobile;
       </p>
     </div>
 
-    <div class="grid gap-2.5 sm:grid-cols-3 sm:gap-3">
+    <div class="grid gap-2.5 sm:grid-cols-3 sm:gap-3 md:max-w-4xl">
       <a class="group flex min-h-12 items-center justify-between rounded-xl bg-black px-4 py-3 text-sm text-white transition hover:bg-black/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2" href={`/${lang}/units/`}>
         {t(lang, "Browse units", "Explorar unidades")}
         <span class="text-xs opacity-60 transition group-hover:translate-x-0.5">→</span>

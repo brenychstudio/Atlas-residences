@@ -18,7 +18,7 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
 ---
 
 <BaseLayout lang={lang} title={t(lang, "Downloads | Atlas Residences", "Descargas | Atlas Residences") }>
-  <section class="downloads-shell space-y-7">
+  <section class="downloads-shell space-y-6 sm:space-y-7">
     <header class="downloads-head space-y-2">
       <h1 class="text-3xl tracking-tight">{t(lang, "Downloads", "Descargas")}</h1>
       <p class="max-w-2xl text-sm opacity-80">{t(lang, "Sales documents and brochures.", "Documentos comerciales y folletos.")}</p>
@@ -28,7 +28,7 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
     <div class="downloads-grid grid gap-4 sm:grid-cols-2">
       {brochureUrl && (
         <a
-          class="download-card ui-card group overflow-hidden rounded-xl"
+          class="download-card ui-card group flex h-full flex-col overflow-hidden rounded-xl"
           href={brochureUrl}
         >
           <img
@@ -38,7 +38,7 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
             loading="lazy"
             decoding="async"
           />
-          <div class="space-y-2 p-5">
+          <div class="mt-auto space-y-2 p-4 sm:p-5">
             <p class="text-sm font-semibold">{t(lang, "Project brochure", "Folleto del proyecto")}</p>
             <p class="text-xs opacity-70">{t(lang, "Sales material", "Material comercial")}</p>
             <p class="text-xs font-medium uppercase tracking-[0.1em] opacity-75">{t(lang, "Open document", "Abrir documento")}</p>
@@ -48,7 +48,7 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
 
       {priceListUrl && (
         <a
-          class="download-card ui-card group overflow-hidden rounded-xl"
+          class="download-card ui-card group flex h-full flex-col overflow-hidden rounded-xl"
           href={priceListUrl}
         >
           <img
@@ -58,7 +58,7 @@ const hasDownloads = Boolean(brochureUrl || priceListUrl);
             loading="lazy"
             decoding="async"
           />
-          <div class="space-y-2 p-5">
+          <div class="mt-auto space-y-2 p-4 sm:p-5">
             <p class="text-sm font-semibold">{t(lang, "Price list", "Lista de precios")}</p>
             <p class="text-xs opacity-70">{t(lang, "Sales material", "Material comercial")}</p>
             <p class="text-xs font-medium uppercase tracking-[0.1em] opacity-75">{t(lang, "Open document", "Abrir documento")}</p>
