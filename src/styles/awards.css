@@ -518,3 +518,24 @@ textarea.ui-field {
     width: 100%;
   }
 }
+
+[data-hero-stage][data-hero-signature="hybrid"] {
+  contain: paint;
+}
+
+[data-hero-stage][data-hero-signature="hybrid"] [data-hero-overlay] {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+[data-hero-stage][data-hero-signature="hybrid"][data-webgl-active="true"] [data-hero-overlay="veil"] {
+  mix-blend-mode: screen;
+}
+
+[data-hero-stage][data-hero-signature="hybrid"][data-webgl-active="true"] [data-hero-overlay="glint"] {
+  mix-blend-mode: soft-light;
+}
+
+[data-hero-stage][data-hero-signature="hybrid"][data-hero-debug="true"] {
+  --hero-canvas-sat: 1.16;
+}
