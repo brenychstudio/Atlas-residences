@@ -74,73 +74,173 @@ const projectMapsHref = hasProjectCoords
     {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
   </Fragment>
 
-  <section class="location-layout space-y-4 sm:space-y-5">
-    <header class="space-y-2">
-      <h1 class="text-3xl tracking-tight">{t(lang, "Location", "Ubicación")}</h1>
-      <p class="text-sm" style="color:var(--muted)">
-        {t(lang, "A curated selection of places you can reach in minutes.", "Una selección cuidada de lugares a los que llegarás en minutos.")}
-      </p>
+  <section class="location-premium-shell" aria-labelledby="location-title">
+    <header class="location-premium-hero">
+      <div class="location-premium-hero__copy">
+        <p class="location-premium-kicker">
+          {t(lang, "Barcelona residence address", "Dirección residencial en Barcelona")}
+        </p>
+
+        <h1 id="location-title" class="location-premium-title">
+          {t(lang, "A quiet address connected to the city", "Una dirección tranquila conectada con la ciudad")}
+        </h1>
+
+        <p class="location-premium-lede">
+          {t(
+            lang,
+            "Atlas Residences is presented through nearby transport, parks, culture, services and waterfront destinations — all arranged by reach time.",
+            "Atlas Residences se presenta a través del transporte cercano, parques, cultura, servicios y destinos junto al agua — todo organizado por tiempo de llegada.",
+          )}
+        </p>
+
+        <div class="location-premium-signals" aria-label={t(lang, "Location highlights", "Aspectos destacados de ubicación")}>
+          {sortedPoi.slice(0, 4).map((item) => {
+            const poiName = lang === "es" ? item.name_es : item.name_en;
+            const minutes = Number(item.distance_minutes ?? 0);
+
+            return (
+              <span>
+                <strong>{minutes}</strong>
+                <span>{t(lang, "min", "min")}</span>
+                <em>{poiName}</em>
+              </span>
+            );
+          })}
+        </div>
+      </div>
+
+      <aside class="location-premium-address-card" aria-label={t(lang, "Residence address", "Dirección de la residencia")}>
+        <p class="location-premium-card-kicker">
+          {t(lang, "Residence address", "Dirección de la residencia")}
+        </p>
+
+        <h2>
+          {address || t(lang, "Address available soon", "Dirección disponible pronto")}
+        </h2>
+
+        <p>
+          {t(
+            lang,
+            "A calm residential base with quick access to daily essentials, city culture and the waterfront.",
+            "Una base residencial tranquila con acceso rápido a servicios diarios, cultura urbana y el frente marítimo.",
+          )}
+        </p>
+
+        <div class="location-premium-address-actions">
+          {projectMapsHref && (
+            <a href={projectMapsHref} target="_blank" rel="noreferrer" class="location-premium-button location-premium-button--primary">
+              <span>{t(lang, "View in Maps", "Ver en Maps")}</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          )}
+
+          <a href={`/${lang}/contact/`} class="location-premium-button location-premium-button--secondary">
+            <span>{t(lang, "Book a viewing", "Reservar visita")}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </aside>
     </header>
 
-    <div class="location-intro-card rounded-xl p-4 sm:p-5" style="border:1px solid var(--ui-border-soft);background:color-mix(in oklab,var(--bg),var(--fg) 2%);">
-      <h2 class="text-sm font-semibold uppercase tracking-wide" style="color:var(--muted)">{t(lang, "Residence address", "Dirección de la residencia")}</h2>
-      <p class="mt-1.5 text-sm">{address || t(lang, "Address available soon", "Dirección disponible pronto")}</p>
-      {projectMapsHref && (
-        <a href={projectMapsHref} target="_blank" rel="noreferrer" class="ui-btn mt-2.5 inline-flex items-center text-sm font-medium">
-          {t(lang, "View in Maps", "Ver en Maps")}
-        </a>
-      )}
-    </div>
-
-    <nav class="location-filters flex flex-wrap gap-2" aria-label={t(lang, "Nearby categories", "Categorías cercanas")}>
-      {categoryOptions.map((category) => {
-        const active = activeCat === category;
-        return (
-          <a
-            href={buildCatHref(category)}
-            class={`ui-chip ${active ? "is-active" : ""}`}
-          >
-            {category === "all" ? t(lang, "All", "Todos") : categoryLabel(category)}
-          </a>
-        );
-      })}
-    </nav>
-
-    {filteredPoi.length === 0 ? (
-      <div class="rounded-xl p-5" style="border:1px solid var(--ui-border-soft);">
-        <h2 class="text-lg font-semibold">{t(lang, "Coming soon", "Próximamente")}</h2>
-        <p class="mt-2 text-sm" style="color:var(--muted)">
-          {t(lang, "Nearby highlights for this area will be available soon.", "Los puntos de interés cercanos de esta zona estarán disponibles pronto.")}
+    <section class="location-premium-control" aria-label={t(lang, "Nearby categories", "Categorías cercanas")}>
+      <div>
+        <p class="location-premium-control__kicker">
+          {t(lang, "Refine nearby places", "Filtrar lugares cercanos")}
+        </p>
+        <p class="location-premium-control__meta">
+          {activeCat === "all"
+            ? t(lang, "All categories shown", "Todas las categorías visibles")
+            : t(lang, "Filtered selection", "Selección filtrada")}
         </p>
       </div>
-    ) : (
-      <ul class="poi-list space-y-2.5">
-        {filteredPoi.map((item) => {
-          const poiName = lang === "es" ? item.name_es : item.name_en;
-          const minutes = Number(item.distance_minutes ?? 0);
-          const hasPoiCoords = Boolean(item.coords_lat && item.coords_lng);
-          const poiMapsHref = hasPoiCoords
-            ? `https://www.google.com/maps?q=${encodeURIComponent(`${item.coords_lat},${item.coords_lng}`)}`
-            : "";
+
+      <nav class="location-premium-filters">
+        {categoryOptions.map((category) => {
+          const active = activeCat === category;
 
           return (
-            <li class="poi-row rounded-xl p-4 sm:p-5" style="border:1px solid var(--ui-border-soft);background:color-mix(in oklab,var(--bg),white 55%);">
-              <div class="flex flex-wrap items-start justify-between gap-2">
-                <div class="min-w-0">
-                  <h3 class="text-base font-semibold tracking-tight break-words">{poiName}</h3>
-                  <p class="mt-0.5 text-sm" style="color:var(--muted)">{categoryLabel(String(item.category ?? "").toLowerCase())}</p>
-                </div>
-                <p class="shrink-0 text-sm font-medium" style="color:color-mix(in oklab,var(--fg),var(--muted) 26%);">{minutes} {t(lang, "min", "min")}</p>
-              </div>
-              {poiMapsHref && (
-                <a href={poiMapsHref} target="_blank" rel="noreferrer" class="ui-btn mt-2.5 inline-flex items-center text-sm font-medium">
-                  {t(lang, "View on map", "Ver en mapa")}
-                </a>
-              )}
-            </li>
+            <a
+              href={buildCatHref(category)}
+              class={`location-premium-filter ${active ? "is-active" : ""}`}
+            >
+              {category === "all" ? t(lang, "All", "Todos") : categoryLabel(category)}
+            </a>
           );
         })}
-      </ul>
+      </nav>
+    </section>
+
+    {filteredPoi.length === 0 ? (
+      <section class="location-premium-empty">
+        <p class="location-premium-card-kicker">
+          {t(lang, "Coming soon", "Próximamente")}
+        </p>
+        <h2>{t(lang, "Nearby highlights will be available soon.", "Los puntos de interés cercanos estarán disponibles pronto.")}</h2>
+      </section>
+    ) : (
+      <section class="location-premium-results" aria-label={t(lang, "Nearby places", "Lugares cercanos")}>
+        <div class="location-premium-results__intro">
+          <p class="location-premium-kicker">
+            {t(lang, "Neighbourhood rhythm", "Ritmo del entorno")}
+          </p>
+
+          <h2>
+            {t(lang, "Daily reach, curated by minutes", "Alcance diario, organizado por minutos")}
+          </h2>
+
+          <p>
+            {t(
+              lang,
+              "The list is ordered by walking or short travel proximity, helping buyers understand everyday convenience before opening a map.",
+              "La lista está ordenada por proximidad a pie o trayectos cortos, ayudando a entender la comodidad diaria antes de abrir un mapa.",
+            )}
+          </p>
+        </div>
+
+        <ol class="location-premium-list">
+          {filteredPoi.map((item, index) => {
+            const poiName = lang === "es" ? item.name_es : item.name_en;
+            const category = String(item.category ?? "").toLowerCase();
+            const minutes = Number(item.distance_minutes ?? 0);
+            const hasPoiCoords = Boolean(item.coords_lat && item.coords_lng);
+            const poiMapsHref = hasPoiCoords
+              ? `https://www.google.com/maps?q=${encodeURIComponent(`${item.coords_lat},${item.coords_lng}`)}`
+              : "";
+
+            return (
+              <li class="location-premium-poi">
+                <div class="location-premium-poi__index">
+                  {String(index + 1).padStart(2, "0")}
+                </div>
+
+                <div class="location-premium-poi__body">
+                  <div>
+                    <p class="location-premium-poi__category">
+                      {categoryLabel(category)}
+                    </p>
+
+                    <h3>
+                      {poiName}
+                    </h3>
+                  </div>
+
+                  <p class="location-premium-poi__distance">
+                    <strong>{minutes}</strong>
+                    <span>{t(lang, "min", "min")}</span>
+                  </p>
+
+                  {poiMapsHref && (
+                    <a href={poiMapsHref} target="_blank" rel="noreferrer" class="location-premium-poi__link">
+                      {t(lang, "View on map", "Ver en mapa")}
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  )}
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
     )}
   </section>
 </BaseLayout>
