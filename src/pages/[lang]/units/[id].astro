@@ -2,9 +2,7 @@
 // FILE: src/pages/[lang]/units/[id].astro
 // FULL REPLACE
 
-import BaseLayout from "../../../core/layouts/BaseLayout.astro";
-import DeveloperHeader from "../../../vertical/ui/DeveloperHeader.astro";
-import StickyCTA from "../../../vertical/ui/StickyCTA.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { type Lang, isLang, t } from "../../../content/languages";
 import { getSettings, getUnitById, getUnits, getUnitTypes } from "../../../vertical/cms/sheets";
 import { ATLAS_ASSETS } from "../../../vertical/content/assets";
@@ -84,7 +82,6 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
 ---
 
 <BaseLayout lang={lang} title={seoTitle}>
-  <DeveloperHeader slot="header" lang={lang} pathname={Astro.url.pathname} />
   <Fragment slot="head">
     <title>{seoTitle}</title>
     <meta name="description" content={seoDescription} />
@@ -117,17 +114,23 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
       </a>
     </section>
   ) : (
-    <section class="unit-detail-flow space-y-4 sm:space-y-5">
-      <div class="unit-detail-gallery-stack space-y-3 sm:space-y-3.5">
+    <section class="unit-detail-premium-page">
+      <div class="unit-detail-premium-hero">
         {coverImage && (
-          <img
-            src={coverImage}
-            alt={`${t(lang, "Unit", "Unidad")} ${unit.number || unit.id}`}
-            class="w-full rounded-xl border object-cover unit-detail-media"
-            loading="lazy"
-            decoding="async"
-          />
+          <div class="unit-detail-premium-hero__media">
+            <img
+              src={coverImage}
+              alt={`${t(lang, "Unit", "Unidad")} ${unit.number || unit.id}`}
+              class="w-full rounded-xl border object-cover unit-detail-media"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
         )}
+
+      </div>
+
+      <div class="unit-detail-premium-plan">
 
         {planImage && (
           <img
@@ -139,23 +142,25 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
           />
         )}
 
+      </div>
+
         {galleryImages.length > 0 && (
-          <div class="grid gap-3 sm:grid-cols-2 unit-detail-gallery">
+          <div class="unit-detail-premium-gallery">
             {galleryImages.map((image, index) => (
-              <img
+              <div class="unit-detail-premium-gallery__item">
+                <img
                 src={image}
                 alt={`${t(lang, "Gallery image", "Imagen de galería")} ${index + 1}`}
                 class="w-full rounded-xl border object-cover unit-detail-media"
                 loading="lazy"
                 decoding="async"
-              />
+                />
+              </div>
             ))}
           </div>
         )}
-      </div>
-
-      <div class="unit-detail-summary ui-card rounded-xl p-4 sm:p-5">
-        <header class="unit-detail-headline space-y-2">
+      <section class="unit-detail-premium-summary">
+        <header class="unit-detail-headline unit-detail-premium-summary__copy space-y-2">
           <p class="unit-detail-kicker">{t(lang, "Residence details", "Detalles de la residencia")}</p>
           <h1 class="text-3xl tracking-tight">
             {t(lang, "Unit", "Unidad")} {unit.number || unit.id}
@@ -166,7 +171,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
           </p>
         </header>
 
-        <div class="unit-detail-meta mt-3.5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="unit-detail-premium-summary__facts unit-detail-meta mt-3.5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
           <div class="unit-detail-stat unit-detail-price">
             <p class="unit-detail-label">{t(lang, "Price", "Precio")}</p>
             <p class="unit-detail-value text-xl font-semibold">
@@ -183,7 +188,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
           </div>
         </div>
 
-        <div class="unit-detail-spec-grid mt-3.5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="unit-detail-premium-summary__facts unit-detail-spec-grid mt-3.5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
           <div class="unit-detail-stat">
             <p class="unit-detail-label">{t(lang, "Bedrooms / Bathrooms", "Dormitorios / baños")}</p>
             <p class="unit-detail-value text-base font-medium">
@@ -196,7 +201,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
           </div>
         </div>
 
-        <div class="unit-detail-cta-row unit-cta-row cta-cluster cta-inline mt-4 flex flex-col gap-2 sm:flex-row sm:items-center">
+        <div class="unit-detail-premium-summary__actions unit-detail-cta-row unit-cta-row cta-cluster cta-inline mt-4 flex flex-col gap-2 sm:flex-row sm:items-center">
           <a
             class="ui-btn cta-secondary inline-flex items-center justify-center px-6"
             href={`/${lang}/downloads/`}
@@ -210,8 +215,7 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
             {t(lang, "Book a viewing", "Reservar visita")}
           </a>
         </div>
-      </div>
+      </section>
     </section>
   )}
-  <StickyCTA lang={lang} />
 </BaseLayout>
