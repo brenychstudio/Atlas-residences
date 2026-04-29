@@ -102,11 +102,11 @@ const contextMessage =
         ? t(lang, "Request a viewing or sales consultation.", "Solicita una visita o asesoría comercial.")
         : source === "masterplan"
           ? t(lang, "Request a viewing from the masterplan.", "Solicita una visita desde el plan maestro.")
-        : source === "unit"
-          ? t(lang, "Request details or a viewing for this unit.", "Solicita detalles o una visita para esta unidad.")
-          : source === "downloads"
-            ? t(lang, "Get help with brochures, pricing, and downloadable materials.", "Recibe ayuda con folletos, precios y material descargable.")
-            : "";
+          : source === "unit"
+            ? t(lang, "Request details or a viewing for this unit.", "Solicita detalles o una visita para esta unidad.")
+            : source === "downloads"
+              ? t(lang, "Get help with brochures, pricing, and downloadable materials.", "Recibe ayuda con folletos, precios y material descargable.")
+              : "";
 
 const phone = settings.phone ?? "";
 const whatsappRaw = (settings.whatsapp ?? "").replace(/[^\d+]/g, "");
@@ -163,297 +163,178 @@ const selectionSummary = [
     {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
   </Fragment>
 
-  <section class="space-y-5 sm:space-y-6">
-    <header class="space-y-2.5">
-      <h1 class="text-3xl tracking-tight">{t(lang, "Book a viewing", "Reservar visita")}</h1>
-      <p class="max-w-2xl text-sm opacity-80">
-        {t(lang, "Share your details and our sales team will follow up shortly.", "Comparte tus datos y nuestro equipo comercial te contactará en breve.")}
-      </p>
+  <section class="contact-premium-shell" aria-labelledby="contact-title">
+    <header class="contact-premium-hero">
+      <div class="contact-premium-hero__copy">
+        <p class="contact-premium-kicker">
+          {t(lang, "Private viewing", "Visita privada")}
+        </p>
+
+        <h1 id="contact-title" class="contact-premium-title">
+          {t(lang, "Book a private viewing", "Reserva una visita privada")}
+        </h1>
+
+        <p class="contact-premium-lede">
+          {t(
+            lang,
+            "Share your preferred contact route, language and viewing request. The sales team can follow up with availability, documents and next steps.",
+            "Comparte tu vía de contacto preferida, idioma y solicitud de visita. El equipo comercial podrá responder con disponibilidad, documentos y próximos pasos.",
+          )}
+        </p>
+
+        <div class="contact-premium-signals" aria-label={t(lang, "Contact options", "Opciones de contacto")}>
+          <span>
+            <strong>3</strong>
+            <em>{t(lang, "contact routes", "vías de contacto")}</em>
+          </span>
+          <span>
+            <strong>EN / ES</strong>
+            <em>{t(lang, "language support", "idiomas disponibles")}</em>
+          </span>
+          <span>
+            <strong>Private</strong>
+            <em>{t(lang, "viewing request", "solicitud de visita")}</em>
+          </span>
+        </div>
+      </div>
+
+      <aside class="contact-premium-gallery-card" aria-label={t(lang, "Sales gallery", "Galería de ventas")}>
+        <p class="contact-premium-card-kicker">
+          {t(lang, "Sales gallery", "Galería de ventas")}
+        </p>
+
+        <h2>
+          {t(lang, "Carrer de la Marina, Barcelona", "Carrer de la Marina, Barcelona")}
+        </h2>
+
+        <p>
+          {t(
+            lang,
+            "Arrange a visit, request current availability or review the residence material with the sales team.",
+            "Organiza una visita, solicita la disponibilidad actual o revisa el material residencial con el equipo comercial.",
+          )}
+        </p>
+
+        <div class="contact-premium-gallery-actions">
+          <a
+            class="contact-premium-button contact-premium-button--primary"
+            href="https://www.google.com/maps/search/?api=1&query=Carrer%20de%20la%20Marina%2C%20Barcelona"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span>{t(lang, "Open in Maps", "Abrir en Maps")}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+
+          <a class="contact-premium-button contact-premium-button--secondary" href={`/${lang}/downloads/`}>
+            <span>{t(lang, "View documents", "Ver documentos")}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </aside>
     </header>
 
-    <div class="contact-cta-row cta-cluster grid gap-2 sm:grid-cols-3 sm:gap-2.5 sm:items-stretch">
-      {whatsappHref ? (
-        <a
-          href={whatsappHref}
-          target="_blank"
-          rel="noreferrer"
-          class={`cta-tertiary inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm font-medium ${intent === "whatsapp" ? "is-active" : ""}`}
-        >
-          {t(lang, "WhatsApp", "WhatsApp")}
-        </a>
-      ) : (
-        <span class="cta-tertiary is-disabled inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm opacity-50">{t(lang, "WhatsApp currently unavailable", "WhatsApp no disponible por el momento")}</span>
-      )}
+    <nav class="contact-premium-methods" aria-label={t(lang, "Preferred contact method", "Método de contacto preferido")}>
+      <a href="#contact-form" class="contact-premium-method">
+        <span>{t(lang, "WhatsApp", "WhatsApp")}</span>
+        <em>{t(lang, "Fast follow-up", "Respuesta rápida")}</em>
+      </a>
 
-      {callHref ? (
-        <a
-          href={callHref}
-          class={`cta-tertiary inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm font-medium ${intent === "call" ? "is-active" : ""}`}
-        >
-          {t(lang, "Call", "Llamar")}
-        </a>
-      ) : (
-        <span class="cta-tertiary is-disabled inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm opacity-50">{t(lang, "Phone currently unavailable", "Llamadas no disponibles por el momento")}</span>
-      )}
+      <a href="#contact-form" class="contact-premium-method">
+        <span>{t(lang, "Call", "Llamada")}</span>
+        <em>{t(lang, "Sales team", "Equipo comercial")}</em>
+      </a>
 
-      {emailHref ? (
-        <a href={emailHref} class="cta-tertiary inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm font-medium">
-          {t(lang, "Email", "Email")}
-        </a>
-      ) : (
-        <span class="cta-tertiary is-disabled inline-flex min-h-11 items-center justify-center rounded-lg px-4 py-3 text-sm opacity-50">{t(lang, "Email currently unavailable", "Email no disponible por el momento")}</span>
-      )}
-    </div>
+      <a href="#contact-form" class="contact-premium-method">
+        <span>{t(lang, "Email", "Email")}</span>
+        <em>{t(lang, "Detailed request", "Solicitud detallada")}</em>
+      </a>
+    </nav>
 
-    <div class="contact-panel rounded-xl border p-4 space-y-3 sm:p-5">
-      <h2 class="text-lg font-semibold">{t(lang, "Sales gallery", "Sala de ventas")}</h2>
-      <p class="text-sm opacity-80">{address || t(lang, "Sales gallery not available", "Sala de ventas no disponible")}</p>
-      {mapsHref && (
-        <a href={mapsHref} target="_blank" rel="noreferrer" class="ui-btn cta-secondary inline-flex items-center text-sm">
-          {t(lang, "Open in Maps", "Abrir en Maps")}
-        </a>
-      )}
-    </div>
+    <section class="contact-premium-form-shell" aria-labelledby="contact-form-title">
+      <aside class="contact-premium-form-intro">
+        <p class="contact-premium-kicker">
+          {t(lang, "Request details", "Detalles de la solicitud")}
+        </p>
 
-    {contextMessage && (
-      <p class="contact-panel rounded-xl border px-4 py-4 text-sm opacity-90 sm:px-5">{contextMessage}</p>
-    )}
+        <h2 id="contact-form-title">
+          {t(lang, "Tell us how to reach you", "Indícanos cómo contactarte")}
+        </h2>
 
-    <div id="contact-sent-notice" class={`contact-status rounded-2xl border bg-neutral-50/60 p-5 md:p-6 space-y-3.5 ${sent ? "" : "hidden"}`} role="status" aria-live="polite">
-        <div class="space-y-1.5">
-          <p class="inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] opacity-80">
-            {t(lang, "Confirmation", "Confirmación")}
-          </p>
-          <h2 class="text-lg font-semibold md:text-xl">{t(lang, "Your request is confirmed", "Tu solicitud está confirmada")}</h2>
-          <p class="text-sm leading-relaxed opacity-80">
-            {t(lang, "Thank you for your interest in Atlas Residences. A sales advisor will contact you shortly with next steps.", "Gracias por tu interés en Atlas Residences. Un asesor comercial te contactará en breve con los siguientes pasos.")}
-          </p>
+        <p>
+          {t(
+            lang,
+            "The form is prepared as a sales request preview. Connect your preferred backend, CRM or email route when the project moves from demo to production.",
+            "El formulario está preparado como vista previa de solicitud comercial. Conecta tu backend, CRM o ruta de email cuando el proyecto pase de demo a producción.",
+          )}
+        </p>
+
+        <div class="contact-premium-note">
+          {t(
+            lang,
+            "Contact routing is not connected yet. You can still review this form preview.",
+            "El envío del formulario aún no está conectado. Puedes revisar esta vista previa.",
+          )}
+        </div>
+      </aside>
+
+      <form id="contact-form" class="contact-premium-form">
+        <div class="contact-premium-fields">
+          <label class="contact-premium-field">
+            <span>{t(lang, "Name", "Nombre")} *</span>
+            <input type="text" name="name" autocomplete="name" required />
+          </label>
+
+          <label class="contact-premium-field">
+            <span>{t(lang, "Email", "Email")} *</span>
+            <input type="email" name="email" autocomplete="email" required />
+          </label>
+
+          <label class="contact-premium-field">
+            <span>{t(lang, "Phone", "Teléfono")}</span>
+            <input type="tel" name="phone" autocomplete="tel" />
+          </label>
+
+          <label class="contact-premium-field">
+            <span>{t(lang, "Preferred language", "Idioma preferido")}</span>
+            <select name="language">
+              <option value="en">EN</option>
+              <option value="es">ES</option>
+            </select>
+          </label>
+
+          <label class="contact-premium-field contact-premium-field--full">
+            <span>{t(lang, "Message", "Mensaje")} *</span>
+            <textarea name="message" rows="5" required>{t(lang, "I would like to arrange a private viewing.", "Me gustaría organizar una visita privada.")}</textarea>
+          </label>
         </div>
 
-        <div id="contact-sent-details" class={`rounded-xl border bg-white/80 px-3 py-2.5 text-xs space-y-1.5 ${(source || building || unit) ? "" : "hidden"}`}>
-            <p class="font-medium uppercase tracking-[0.08em] opacity-70">{t(lang, "Request details", "Detalles de la solicitud")}</p>
-            <dl class="space-y-1">
-                <div id="contact-sent-source-row" class={`flex items-center justify-between gap-2 ${source ? "" : "hidden"}`}>
-                  <dt class="opacity-60">{t(lang, "Source", "Origen")}</dt>
-                  <dd id="contact-sent-source" class="font-medium uppercase">{source}</dd>
-                </div>
-                <div id="contact-sent-building-row" class={`flex items-center justify-between gap-2 ${building ? "" : "hidden"}`}>
-                  <dt class="opacity-60">{t(lang, "Tower", "Torre")}</dt>
-                  <dd id="contact-sent-building" class="font-medium uppercase">{building}</dd>
-                </div>
-                <div id="contact-sent-unit-row" class={`flex items-center justify-between gap-2 ${unit ? "" : "hidden"}`}>
-                  <dt class="opacity-60">{t(lang, "Unit", "Unidad")}</dt>
-                  <dd id="contact-sent-unit" class="font-medium uppercase">{unit}</dd>
-                </div>
-            </dl>
-          </div>
-      </div>
-
-    <div id="contact-error-notice" class={`contact-status rounded-xl border px-5 py-4 space-y-1 ${error ? "" : "hidden"}`} role="alert">
-        <p class="text-sm font-medium">{t(lang, "Your request could not be sent", "No se pudo enviar tu solicitud")}</p>
-        <p class="text-sm opacity-80">
-          {t(lang, "Please try again in a moment, or contact us directly via WhatsApp, phone, or email.", "Por favor, inténtalo de nuevo en un momento o contáctanos directamente por WhatsApp, llamada o email.")}
-        </p>
-      </div>
-
-    {!hasFormAction && (
-      <p class="contact-status rounded-xl border px-5 py-4 text-sm opacity-80">
-        {t(lang, "Contact routing is not connected yet. You can still review this form preview.", "El enrutamiento de contacto aún no está conectado. Aun así, puedes revisar esta vista previa del formulario.")}
-      </p>
-    )}
-
-    <form id="contact-form" class="contact-panel space-y-4 rounded-xl border p-4 sm:p-5 md:p-6" action={hasFormAction ? formAction : undefined} method={hasFormAction ? formMethod : undefined}>
-      <input type="hidden" name="intent" value={normalizedIntent} />
-      <input type="hidden" name="source" value={source} />
-      <input type="hidden" name="building" value={building} />
-      <input type="hidden" name="unit" value={unit} />
-      <input type="hidden" name="lead_context" value={leadContext} />
-      <input type="hidden" name="lang" value={lang} />
-      <input type="hidden" name="page" value={page} />
-      {utmSource && <input type="hidden" name="utm_source" value={utmSource} data-attribution="true" />}
-      {utmMedium && <input type="hidden" name="utm_medium" value={utmMedium} data-attribution="true" />}
-      {utmCampaign && <input type="hidden" name="utm_campaign" value={utmCampaign} data-attribution="true" />}
-      {utmTerm && <input type="hidden" name="utm_term" value={utmTerm} data-attribution="true" />}
-      {utmContent && <input type="hidden" name="utm_content" value={utmContent} data-attribution="true" />}
-      {gclid && <input type="hidden" name="gclid" value={gclid} data-attribution="true" />}
-      {fbclid && <input type="hidden" name="fbclid" value={fbclid} data-attribution="true" />}
-      {isFormspreeCompatible && (
-        <>
-          <input type="hidden" name="_subject" value={formspreeSubject} data-formspree-subject="true" />
-          <input type="hidden" name="_next" value={formspreeNext} />
-          <input type="text" name="_gotcha" class="sr-only" tabindex="-1" autocomplete="off" aria-hidden="true" />
-        </>
-      )}
-      <div class="contact-form-grid grid gap-3 md:grid-cols-2 md:gap-3.5">
-        <label class="grid gap-1.5 text-sm">
-          <span>{t(lang, "Name", "Nombre")} *</span>
-          <input name="name" required class="min-h-11 w-full rounded-lg border px-3 ui-field" autocomplete="name" />
+        <label class="contact-premium-consent">
+          <input type="checkbox" name="consent" required />
+          <span>
+            {t(
+              lang,
+              "I agree to be contacted regarding this request.",
+              "Acepto ser contactado en relación con esta solicitud.",
+            )} *
+          </span>
         </label>
 
-        <label class="grid gap-1.5 text-sm">
-          <span>{t(lang, "Email", "Correo")} *</span>
-          <input name="email" type="email" required class="min-h-11 w-full rounded-lg border px-3 ui-field" autocomplete="email" inputmode="email" />
-        </label>
+        <div class="contact-premium-submit-row">
+          <button type="submit" class="contact-premium-submit">
+            <span>{t(lang, "Submit request", "Enviar solicitud")}</span>
+            <span aria-hidden="true">→</span>
+          </button>
 
-        <label class="grid gap-1.5 text-sm">
-          <span>{t(lang, "Phone", "Teléfono")}</span>
-          <input name="phone" type="tel" class="min-h-11 w-full rounded-lg border px-3 ui-field" autocomplete="tel" inputmode="tel" />
-        </label>
-
-        <label class="grid gap-1.5 text-sm">
-          <span>{t(lang, "Preferred language", "Idioma preferido")}</span>
-          <select name="preferred_language" class="min-h-11 w-full rounded-lg border px-3 ui-field">
-            <option value={lang}>{lang.toUpperCase()}</option>
-            <option value={lang === "en" ? "es" : "en"}>{lang === "en" ? "ES" : "EN"}</option>
-          </select>
-        </label>
-      </div>
-
-      <label class="grid gap-1.5 text-sm">
-        <span>{t(lang, "Message", "Mensaje")} *</span>
-        <textarea
-          name="message"
-          rows={4}
-          required
-          minlength={10}
-          maxlength={2000}
-          class="w-full rounded-lg border px-3 py-2 ui-field"
-          placeholder={
-            intent === "call"
-              ? t(lang, "Please call me back to arrange a private viewing.", "Por favor, llámenme para organizar una visita privada.")
-              : intent === "whatsapp"
-                ? t(lang, "I prefer to continue on WhatsApp.", "Prefiero continuar por WhatsApp.")
-                : t(lang, "I would like to arrange a viewing.", "Me gustaría organizar una visita.")
-          }
-        />
-      </label>
-
-      <label class="sr-only" aria-hidden="true">
-        Company
-        <input name="company" tabindex="-1" autocomplete="off" />
-      </label>
-
-      <label class="flex items-start gap-2 text-sm leading-relaxed">
-        <input name="consent" type="checkbox" required class="mt-1 h-4 w-4" />
-        <span>{t(lang, "I agree to be contacted regarding this request.", "Acepto ser contactado en relación con esta solicitud.")} *</span>
-      </label>
-
-      <button type={hasFormAction ? "submit" : "button"} class="ui-btn ui-btn--primary cta-primary inline-flex w-full items-center justify-center sm:w-auto">
-        {t(lang, "Submit request", "Enviar solicitud")}
-      </button>
-    </form>
-
-    <script>
-      (() => {
-        const params = new URLSearchParams(window.location.search);
-        const form = document.getElementById("contact-form");
-        if (!form) return;
-
-        const allowedSources = new Set(["home", "masterplan", "unit", "downloads"]);
-        const source = (params.get("source") || "").trim().toLowerCase();
-        const building = (params.get("building") || "").trim();
-        const unit = (params.get("unit") || "").trim();
-        const cleanSource = allowedSources.has(source) ? source : "";
-        const normalizedSource = cleanSource || "direct";
-        const normalizedIntent =
-          normalizedSource === "unit" && unit
-            ? "unit_inquiry"
-            : normalizedSource === "masterplan" && building
-              ? "building_inquiry"
-              : normalizedSource === "downloads"
-                ? "downloads_request"
-                : normalizedSource === "home"
-                  ? "homepage_inquiry"
-                  : "sales_inquiry";
-        const leadContext = [
-          `source=${normalizedSource}`,
-          `intent=${normalizedIntent}`,
-          building ? `building=${building}` : "",
-          unit ? `unit=${unit}` : "",
-        ]
-          .filter(Boolean)
-          .join(" | ");
-
-        const setHidden = (name, value) => {
-          const input = form.querySelector(`input[name="${name}"]`);
-          if (input) input.value = value;
-        };
-
-        setHidden("intent", normalizedIntent);
-        setHidden("source", cleanSource);
-        setHidden("building", building);
-        setHidden("unit", unit);
-        setHidden("lead_context", leadContext);
-        setHidden("page", window.location.pathname);
-
-        ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "fbclid"].forEach((name) => {
-          const value = (params.get(name) || "").trim();
-          let input = form.querySelector(`input[name="${name}"]`);
-          if (!value) {
-            input?.remove();
-            return;
-          }
-          if (!input) {
-            input = document.createElement("input");
-            input.type = "hidden";
-            input.name = name;
-            input.setAttribute("data-attribution", "true");
-            form.prepend(input);
-          }
-          input.value = value;
-        });
-
-        const subjectInput = form.querySelector("input[data-formspree-subject='true']");
-        if (subjectInput) {
-          const subjectParts = ["Atlas Residences lead", `source=${normalizedSource}`, building ? `building=${building}` : "", unit ? `unit=${unit}` : ""];
-          subjectInput.value = subjectParts.filter(Boolean).join(" · ");
-        }
-
-        const sent = params.get("sent") === "1";
-        const error = params.get("error") === "1";
-        const sentNotice = document.getElementById("contact-sent-notice");
-        const errorNotice = document.getElementById("contact-error-notice");
-        sentNotice?.classList.toggle("hidden", !sent);
-        errorNotice?.classList.toggle("hidden", !error);
-
-        const details = document.getElementById("contact-sent-details");
-        const sourceRow = document.getElementById("contact-sent-source-row");
-        const buildingRow = document.getElementById("contact-sent-building-row");
-        const unitRow = document.getElementById("contact-sent-unit-row");
-        const sourceValue = document.getElementById("contact-sent-source");
-        const buildingValue = document.getElementById("contact-sent-building");
-        const unitValue = document.getElementById("contact-sent-unit");
-        if (sourceValue) sourceValue.textContent = cleanSource;
-        if (buildingValue) buildingValue.textContent = building;
-        if (unitValue) unitValue.textContent = unit;
-        sourceRow?.classList.toggle("hidden", !cleanSource);
-        buildingRow?.classList.toggle("hidden", !building);
-        unitRow?.classList.toggle("hidden", !unit);
-        details?.classList.toggle("hidden", !(cleanSource || building || unit));
-      })();
-    </script>
-
-    <script define:vars={{ analyticsContext, sent, error }}>
-      (() => {
-        const dataLayer = (window.dataLayer = window.dataLayer || []);
-        const pushEvent = (event) => dataLayer.push({ event, ...analyticsContext });
-        pushEvent("atlas_contact_form_view");
-        if (sent) pushEvent("atlas_contact_form_sent");
-        if (error) pushEvent("atlas_contact_form_error");
-      })();
-    </script>
-
-    <section id="contact-success" class="hidden space-y-2.5 rounded-xl border p-4" aria-live="polite">
-      <h2 class="text-xl font-semibold">{t(lang, "Thanks!", "¡Gracias!")}</h2>
-      <p class="text-sm opacity-80">{t(lang, "Our team will contact you shortly.", "Nuestro equipo te contactará en breve.")}</p>
-      <div class="cta-cluster cta-inline flex flex-col gap-1.5 sm:flex-row">
-        <a href={`/${lang}/units/`} class="ui-btn cta-secondary inline-flex items-center justify-center">
-          {t(lang, "Back to units", "Volver a unidades")}
-        </a>
-        <a href={`/${lang}/downloads/`} class="ui-btn ui-btn--primary cta-primary inline-flex items-center justify-center">
-          {t(lang, "Download brochure", "Descargar folleto")}
-        </a>
-      </div>
+          <p>
+            {t(
+              lang,
+              "Private sales request · Atlas Residences",
+              "Solicitud comercial privada · Atlas Residences",
+            )}
+          </p>
+        </div>
+      </form>
     </section>
   </section>
 </BaseLayout>
