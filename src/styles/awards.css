@@ -5351,3 +5351,935 @@ body:has(.unit-detail-canon-v1) [data-header-shell] {
     width: 100%;
   }
 }
+
+/* ==========================================================================
+   Unit Detail Polish v2
+   Hero readability + data cleanup + premium facts rhythm
+   ========================================================================== */
+
+/* 01 / Hero: more readable, less poster-like */
+.unit-detail-canon-hero__media::after {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(12, 14, 18, 0.02) 0%,
+      rgba(12, 14, 18, 0.04) 42%,
+      rgba(12, 14, 18, 0.26) 76%,
+      rgba(12, 14, 18, 0.48) 100%
+    ),
+    radial-gradient(
+      92% 68% at 30% 100%,
+      rgba(255, 244, 228, 0.18),
+      transparent 68%
+    );
+  mix-blend-mode: multiply;
+  opacity: 0.94;
+}
+
+.unit-detail-canon-hero__overlay {
+  margin-top: clamp(-8.9rem, -12vw, -5.85rem);
+  align-items: end;
+}
+
+.unit-detail-canon-hero__copy {
+  padding-bottom: clamp(1.25rem, 2vw, 1.65rem);
+}
+
+.unit-detail-canon-hero__copy .unit-detail-canon-kicker {
+  color: rgba(255, 255, 255, 0.66);
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+}
+
+.unit-detail-canon-hero__title {
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.18),
+    0 18px 52px rgba(0, 0, 0, 0.36);
+}
+
+.unit-detail-canon-hero__lead {
+  max-width: 31rem;
+  color: rgba(255, 255, 255, 0.82);
+  text-shadow: 0 12px 34px rgba(0, 0, 0, 0.34);
+}
+
+.unit-detail-canon-hero__secondary {
+  color: rgba(255, 255, 255, 0.56);
+  text-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
+}
+
+/* 02 / Hero facts card: cleaner glass rhythm */
+.unit-detail-canon-hero__facts {
+  border-color: rgba(255, 255, 255, 0.52);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.18) 54%, rgba(255, 255, 255, 0.28)),
+    rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.82) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.10) inset,
+    0 26px 74px rgba(18, 20, 24, 0.16);
+}
+
+.unit-detail-canon-hero__facts::before {
+  opacity: 0.58;
+}
+
+.unit-detail-canon-facts-grid {
+  gap: 0.72rem 0.95rem;
+}
+
+.unit-detail-canon-fact {
+  padding-top: 0.58rem;
+  border-top-color: rgba(20, 20, 20, 0.11);
+}
+
+.unit-detail-canon-fact dt {
+  font-size: 0.55rem;
+  letter-spacing: 0.17em;
+  color: rgba(20, 20, 20, 0.38);
+}
+
+.unit-detail-canon-fact dd {
+  font-size: clamp(1rem, 0.48vw + 0.9rem, 1.28rem);
+  color: rgba(14, 14, 14, 0.9);
+}
+
+/* Make primary/secondary actions feel less generic */
+.unit-detail-canon-hero__actions {
+  margin-top: 1.05rem;
+}
+
+.unit-detail-canon-button {
+  border-radius: 0.95rem;
+}
+
+.unit-detail-canon-button--primary {
+  background:
+    linear-gradient(180deg, rgba(34, 34, 34, 0.98), rgba(12, 12, 12, 0.96));
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.11) inset,
+    0 15px 30px rgba(18, 18, 18, 0.17);
+}
+
+.unit-detail-canon-button--secondary {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.24)),
+    rgba(255, 255, 255, 0.14);
+}
+
+/* 03 / Plan plate: slightly larger drawing, softer artifact surface */
+.unit-detail-canon-plan {
+  align-items: center;
+}
+
+.unit-detail-canon-plan__plate,
+.unit-detail-premium-plan.unit-detail-canon-plan__plate {
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255, 253, 248, 0.98), rgba(244, 237, 226, 0.84) 72%),
+    rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.84) inset,
+    0 18px 42px rgba(18, 20, 24, 0.06);
+}
+
+.unit-detail-canon-plan__plate img,
+.unit-detail-premium-plan.unit-detail-canon-plan__plate img {
+  width: min(100%, 45rem);
+  max-height: 36rem;
+  filter: contrast(1.045) saturate(0.94);
+}
+
+/* 04 / Gallery captions: less heavy, more glass */
+.unit-detail-canon-gallery__caption {
+  border-color: rgba(255, 255, 255, 0.46);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.16)),
+    rgba(255, 255, 255, 0.12);
+  color: rgba(18, 18, 18, 0.58);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.56) inset,
+    0 8px 18px rgba(18, 20, 24, 0.08);
+}
+
+/* 05 / Final summary: calmer facts, cleaner meta rhythm */
+.unit-detail-canon-summary,
+.unit-detail-premium-summary.unit-detail-canon-summary {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.14) 54%, rgba(255, 255, 255, 0.21)),
+    rgba(255, 255, 255, 0.10);
+}
+
+.unit-detail-canon-summary__meta {
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: rgba(20, 20, 20, 0.46);
+}
+
+.unit-detail-canon-summary__facts {
+  gap: 0.7rem;
+}
+
+.unit-detail-canon-summary__fact {
+  border-color: rgba(255, 255, 255, 0.46);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0.16)),
+    rgba(255, 255, 255, 0.10);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.58),
+    0 8px 18px rgba(18, 20, 24, 0.035);
+}
+
+.unit-detail-canon-summary__fact dt {
+  color: rgba(20, 20, 20, 0.38);
+}
+
+.unit-detail-canon-summary__fact dd {
+  color: rgba(14, 14, 14, 0.88);
+}
+
+/* 06 / Mood-aware refinement: keep cards readable in bluehour */
+body[data-atmo-active="true"] .unit-detail-canon-hero__facts,
+body[data-atmo-active="true"] .unit-detail-canon-summary,
+body[data-atmo-active="true"] .unit-detail-canon-plan {
+  color: rgba(18, 18, 18, 0.94);
+}
+
+/* Mobile readability fallback */
+@media (max-width: 47.99rem) {
+  .unit-detail-canon-hero__media::after {
+    opacity: 0.42;
+  }
+
+  .unit-detail-canon-hero__copy .unit-detail-canon-kicker {
+    color: rgba(20, 20, 20, 0.42);
+    text-shadow: none;
+  }
+
+  .unit-detail-canon-hero__title {
+    color: rgba(18, 18, 18, 0.96);
+    text-shadow: none;
+  }
+
+  .unit-detail-canon-hero__lead {
+    color: rgba(20, 20, 20, 0.72);
+    text-shadow: none;
+  }
+
+  .unit-detail-canon-hero__secondary {
+    color: rgba(20, 20, 20, 0.46);
+    text-shadow: none;
+  }
+}
+
+/* ==========================================================================
+   Unit Detail Polish v4
+   Canonical alignment + corrected vertical balance + readable hero copy
+   ========================================================================== */
+
+body:has(.unit-detail-canon-v1) {
+  --unit-detail-shell: min(78rem, calc(100dvw - 3rem));
+}
+
+/* Keep header shell and detail shell on the same force line */
+body:has(.unit-detail-canon-v1) [data-header-shell],
+body:has(.unit-detail-canon-v1) .site-header__shell,
+body:has(.unit-detail-canon-v1) .awards-header__shell,
+body:has(.unit-detail-canon-v1) .header-shell {
+  width: var(--unit-detail-shell) !important;
+  max-width: var(--unit-detail-shell) !important;
+  margin-inline: auto !important;
+}
+
+/* Do NOT over-lift the whole page */
+body:has(.unit-detail-canon-v1) [data-dev-main],
+body:has(.unit-detail-canon-v1) main {
+  padding-top: 0 !important;
+}
+
+.unit-detail-canon-v1 {
+  width: var(--unit-detail-shell) !important;
+  max-width: var(--unit-detail-shell) !important;
+  margin-inline: auto !important;
+  margin-top: clamp(0.2rem, 0.7svh, 0.65rem) !important;
+  padding-top: 0 !important;
+  gap: clamp(1.25rem, 2vw, 1.9rem) !important;
+  box-sizing: border-box;
+}
+
+/* Hero media shell */
+.unit-detail-canon-hero {
+  margin-top: 0 !important;
+}
+
+.unit-detail-canon-hero__media,
+.unit-detail-premium-hero__media.unit-detail-canon-hero__media {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: auto !important;
+}
+
+.unit-detail-canon-hero__media img,
+.unit-detail-premium-hero__media.unit-detail-canon-hero__media img {
+  width: 100% !important;
+  height: clamp(28rem, 50svh, 38rem) !important;
+  object-fit: cover !important;
+  display: block;
+}
+
+/* Slightly stronger bottom veil on image for typography readability */
+.unit-detail-canon-hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10, 12, 16, 0) 0%,
+      rgba(10, 12, 16, 0.04) 36%,
+      rgba(10, 12, 16, 0.16) 63%,
+      rgba(10, 12, 16, 0.36) 100%
+    ),
+    radial-gradient(
+      72% 52% at 23% 100%,
+      rgba(0, 0, 0, 0.24),
+      transparent 72%
+    );
+  mix-blend-mode: multiply;
+  opacity: 0.96;
+}
+
+/* Overlay should sit higher INSIDE the hero, not fall too low under it */
+.unit-detail-canon-hero__overlay {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: auto !important;
+  margin-top: clamp(-8.2rem, -9vw, -6.8rem) !important;
+  padding-inline: clamp(1.35rem, 2.6vw, 2.3rem) !important;
+  box-sizing: border-box;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(21rem, 22.5rem) !important;
+  align-items: end !important;
+  column-gap: clamp(1rem, 2vw, 1.4rem) !important;
+}
+
+/* Editorial copy */
+.unit-detail-canon-hero__copy {
+  position: relative;
+  z-index: 2;
+  max-width: 34rem;
+  padding-bottom: clamp(1.15rem, 1.8vw, 1.55rem) !important;
+}
+
+/* subtle support scrim behind copy for sunset readability */
+.unit-detail-canon-hero__copy::before {
+  content: "";
+  position: absolute;
+  inset: auto auto -0.45rem -0.7rem;
+  width: min(31rem, calc(100% + 1.4rem));
+  height: calc(100% + 1.1rem);
+  border-radius: 1.1rem;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(13, 14, 18, 0.04) 0%,
+      rgba(13, 14, 18, 0.12) 48%,
+      rgba(13, 14, 18, 0.24) 100%
+    );
+  backdrop-filter: blur(8px) saturate(115%);
+  -webkit-backdrop-filter: blur(8px) saturate(115%);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Kicker / title / lead readability */
+.unit-detail-canon-kicker,
+.unit-detail-canon-hero__copy .unit-detail-canon-kicker {
+  color: rgba(255, 255, 255, 0.76) !important;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.18),
+    0 10px 28px rgba(0, 0, 0, 0.32) !important;
+}
+
+.unit-detail-canon-hero__title {
+  color: rgba(255, 255, 255, 0.96) !important;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.2),
+    0 18px 46px rgba(0, 0, 0, 0.42) !important;
+}
+
+.unit-detail-canon-hero__lead {
+  max-width: 29rem;
+  color: rgba(255, 255, 255, 0.88) !important;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.18),
+    0 14px 34px rgba(0, 0, 0, 0.34) !important;
+}
+
+.unit-detail-canon-hero__secondary {
+  color: rgba(255, 255, 255, 0.64) !important;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.16),
+    0 10px 28px rgba(0, 0, 0, 0.28) !important;
+}
+
+/* Facts card should sit cleanly, not too low, not too high */
+.unit-detail-canon-hero__facts {
+  position: relative;
+  z-index: 3;
+  transform: translateY(clamp(0.25rem, 0.8vw, 0.75rem)) !important;
+}
+
+/* Plan section should start closer but still with breathing room */
+.unit-detail-canon-plan {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: auto !important;
+  margin-top: clamp(0.8rem, 1.2vw, 1.15rem) !important;
+}
+
+.unit-detail-canon-gallery,
+.unit-detail-canon-summary {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: auto !important;
+}
+
+/* Mobile fallback */
+@media (max-width: 47.99rem) {
+  body:has(.unit-detail-canon-v1) {
+    --unit-detail-shell: min(calc(100dvw - 1.25rem), 78rem);
+  }
+
+  .unit-detail-canon-v1 {
+    margin-top: 0.15rem !important;
+    gap: 1rem !important;
+  }
+
+  .unit-detail-canon-hero__media img,
+  .unit-detail-premium-hero__media.unit-detail-canon-hero__media img {
+    height: clamp(18rem, 42svh, 24rem) !important;
+  }
+
+  .unit-detail-canon-hero__overlay {
+    grid-template-columns: 1fr !important;
+    margin-top: clamp(-3.5rem, -9vw, -2.5rem) !important;
+    padding-inline: 0.75rem !important;
+    row-gap: 0.85rem !important;
+  }
+
+  .unit-detail-canon-hero__copy {
+    padding-bottom: 0.35rem !important;
+  }
+
+  .unit-detail-canon-hero__copy::before {
+    inset: auto auto -0.3rem -0.45rem;
+    width: calc(100% + 0.9rem);
+    height: calc(100% + 0.8rem);
+  }
+
+  .unit-detail-canon-hero__facts {
+    transform: none !important;
+  }
+
+  .unit-detail-canon-plan {
+    margin-top: 0.7rem !important;
+  }
+}
+
+/* ==========================================================================
+   Unit Detail Hero Alignment v5
+   True header alignment + no text card + readable editorial overlay
+   ========================================================================== */
+
+/* 01 / One force-line shell for header + detail content */
+body:has(.unit-detail-canon-v1) {
+  --unit-detail-shell: min(76rem, calc(100dvw - 4rem));
+}
+
+/* Header and page use the same visual width */
+body:has(.unit-detail-canon-v1) [data-header-shell],
+body:has(.unit-detail-canon-v1) .site-header__shell,
+body:has(.unit-detail-canon-v1) .awards-header__shell,
+body:has(.unit-detail-canon-v1) .header-shell {
+  width: var(--unit-detail-shell) !important;
+  max-width: var(--unit-detail-shell) !important;
+  margin-inline: auto !important;
+}
+
+/* Hard-center the detail page to viewport, not to any inherited parent/max-width */
+.unit-detail-canon-v1 {
+  width: var(--unit-detail-shell) !important;
+  max-width: var(--unit-detail-shell) !important;
+  margin-inline: 0 !important;
+  margin-top: clamp(0.85rem, 1.6svh, 1.35rem) !important;
+  padding-top: 0 !important;
+  position: relative !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  gap: clamp(1.5rem, 2.3vw, 2.15rem) !important;
+  box-sizing: border-box;
+}
+
+body:has(.unit-detail-canon-v1) [data-dev-main],
+body:has(.unit-detail-canon-v1) main {
+  padding-top: 0 !important;
+  overflow-x: clip;
+}
+
+/* 02 / Hero becomes the actual composition stage */
+.unit-detail-canon-hero {
+  position: relative !important;
+  isolation: isolate;
+  margin-top: 0 !important;
+  overflow: visible;
+}
+
+.unit-detail-canon-hero__media,
+.unit-detail-premium-hero__media.unit-detail-canon-hero__media {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  border-radius: clamp(1.25rem, 1.6vw, 1.55rem) !important;
+}
+
+.unit-detail-canon-hero__media img,
+.unit-detail-premium-hero__media.unit-detail-canon-hero__media img {
+  width: 100% !important;
+  height: clamp(30rem, 53svh, 39rem) !important;
+  display: block;
+  object-fit: cover !important;
+}
+
+/* 03 / Strong readable gradient inside image, no separate text card */
+.unit-detail-canon-hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8, 10, 14, 0) 0%,
+      rgba(8, 10, 14, 0.03) 38%,
+      rgba(8, 10, 14, 0.24) 70%,
+      rgba(8, 10, 14, 0.62) 100%
+    ),
+    radial-gradient(
+      70% 55% at 24% 96%,
+      rgba(0, 0, 0, 0.44),
+      transparent 72%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.34) 0%,
+      rgba(0, 0, 0, 0.16) 36%,
+      transparent 68%
+    );
+  mix-blend-mode: multiply;
+  opacity: 0.98;
+}
+
+/* Remove the unwanted glass/text block completely */
+.unit-detail-canon-hero__copy::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* 04 / Put overlay INSIDE the hero image, aligned to the image edges */
+.unit-detail-canon-hero__overlay {
+  position: absolute !important;
+  z-index: 4;
+  left: clamp(1.35rem, 2.4vw, 2rem) !important;
+  right: clamp(1.35rem, 2.4vw, 2rem) !important;
+  bottom: clamp(1.25rem, 2.2vw, 1.9rem) !important;
+
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, 27rem) !important;
+  align-items: end !important;
+  column-gap: clamp(1.3rem, 3vw, 2.4rem) !important;
+  box-sizing: border-box;
+}
+
+/* 05 / Text is pure editorial overlay, not a card */
+.unit-detail-canon-hero__copy {
+  position: relative;
+  z-index: 5;
+  max-width: 35rem;
+  padding: 0 !important;
+}
+
+.unit-detail-canon-hero__copy .unit-detail-canon-kicker {
+  color: rgba(255, 255, 255, 0.78) !important;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.22),
+    0 14px 34px rgba(0, 0, 0, 0.42) !important;
+}
+
+.unit-detail-canon-hero__title {
+  margin-top: 0.45rem !important;
+  color: rgba(255, 255, 255, 0.97) !important;
+  font-size: clamp(4.8rem, 8vw, 7.8rem) !important;
+  line-height: 0.82 !important;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.24),
+    0 20px 58px rgba(0, 0, 0, 0.52) !important;
+}
+
+.unit-detail-canon-hero__lead {
+  max-width: 31rem;
+  margin-top: clamp(0.7rem, 1vw, 0.95rem) !important;
+  color: rgba(255, 255, 255, 0.88) !important;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.22),
+    0 16px 42px rgba(0, 0, 0, 0.46) !important;
+}
+
+.unit-detail-canon-hero__secondary {
+  color: rgba(255, 255, 255, 0.64) !important;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.18),
+    0 12px 30px rgba(0, 0, 0, 0.38) !important;
+}
+
+/* 06 / Facts card stays inside hero, right-aligned and restrained */
+.unit-detail-canon-hero__facts {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 27rem;
+  justify-self: end;
+  transform: none !important;
+  margin: 0 !important;
+
+  border-color: rgba(255, 255, 255, 0.48) !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.42),
+      rgba(255, 255, 255, 0.18) 54%,
+      rgba(255, 255, 255, 0.28)
+    ),
+    rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(28px) saturate(1.18) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(1.18) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.76) inset,
+    0 24px 64px rgba(0, 0, 0, 0.22) !important;
+}
+
+/* 07 / Plan section begins after hero normally */
+.unit-detail-canon-plan {
+  width: 100% !important;
+  max-width: none !important;
+  margin-top: clamp(1.2rem, 2vw, 1.8rem) !important;
+}
+
+.unit-detail-canon-gallery,
+.unit-detail-canon-summary {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* 08 / Tablet/mobile fallback */
+@media (max-width: 63.99rem) {
+  body:has(.unit-detail-canon-v1) {
+    --unit-detail-shell: min(calc(100dvw - 1.5rem), 76rem);
+  }
+
+  .unit-detail-canon-v1 {
+    margin-top: 0.65rem !important;
+    gap: 1.1rem !important;
+  }
+
+  .unit-detail-canon-hero__media img,
+  .unit-detail-premium-hero__media.unit-detail-canon-hero__media img {
+    height: clamp(23rem, 50svh, 32rem) !important;
+  }
+
+  .unit-detail-canon-hero__overlay {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    margin-top: -3.4rem !important;
+    padding-inline: 0.75rem !important;
+    grid-template-columns: 1fr !important;
+    row-gap: 0.85rem !important;
+  }
+
+  .unit-detail-canon-hero__copy {
+    max-width: 100%;
+  }
+
+  .unit-detail-canon-hero__title {
+    font-size: clamp(3.6rem, 14vw, 5.8rem) !important;
+  }
+
+  .unit-detail-canon-hero__facts {
+    max-width: 100%;
+    justify-self: stretch;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  body:has(.unit-detail-canon-v1) {
+    --unit-detail-shell: min(calc(100dvw - 1rem), 76rem);
+  }
+
+  .unit-detail-canon-hero__media::after {
+    opacity: 0.72;
+  }
+
+  .unit-detail-canon-hero__overlay {
+    margin-top: -2.7rem !important;
+  }
+}
+
+/* ==========================================================================
+   Unit Detail Clipping Fix v6
+   Remove hard-centering transform and restore safe header/detail alignment
+   ========================================================================== */
+
+body:has(.unit-detail-canon-v1) {
+  --unit-detail-shell: min(72rem, calc(100dvw - 4.5rem));
+}
+
+/* Header and page stay on the same safe force line */
+body:has(.unit-detail-canon-v1) [data-header-shell],
+body:has(.unit-detail-canon-v1) .site-header__shell,
+body:has(.unit-detail-canon-v1) .awards-header__shell,
+body:has(.unit-detail-canon-v1) .header-shell {
+  width: var(--unit-detail-shell) !important;
+  max-width: var(--unit-detail-shell) !important;
+  margin-inline: auto !important;
+}
+
+/* Critical fix: remove previous hard-center transform that caused right clipping */
+.unit-detail-canon-v1 {
+  width: var(--unit-detail-shell) !important;
+  max-width: var(--unit-detail-shell) !important;
+  margin-inline: auto !important;
+  margin-top: clamp(0.95rem, 1.7svh, 1.45rem) !important;
+  padding-top: 0 !important;
+
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
+
+  overflow: visible !important;
+  box-sizing: border-box;
+}
+
+/* Do not clip the route horizontally */
+body:has(.unit-detail-canon-v1) [data-dev-main],
+body:has(.unit-detail-canon-v1) main {
+  overflow-x: visible !important;
+  padding-top: 0 !important;
+}
+
+/* Keep hero fully inside the safe shell */
+.unit-detail-canon-hero {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+}
+
+.unit-detail-canon-hero__media,
+.unit-detail-premium-hero__media.unit-detail-canon-hero__media {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-inline: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Keep overlay inside hero bounds */
+.unit-detail-canon-hero__overlay {
+  left: clamp(1.2rem, 2vw, 1.8rem) !important;
+  right: clamp(1.2rem, 2vw, 1.8rem) !important;
+  bottom: clamp(1.1rem, 2vw, 1.65rem) !important;
+
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 25rem) !important;
+  column-gap: clamp(1rem, 2.2vw, 1.8rem) !important;
+}
+
+/* Facts card cannot exceed hero width */
+.unit-detail-canon-hero__facts {
+  width: min(100%, 25rem) !important;
+  max-width: 25rem !important;
+  justify-self: end !important;
+  transform: none !important;
+}
+
+/* Slightly reduce image height so the hero feels controlled after width correction */
+.unit-detail-canon-hero__media img,
+.unit-detail-premium-hero__media.unit-detail-canon-hero__media img {
+  height: clamp(29rem, 52svh, 38rem) !important;
+}
+
+/* Downstream sections follow the same safe shell */
+.unit-detail-canon-plan,
+.unit-detail-canon-gallery,
+.unit-detail-canon-summary {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-inline: 0 !important;
+  overflow: visible !important;
+}
+
+/* Tablet/mobile safety */
+@media (max-width: 63.99rem) {
+  body:has(.unit-detail-canon-v1) {
+    --unit-detail-shell: min(calc(100dvw - 1.5rem), 72rem);
+  }
+
+  .unit-detail-canon-v1 {
+    width: var(--unit-detail-shell) !important;
+    max-width: var(--unit-detail-shell) !important;
+    margin-inline: auto !important;
+    left: auto !important;
+    transform: none !important;
+  }
+
+  .unit-detail-canon-hero__overlay {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    margin-top: -3.2rem !important;
+    padding-inline: 0.75rem !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .unit-detail-canon-hero__facts {
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-self: stretch !important;
+  }
+}
+
+/* ==========================================================================
+   Unit Detail Alignment Fix v7
+   Align detail shell to viewport/header force lines
+   ========================================================================== */
+
+body:has(.unit-detail-canon-v1) {
+  --unit-detail-shell: min(72rem, calc(100dvw - 4.5rem));
+}
+
+/* Make route main full-bleed so child shell centers against viewport, not parent */
+body:has(.unit-detail-canon-v1) [data-dev-main],
+body:has(.unit-detail-canon-v1) main {
+  width: 100dvw !important;
+  max-width: none !important;
+  margin-inline: calc(50% - 50dvw) !important;
+  padding-inline: 0 !important;
+  padding-top: 0 !important;
+  overflow-x: clip !important;
+}
+
+/* Header shell and detail shell use one exact width */
+body:has(.unit-detail-canon-v1) [data-header-shell],
+body:has(.unit-detail-canon-v1) .site-header__shell,
+body:has(.unit-detail-canon-v1) .awards-header__shell,
+body:has(.unit-detail-canon-v1) .header-shell {
+  width: var(--unit-detail-shell) !important;
+  max-width: var(--unit-detail-shell) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Detail page is now centered against viewport */
+.unit-detail-canon-v1 {
+  width: var(--unit-detail-shell) !important;
+  max-width: var(--unit-detail-shell) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-top: clamp(0.95rem, 1.7svh, 1.45rem) !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+
+  position: relative !important;
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
+
+  box-sizing: border-box !important;
+  overflow: visible !important;
+}
+
+/* Hero/content must not inherit older offset rules */
+.unit-detail-canon-hero,
+.unit-detail-canon-plan,
+.unit-detail-canon-gallery,
+.unit-detail-canon-summary {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
+}
+
+/* Hero media stays locked to the same shell edges */
+.unit-detail-canon-hero__media,
+.unit-detail-premium-hero__media.unit-detail-canon-hero__media {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+}
+
+/* Overlay remains safely inside hero */
+.unit-detail-canon-hero__overlay {
+  left: clamp(1.2rem, 2vw, 1.8rem) !important;
+  right: clamp(1.2rem, 2vw, 1.8rem) !important;
+  width: auto !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Safety: no horizontal scroll from full-bleed correction */
+html,
+body {
+  overflow-x: clip;
+}
+
+@media (max-width: 63.99rem) {
+  body:has(.unit-detail-canon-v1) {
+    --unit-detail-shell: min(calc(100dvw - 1.5rem), 72rem);
+  }
+
+  body:has(.unit-detail-canon-v1) [data-dev-main],
+  body:has(.unit-detail-canon-v1) main {
+    width: 100dvw !important;
+    margin-inline: calc(50% - 50dvw) !important;
+    padding-inline: 0 !important;
+  }
+
+  .unit-detail-canon-v1 {
+    width: var(--unit-detail-shell) !important;
+    max-width: var(--unit-detail-shell) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
