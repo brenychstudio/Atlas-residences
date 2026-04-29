@@ -17,74 +17,130 @@ const priceListUrl = String((lang === "es" ? settings.price_list_url_es : settin
 const hasDownloads = Boolean(brochureUrl || priceListUrl);
 ---
 
-<BaseLayout lang={lang} title={t(lang, "Downloads | Atlas Residences", "Descargas | Atlas Residences") }>
-  <section class="downloads-shell space-y-5 sm:space-y-6">
-    <header class="downloads-head space-y-1.5">
-      <h1 class="text-3xl tracking-tight">{t(lang, "Downloads", "Descargas")}</h1>
-      <p class="max-w-2xl text-sm opacity-80">{t(lang, "Brochures and sales documents in one place.", "Folletos y documentos comerciales en un solo lugar.")}</p>
+<BaseLayout lang={lang} title={t(lang, "Downloads | Atlas Residences", "Descargas | Atlas Residences")}>
+  <section class="downloads-premium-shell downloads-layout">
+    <header class="downloads-premium-hero">
+      <div class="downloads-premium-hero__copy">
+        <p class="downloads-premium-kicker">
+          {t(lang, "Sales documents", "Documentos comerciales")}
+        </p>
+
+        <h1 class="downloads-premium-title">
+          {t(lang, "Private document library", "Biblioteca privada de documentos")}
+        </h1>
+
+        <p class="downloads-premium-lede">
+          {t(
+            lang,
+            "Review the project brochure, price list and selected sales material prepared for private residence enquiries.",
+            "Consulta el folleto del proyecto, la lista de precios y el material comercial seleccionado para solicitudes privadas.",
+          )}
+        </p>
+      </div>
+
+      <aside class="downloads-premium-hero__card">
+        <p class="downloads-premium-card-kicker">
+          {t(lang, "Sales access", "Acceso comercial")}
+        </p>
+
+        <h2>
+          {t(lang, "Documents prepared for review", "Documentos preparados para revisión")}
+        </h2>
+
+        <p>
+          {t(
+            lang,
+            "Request the latest availability, arrange a private viewing, or speak directly with the sales team.",
+            "Solicita la disponibilidad actual, organiza una visita privada o contacta directamente con el equipo comercial.",
+          )}
+        </p>
+
+        <div class="downloads-premium-hero__actions">
+          <a class="downloads-premium-button downloads-premium-button--primary" href={`/${lang}/contact/`}>
+            <span>{t(lang, "Speak with sales", "Hablar con ventas")}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+
+          <a class="downloads-premium-button downloads-premium-button--secondary" href={`/${lang}/units/`}>
+            <span>{t(lang, "Browse available units", "Ver unidades disponibles")}</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </aside>
     </header>
 
-    <div class="cta-cluster cta-inline flex flex-col gap-2 sm:flex-row sm:items-center">
-      <a class="cta-primary ui-btn ui-btn--primary inline-flex items-center justify-center" href={`/${lang}/contact/?source=downloads`}>
-        {t(lang, "Speak with sales", "Hablar con ventas")}
-      </a>
-      <a class="cta-secondary ui-btn inline-flex items-center justify-center" href={`/${lang}/units/`}>
-        {t(lang, "Browse available units", "Explorar unidades disponibles")}
-      </a>
-    </div>
-
     {hasDownloads ? (
+      <div class="downloads-premium-grid">
+        {brochureUrl && (
+          <article class="downloads-premium-card">
+            <a href={brochureUrl} class="downloads-premium-card__media">
+              <img
+                src={brochureUrl}
+                alt={t(lang, "Project brochure cover", "Portada del folleto del proyecto")}
+                class="downloads-premium-card__image"
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
 
-    <div class="downloads-grid grid gap-3.5 sm:grid-cols-2 sm:gap-3.5">
-      {brochureUrl && (
-        <a
-          class="download-card ui-card group flex h-full flex-col overflow-hidden rounded-xl"
-          href={brochureUrl}
-        >
-          <img
-            src={brochureUrl}
-            alt={t(lang, "Project brochure cover", "Portada del folleto del proyecto")}
-            class="aspect-[4/5] w-full object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-          <div class="mt-auto space-y-2 p-4 sm:p-5">
-            <p class="text-sm font-semibold">{t(lang, "Project brochure", "Folleto del proyecto")}</p>
-            <p class="text-xs opacity-70">{t(lang, "Sales document", "Documento comercial")}</p>
-            <p class="text-xs font-medium uppercase tracking-[0.1em] opacity-75">{t(lang, "View document", "Ver documento")}</p>
-          </div>
-        </a>
-      )}
+            <div class="downloads-premium-card__body">
+              <div>
+                <h2 class="downloads-premium-card__title">
+                  {t(lang, "Project brochure", "Folleto del proyecto")}
+                </h2>
 
-      {priceListUrl && (
-        <a
-          class="download-card ui-card group flex h-full flex-col overflow-hidden rounded-xl"
-          href={priceListUrl}
-        >
-          <img
-            src={priceListUrl}
-            alt={t(lang, "Price list cover", "Portada de lista de precios")}
-            class="aspect-[4/5] w-full object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-          <div class="mt-auto space-y-2 p-4 sm:p-5">
-            <p class="text-sm font-semibold">{t(lang, "Price list", "Lista de precios")}</p>
-            <p class="text-xs opacity-70">{t(lang, "Sales document", "Documento comercial")}</p>
-            <p class="text-xs font-medium uppercase tracking-[0.1em] opacity-75">{t(lang, "View document", "Ver documento")}</p>
-          </div>
-        </a>
-      )}
-    </div>
-    ) : (
-      <div class="downloads-empty ui-card space-y-3 rounded-xl p-5 sm:p-6">
-        <p class="text-sm opacity-80">
-          {t(lang, "Downloads will be available soon.", "Las descargas estarán disponibles pronto.")}
-        </p>
-        <a class="ui-btn cta-secondary inline-flex items-center text-sm" href={`/${lang}/contact/?source=downloads`}>
-          {t(lang, "Contact sales", "Contactar ventas")}
-        </a>
+                <p class="downloads-premium-card__meta">
+                  {t(lang, "Sales document", "Documento comercial")}
+                </p>
+              </div>
+
+              <a href={brochureUrl} class="downloads-premium-card__link">
+                <span>{t(lang, "View document", "Ver documento")}</span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+        )}
+
+        {priceListUrl && (
+          <article class="downloads-premium-card">
+            <a href={priceListUrl} class="downloads-premium-card__media">
+              <img
+                src={priceListUrl}
+                alt={t(lang, "Price list cover", "Portada de lista de precios")}
+                class="downloads-premium-card__image"
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+
+            <div class="downloads-premium-card__body">
+              <div>
+                <h2 class="downloads-premium-card__title">
+                  {t(lang, "Price list", "Lista de precios")}
+                </h2>
+
+                <p class="downloads-premium-card__meta">
+                  {t(lang, "Sales document", "Documento comercial")}
+                </p>
+              </div>
+
+              <a href={priceListUrl} class="downloads-premium-card__link">
+                <span>{t(lang, "View document", "Ver documento")}</span>
+                <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+        )}
       </div>
+    ) : (
+      <section class="downloads-premium-empty">
+        <p class="downloads-premium-card-kicker">
+          {t(lang, "Coming soon", "Próximamente")}
+        </p>
+
+        <h2>{t(lang, "Downloads will be available soon.", "Las descargas estarán disponibles pronto.")}</h2>
+      </section>
     )}
   </section>
 </BaseLayout>

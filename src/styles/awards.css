@@ -7202,6 +7202,370 @@ body {
 }
 
 /* ==========================================================================
+   Downloads Page Premium Document Library v1
+   Premium sales document library aligned with Atlas glass/atmosphere system
+   ========================================================================== */
+
+body:has(.downloads-premium-shell) {
+  --downloads-shell: min(74rem, calc(100dvw - 4.5rem));
+}
+
+body:has(.downloads-premium-shell) [data-dev-main],
+body:has(.downloads-premium-shell) main {
+  width: 100dvw !important;
+  max-width: none !important;
+  margin-inline: calc(50% - 50dvw) !important;
+  padding-inline: 0 !important;
+  padding-top: 0 !important;
+  overflow-x: clip !important;
+}
+
+body:has(.downloads-premium-shell) [data-header-shell],
+body:has(.downloads-premium-shell) .site-header__shell,
+body:has(.downloads-premium-shell) .awards-header__shell,
+body:has(.downloads-premium-shell) .header-shell {
+  width: var(--downloads-shell) !important;
+  max-width: var(--downloads-shell) !important;
+  margin-inline: auto !important;
+}
+
+.downloads-premium-shell {
+  width: var(--downloads-shell);
+  max-width: var(--downloads-shell);
+  margin-inline: auto;
+  margin-top: clamp(2.4rem, 5.2svh, 4.6rem);
+  padding-bottom: clamp(4rem, 8vw, 7rem);
+  display: grid;
+  gap: clamp(1.25rem, 2.2vw, 1.9rem);
+}
+
+/* Hero */
+
+.downloads-premium-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(22rem, 0.72fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
+  align-items: stretch;
+  border-radius: clamp(1.55rem, 2vw, 2rem);
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.38),
+      rgba(255, 255, 255, 0.13) 56%,
+      rgba(255, 255, 255, 0.22)
+    ),
+    rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.70) inset,
+    0 30px 80px rgba(18, 20, 24, 0.10);
+  backdrop-filter: blur(22px) saturate(1.08);
+  -webkit-backdrop-filter: blur(22px) saturate(1.08);
+  padding: clamp(1.35rem, 2.4vw, 2.2rem);
+  overflow: hidden;
+}
+
+.downloads-premium-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(255, 255, 255, 0.34), transparent 32%),
+    radial-gradient(circle at 88% 12%, rgba(171, 198, 229, 0.24), transparent 36%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.20), transparent 54%);
+  mix-blend-mode: screen;
+  opacity: 0.72;
+}
+
+.downloads-premium-hero__copy,
+.downloads-premium-hero__card {
+  position: relative;
+  z-index: 1;
+}
+
+.downloads-premium-hero__copy {
+  min-height: clamp(20rem, 30vw, 27rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.downloads-premium-kicker,
+.downloads-premium-card-kicker {
+  margin: 0;
+  font-size: 0.68rem;
+  line-height: 1.15;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(20, 20, 20, 0.38);
+  font-weight: 600;
+}
+
+.downloads-premium-title {
+  margin: clamp(0.75rem, 1vw, 1rem) 0 0;
+  max-width: 10ch;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-size: clamp(4.2rem, 7.4vw, 7rem);
+  line-height: 0.84;
+  letter-spacing: -0.074em;
+  color: rgba(14, 14, 14, 0.94);
+}
+
+.downloads-premium-lede {
+  max-width: 39rem;
+  margin: clamp(1rem, 1.8vw, 1.5rem) 0 0;
+  font-size: clamp(1rem, 0.35vw + 0.92rem, 1.14rem);
+  line-height: 1.56;
+  color: rgba(22, 22, 22, 0.66);
+}
+
+.downloads-premium-hero__card {
+  align-self: end;
+  border-radius: 1.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.48),
+      rgba(255, 255, 255, 0.20) 54%,
+      rgba(255, 255, 255, 0.30)
+    ),
+    rgba(255, 255, 255, 0.13);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.72) inset,
+    0 24px 64px rgba(18, 20, 24, 0.10);
+  backdrop-filter: blur(24px) saturate(1.12);
+  -webkit-backdrop-filter: blur(24px) saturate(1.12);
+  padding: clamp(1.05rem, 1.8vw, 1.35rem);
+}
+
+.downloads-premium-hero__card h2 {
+  margin: 0.62rem 0 0;
+  max-width: 13ch;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-size: clamp(1.9rem, 2.4vw, 2.8rem);
+  line-height: 0.92;
+  letter-spacing: -0.055em;
+  color: rgba(14, 14, 14, 0.86);
+}
+
+.downloads-premium-hero__card p:not(.downloads-premium-card-kicker) {
+  margin: 0.9rem 0 0;
+  font-size: 0.94rem;
+  line-height: 1.5;
+  color: rgba(22, 22, 22, 0.62);
+}
+
+.downloads-premium-hero__actions {
+  display: grid;
+  gap: 0.62rem;
+  margin-top: 1.15rem;
+}
+
+.downloads-premium-button {
+  min-height: 2.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  border-radius: 999px;
+  padding: 0.74rem 0.95rem;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.downloads-premium-button--primary {
+  color: #fff;
+  background: linear-gradient(180deg, rgba(34, 34, 34, 0.98), rgba(12, 12, 12, 0.96));
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 14px 28px rgba(18, 18, 18, 0.16);
+}
+
+.downloads-premium-button--secondary {
+  color: rgba(18, 18, 18, 0.82);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.50), rgba(255, 255, 255, 0.26)),
+    rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(20, 20, 20, 0.07);
+}
+
+/* Document grid */
+
+.downloads-premium-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.downloads-premium-card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: clamp(1.25rem, 1.8vw, 1.65rem);
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.38),
+      rgba(255, 255, 255, 0.13) 58%,
+      rgba(255, 255, 255, 0.24)
+    ),
+    rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.68) inset,
+    0 26px 68px rgba(18, 20, 24, 0.10);
+  backdrop-filter: blur(20px) saturate(1.08);
+  -webkit-backdrop-filter: blur(20px) saturate(1.08);
+}
+
+.downloads-premium-card__media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.55), transparent 36%),
+    rgba(255, 255, 255, 0.14);
+}
+
+.downloads-premium-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, transparent 48%, rgba(0, 0, 0, 0.10) 100%),
+    radial-gradient(circle at 24% 12%, rgba(255, 255, 255, 0.22), transparent 30%);
+}
+
+.downloads-premium-card__image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transform: scale(1.002);
+  filter: saturate(1.035) contrast(1.02) brightness(1.015);
+  transition:
+    transform 520ms ease,
+    filter 520ms ease;
+}
+
+.downloads-premium-card:hover .downloads-premium-card__image {
+  transform: scale(1.035);
+  filter: saturate(1.05) contrast(1.035) brightness(1.02);
+}
+
+.downloads-premium-card__body {
+  min-height: 8.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: end;
+  padding: clamp(1rem, 1.6vw, 1.25rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.44);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.44), rgba(255, 255, 255, 0.18)),
+    rgba(255, 255, 255, 0.10);
+}
+
+.downloads-premium-card__title {
+  margin: 0;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-size: clamp(1.55rem, 1.2vw + 1rem, 2.25rem);
+  line-height: 0.96;
+  letter-spacing: -0.052em;
+  color: rgba(14, 14, 14, 0.90);
+}
+
+.downloads-premium-card__meta {
+  margin: 0.42rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.15;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(20, 20, 20, 0.42);
+}
+
+.downloads-premium-card__link {
+  align-self: end;
+  min-height: 2.55rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  border-radius: 999px;
+  padding: 0.68rem 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
+  color: #fff;
+  background: linear-gradient(180deg, rgba(34, 34, 34, 0.98), rgba(12, 12, 12, 0.96));
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.10) inset,
+    0 12px 24px rgba(18, 18, 18, 0.14);
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+/* Hide old bottom sales footer on Downloads if it exists */
+body:has(.downloads-premium-shell) .sales-access,
+body:has(.downloads-premium-shell) .sticky-cta,
+body:has(.downloads-premium-shell) .bottom-cta {
+  display: none !important;
+}
+
+/* Responsive */
+
+@media (max-width: 74rem) {
+  body:has(.downloads-premium-shell) {
+    --downloads-shell: min(calc(100dvw - 2rem), 74rem);
+  }
+
+  .downloads-premium-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .downloads-premium-hero__copy {
+    min-height: auto;
+  }
+
+  .downloads-premium-title {
+    max-width: 11ch;
+  }
+}
+
+@media (max-width: 48rem) {
+  body:has(.downloads-premium-shell) {
+    --downloads-shell: min(calc(100dvw - 1rem), 74rem);
+  }
+
+  .downloads-premium-shell {
+    margin-top: 1rem;
+  }
+
+  .downloads-premium-title {
+    font-size: clamp(3.2rem, 15vw, 5.2rem);
+  }
+
+  .downloads-premium-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .downloads-premium-card__body {
+    grid-template-columns: 1fr;
+  }
+
+  .downloads-premium-card__link,
+  .downloads-premium-button {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* ==========================================================================
    Location Page Premium Editorial Pass v1
    Atmospheric neighbourhood intelligence / glass control / curated POI rhythm
    ========================================================================== */
