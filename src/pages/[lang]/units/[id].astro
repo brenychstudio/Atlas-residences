@@ -79,6 +79,115 @@ const seoImage =
 
 const seoNoindex = !unit;
 const ogLocale = lang === "es" ? "es_ES" : "en_US";
+
+// Unit Detail Canonical Art Direction v1 — presentation aliases
+// If your current file uses a different image variable name, change only these 3 alias lines.
+const canonHeroImage = coverImage;
+const canonPlanImage = planImage;
+const canonGalleryImages = galleryImages.slice(0, 3);
+
+const getAssetSrc = (image: unknown) => {
+  if (typeof image === "string") return image;
+
+  if (image && typeof image === "object") {
+    const record = image as Record<string, unknown>;
+    return String(record.src ?? record.url ?? record.image ?? "");
+  }
+
+  return "";
+};
+
+const formatCanonText = (value: unknown, fallback = "—") => {
+  const text = String(value ?? "").trim();
+  return text.length ? text : fallback;
+};
+
+const formatCanonStatus = (value: unknown) => {
+  const text = String(value ?? "").trim().replace(/_/g, " ");
+  return text.length ? text.charAt(0).toUpperCase() + text.slice(1) : "Available";
+};
+
+const formatCanonPrice = (value: unknown) => {
+  const number = Number(value);
+
+  if (!Number.isFinite(number) || number <= 0) {
+    return "Request price";
+  }
+
+  return `€${number.toLocaleString(lang === "es" ? "es-ES" : "en-US")}`;
+};
+
+const canonUnitNumber = formatCanonText(unit.number ?? unit.id, "");
+const canonResidenceTitle = `Unit ${canonUnitNumber}`.trim();
+
+const canonBuildingLabel = formatCanonText(
+  unit.building_label ?? unit.building_id ?? "Building A",
+  "Building A",
+);
+
+const canonFloorLabel = formatCanonText(
+  unit.floor_label ?? (unit.floor ? `Floor ${unit.floor}` : "Floor 1"),
+  "Floor 1",
+);
+
+const canonPriceText = formatCanonPrice(unit.price_eur ?? unit.price);
+const canonStatusText = formatCanonStatus(unit.status);
+const canonAreaText = unit.area_m2 ? `${unit.area_m2} m²` : "—";
+const canonBedsBathsText = `${formatCanonText(unit.beds, "—")} / ${formatCanonText(unit.baths, "—")}`;
+const canonOrientationText = formatCanonText(unit.orientation, "Sea");
+
+const canonHeroSrc = getAssetSrc(canonHeroImage);
+const canonPlanSrc = getAssetSrc(canonPlanImage);
+
+const canonGalleryItems = canonGalleryImages
+  .map((image, index) => {
+    const captions = ["Arrival facade", "Terrace outlook", "Living atmosphere"];
+
+    return {
+      src: getAssetSrc(image),
+      caption: captions[index] ?? "Residence view",
+      alt: `${canonResidenceTitle} · ${captions[index] ?? "Residence view"}`,
+    };
+  })
+  .filter((item) => item.src);
+
+const canonResidenceKicker = "Private residence";
+const canonResidenceLead =
+  "A refined residence designed around light, proportion, and a calm indoor–outdoor rhythm.";
+const canonResidenceSecondary = "Selected residence within Atlas Residences.";
+
+const canonPlanKicker = "Plan & proportion";
+const canonPlanTitle = "A layout shaped for calm daily living";
+const canonPlanBody =
+  "The residence is organised around an open living and dining area, a private sleeping zone, and a compact exterior extension. The plan prioritises light, circulation, and efficient use of space without compromising comfort.";
+
+const canonGalleryKicker = "Residence views";
+const canonGalleryTitle = "Interior atmosphere and exterior presence";
+const canonGalleryBody =
+  "A curated selection of views showing the architectural language, material atmosphere, and outdoor character of the residence.";
+
+const canonSummaryKicker = "Residence details";
+
+const canonBookHref = `/${lang}/contact/?source=viewing&unit=${encodeURIComponent(String(unit.id))}`;
+const canonPricingHref = `/${lang}/contact/?source=pricing&unit=${encodeURIComponent(String(unit.id))}`;
+
+const canonHeroFacts = [
+  { label: "Residence", value: canonResidenceTitle },
+  { label: "Available now", value: canonStatusText },
+  { label: "Building", value: canonBuildingLabel },
+  { label: "From", value: canonPriceText },
+  { label: "Area", value: canonAreaText },
+  { label: "Orientation", value: canonOrientationText },
+  { label: "Bedrooms / bathrooms", value: canonBedsBathsText },
+];
+
+const canonSummaryFacts = [
+  { label: "Price", value: canonPriceText },
+  { label: "Status", value: canonStatusText },
+  { label: "Area", value: canonAreaText },
+  { label: "Bedrooms / bathrooms", value: canonBedsBathsText },
+  { label: "Orientation", value: canonOrientationText },
+];
 ---
 
 <BaseLayout lang={lang} title={seoTitle}>
@@ -114,108 +223,158 @@ const ogLocale = lang === "es" ? "es_ES" : "en_US";
       </a>
     </section>
   ) : (
-    <section class="unit-detail-premium-page">
-      <div class="unit-detail-premium-hero">
-        {coverImage && (
-          <div class="unit-detail-premium-hero__media">
-            <img
-              src={coverImage}
-              alt={`${t(lang, "Unit", "Unidad")} ${unit.number || unit.id}`}
-              class="w-full rounded-xl border object-cover unit-detail-media"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-        )}
-
-      </div>
-
-      <div class="unit-detail-premium-plan">
-
-        {planImage && (
+    <section class="unit-detail-premium-page unit-detail-canon-v1">
+      <section class="unit-detail-premium-hero unit-detail-canon-hero" aria-labelledby="unit-detail-title">
+        <figure class="unit-detail-premium-hero__media unit-detail-canon-hero__media">
           <img
-            src={planImage}
-            alt={`${t(lang, "Unit plan", "Plano de unidad")} ${unit.number || unit.id}`}
-            class="w-full rounded-xl border object-cover unit-detail-media"
+            src={canonHeroSrc}
+            alt={`${canonResidenceTitle} exterior view`}
+            loading="eager"
+            decoding="async"
+          />
+        </figure>
+
+        <div class="unit-detail-canon-hero__overlay">
+          <div class="unit-detail-canon-hero__copy">
+            <p class="unit-detail-canon-kicker">{canonResidenceKicker}</p>
+
+            <h1 id="unit-detail-title" class="unit-detail-canon-hero__title">
+              {canonResidenceTitle}
+            </h1>
+
+            <p class="unit-detail-canon-hero__lead">
+              {canonResidenceLead}
+            </p>
+
+            <p class="unit-detail-canon-hero__secondary">
+              {canonResidenceSecondary}
+            </p>
+          </div>
+
+          <aside class="unit-detail-canon-hero__facts" aria-label="Residence summary">
+            <dl class="unit-detail-canon-facts-grid">
+              {canonHeroFacts.map((fact) => (
+                <div class="unit-detail-canon-fact">
+                  <dt>{fact.label}</dt>
+                  <dd>{fact.value}</dd>
+                </div>
+              ))}
+            </dl>
+
+            <div class="unit-detail-canon-hero__actions">
+              <a class="unit-detail-canon-button unit-detail-canon-button--primary" href={canonBookHref}>
+                <span>Book a viewing</span>
+                <span class="home-action-arrow" aria-hidden="true"></span>
+              </a>
+
+              <a class="unit-detail-canon-button unit-detail-canon-button--secondary" href={canonPricingHref}>
+                <span>Request pricing</span>
+                <span class="home-action-arrow" aria-hidden="true"></span>
+              </a>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="unit-detail-canon-section unit-detail-canon-plan" aria-labelledby="unit-plan-title">
+        <div class="unit-detail-canon-section-head">
+          <p class="unit-detail-canon-kicker">{canonPlanKicker}</p>
+
+          <h2 id="unit-plan-title" class="unit-detail-canon-section-title">
+            {canonPlanTitle}
+          </h2>
+
+          <p class="unit-detail-canon-section-body">
+            {canonPlanBody}
+          </p>
+        </div>
+
+        <figure class="unit-detail-premium-plan unit-detail-canon-plan__plate">
+          <img
+            src={canonPlanSrc}
+            alt={`${canonResidenceTitle} floor plan`}
             loading="lazy"
             decoding="async"
           />
-        )}
 
-      </div>
+          <figcaption class="unit-detail-canon-caption">
+            Architectural plan � indicative layout
+          </figcaption>
+        </figure>
+      </section>
 
-        {galleryImages.length > 0 && (
-          <div class="unit-detail-premium-gallery">
-            {galleryImages.map((image, index) => (
-              <div class="unit-detail-premium-gallery__item">
-                <img
-                src={image}
-                alt={`${t(lang, "Gallery image", "Imagen de galería")} ${index + 1}`}
-                class="w-full rounded-xl border object-cover unit-detail-media"
+      <section class="unit-detail-canon-section unit-detail-canon-gallery" aria-labelledby="unit-gallery-title">
+        <div class="unit-detail-canon-section-head">
+          <p class="unit-detail-canon-kicker">{canonGalleryKicker}</p>
+
+          <h2 id="unit-gallery-title" class="unit-detail-canon-section-title">
+            {canonGalleryTitle}
+          </h2>
+
+          <p class="unit-detail-canon-section-body">
+            {canonGalleryBody}
+          </p>
+        </div>
+
+        <div class="unit-detail-premium-gallery unit-detail-canon-gallery__grid">
+          {canonGalleryItems.map((item, index) => (
+            <figure
+              class:list={[
+                "unit-detail-premium-gallery__item",
+                "unit-detail-canon-gallery__item",
+                index === 0 && "unit-detail-canon-gallery__item--primary",
+              ]}
+            >
+              <img
+                src={item.src}
+                alt={item.alt}
                 loading="lazy"
                 decoding="async"
-                />
-              </div>
-            ))}
-          </div>
-        )}
-      <section class="unit-detail-premium-summary">
-        <header class="unit-detail-headline unit-detail-premium-summary__copy space-y-2">
-          <p class="unit-detail-kicker">{t(lang, "Residence details", "Detalles de la residencia")}</p>
-          <h1 class="text-3xl tracking-tight">
-            {t(lang, "Unit", "Unidad")} {unit.number || unit.id}
-          </h1>
-          <p class="unit-detail-context text-sm">
-            {t(lang, "Building", "Bloque")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")}{" "}
-            {unit.floor || "-"}
+              />
+
+              <figcaption class="unit-detail-canon-gallery__caption">
+                {item.caption}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      <section class="unit-detail-premium-summary unit-detail-canon-summary" aria-labelledby="unit-summary-title">
+        <div class="unit-detail-canon-summary__copy">
+          <p class="unit-detail-canon-kicker">{canonSummaryKicker}</p>
+
+          <h2 id="unit-summary-title" class="unit-detail-canon-summary__title">
+            {canonResidenceTitle}
+          </h2>
+
+          <p class="unit-detail-canon-summary__meta">
+            {canonBuildingLabel} � {canonFloorLabel}
           </p>
-        </header>
-
-        <div class="unit-detail-premium-summary__facts unit-detail-meta mt-3.5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
-          <div class="unit-detail-stat unit-detail-price">
-            <p class="unit-detail-label">{t(lang, "Price", "Precio")}</p>
-            <p class="unit-detail-value text-xl font-semibold">
-              {unit.price_eur ? `€${unit.price_eur}` : t(lang, "Request price", "Solicitar precio")}
-            </p>
-          </div>
-          <div class="unit-detail-stat unit-detail-status">
-            <p class="unit-detail-label">{t(lang, "Status", "Estado")}</p>
-            <p class="unit-detail-value text-lg font-medium">{statusText(unit.status)}</p>
-          </div>
-          <div class="unit-detail-stat unit-detail-area">
-            <p class="unit-detail-label">{t(lang, "Area", "Superficie")}</p>
-            <p class="unit-detail-value text-lg font-medium">{area} m²</p>
-          </div>
         </div>
 
-        <div class="unit-detail-premium-summary__facts unit-detail-spec-grid mt-3.5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
-          <div class="unit-detail-stat">
-            <p class="unit-detail-label">{t(lang, "Bedrooms / Bathrooms", "Dormitorios / baños")}</p>
-            <p class="unit-detail-value text-base font-medium">
-              {beds} / {baths}
-            </p>
-          </div>
-          <div class="unit-detail-stat">
-            <p class="unit-detail-label">{t(lang, "Orientation", "Orientación")}</p>
-            <p class="unit-detail-value text-base font-medium">{orientationText(unit.orientation)}</p>
-          </div>
-        </div>
+        <dl class="unit-detail-canon-summary__facts">
+          {canonSummaryFacts.map((fact) => (
+            <div class="unit-detail-canon-summary__fact">
+              <dt>{fact.label}</dt>
+              <dd>{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
 
-        <div class="unit-detail-premium-summary__actions unit-detail-cta-row unit-cta-row cta-cluster cta-inline mt-4 flex flex-col gap-2 sm:flex-row sm:items-center">
-          <a
-            class="ui-btn cta-secondary inline-flex items-center justify-center px-6"
-            href={`/${lang}/downloads/`}
-          >
-            {t(lang, "Request pricing", "Solicitar precios")}
+        <div class="unit-detail-canon-summary__actions">
+          <a class="unit-detail-canon-button unit-detail-canon-button--primary" href={canonPricingHref}>
+            <span>Request pricing</span>
+            <span class="home-action-arrow" aria-hidden="true"></span>
           </a>
-          <a
-            class="ui-btn ui-btn--primary cta-primary inline-flex items-center justify-center px-6"
-            href={`/${lang}/contact/?source=unit&unit=${encodeURIComponent(String(unit.id ?? ""))}`}
-          >
-            {t(lang, "Book a viewing", "Reservar visita")}
+
+          <a class="unit-detail-canon-button unit-detail-canon-button--secondary" href={canonBookHref}>
+            <span>Book a viewing</span>
+            <span class="home-action-arrow" aria-hidden="true"></span>
           </a>
         </div>
       </section>
     </section>
   )}
 </BaseLayout>
+

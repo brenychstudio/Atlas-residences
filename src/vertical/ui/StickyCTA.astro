@@ -7,12 +7,12 @@ if (!isLang(langParam)) throw new Error("Invalid lang");
 const L = langParam as Lang;
 ---
 
-<div class="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-4 pb-4 md:hidden">
-  <div class="pointer-events-auto mx-auto w-full max-w-[72rem] rounded-2xl border border-[var(--border)] bg-[color:var(--card)]/95 p-3 shadow-lg backdrop-blur">
+<div class="sticky-cta sticky-cta--mobile pointer-events-none fixed inset-x-0 bottom-0 z-40 px-4 pb-4 md:hidden" data-sticky-cta>
+  <div class="sticky-cta__panel sticky-cta__panel--mobile pointer-events-auto mx-auto w-full max-w-[72rem]">
     <div class="grid grid-cols-1 gap-2">
       <a
         href={`/${L}/downloads/`}
-        class="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-[color:var(--fg)] px-4 text-sm font-medium text-[color:var(--bg)]"
+        class="sticky-cta__primary inline-flex min-h-[44px] items-center justify-center rounded-xl px-4 text-sm font-medium"
       >
         {t(L, "Request price list", "Solicitar lista de precios")}
       </a>
@@ -20,19 +20,21 @@ const L = langParam as Lang;
       <div class="grid grid-cols-3 gap-2">
         <a
           href={`/${L}/contact/`}
-          class="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-[var(--border)] px-3 text-xs text-[color:var(--fg)]"
+          class="sticky-cta__secondary inline-flex min-h-[44px] items-center justify-center rounded-xl px-3 text-xs"
         >
           {t(L, "Book a viewing", "Reservar visita")}
         </a>
+
         <button
           type="button"
-          class="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-[var(--border)] px-3 text-xs text-[color:var(--fg)]"
+          class="sticky-cta__secondary inline-flex min-h-[44px] items-center justify-center rounded-xl px-3 text-xs"
         >
           WhatsApp
         </button>
+
         <button
           type="button"
-          class="inline-flex min-h-[44px] items-center justify-center rounded-xl border border-[var(--border)] px-3 text-xs text-[color:var(--fg)]"
+          class="sticky-cta__secondary inline-flex min-h-[44px] items-center justify-center rounded-xl px-3 text-xs"
         >
           {t(L, "Call", "Llamar")}
         </button>
@@ -41,23 +43,42 @@ const L = langParam as Lang;
   </div>
 </div>
 
-<div class="hidden md:block">
-  <aside class="mx-auto mt-8 w-full max-w-[72rem] px-6">
-    <div class="rounded-2xl border border-[var(--border)] bg-[color:var(--card)] p-4">
-      <div class="flex flex-wrap items-center gap-3">
-        <a
-          href={`/${L}/downloads/`}
-          class="inline-flex min-h-[44px] items-center justify-center rounded-full bg-[color:var(--fg)] px-5 text-sm text-[color:var(--bg)]"
-        >
-          {t(L, "Request price list", "Solicitar lista de precios")}
-        </a>
-        <a
-          href={`/${L}/contact/`}
-          class="inline-flex min-h-[44px] items-center justify-center rounded-full border border-[var(--border)] px-5 text-sm"
-        >
-          {t(L, "Book a viewing", "Reservar visita")}
-        </a>
-        <span class="text-sm text-[color:var(--muted)]">WhatsApp / {t(L, "Call", "Llamar")} (placeholder)</span>
+<div class="sticky-cta sticky-cta--desktop hidden md:block" data-sticky-cta>
+  <aside class="sticky-cta__shell mx-auto mt-8 w-full max-w-[72rem] px-6">
+    <div class="sticky-cta__panel sticky-cta__panel--desktop">
+      <div class="sticky-cta__content">
+        <div class="sticky-cta__copy">
+          <p class="sticky-cta__eyebrow">
+            {t(L, "Sales access", "Acceso comercial")}
+          </p>
+          <p class="sticky-cta__note">
+            {t(
+              L,
+              "Request documents, schedule a private viewing, or contact the sales team.",
+              "Solicita documentos, agenda una visita privada o contacta con el equipo comercial.",
+            )}
+          </p>
+        </div>
+
+        <div class="sticky-cta__actions">
+          <a
+            href={`/${L}/downloads/`}
+            class="sticky-cta__primary inline-flex min-h-[44px] items-center justify-center rounded-full px-5 text-sm"
+          >
+            {t(L, "Request price list", "Solicitar lista de precios")}
+          </a>
+
+          <a
+            href={`/${L}/contact/`}
+            class="sticky-cta__secondary inline-flex min-h-[44px] items-center justify-center rounded-full px-5 text-sm"
+          >
+            {t(L, "Book a viewing", "Reservar visita")}
+          </a>
+
+          <span class="sticky-cta__utility text-sm">
+            WhatsApp / {t(L, "Call", "Llamar")} {t(L, "(placeholder)", "(placeholder)")}
+          </span>
+        </div>
       </div>
     </div>
   </aside>

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../core/layouts/BaseLayout.astro";
+import AtmosphericBackdrop from "../ui/AtmosphericBackdrop.astro";
 import DeveloperHeader from "../ui/DeveloperHeader.astro";
 import StickyCTA from "../ui/StickyCTA.astro";
 
@@ -9,6 +10,7 @@ const lang = (props as { lang?: string }).lang;
 ---
 
 <BaseLayout {...props}>
+  <AtmosphericBackdrop />
   <DeveloperHeader slot="header" lang={lang} pathname={pathname} />
   <div data-dev-main class="awards-main-flow">
     <slot />

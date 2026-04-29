@@ -97,12 +97,27 @@ const amenityCategoryText = (category?: string) => {
   </Fragment>
 
   <section class="masterplan-layout space-y-4 sm:space-y-5">
-    <header class="space-y-2">
-      <h1 class="text-3xl tracking-tight">{t(lang, "Masterplan overview", "Resumen del plan maestro")}</h1>
-      <p class="text-sm opacity-80">{t(lang, "Select a building to review live availability.", "Selecciona un bloque para revisar la disponibilidad en vivo.")}</p>
+    <header class="masterplan-head">
+      <div class="masterplan-head__intro">
+        <p class="masterplan-head__kicker">
+          {t(lang, "ATLAS MASTERPLAN", "MASTERPLAN ATLAS")}
+        </p>
+
+        <h1 class="masterplan-head__title">
+          {t(lang, "Masterplan overview", "Resumen del plan maestro")}
+        </h1>
+
+        <p class="masterplan-head__lede">
+          {t(
+            lang,
+            "Select a building to review live availability and move directly into the residences currently on the market.",
+            "Selecciona un bloque para revisar la disponibilidad en vivo y pasar directamente a las residencias actualmente en el mercado.",
+          )}
+        </p>
+      </div>
     </header>
 
-    <div class="masterplan-filters grid gap-2.5 sm:grid-cols-2 sm:gap-3" id="masterplan-filters">
+    <div class="masterplan-filters masterplan-filters--top grid gap-2.5 sm:grid-cols-2 sm:gap-3" id="masterplan-filters">
       <div class="space-y-0.5">
         <p class="text-sm font-medium tracking-wide">{t(lang, "Beds", "Dormitorios")}</p>
         <div class="flex flex-wrap gap-2" data-filter="beds">
@@ -179,40 +194,84 @@ const amenityCategoryText = (category?: string) => {
       </div>
     </div>
 
-    <div id="building-panel" class="masterplan-panel space-y-3 overflow-hidden rounded-xl border p-4 sm:p-5">
-      <h2 id="building-name" class="text-xl font-semibold tracking-tight break-words">{t(lang, "Select a building", "Selecciona un bloque")}</h2>
-      <p id="building-meta" class="text-sm opacity-80 break-words">{t(lang, "Select a building hotspot to view details.", "Selecciona un hotspot del bloque para ver los detalles.")}</p>
-      <dl class="masterplan-panel-stats grid gap-2 text-sm sm:grid-cols-2">
-        <div>
-          <dt class="opacity-70">{t(lang, "Available", "Disponible")}</dt>
-          <dd id="status-available" class="font-medium">0</dd>
-        </div>
-        <div>
-          <dt class="opacity-70">{t(lang, "Reserved", "Reservada")}</dt>
-          <dd id="status-reserved" class="font-medium">0</dd>
-        </div>
-        <div>
-          <dt class="opacity-70">{t(lang, "Sold", "Vendida")}</dt>
-          <dd id="status-sold" class="font-medium">0</dd>
-        </div>
-        <div>
-          <dt class="opacity-70">{t(lang, "Coming soon", "Próximamente")}</dt>
-          <dd id="status-coming_soon" class="font-medium">0</dd>
-        </div>
-      </dl>
-      <div class="masterplan-cta-row cta-cluster cta-inline flex flex-col gap-2 sm:flex-row sm:items-center">
-        <a id="view-units-link" class="ui-btn ui-btn--primary cta-primary inline-flex items-center" href={`/${lang}/units/`}>
-          {t(lang, "Browse units", "Explorar unidades")}
-        </a>
-        <a id="contact-sales-link" class="ui-btn cta-secondary inline-flex items-center" href={`/${lang}/contact/?source=masterplan`}>
-          {t(lang, "Speak with sales", "Hablar con ventas")}
-        </a>
-      </div>
-    </div>
+    <div class="masterplan-brief-grid">
+      <div id="building-panel" class="masterplan-panel masterplan-panel--primary overflow-hidden rounded-xl border p-4 sm:p-5">
+        <div class="masterplan-panel__top">
+          <div class="masterplan-panel__headline">
+            <p class="masterplan-panel__eyebrow">
+              {t(lang, "Building intelligence", "Inteligencia del bloque")}
+            </p>
 
-    <div id="amenity-panel" class="masterplan-panel space-y-1 overflow-hidden rounded-xl border p-4 sm:p-5">
-      <h3 id="amenity-name" class="text-lg font-semibold break-words">{t(lang, "Amenity", "Amenidad")}</h3>
-      <p id="amenity-category" class="text-sm opacity-80 break-words">{t(lang, "Select an amenity hotspot for details.", "Selecciona un hotspot de amenidad para ver detalles.")}</p>
+            <h2 id="building-name" class="text-xl font-semibold tracking-tight break-words">
+              {t(lang, "Select a building", "Selecciona un bloque")}
+            </h2>
+
+            <p id="building-meta" class="masterplan-panel__meta break-words">
+              {t(lang, "Select a building hotspot to view details.", "Selecciona un hotspot del bloque para ver los detalles.")}
+            </p>
+          </div>
+
+          <p class="masterplan-panel__badge">
+            {t(lang, "Live inventory", "Inventario en vivo")}
+          </p>
+        </div>
+
+        <dl class="masterplan-panel-stats masterplan-panel-stats--enhanced">
+          <div class="masterplan-panel-stat masterplan-panel-stat--available">
+            <dt>{t(lang, "Available", "Disponible")}</dt>
+            <dd id="status-available">0</dd>
+          </div>
+
+          <div class="masterplan-panel-stat">
+            <dt>{t(lang, "Reserved", "Reservada")}</dt>
+            <dd id="status-reserved">0</dd>
+          </div>
+
+          <div class="masterplan-panel-stat">
+            <dt>{t(lang, "Sold", "Vendida")}</dt>
+            <dd id="status-sold">0</dd>
+          </div>
+
+          <div class="masterplan-panel-stat">
+            <dt>{t(lang, "Coming soon", "Próximamente")}</dt>
+            <dd id="status-coming_soon">0</dd>
+          </div>
+        </dl>
+
+        <div class="masterplan-cta-row cta-cluster cta-inline">
+          <a id="view-units-link" class="ui-btn ui-btn--primary cta-primary inline-flex items-center justify-between" href={`/${lang}/units/`}>
+            {t(lang, "Browse units", "Explorar unidades")}
+          </a>
+
+          <a id="contact-sales-link" class="ui-btn cta-secondary inline-flex items-center justify-between" href={`/${lang}/contact/?source=masterplan`}>
+            {t(lang, "Speak with sales", "Hablar con ventas")}
+          </a>
+        </div>
+      </div>
+
+      <div id="amenity-panel" class="masterplan-panel masterplan-panel--secondary overflow-hidden rounded-xl border p-4 sm:p-5">
+        <div class="masterplan-panel__amenity-shell">
+          <p class="masterplan-panel__eyebrow">
+            {t(lang, "Amenity layer", "Capa de amenidades")}
+          </p>
+
+          <h3 id="amenity-name" class="text-lg font-semibold break-words">
+            {t(lang, "Amenity", "Amenidad")}
+          </h3>
+
+          <p id="amenity-category" class="masterplan-panel__meta break-words">
+            {t(lang, "Select an amenity hotspot for details.", "Selecciona un hotspot de amenidad para ver detalles.")}
+          </p>
+
+          <p class="masterplan-panel__amenity-copy">
+            {t(
+              lang,
+              "Select an amenity hotspot to understand the daily setting around the residences.",
+              "Selecciona un hotspot de amenidad para entender el entorno cotidiano de las residencias.",
+            )}
+          </p>
+        </div>
+      </div>
     </div>
   </section>
   <StickyCTA lang={lang} />

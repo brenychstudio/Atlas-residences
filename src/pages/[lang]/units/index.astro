@@ -21,7 +21,7 @@ const defaultDescription =
   (lang === "es" ? settings.tagline_es : settings.tagline_en) ||
   t(lang, "Browse available units at Atlas Residences.", "Explora las unidades disponibles en Atlas Residences.");
 
-const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Units", "Unidades")} — ${projectName}`;
+const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Units", "Unidades")} вЂ” ${projectName}`;
 const seoDescription = (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) || defaultDescription;
 const seoImage = pageSeo?.og_image || ATLAS_ASSETS.og.og02Units1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
 const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";
@@ -34,6 +34,19 @@ const initialBuilding = ["all", "a", "b"].includes(buildingParam) ? buildingPara
 const units = (await getUnits()).sort((a, b) => Number(a.sort ?? 0) - Number(b.sort ?? 0));
 const unitTypes = await getUnitTypes();
 const unitTypeById = new Map(unitTypes.map((unitType) => [unitType.id, unitType]));
+const availableUnits = units.filter((unit) => String(unit.status ?? "").toLowerCase() === "available");
+const towerCount = new Set(
+  units
+    .map((unit) => String(unit.building_id ?? "").trim().toUpperCase())
+    .filter(Boolean),
+).size;
+
+const unitPrices = units
+  .map((unit) => Number(unit.price_eur))
+  .filter((price) => Number.isFinite(price) && price > 0);
+
+const fromPrice = unitPrices.length ? Math.min(...unitPrices) : null;
+const formatNumber = (value: number) => value.toLocaleString(lang === "es" ? "es-ES" : "en-US");
 
 const statusClassMap: Record<string, string> = {
   available: "bg-emerald-50 text-emerald-800",
@@ -52,6 +65,8 @@ const statusText = (status?: string) => {
 };
 
 const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
+const imagePlaceholder =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E";
 ---
 
 <BaseLayout lang={lang} title={seoTitle}>
@@ -70,34 +85,85 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
     {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
   </Fragment>
 
-  <section class="space-y-4 sm:space-y-5">
-    <header class="space-y-1.5">
-      <h1 class="text-3xl tracking-tight">{t(lang, "Units", "Unidades")}</h1>
-      <p id="units-summary" class="text-sm leading-relaxed opacity-80">{units.length} {t(lang, "units", "unidades")}</p>
-      <p id="active-filters" class="text-sm opacity-70">{t(lang, "No filters applied", "Sin filtros aplicados")}</p>
+  <section class="units-premium-page space-y-5 sm:space-y-6">
+    <header class="units-premium-hero">
+      <div class="units-premium-hero__copy">
+        <p class="units-premium-hero__kicker">
+          {t(lang, "Residence discovery", "Descubrimiento residencial")}
+        </p>
+
+        <h1>{t(lang, "Available residences", "Residencias disponibles")}</h1>
+
+        <p class="units-premium-hero__lede">
+          {t(
+            lang,
+            "Browse live availability, refine by tower, bedrooms, status and orientation, then open each residence for a focused sales view.",
+            "Explora disponibilidad en vivo, filtra por torre, dormitorios, estado y orientación, y abre cada residencia para una vista comercial enfocada.",
+          )}
+        </p>
+
+        <p id="active-filters" class="units-premium-hero__filter-state">
+          {t(lang, "No filters applied", "Sin filtros aplicados")}
+        </p>
+      </div>
+
+      <aside class="units-premium-hero__panel" aria-label={t(lang, "Inventory summary", "Resumen de inventario")}>
+        <dl class="units-premium-hero__stats">
+          <div>
+            <dt>{t(lang, "Residences", "Residencias")}</dt>
+            <dd id="units-summary">{units.length}</dd>
+          </div>
+
+          <div>
+            <dt>{t(lang, "Available now", "Disponibles")}</dt>
+            <dd>{availableUnits.length}</dd>
+          </div>
+
+          <div>
+            <dt>{t(lang, "Towers", "Torres")}</dt>
+            <dd>{towerCount}</dd>
+          </div>
+
+          <div>
+            <dt>{t(lang, "From", "Desde")}</dt>
+            <dd>
+              {fromPrice === null ? (
+                t(lang, "On request", "A consultar")
+              ) : (
+                <>
+                  <span class="units-currency" aria-hidden="true">&euro;</span>{formatNumber(fromPrice)}
+                </>
+              )}
+            </dd>
+          </div>
+        </dl>
+
+        <div class="units-premium-hero__actions">
+          <a class="cta-primary ui-btn ui-btn--primary inline-flex items-center justify-center" href={`/${lang}/contact/?source=unit`}>
+            <span>{t(lang, "Book a viewing", "Reservar visita")}</span>
+            <span class="home-action-arrow" aria-hidden="true"></span>
+          </a>
+
+          <a class="cta-secondary ui-btn inline-flex items-center justify-center" href={`/${lang}/masterplan/`}>
+            <span>{t(lang, "View masterplan", "Ver plan maestro")}</span>
+            <span class="home-action-arrow" aria-hidden="true"></span>
+          </a>
+        </div>
+      </aside>
     </header>
 
-    <div class="cta-cluster cta-inline flex flex-col gap-2 sm:flex-row sm:items-center">
-      <a class="cta-primary ui-btn ui-btn--primary inline-flex items-center justify-center" href={`/${lang}/contact/?source=unit`}>
-        {t(lang, "Book a viewing", "Reservar visita")}
-      </a>
-      <a class="cta-secondary ui-btn inline-flex items-center justify-center" href={`/${lang}/masterplan/`}>
-        {t(lang, "View masterplan", "Ver plan maestro")}
-      </a>
-    </div>
-
-    <div class="units-filters grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3.5" id="units-filters">
-      <div class="space-y-1.5">
+    <div class="units-filters units-premium-filters units-filter-console" id="units-filters" aria-label={t(lang, "Residence filters", "Filtros de residencias")}>
+      <div class="units-filter-group" data-filter="building">
         <p class="text-sm font-medium tracking-wide opacity-80">{t(lang, "Tower", "Torre")}</p>
-        <div class="flex flex-wrap gap-2" data-filter="building">
+        <div class="units-filter-options">
           <a data-value="all" class="ui-chip" href="#">{t(lang, "All", "Todos")}</a>
           <a data-value="a" class="ui-chip" href="#">A</a>
           <a data-value="b" class="ui-chip" href="#">B</a>
         </div>
       </div>
-      <div class="space-y-1.5">
+      <div class="units-filter-group" data-filter="beds">
         <p class="text-sm font-medium tracking-wide opacity-80">{t(lang, "Beds", "Dormitorios")}</p>
-        <div class="flex flex-wrap gap-2" data-filter="beds">
+        <div class="units-filter-options">
           <a data-value="all" class="ui-chip" href="#">{t(lang, "All", "Todos")}</a>
           <a data-value="1" class="ui-chip" href="#">1</a>
           <a data-value="2" class="ui-chip" href="#">2</a>
@@ -106,9 +172,9 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
         </div>
       </div>
 
-      <div class="space-y-1.5">
+      <div class="units-filter-group units-filter-group--status" data-filter="status">
         <p class="text-sm font-medium tracking-wide opacity-80">{t(lang, "Status", "Estado")}</p>
-        <div class="flex flex-wrap gap-2" data-filter="status">
+        <div class="units-filter-options">
           <a data-value="all" class="ui-chip" href="#">{t(lang, "All", "Todos")}</a>
           <a data-value="available" class="ui-chip" href="#">{t(lang, "Available", "Disponible")}</a>
           <a data-value="reserved" class="ui-chip" href="#">{t(lang, "Reserved", "Reservada")}</a>
@@ -117,9 +183,9 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
         </div>
       </div>
 
-      <div class="space-y-1.5">
+      <div class="units-filter-group units-filter-group--orientation" data-filter="orientation">
         <p class="text-sm font-medium tracking-wide opacity-80">{t(lang, "Orientation", "Orientación")}</p>
-        <div class="flex flex-wrap gap-2" data-filter="orientation">
+        <div class="units-filter-options">
           <a data-value="all" class="ui-chip" href="#">{t(lang, "All", "Todos")}</a>
           <a data-value="sea" class="ui-chip" href="#">{t(lang, "Sea", "Mar")}</a>
           <a data-value="city" class="ui-chip" href="#">{t(lang, "City", "Ciudad")}</a>
@@ -129,8 +195,8 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
       </div>
     </div>
 
-    <div id="units-grid" class="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-3" data-initial-building={initialBuilding}>
-      {units.map((unit) => {
+    <div id="units-grid" class="units-premium-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-initial-building={initialBuilding}>
+      {units.map((unit, index) => {
         const unitType = unit.type_id ? unitTypeById.get(unit.type_id) : undefined;
         const beds = unit.beds || unitType?.beds || "-";
         const baths = unit.baths || unitType?.baths || "-";
@@ -140,23 +206,26 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
         const orientation = String(unit.orientation ?? "").toLowerCase();
         const building = String(unit.building_id ?? "").toLowerCase();
         const statusClass = statusClassMap[status] ?? "bg-slate-200 text-slate-800";
+        const loadImageEarly = index < 9;
 
         return (
           <a
             href={buildUnitsHref(unit.id)}
-            class="unit-card ui-card group min-h-11 overflow-hidden rounded-xl"
+            class="unit-card unit-card--premium ui-card group min-h-11 overflow-hidden"
+            data-unit-index={index}
             data-beds={beds}
             data-status={status || "unknown"}
             data-orientation={orientation || "unknown"}
             data-building={building || "unknown"}
           >
             {coverImage && (
-              <div class="aspect-[4/3] overflow-hidden border-b bg-slate-100">
+              <div class="unit-card__media aspect-[4/3] overflow-hidden border-b bg-slate-100">
                 <img
-                  src={coverImage}
+                  src={loadImageEarly ? coverImage : imagePlaceholder}
+                  data-src={loadImageEarly ? undefined : coverImage}
                   alt={`${t(lang, "Unit", "Unidad")} ${unit.number || unit.id}`}
-                  class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
-                  loading="lazy"
+                  class="unit-card__image h-full w-full object-cover transition duration-500 group-hover:scale-[1.025]"
+                  loading={loadImageEarly ? "eager" : "lazy"}
                   decoding="async"
                 />
               </div>
@@ -164,17 +233,17 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
 
             <div class="unit-card__content space-y-3 p-4 sm:p-4 md:p-5">
               <div class="flex flex-wrap items-start justify-between gap-2">
-                <h2 class="text-lg font-semibold leading-tight break-words text-slate-900">
+                <h2 class="unit-card__title text-lg font-semibold leading-tight break-words text-slate-900">
                   {t(lang, "Unit", "Unidad")} {unit.number || unit.id}
                 </h2>
                 <span class={`unit-card__status inline-flex min-h-7 items-center rounded-full px-2.5 py-1 text-xs font-medium ${statusClass}`}>{statusText(unit.status)}</span>
               </div>
 
-              <p class="text-sm leading-relaxed opacity-75">
+              <p class="unit-card__location text-sm leading-relaxed opacity-75">
                 {t(lang, "Tower", "Torre")} {String(unit.building_id ?? "-").toUpperCase()} · {t(lang, "Floor", "Planta")} {unit.floor || "-"}
               </p>
 
-              <dl class="unit-meta grid grid-cols-2 gap-x-3 gap-y-1.5 text-sm">
+              <dl class="unit-meta unit-meta--premium grid grid-cols-2 gap-x-3 gap-y-1.5 text-sm">
                 <div>
                   <dt class="opacity-65">{t(lang, "Beds/Baths", "Dorm./Baños")}</dt>
                   <dd class="font-medium">{beds}/{baths}</dd>
@@ -189,7 +258,16 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
                 </div>
                 <div>
                   <dt class="opacity-65">{t(lang, "Price", "Precio")}</dt>
-                  <dd class="text-[0.95rem] font-semibold text-slate-900">{unit.price_eur ? `€${unit.price_eur}` : t(lang, "Request price", "Solicitar precio")}</dd>
+                  <dd class="text-[0.95rem] font-semibold text-slate-900">
+                    {unit.price_eur ? (
+                      <>
+                        <span class="units-currency" aria-hidden="true">&euro;</span>
+                        {formatNumber(Number(unit.price_eur))}
+                      </>
+                    ) : (
+                      t(lang, "Request price", "Solicitar precio")
+                    )}
+                  </dd>
                 </div>
               </dl>
             </div>
@@ -197,11 +275,16 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
         );
       })}
     </div>
+
+    <div id="units-progressive-sentinel" class="units-progressive-sentinel" aria-hidden="true"></div>
   </section>
 </BaseLayout>
 
 <script is:inline>
   (() => {
+    const INITIAL_BATCH = 12;
+    const BATCH_SIZE = 9;
+
     const filters = {
       building: "all",
       beds: "all",
@@ -219,6 +302,7 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
       allFilters: { en: "No filters applied", es: "Sin filtros aplicados" },
       filteredBy: { en: "Refined by", es: "Refinado por" },
       units: { en: "units", es: "unidades" },
+      showing: { en: "showing", es: "mostrando" },
       building: { en: "tower", es: "torre" },
       beds: { en: "bedrooms", es: "dormitorios" },
       status: { en: "status", es: "estado" },
@@ -226,49 +310,69 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
     };
 
     const lang = document.documentElement.lang === "es" ? "es" : "en";
+    const cards = Array.from(document.querySelectorAll(".unit-card"));
+    const sentinel = document.getElementById("units-progressive-sentinel");
+
+    let visibleLimit = INITIAL_BATCH;
+    let matchingCards = [];
 
     const buildQuery = (next) => {
       const query = new URLSearchParams();
       for (const [key, value] of Object.entries(next)) {
         if (value && value !== "all") query.set(key, value);
       }
+
       const qs = query.toString();
       return `${window.location.pathname}${qs ? `?${qs}` : ""}`;
+    };
+
+    const hydrateCardImage = (card) => {
+      const image = card.querySelector("img[data-src]");
+      if (!image) return;
+
+      const source = image.getAttribute("data-src");
+      if (!source) return;
+
+      image.setAttribute("src", source);
+      image.removeAttribute("data-src");
+    };
+
+    const cardMatchesFilters = (card) => {
+      const beds = card.getAttribute("data-beds");
+      const status = card.getAttribute("data-status");
+      const orientation = card.getAttribute("data-orientation");
+      const building = card.getAttribute("data-building");
+
+      const matchBuilding = filters.building === "all" || building === filters.building;
+      const matchBeds = filters.beds === "all" || beds === filters.beds;
+      const matchStatus = filters.status === "all" || status === filters.status;
+      const matchOrientation = filters.orientation === "all" || orientation === filters.orientation;
+
+      return matchBuilding && matchBeds && matchStatus && matchOrientation;
     };
 
     const updateFilterButtons = () => {
       document.querySelectorAll("[data-filter]").forEach((group) => {
         const key = group.getAttribute("data-filter");
+
         group.querySelectorAll("a[data-value]").forEach((link) => {
           const value = link.getAttribute("data-value") || "all";
           const next = { ...filters, [key]: value };
+
           link.setAttribute("href", buildQuery(next));
+
           const active = filters[key] === value;
           link.classList.toggle("is-active", active);
         });
       });
     };
 
-    const applyCards = () => {
-      let count = 0;
-      document.querySelectorAll(".unit-card").forEach((card) => {
-        const beds = card.getAttribute("data-beds");
-        const status = card.getAttribute("data-status");
-        const orientation = card.getAttribute("data-orientation");
-        const building = card.getAttribute("data-building");
-
-        const matchBuilding = filters.building === "all" || building === filters.building;
-        const matchBeds = filters.beds === "all" || beds === filters.beds;
-        const matchStatus = filters.status === "all" || status === filters.status;
-        const matchOrientation = filters.orientation === "all" || orientation === filters.orientation;
-        const visible = matchBuilding && matchBeds && matchStatus && matchOrientation;
-
-        card.classList.toggle("hidden", !visible);
-        if (visible) count += 1;
-      });
-
+    const updateText = () => {
       const summary = document.getElementById("units-summary");
-      if (summary) summary.textContent = `${count} ${text.units[lang]}`;
+      if (summary) {
+        const shown = Math.min(visibleLimit, matchingCards.length);
+        summary.textContent = `${matchingCards.length} ${text.units[lang]} · ${text.showing[lang]} ${shown}`;
+      }
 
       const active = [];
       if (filters.building !== "all") active.push(`${text.building[lang]}: ${filters.building.toUpperCase()}`);
@@ -284,7 +388,61 @@ const buildUnitsHref = (unitId: string) => `/${lang}/units/${unitId}/`;
       }
     };
 
+    const renderCards = () => {
+      matchingCards = [];
+
+      cards.forEach((card) => {
+        const matches = cardMatchesFilters(card);
+        card.dataset.matchesFilter = matches ? "true" : "false";
+
+        if (matches) matchingCards.push(card);
+      });
+
+      cards.forEach((card) => {
+        const matches = card.dataset.matchesFilter === "true";
+        const progressiveIndex = matches ? matchingCards.indexOf(card) : -1;
+        const shouldShow = matches && progressiveIndex >= 0 && progressiveIndex < visibleLimit;
+
+        card.classList.toggle("hidden", !shouldShow);
+        card.dataset.progressiveVisible = shouldShow ? "true" : "false";
+
+        if (shouldShow) hydrateCardImage(card);
+      });
+
+      if (sentinel) {
+        sentinel.hidden = matchingCards.length <= visibleLimit;
+      }
+
+      updateText();
+    };
+
+    const revealMore = () => {
+      if (visibleLimit >= matchingCards.length) return;
+      visibleLimit += BATCH_SIZE;
+      renderCards();
+    };
+
     updateFilterButtons();
-    applyCards();
+    renderCards();
+
+    if ("IntersectionObserver" in window && sentinel) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            revealMore();
+          }
+        },
+        {
+          root: null,
+          rootMargin: "420px 0px",
+          threshold: 0.01
+        }
+      );
+
+      observer.observe(sentinel);
+    } else {
+      visibleLimit = cards.length;
+      renderCards();
+    }
   })();
 </script>

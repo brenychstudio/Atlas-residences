@@ -220,6 +220,45 @@ const hasBlend = hasSunset || hasBluehour;
     const clamp01 = (v) => Math.max(0, Math.min(1, v));
     const lerp = (a, b, t) => a + (b - a) * t;
 
+    const MOOD_STORAGE_KEY = "atlas-residences:sun-mood";
+    const MOOD_EVENT = "atlas-residences:sun-mood-change";
+
+    const readStoredMood = () => {
+      try {
+        const raw = window.localStorage?.getItem(MOOD_STORAGE_KEY);
+        if (raw == null) return null;
+
+        const value = Number.parseFloat(raw);
+        return Number.isFinite(value) ? clamp01(value) : null;
+      } catch {
+        return null;
+      }
+    };
+
+    const writeStoredMood = (value) => {
+      try {
+        window.localStorage?.setItem(MOOD_STORAGE_KEY, clamp01(value).toFixed(3));
+      } catch {
+        // Ignore storage failures in private/restricted browsers.
+      }
+    };
+
+    const applyMoodGlobals = (value) => {
+      const v = clamp01(value);
+      document.documentElement.style.setProperty("--atlas-sun-mood", v.toFixed(3));
+
+      if (document.body) {
+        document.body.style.setProperty("--atlas-sun-mood", v.toFixed(3));
+        document.body.setAttribute("data-sun-mood", v.toFixed(2));
+      }
+    };
+
+    const publishMood = (value) => {
+      const v = clamp01(value);
+      applyMoodGlobals(v);
+      window.dispatchEvent(new CustomEvent(MOOD_EVENT, { detail: { value: v } }));
+    };
+
     document.querySelectorAll("[data-sun-hero]").forEach((root) => {
       const frame = root.querySelector("[data-sun-hero-frame]");
       const wrap = root.querySelector("[data-sun-slider-wrap]");
@@ -236,8 +275,14 @@ const hasBlend = hasSunset || hasBluehour;
       const bluehourText = (root.querySelector("[data-bluehour-label]")?.textContent || "Blue hour").trim();
       const ariaBase = slider.getAttribute("aria-label") || "Sun position";
 
-      let target = clamp01(Number(slider.value || 0));
-      let current = target;
+      const storedMood = readStoredMood();
+      const initialMood = storedMood ?? clamp01(Number(slider.value || 0));
+
+      slider.value = initialMood.toFixed(2);
+      publishMood(initialMood);
+
+      let target = initialMood;
+      let current = initialMood;
       let raf = 0;
 
       const setOpacities = (x) => {
@@ -245,6 +290,7 @@ const hasBlend = hasSunset || hasBluehour;
 
         root.style.setProperty("--sun", String(v));
         root.style.setProperty("--fog-shift", String(v));
+        applyMoodGlobals(v);
 
         const sunX = 32 + v * 42;
         const sunY = 34 - v * 8;
@@ -305,6 +351,9 @@ const hasBlend = hasSunset || hasBluehour;
 
       slider.addEventListener("input", () => {
         target = clamp01(Number(slider.value));
+        writeStoredMood(target);
+        publishMood(target);
+
         if (!raf) raf = requestAnimationFrame(tick);
       });
 

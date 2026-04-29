@@ -75,36 +75,45 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
       return t * t * (3 - 2 * t);
     }
 
+    function blueHourAmount(mood) {
+      // Peaks around the middle of the slider and fades before full sunset.
+      return smoothstep(0.18, 0.58, mood) * (1 - smoothstep(0.76, 1, mood));
+    }
+
+    function sunsetAmount(mood) {
+      // Warm sunset only arrives near the right side of the slider.
+      return smoothstep(0.66, 1, mood);
+    }
+
     function getSkyPalette(mood) {
-      // 0 = morning, ~0.55 = blue hour, 1 = sunset
+      // 0 = morning, ~0.58 = blue hour, 1 = warm sunset.
+      // Important: sunset is not darker night. It returns warmth into the atmosphere.
       const morning = {
         top: [202, 218, 238],
         mid: [224, 233, 244],
-        low: [243, 239, 232],
+        low: [244, 239, 231],
         warm: [255, 235, 204],
         cool: [190, 214, 243],
       };
 
       const bluehour = {
-        top: [142, 166, 202],
-        mid: [181, 196, 220],
-        low: [230, 220, 210],
-        warm: [255, 219, 180],
-        cool: [150, 176, 215],
+        top: [74, 94, 136],
+        mid: [118, 136, 174],
+        low: [204, 197, 192],
+        warm: [224, 184, 158],
+        cool: [72, 104, 160],
       };
 
       const sunset = {
-        // Dusk / soft night target, matched to the blue-hour hero photo.
-        // Keeps warm residential haze low on the page, but removes the daytime blue-white wash.
-        top: [58, 76, 112],
-        mid: [92, 108, 146],
-        low: [210, 199, 188],
-        warm: [232, 168, 118],
-        cool: [62, 90, 142],
+        top: [218, 176, 166],
+        mid: [238, 204, 178],
+        low: [250, 226, 194],
+        warm: [255, 198, 132],
+        cool: [168, 184, 214],
       };
 
-      if (mood <= 0.55) {
-        const t = smoothstep(0, 0.55, mood);
+      if (mood <= 0.62) {
+        const t = smoothstep(0, 0.62, mood);
         return {
           top: mixRgb(morning.top, bluehour.top, t),
           mid: mixRgb(morning.mid, bluehour.mid, t),
@@ -114,7 +123,7 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
         };
       }
 
-      const t = smoothstep(0.55, 1, mood);
+      const t = smoothstep(0.62, 1, mood);
       return {
         top: mixRgb(bluehour.top, sunset.top, t),
         mid: mixRgb(bluehour.mid, sunset.mid, t),
@@ -291,16 +300,35 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
     }
 
     function drawLightBloom(palette, time, mood) {
-      // Soft atmospheric bloom only. It fades as the slider moves toward night.
+      const blue = blueHourAmount(mood);
+      const sunset = sunsetAmount(mood);
+
       const driftX = Math.sin(time * 0.18) * 0.018;
       const driftY = Math.cos(time * 0.14) * 0.012;
 
-      const glowX = viewportWidth * clamp(0.20 + mood * 0.12 + driftX + (pointerX - 0.5) * 0.03, 0.12, 0.46);
-      const glowY = viewportHeight * clamp(0.18 + mood * 0.06 + driftY + (pointerY - 0.35) * 0.02, 0.12, 0.34);
+      const glowX = viewportWidth * clamp(
+        0.20 + sunset * 0.22 + driftX + (pointerX - 0.5) * 0.03,
+        0.12,
+        0.56,
+      );
 
-      const bloom = ctx.createRadialGradient(glowX, glowY, 0, glowX, glowY, viewportWidth * lerp(0.34, 0.44, mood));
-      bloom.addColorStop(0, rgba(palette.warm, lerp(0.24, 0.14, mood)));
-      bloom.addColorStop(0.34, rgba(palette.warm, lerp(0.11, 0.07, mood)));
+      const glowY = viewportHeight * clamp(
+        0.18 + sunset * 0.11 + driftY + (pointerY - 0.35) * 0.02,
+        0.12,
+        0.40,
+      );
+
+      const bloom = ctx.createRadialGradient(
+        glowX,
+        glowY,
+        0,
+        glowX,
+        glowY,
+        viewportWidth * lerp(0.34, 0.50, sunset),
+      );
+
+      bloom.addColorStop(0, rgba(palette.warm, 0.18 + sunset * 0.24 - blue * 0.06));
+      bloom.addColorStop(0.34, rgba(palette.warm, 0.08 + sunset * 0.12));
       bloom.addColorStop(1, rgba(palette.warm, 0));
 
       ctx.fillStyle = bloom;
@@ -320,7 +348,9 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
           const x = progress * viewportWidth - viewportWidth * 0.34 + parallax;
           const y = baseY + Math.cos(time * 0.2 + i + bandIndex) * viewportHeight * 0.01;
           const size = Math.min(viewportWidth, viewportHeight) * band.scale;
-          const alpha = band.alpha * lerp(1, 0.68, mood);
+          const blue = blueHourAmount(mood);
+          const sunset = sunsetAmount(mood);
+          const alpha = band.alpha * (1 - blue * 0.34 + sunset * 0.08);
 
           drawEllipseCloud(x, y, size, alpha, band.blur, band.tint);
         }
@@ -328,50 +358,55 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
     }
 
     function drawDepthMist(palette, mood) {
-      // Morning can stay milkier; dusk/night must not wash the whole page back to white.
+      const blue = blueHourAmount(mood);
+      const sunset = sunsetAmount(mood);
+
       const horizon = ctx.createLinearGradient(0, viewportHeight * 0.42, 0, viewportHeight);
       horizon.addColorStop(0, "rgba(255,255,255,0)");
-      horizon.addColorStop(0.44, rgba(palette.low, lerp(0.10, 0.08, mood)));
-      horizon.addColorStop(0.78, rgba(palette.low, lerp(0.28, 0.18, mood)));
-      horizon.addColorStop(1, rgba(palette.low, lerp(0.42, 0.26, mood)));
+      horizon.addColorStop(0.44, rgba(palette.low, 0.10 + sunset * 0.04));
+      horizon.addColorStop(0.78, rgba(palette.low, 0.22 - blue * 0.05 + sunset * 0.08));
+      horizon.addColorStop(1, rgba(palette.low, 0.34 - blue * 0.08 + sunset * 0.14));
 
       ctx.fillStyle = horizon;
       ctx.fillRect(0, 0, viewportWidth, viewportHeight);
     }
 
-    function drawNightMoodVeil(mood) {
-      if (mood <= 0.02) return;
+    function drawMoodColorVeil(mood) {
+      const blue = blueHourAmount(mood);
+      const sunset = sunsetAmount(mood);
+
+      if (blue <= 0.01 && sunset <= 0.01) return;
 
       ctx.save();
 
-      const topVeil = ctx.createLinearGradient(0, 0, 0, viewportHeight);
-      topVeil.addColorStop(0, `rgba(28, 42, 72, ${0.04 + mood * 0.24})`);
-      topVeil.addColorStop(0.48, `rgba(42, 54, 84, ${mood * 0.12})`);
-      topVeil.addColorStop(1, `rgba(98, 72, 62, ${mood * 0.06})`);
+      const blueVeil = ctx.createLinearGradient(0, 0, 0, viewportHeight);
+      blueVeil.addColorStop(0, `rgba(24, 36, 66, ${blue * 0.24})`);
+      blueVeil.addColorStop(0.46, `rgba(42, 52, 78, ${blue * 0.12})`);
+      blueVeil.addColorStop(1, `rgba(54, 50, 66, ${blue * 0.08})`);
 
       ctx.globalCompositeOperation = "multiply";
-      ctx.fillStyle = topVeil;
+      ctx.fillStyle = blueVeil;
       ctx.fillRect(0, 0, viewportWidth, viewportHeight);
 
       ctx.restore();
 
       ctx.save();
 
-      const coolWash = ctx.createRadialGradient(
-        viewportWidth * 0.78,
-        viewportHeight * 0.08,
+      const sunsetWash = ctx.createRadialGradient(
+        viewportWidth * 0.16,
+        viewportHeight * 0.18,
         0,
+        viewportWidth * 0.16,
+        viewportHeight * 0.18,
         viewportWidth * 0.78,
-        viewportHeight * 0.08,
-        viewportWidth * 0.74
       );
 
-      coolWash.addColorStop(0, `rgba(74, 104, 160, ${mood * 0.18})`);
-      coolWash.addColorStop(0.46, `rgba(66, 84, 132, ${mood * 0.10})`);
-      coolWash.addColorStop(1, "rgba(66, 84, 132, 0)");
+      sunsetWash.addColorStop(0, `rgba(255, 214, 174, ${sunset * 0.26})`);
+      sunsetWash.addColorStop(0.38, `rgba(242, 176, 132, ${sunset * 0.16})`);
+      sunsetWash.addColorStop(1, "rgba(242, 176, 132, 0)");
 
       ctx.globalCompositeOperation = "source-over";
-      ctx.fillStyle = coolWash;
+      ctx.fillStyle = sunsetWash;
       ctx.fillRect(0, 0, viewportWidth, viewportHeight);
 
       ctx.restore();
@@ -393,9 +428,9 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
       pointerX += (targetX - pointerX) * 0.024;
       pointerY += (targetY - pointerY) * 0.024;
 
-      // Visual mood is intentionally more cinematic than raw slider value.
-      // Around the middle of the Hero slider, the backdrop should already feel like blue hour.
-      const visualMood = smoothstep(0.08, 0.78, moodSoft);
+      const visualMood = clamp(moodSoft, 0, 1);
+      const blue = blueHourAmount(visualMood);
+      const sunset = sunsetAmount(visualMood);
       const palette = getSkyPalette(visualMood);
 
       ctx.clearRect(0, 0, viewportWidth, viewportHeight);
@@ -404,9 +439,18 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
       drawLightBloom(palette, time, visualMood);
       drawCloudBands(time, visualMood);
       drawDepthMist(palette, visualMood);
-      drawNightMoodVeil(visualMood);
+      drawMoodColorVeil(visualMood);
 
-      applyBackdropMoodGlobals(moodSoft, visualMood);
+      document.documentElement.style.setProperty("--atlas-sun-mood", moodSoft.toFixed(3));
+      document.documentElement.style.setProperty("--atmo-mood", visualMood.toFixed(3));
+      document.documentElement.style.setProperty("--atmo-bluehour", blue.toFixed(3));
+      document.documentElement.style.setProperty("--atmo-sunset", sunset.toFixed(3));
+
+      document.body.style.setProperty("--atlas-sun-mood", moodSoft.toFixed(3));
+      document.body.style.setProperty("--atmo-mood", visualMood.toFixed(3));
+      document.body.style.setProperty("--atmo-bluehour", blue.toFixed(3));
+      document.body.style.setProperty("--atmo-sunset", sunset.toFixed(3));
+      document.body.setAttribute("data-sun-mood", moodSoft.toFixed(2));
 
       if (!reducedMotion) {
         raf = window.requestAnimationFrame(render);
@@ -449,7 +493,20 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
     if (initialStoredMood !== null) {
       moodTarget = initialStoredMood;
       moodSoft = initialStoredMood;
-      applyBackdropMoodGlobals(moodSoft, smoothstep(0.08, 0.78, moodSoft));
+
+      const blue = blueHourAmount(moodSoft);
+      const sunset = sunsetAmount(moodSoft);
+
+      document.documentElement.style.setProperty("--atlas-sun-mood", moodSoft.toFixed(3));
+      document.documentElement.style.setProperty("--atmo-mood", moodSoft.toFixed(3));
+      document.documentElement.style.setProperty("--atmo-bluehour", blue.toFixed(3));
+      document.documentElement.style.setProperty("--atmo-sunset", sunset.toFixed(3));
+
+      document.body.style.setProperty("--atlas-sun-mood", moodSoft.toFixed(3));
+      document.body.style.setProperty("--atmo-mood", moodSoft.toFixed(3));
+      document.body.style.setProperty("--atmo-bluehour", blue.toFixed(3));
+      document.body.style.setProperty("--atmo-sunset", sunset.toFixed(3));
+      document.body.setAttribute("data-sun-mood", moodSoft.toFixed(2));
     }
 
     resize();

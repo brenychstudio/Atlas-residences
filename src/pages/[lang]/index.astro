@@ -1,7 +1,7 @@
----
+﻿---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../content/languages";
-import { getPageBySlug, getSettings } from "../../vertical/cms/sheets";
+import { getBuildings, getPageBySlug, getSettings, getUnits } from "../../vertical/cms/sheets";
 import { ATLAS_ASSETS } from "../../vertical/content/assets";
 import SunHero from "../../vertical/ui/SunHero.astro";
 import HeroStage from "../../vertical/ui/HeroStage.astro";
@@ -16,14 +16,19 @@ const lang = langParam as Lang;
 
 const p0 = Astro.url.pathname;
 const p = p0.endsWith("/") ? p0 : `${p0}/`;
-const [settings, pageSeo] = await Promise.all([getSettings(), getPageBySlug(p)]);
+const [settings, pageSeo, units, buildings] = await Promise.all([
+  getSettings(),
+  getPageBySlug(p),
+  getUnits(),
+  getBuildings(),
+]);
 
 const projectName = (lang === "es" ? settings.project_name_es : settings.project_name_en) || "Atlas Residences";
 const defaultDescription =
   (lang === "es" ? settings.tagline_es : settings.tagline_en) ||
   t(lang, "Premium residences in Barcelona.", "Residencias premium en Barcelona.");
 
-const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Home", "Inicio")} — ${projectName}`;
+const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Home", "Inicio")} вЂ” ${projectName}`;
 const seoDescription = (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) || defaultDescription;
 const seoImage = pageSeo?.og_image || ATLAS_ASSETS.og.og01Home1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
 const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";
@@ -41,6 +46,31 @@ const heroVariants = {
 const defaultHeroVariant: keyof typeof heroVariants = "morning";
 const heroImage = heroVariants[defaultHeroVariant] || ATLAS_ASSETS.hero.hr01Morning16x9;
 const heroMobileImage = heroVariants.mobile;
+
+const unitsCount = units.length;
+const buildingsCount = buildings.length;
+const availableUnitsCount = units.filter((unit) => String(unit.status || "").toLowerCase() === "available").length;
+
+const minPriceValue =
+  units
+    .map((unit) => Number(unit.price_eur || 0))
+    .filter((value) => Number.isFinite(value) && value > 0)
+    .sort((a, b) => a - b)[0] ?? null;
+
+const minPriceLabel = minPriceValue ? `в‚¬${minPriceValue}` : t(lang, "On request", "A consultar");
+
+const projectSignals = [
+  t(lang, "Live inventory", "Inventario en vivo"),
+  t(lang, "Guided masterplan", "Masterplan guiado"),
+  t(lang, "Private viewing requests", "Solicitudes de visita privada"),
+];
+
+const salesCardEyebrow = t(lang, "Private residences in Barcelona", "Residencias privadas en Barcelona");
+const salesCardBody = t(
+  lang,
+  "A calm residential presentation with live availability, curated unit selection, and direct sales routing.",
+  "Una presentaciГіn residencial serena con disponibilidad en vivo, selecciГіn curada de unidades y acceso directo al equipo comercial.",
+);
 ---
 
 <BaseLayout lang={lang} title={seoTitle}>
@@ -59,51 +89,112 @@ const heroMobileImage = heroVariants.mobile;
     {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
   </Fragment>
 
-  <section class="space-y-5 sm:space-y-6 md:space-y-8">
-    {/* STABILITY LOCK (canonical): keep SunHero prop contract/order stable unless intentional redesign. */}
-    <HeroStage>
-      <SunHero
-        morningImage={heroImage}
-        bluehourImage={heroVariants.bluehour}
-        sunsetImage={heroVariants.sunset}
-        mobileImage={heroMobileImage}
-        alt={t(lang, "Atlas Residences hero view", "Vista principal de Atlas Residences")}
-        sliderLabel={t(lang, "Sun position", "Posición del sol")}
-        morningLabel={t(lang, "Morning", "Mañana")}
-        bluehourLabel={t(lang, "Blue hour", "Hora azul")}
-        sunsetLabel={t(lang, "Sunset", "Atardecer")}
-      />
-    </HeroStage>
+  <section class="home-sky-page home-hero-premium-balance-v3 home-hero-premium-balance-v4 space-y-4 sm:space-y-5 md:space-y-6">
+    <div class="home-sky-intro">
+      {/* STABILITY LOCK (canonical): keep SunHero prop contract/order stable unless intentional redesign. */}
+      <div class="home-sky-intro__hero home-hero-premium-balance-v3__hero home-hero-premium-balance-v4__hero">
+        <HeroStage>
+          <SunHero
+            morningImage={heroImage}
+            bluehourImage={heroVariants.bluehour}
+            sunsetImage={heroVariants.sunset}
+            mobileImage={heroMobileImage}
+            alt={t(lang, "Atlas Residences hero view", "Vista principal de Atlas Residences")}
+            sliderLabel={t(lang, "Sun position", "PosiciГіn del sol")}
+            morningLabel={t(lang, "Morning", "MaГ±ana")}
+            bluehourLabel={t(lang, "Blue hour", "Hora azul")}
+            sunsetLabel={t(lang, "Sunset", "Atardecer")}
+          />
+        </HeroStage>
+      </div>
 
-    <div class="max-w-3xl space-y-3 sm:space-y-4">
-      <p class="text-[11px] uppercase tracking-[0.22em] text-black/60">{t(lang, "ATLAS RESIDENCES", "ATLAS RESIDENCES")}</p>
-      <h1 class="text-3xl tracking-tight sm:text-4xl md:text-5xl">{t(lang, "Atlas Residences", "Atlas Residences")}</h1>
-      <p class="max-w-2xl text-sm leading-relaxed text-black/75 sm:text-base">
-        {t(
-          lang,
-          "Explore curated residences with live availability, a guided masterplan, and refined unit details.",
-          "Explora residencias seleccionadas con disponibilidad en vivo, un plan maestro guiado y detalles de unidad cuidados.",
-        )}
-      </p>
+      <div class="home-sky-intro__brief">
+        <div class="home-brief home-brief--sky home-hero-premium-balance-v3__lower home-hero-premium-balance-v4__lower">
+          <div class="home-brief__editorial home-hero-premium-balance-v3__copy">
+            <p class="home-brief__kicker">{t(lang, "ATLAS RESIDENCES", "ATLAS RESIDENCES")}</p>
+
+            <p class="home-brief__chapter">{t(lang, "Residence brief", "Resumen residencial")}</p>
+
+            <h1 class="home-brief__title">{t(lang, "Atlas Residences", "Atlas Residences")}</h1>
+
+            <div class="home-brief__editorial-rule" aria-hidden="true"></div>
+
+            <p class="home-brief__lede">
+              {t(
+                lang,
+                "Explore curated residences with live availability, a guided masterplan, and refined unit details.",
+                "Explora residencias seleccionadas con disponibilidad en vivo, un plan maestro guiado y detalles de unidad cuidados.",
+              )}
+            </p>
+          </div>
+
+          <aside class="home-brief__card home-brief__card--glass home-brief__card--frosted home-hero-premium-balance-v3__side ui-card">
+            <div class="home-brief__card-head">
+              <p class="home-brief__card-kicker">{salesCardEyebrow}</p>
+              <p class="home-brief__card-copy">{salesCardBody}</p>
+            </div>
+
+            <dl class="home-brief__stats">
+              <div class="home-brief__stat">
+                <dt>{t(lang, "Residences", "Residencias")}</dt>
+                <dd>{unitsCount}</dd>
+              </div>
+
+              <div class="home-brief__stat">
+                <dt>{t(lang, "Buildings", "Edificios")}</dt>
+                <dd>{buildingsCount}</dd>
+              </div>
+
+              <div class="home-brief__stat">
+                <dt>{t(lang, "Available now", "Disponibles ahora")}</dt>
+                <dd>{availableUnitsCount}</dd>
+              </div>
+
+              <div class="home-brief__stat home-brief__stat--price">
+                <dt>{t(lang, "From", "Desde")}</dt>
+                <dd>
+                  <span class="home-card-currency" aria-hidden="true">&euro;</span>320000
+                </dd>
+              </div>
+            </dl>
+
+            <div class="home-brief__actions">
+              <a
+                class="cta-primary group flex min-h-12 items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition"
+                href={`/${lang}/units/`}
+              >
+                <span>{t(lang, "Explore available residences", "Explorar residencias disponibles")}</span>
+                <span class="home-action-arrow" aria-hidden="true"></span>
+              </a>
+
+              <div class="home-brief__actions-row">
+                <a
+                  class="cta-secondary group flex min-h-12 items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition"
+                  href={`/${lang}/masterplan/`}
+                >
+                  <span>{t(lang, "View masterplan", "Ver masterplan")}</span>
+                  <span class="home-action-arrow" aria-hidden="true"></span>
+                </a>
+
+                <a
+                  class="cta-tertiary group flex min-h-12 items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition"
+                  href={`/${lang}/contact/?source=home`}
+                >
+                  <span>{t(lang, "Talk with sales", "Hablar con ventas")}</span>
+                  <span class="home-action-arrow" aria-hidden="true"></span>
+                </a>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <div class="home-hero-premium-balance-v4__signal" aria-label="Home signals">
+          <span>Live inventory</span>
+          <span>Guided masterplan</span>
+          <span>Private viewing requests</span>
+        </div>
+      </div>
     </div>
-
-    <div class="cta-cluster cta-inline grid gap-2.5 sm:grid-cols-3 sm:gap-2.5 md:max-w-4xl md:items-stretch">
-      <a class="cta-primary group flex min-h-12 items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition" href={`/${lang}/units/`}>
-        {t(lang, "Explore available residences", "Explorar residencias disponibles")}
-        <span class="cta-arrow text-xs transition">→</span>
-      </a>
-      <a class="cta-secondary group flex min-h-12 items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition" href={`/${lang}/masterplan/`}>
-        {t(lang, "View masterplan", "Ver masterplan")}
-        <span class="cta-arrow text-xs transition">→</span>
-      </a>
-      <a class="cta-tertiary group flex min-h-12 items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition" href={`/${lang}/contact/?source=home`}>
-        {t(lang, "Talk with sales", "Hablar con ventas")}
-        <span class="cta-arrow text-xs transition">→</span>
-      </a>
-    </div>
-
-    <p class="pt-0.5 text-[11px] uppercase tracking-[0.12em] text-black/55 sm:text-xs">
-      {t(lang, "Live inventory · Masterplan insights · Private viewing requests", "Inventario en vivo · Lectura del plan maestro · Solicitud de visita privada")}
-    </p>
   </section>
 </BaseLayout>
+

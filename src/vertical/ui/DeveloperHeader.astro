@@ -30,27 +30,30 @@ function isActive(href: string) {
 
 <header
   data-dev-header
-  class="sticky top-0 z-50 border-b border-[color:color-mix(in_oklab,var(--border),var(--fg)_10%)] bg-[color:var(--surface)]/92 backdrop-blur-md"
+  data-header-style="glass"
+  class="sticky top-0 z-50"
 >
-  <div class="mx-auto flex w-full max-w-[72rem] flex-wrap items-center justify-between gap-3 px-4 py-3 md:flex-nowrap md:gap-3.5 md:px-6 md:py-3.5">
+  <div
+    data-header-shell
+    class="mx-auto flex w-full max-w-[72rem] flex-wrap items-center justify-between gap-3 px-3 py-2.5 md:flex-nowrap md:gap-3 md:px-4 md:py-2.5"
+  >
     <a
       href={`/${L}/`}
-      class="inline-flex min-h-[44px] items-center text-[0.72rem] uppercase tracking-[0.2em] text-[color:var(--fg)]"
+      data-header-brand
+      class="inline-flex min-h-[42px] shrink-0 items-center rounded-[var(--radius-pill)] px-3 text-[0.72rem] uppercase tracking-[0.22em] text-[color:var(--fg)] transition-colors duration-200"
     >
       Atlas Residences
     </a>
 
-    <nav class="hidden items-center gap-2 md:flex">
+    <nav data-header-nav="desktop" class="hidden items-center gap-1 md:flex">
       {nav.map((item) => {
         const active = isActive(item.href);
         return (
           <a
             href={item.href}
-            class={`inline-flex min-h-[42px] items-center rounded-[var(--radius-pill)] border px-4 text-[0.92rem] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/25 ${
-              active
-                ? "border-[color:var(--fg)] bg-[color:var(--fg)] text-[color:var(--bg)]"
-                : "border-[color:color-mix(in_oklab,var(--border),var(--fg)_12%)] bg-[color:var(--surface-2)] text-[color:var(--muted)] hover:border-[color:var(--fg)]/35 hover:bg-white hover:text-[color:var(--fg)]"
-            }`}
+            data-header-link
+            data-active={active ? "true" : "false"}
+            class="inline-flex min-h-[40px] items-center rounded-[var(--radius-pill)] px-4 text-[0.9rem] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/20"
             aria-current={active ? "page" : undefined}
           >
             {item.label}
@@ -59,20 +62,22 @@ function isActive(href: string) {
       })}
     </nav>
 
-    <div class="ml-auto flex w-full items-center justify-end gap-2 md:ml-0 md:w-auto md:gap-2">
+    <div
+      data-header-actions
+      class="ml-auto flex w-full items-center justify-end gap-2 md:ml-0 md:w-auto md:flex-none md:gap-2"
+    >
       <nav
-        class="inline-flex min-h-[44px] items-center rounded-[var(--radius-pill)] border border-[color:color-mix(in_oklab,var(--border),var(--fg)_14%)] bg-[color:var(--surface-2)] p-1"
+        data-header-lang
+        class="inline-flex min-h-[42px] items-center rounded-[var(--radius-pill)] p-1"
         aria-label="Switch language"
         data-lang-switcher
       >
         <a
           href={pathForLang("en")}
           data-lang="en"
-          class={`inline-flex min-h-[34px] items-center rounded-[var(--radius-pill)] border px-3 text-xs font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/25 ${
-            pathLang === "en"
-              ? "border-[color:var(--fg)] bg-[color:var(--fg)] text-[color:var(--bg)]"
-              : "border-transparent text-[color:var(--muted)] hover:border-[color:var(--fg)]/20 hover:text-[color:var(--fg)]"
-          }`}
+          data-lang-link
+          data-active={pathLang === "en" ? "true" : "false"}
+          class="inline-flex min-h-[32px] items-center rounded-[var(--radius-pill)] px-3 text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/20"
           aria-current={pathLang === "en" ? "page" : undefined}
         >
           EN
@@ -80,11 +85,9 @@ function isActive(href: string) {
         <a
           href={pathForLang("es")}
           data-lang="es"
-          class={`inline-flex min-h-[34px] items-center rounded-[var(--radius-pill)] border px-3 text-xs font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/25 ${
-            pathLang === "es"
-              ? "border-[color:var(--fg)] bg-[color:var(--fg)] text-[color:var(--bg)]"
-              : "border-transparent text-[color:var(--muted)] hover:border-[color:var(--fg)]/20 hover:text-[color:var(--fg)]"
-          }`}
+          data-lang-link
+          data-active={pathLang === "es" ? "true" : "false"}
+          class="inline-flex min-h-[32px] items-center rounded-[var(--radius-pill)] px-3 text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/20"
           aria-current={pathLang === "es" ? "page" : undefined}
         >
           ES
@@ -93,24 +96,26 @@ function isActive(href: string) {
 
       <a
         href={`/${L}/contact/`}
-        class="inline-flex min-h-[44px] items-center rounded-[var(--radius-pill)] border border-[color:color-mix(in_oklab,var(--border),var(--fg)_14%)] bg-[color:var(--surface-2)] px-3.5 text-xs text-[color:var(--fg)] transition-colors duration-200 hover:border-[color:var(--fg)]/40 hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/25 sm:px-4 sm:text-sm"
+        data-header-cta
+        class="inline-flex min-h-[42px] items-center rounded-[var(--radius-pill)] px-3.5 text-xs text-[color:var(--fg)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/20 sm:px-4 sm:text-sm"
       >
         {t(L, "Book a viewing", "Reservar visita")}
       </a>
     </div>
   </div>
 
-  <nav class="mx-auto flex w-full max-w-[72rem] items-center gap-2 overflow-x-auto px-4 pb-2.5 md:hidden">
+  <nav
+    data-header-mobile
+    class="mx-auto flex w-full max-w-[72rem] items-center gap-2 overflow-x-auto px-3 pb-2 md:hidden"
+  >
     {nav.map((item) => {
       const active = isActive(item.href);
       return (
         <a
           href={item.href}
-          class={`inline-flex min-h-[42px] shrink-0 items-center rounded-[var(--radius-pill)] border px-4 text-sm transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/25 ${
-            active
-              ? "border-[color:var(--fg)] bg-[color:var(--fg)] text-[color:var(--bg)]"
-              : "border-[color:color-mix(in_oklab,var(--border),var(--fg)_12%)] bg-[color:var(--surface-2)] text-[color:var(--muted)]"
-          }`}
+          data-header-mobile-link
+          data-active={active ? "true" : "false"}
+          class="inline-flex min-h-[40px] shrink-0 items-center rounded-[var(--radius-pill)] px-4 text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/20"
           aria-current={active ? "page" : undefined}
         >
           {item.label}
