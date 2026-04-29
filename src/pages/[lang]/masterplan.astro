@@ -1,7 +1,5 @@
 ---
-import BaseLayout from "../../core/layouts/BaseLayout.astro";
-import DeveloperHeader from "../../vertical/ui/DeveloperHeader.astro";
-import StickyCTA from "../../vertical/ui/StickyCTA.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../content/languages";
 import { getAmenities, getBuildings, getPageBySlug, getSettings, getUnits } from "../../vertical/cms/sheets";
 import { ATLAS_ASSETS } from "../../vertical/content/assets";
@@ -22,7 +20,7 @@ const projectName = (lang === "es" ? settings.project_name_es : settings.project
 const canonicalPath = `/${lang}/masterplan/`;
 const seoUrl = Astro.site ? new URL(canonicalPath, Astro.site).toString() : canonicalPath;
 
-const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Masterplan", "Plan maestro")} — ${projectName}`;
+const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Masterplan", "Plan maestro")} вЂ” ${projectName}`;
 const seoDescription =
   (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) ||
   t(lang, "Masterplan overview for Atlas Residences.", "Resumen del plan maestro de Atlas Residences.");
@@ -62,14 +60,14 @@ const statusText = (status: string) => {
   if (status === "available") return t(lang, "Available", "Disponible");
   if (status === "reserved") return t(lang, "Reserved", "Reservada");
   if (status === "sold") return t(lang, "Sold", "Vendida");
-  if (status === "coming_soon") return t(lang, "Coming soon", "Próximamente");
+  if (status === "coming_soon") return t(lang, "Coming soon", "PrГіximamente");
   return t(lang, "Unknown", "Sin estado");
 };
 
 const amenityCategoryText = (category?: string) => {
   const normalized = String(category ?? "").toLowerCase();
   if (normalized === "wellness") return t(lang, "Wellness", "Bienestar");
-  if (normalized === "kids") return t(lang, "Kids", "Niños");
+  if (normalized === "kids") return t(lang, "Kids", "NiГ±os");
   if (normalized === "parking") return t(lang, "Parking", "Aparcamiento");
   if (normalized === "green") return t(lang, "Green", "Zonas verdes");
   if (normalized === "security") return t(lang, "Security", "Seguridad");
@@ -78,7 +76,6 @@ const amenityCategoryText = (category?: string) => {
 ---
 
 <BaseLayout lang={lang} title={seoTitle}>
-  <DeveloperHeader slot="header" lang={lang} pathname={Astro.url.pathname} />
   <Fragment slot="head">
     <title>{seoTitle}</title>
     <meta name="description" content={seoDescription} />
@@ -96,329 +93,378 @@ const amenityCategoryText = (category?: string) => {
     {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
   </Fragment>
 
-  <section class="masterplan-layout space-y-4 sm:space-y-5">
-    <header class="masterplan-head">
-      <div class="masterplan-head__intro">
-        <p class="masterplan-head__kicker">
-          {t(lang, "ATLAS MASTERPLAN", "MASTERPLAN ATLAS")}
+  <section class="masterplan-premium-shell" aria-labelledby="masterplan-title">
+    <header class="masterplan-premium-hero">
+      <div class="masterplan-premium-hero__copy">
+        <p class="masterplan-premium-kicker">
+          {t(lang, "Interactive masterplan", "Masterplan interactivo")}
         </p>
 
-        <h1 class="masterplan-head__title">
-          {t(lang, "Masterplan overview", "Resumen del plan maestro")}
+        <h1 id="masterplan-title" class="masterplan-premium-title">
+          {t(lang, "Residence overview by tower, light and availability", "Vista residencial por torre, luz y disponibilidad")}
         </h1>
 
-        <p class="masterplan-head__lede">
+        <p class="masterplan-premium-lede">
           {t(
             lang,
-            "Select a building to review live availability and move directly into the residences currently on the market.",
-            "Selecciona un bloque para revisar la disponibilidad en vivo y pasar directamente a las residencias actualmente en el mercado.",
+            "Explore the building composition, arrival sequence, garden court and residence availability through a focused architectural stage.",
+            "Explora la composición del edificio, la secuencia de llegada, el patio ajardinado y la disponibilidad residencial mediante una escena arquitectónica enfocada.",
           )}
         </p>
-      </div>
-    </header>
 
-    <div class="masterplan-filters masterplan-filters--top grid gap-2.5 sm:grid-cols-2 sm:gap-3" id="masterplan-filters">
-      <div class="space-y-0.5">
-        <p class="text-sm font-medium tracking-wide">{t(lang, "Beds", "Dormitorios")}</p>
-        <div class="flex flex-wrap gap-2" data-filter="beds">
-          <a href="#" data-value="all" class="ui-chip">{t(lang, "All", "Todos")}</a>
-          <a href="#" data-value="1" class="ui-chip">1</a>
-          <a href="#" data-value="2" class="ui-chip">2</a>
-          <a href="#" data-value="3" class="ui-chip">3</a>
-          <a href="#" data-value="4" class="ui-chip">4</a>
+        <div class="masterplan-premium-signals" aria-label={t(lang, "Masterplan highlights", "Aspectos destacados del masterplan")}>
+          <span>
+            <strong>2</strong>
+            <em>{t(lang, "residential towers", "torres residenciales")}</em>
+          </span>
+          <span>
+            <strong>48</strong>
+            <em>{t(lang, "total residences", "residencias totales")}</em>
+          </span>
+          <span>
+            <strong>19</strong>
+            <em>{t(lang, "available now", "disponibles ahora")}</em>
+          </span>
         </div>
       </div>
-      <div class="space-y-0.5">
-        <p class="text-sm font-medium tracking-wide">{t(lang, "Status", "Estado")}</p>
-        <div class="flex flex-wrap gap-2" data-filter="status">
-          <a href="#" data-value="all" class="ui-chip">{t(lang, "All", "Todos")}</a>
-          <a href="#" data-value="available" class="ui-chip">{t(lang, "Available", "Disponible")}</a>
-          <a href="#" data-value="reserved" class="ui-chip">{t(lang, "Reserved", "Reservada")}</a>
-          <a href="#" data-value="sold" class="ui-chip">{t(lang, "Sold", "Vendida")}</a>
-          <a href="#" data-value="coming_soon" class="ui-chip">{t(lang, "Coming soon", "Próximamente")}</a>
-        </div>
-      </div>
-    </div>
 
-    <div class="masterplan-map-card overflow-hidden rounded-xl border">
-      <div class="relative w-full pt-[56.25%]">
-        {masterplanImage ? (
-          <img
-            src={masterplanImage}
-            alt={t(lang, "Atlas masterplan", "Plan maestro Atlas")}
-            class="absolute inset-0 h-full w-full object-cover"
-            loading="lazy"
-            decoding="async"
-            width="1600"
-            height="900"
-          />
-        ) : (
-          <div class="absolute inset-0 bg-gradient-to-br from-slate-700 via-slate-600 to-slate-500" />
-        )}
+      <aside class="masterplan-premium-hero__card" aria-label={t(lang, "Availability overview", "Resumen de disponibilidad")}>
+        <p class="masterplan-premium-card-kicker">
+          {t(lang, "Availability overview", "Resumen de disponibilidad")}
+        </p>
 
-        {buildings.map((building) => {
-          const id = String(building.id).toLowerCase();
-          const x = Math.min(100, Math.max(0, Number(building.masterplan_hotspot_x ?? 50)));
-          const y = Math.min(100, Math.max(0, Number(building.masterplan_hotspot_y ?? 50)));
-          const buildingName = lang === "es" ? building.name_es : building.name_en;
-          return (
-            <button
-              type="button"
-              class="masterplan-building absolute z-10 min-h-12 min-w-12 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white/90 bg-black/75 px-3 py-2 text-xs font-semibold text-white shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-              style={`left:${x}%;top:${y}%;`}
-              data-building-id={id}
-              aria-label={`${t(lang, "Open building", "Abrir bloque")} ${buildingName}`}
-            >
-              <span>{String(building.id).toUpperCase()}</span>
-              <span class="ml-1" data-building-count={id}>{buildingCounts.get(id) ?? 0}</span>
-            </button>
-          );
-        })}
-
-        {amenities.map((amenity) => {
-          const amenityId = String(amenity.id);
-          const x = Math.min(100, Math.max(0, Number(amenity.x ?? 50)));
-          const y = Math.min(100, Math.max(0, Number(amenity.y ?? 50)));
-          return (
-            <button
-              type="button"
-              class="masterplan-amenity absolute z-10 min-h-12 min-w-12 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-white/92 px-2 py-2 text-xs font-semibold text-black shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-              style={`left:${x}%;top:${y}%;`}
-              data-amenity-id={amenityId}
-              aria-label={lang === "es" ? amenity.label_es : amenity.label_en}
-            >
-              •
-            </button>
-          );
-        })}
-      </div>
-    </div>
-
-    <div class="masterplan-brief-grid">
-      <div id="building-panel" class="masterplan-panel masterplan-panel--primary overflow-hidden rounded-xl border p-4 sm:p-5">
-        <div class="masterplan-panel__top">
-          <div class="masterplan-panel__headline">
-            <p class="masterplan-panel__eyebrow">
-              {t(lang, "Building intelligence", "Inteligencia del bloque")}
-            </p>
-
-            <h2 id="building-name" class="text-xl font-semibold tracking-tight break-words">
-              {t(lang, "Select a building", "Selecciona un bloque")}
-            </h2>
-
-            <p id="building-meta" class="masterplan-panel__meta break-words">
-              {t(lang, "Select a building hotspot to view details.", "Selecciona un hotspot del bloque para ver los detalles.")}
-            </p>
+        <dl class="masterplan-premium-overview">
+          <div>
+            <dt>{t(lang, "Tower A", "Torre A")}</dt>
+            <dd>24</dd>
           </div>
-
-          <p class="masterplan-panel__badge">
-            {t(lang, "Live inventory", "Inventario en vivo")}
-          </p>
-        </div>
-
-        <dl class="masterplan-panel-stats masterplan-panel-stats--enhanced">
-          <div class="masterplan-panel-stat masterplan-panel-stat--available">
+          <div>
+            <dt>{t(lang, "Tower B", "Torre B")}</dt>
+            <dd>24</dd>
+          </div>
+          <div>
             <dt>{t(lang, "Available", "Disponible")}</dt>
-            <dd id="status-available">0</dd>
+            <dd>19</dd>
           </div>
-
-          <div class="masterplan-panel-stat">
-            <dt>{t(lang, "Reserved", "Reservada")}</dt>
-            <dd id="status-reserved">0</dd>
-          </div>
-
-          <div class="masterplan-panel-stat">
-            <dt>{t(lang, "Sold", "Vendida")}</dt>
-            <dd id="status-sold">0</dd>
-          </div>
-
-          <div class="masterplan-panel-stat">
-            <dt>{t(lang, "Coming soon", "Próximamente")}</dt>
-            <dd id="status-coming_soon">0</dd>
+          <div>
+            <dt>{t(lang, "From", "Desde")}</dt>
+            <dd>€320,000</dd>
           </div>
         </dl>
 
-        <div class="masterplan-cta-row cta-cluster cta-inline">
-          <a id="view-units-link" class="ui-btn ui-btn--primary cta-primary inline-flex items-center justify-between" href={`/${lang}/units/`}>
-            {t(lang, "Browse units", "Explorar unidades")}
+        <div class="masterplan-premium-card-actions">
+          <a class="masterplan-premium-button masterplan-premium-button--primary" href={`/${lang}/units/`}>
+            <span>{t(lang, "View available residences", "Ver residencias disponibles")}</span>
+            <span aria-hidden="true">→</span>
           </a>
 
-          <a id="contact-sales-link" class="ui-btn cta-secondary inline-flex items-center justify-between" href={`/${lang}/contact/?source=masterplan`}>
-            {t(lang, "Speak with sales", "Hablar con ventas")}
+          <a class="masterplan-premium-button masterplan-premium-button--secondary" href={`/${lang}/contact/`}>
+            <span>{t(lang, "Book a viewing", "Reservar visita")}</span>
+            <span aria-hidden="true">→</span>
           </a>
         </div>
+      </aside>
+    </header>
+
+    <section class="masterplan-premium-stage-shell" aria-labelledby="masterplan-stage-title">
+      <div class="masterplan-premium-stage-copy">
+        <p class="masterplan-premium-kicker">
+          {t(lang, "Plan intelligence", "Inteligencia del plano")}
+        </p>
+
+        <h2 id="masterplan-stage-title">
+          {t(lang, "Select a zone to read the residence logic", "Selecciona una zona para leer la lógica residencial")}
+        </h2>
+
+        <p>
+          {t(
+            lang,
+            "The stage highlights the main residential volumes, the calm garden buffer, arrival sequence and shared amenity layer.",
+            "La escena destaca los principales volúmenes residenciales, el jardín interior, la secuencia de llegada y la capa de servicios compartidos.",
+          )}
+        </p>
       </div>
 
-      <div id="amenity-panel" class="masterplan-panel masterplan-panel--secondary overflow-hidden rounded-xl border p-4 sm:p-5">
-        <div class="masterplan-panel__amenity-shell">
-          <p class="masterplan-panel__eyebrow">
-            {t(lang, "Amenity layer", "Capa de amenidades")}
+      <div class="masterplan-premium-stage" data-mp-stage data-active-zone="tower-a">
+        <div class="masterplan-premium-map" aria-label={t(lang, "Interactive masterplan map", "Mapa interactivo del masterplan")}>
+          <img
+            class="masterplan-premium-map__image"
+            src={masterplanImage}
+            alt={t(lang, "Atlas Residences masterplan", "Masterplan de Atlas Residences")}
+            loading="eager"
+            decoding="async"
+          />
+
+          <div class="masterplan-premium-map__grid" aria-hidden="true"></div>
+
+          <div class="masterplan-premium-zone masterplan-premium-zone--tower-a" aria-hidden="true">
+            <span>{t(lang, "Tower A", "Torre A")}</span>
+          </div>
+
+          <div class="masterplan-premium-zone masterplan-premium-zone--tower-b" aria-hidden="true">
+            <span>{t(lang, "Tower B", "Torre B")}</span>
+          </div>
+
+          <div class="masterplan-premium-zone masterplan-premium-zone--garden" aria-hidden="true">
+            <span>{t(lang, "Garden court", "Patio ajardinado")}</span>
+          </div>
+
+          <div class="masterplan-premium-zone masterplan-premium-zone--entry" aria-hidden="true">
+            <span>{t(lang, "Arrival", "Llegada")}</span>
+          </div>
+
+          <div class="masterplan-premium-zone masterplan-premium-zone--amenities" aria-hidden="true">
+            <span>{t(lang, "Amenities", "Servicios")}</span>
+          </div>
+
+          <button
+            type="button"
+            class="masterplan-premium-hotspot masterplan-premium-hotspot--tower-a is-active"
+            data-zone="tower-a"
+            data-title={t(lang, "Tower A", "Torre A")}
+            data-kicker={t(lang, "Residential volume", "Volumen residencial")}
+            data-description={t(
+              lang,
+              "A calm residential wing with morning light, garden proximity and a focused selection of one- and two-bedroom residences.",
+              "Un ala residencial tranquila con luz de mañana, proximidad al jardín y una selección enfocada de viviendas de uno y dos dormitorios.",
+            )}
+            data-residences="24"
+            data-available="11"
+            data-focus={t(lang, "Morning light", "Luz de mañana")}
+            data-orientation={t(lang, "City / garden", "Ciudad / jardín")}
+            aria-label={t(lang, "Select Tower A", "Seleccionar Torre A")}
+          >
+            <span>A</span>
+          </button>
+
+          <button
+            type="button"
+            class="masterplan-premium-hotspot masterplan-premium-hotspot--tower-b"
+            data-zone="tower-b"
+            data-title={t(lang, "Tower B", "Torre B")}
+            data-kicker={t(lang, "Residential volume", "Volumen residencial")}
+            data-description={t(
+              lang,
+              "A second residential wing oriented toward warmer evening light, upper views and a quieter internal rhythm.",
+              "Una segunda ala residencial orientada hacia la luz cálida de la tarde, vistas superiores y un ritmo interior más tranquilo.",
+            )}
+            data-residences="24"
+            data-available="8"
+            data-focus={t(lang, "Sunset aspect", "Orientación atardecer")}
+            data-orientation={t(lang, "Sea / courtyard", "Mar / patio")}
+            aria-label={t(lang, "Select Tower B", "Seleccionar Torre B")}
+          >
+            <span>B</span>
+          </button>
+
+          <button
+            type="button"
+            class="masterplan-premium-hotspot masterplan-premium-hotspot--garden"
+            data-zone="garden"
+            data-title={t(lang, "Garden court", "Patio ajardinado")}
+            data-kicker={t(lang, "Landscape buffer", "Filtro paisajístico")}
+            data-description={t(
+              lang,
+              "A planted internal court softens the arrival experience and creates a quieter threshold between residence, city and daily life.",
+              "Un patio interior ajardinado suaviza la experiencia de llegada y crea un umbral más tranquilo entre residencia, ciudad y vida diaria.",
+            )}
+            data-residences="—"
+            data-available="Shared"
+            data-focus={t(lang, "Calm arrival", "Llegada tranquila")}
+            data-orientation={t(lang, "Internal green", "Verde interior")}
+            aria-label={t(lang, "Select garden court", "Seleccionar patio ajardinado")}
+          >
+            <span>G</span>
+          </button>
+
+          <button
+            type="button"
+            class="masterplan-premium-hotspot masterplan-premium-hotspot--entry"
+            data-zone="entry"
+            data-title={t(lang, "Main arrival", "Llegada principal")}
+            data-kicker={t(lang, "Private access", "Acceso privado")}
+            data-description={t(
+              lang,
+              "The arrival point is planned as a clear and quiet sequence for residents, visitors and private viewing appointments.",
+              "El punto de llegada se plantea como una secuencia clara y tranquila para residentes, visitantes y visitas privadas.",
+            )}
+            data-residences="—"
+            data-available="Access"
+            data-focus={t(lang, "Drop-off", "Acceso")}
+            data-orientation={t(lang, "Street / lobby", "Calle / lobby")}
+            aria-label={t(lang, "Select main arrival", "Seleccionar llegada principal")}
+          >
+            <span>E</span>
+          </button>
+
+          <button
+            type="button"
+            class="masterplan-premium-hotspot masterplan-premium-hotspot--amenities"
+            data-zone="amenities"
+            data-title={t(lang, "Amenities level", "Nivel de servicios")}
+            data-kicker={t(lang, "Shared residence layer", "Capa residencial compartida")}
+            data-description={t(
+              lang,
+              "Shared residence services support everyday comfort, including wellness, storage and private resident functions.",
+              "Los servicios residenciales compartidos apoyan la comodidad diaria, incluyendo bienestar, almacenamiento y funciones privadas para residentes.",
+            )}
+            data-residences="Shared"
+            data-available="Resident"
+            data-focus={t(lang, "Wellness / storage", "Bienestar / almacenamiento")}
+            data-orientation={t(lang, "Lower level", "Nivel inferior")}
+            aria-label={t(lang, "Select amenities level", "Seleccionar nivel de servicios")}
+          >
+            <span>+</span>
+          </button>
+        </div>
+
+        <aside class="masterplan-premium-panel" aria-live="polite">
+          <p class="masterplan-premium-card-kicker" data-mp-panel-kicker>
+            {t(lang, "Residential volume", "Volumen residencial")}
           </p>
 
-          <h3 id="amenity-name" class="text-lg font-semibold break-words">
-            {t(lang, "Amenity", "Amenidad")}
+          <h3 data-mp-panel-title>
+            {t(lang, "Tower A", "Torre A")}
           </h3>
 
-          <p id="amenity-category" class="masterplan-panel__meta break-words">
-            {t(lang, "Select an amenity hotspot for details.", "Selecciona un hotspot de amenidad para ver detalles.")}
-          </p>
-
-          <p class="masterplan-panel__amenity-copy">
+          <p data-mp-panel-description>
             {t(
               lang,
-              "Select an amenity hotspot to understand the daily setting around the residences.",
-              "Selecciona un hotspot de amenidad para entender el entorno cotidiano de las residencias.",
+              "A calm residential wing with morning light, garden proximity and a focused selection of one- and two-bedroom residences.",
+              "Un ala residencial tranquila con luz de mañana, proximidad al jardín y una selección enfocada de viviendas de uno y dos dormitorios.",
             )}
           </p>
-        </div>
+
+          <dl class="masterplan-premium-panel__facts">
+            <div>
+              <dt>{t(lang, "Residences", "Residencias")}</dt>
+              <dd data-mp-panel-residences>24</dd>
+            </div>
+            <div>
+              <dt>{t(lang, "Available", "Disponible")}</dt>
+              <dd data-mp-panel-available>11</dd>
+            </div>
+            <div>
+              <dt>{t(lang, "Focus", "Enfoque")}</dt>
+              <dd data-mp-panel-focus>{t(lang, "Morning light", "Luz de mañana")}</dd>
+            </div>
+            <div>
+              <dt>{t(lang, "Orientation", "Orientación")}</dt>
+              <dd data-mp-panel-orientation>{t(lang, "City / garden", "Ciudad / jardín")}</dd>
+            </div>
+          </dl>
+
+          <div class="masterplan-premium-panel__actions">
+            <a class="masterplan-premium-button masterplan-premium-button--primary" href={`/${lang}/units/`}>
+              <span>{t(lang, "Browse units", "Ver unidades")}</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </aside>
       </div>
-    </div>
+    </section>
+
+    <section class="masterplan-premium-zone-rail" aria-label={t(lang, "Masterplan zones", "Zonas del masterplan")}>
+      <button type="button" class="masterplan-premium-zone-button is-active" data-zone="tower-a">
+        <span>{t(lang, "Tower A", "Torre A")}</span>
+        <em>11 {t(lang, "available", "disponibles")}</em>
+      </button>
+
+      <button type="button" class="masterplan-premium-zone-button" data-zone="tower-b">
+        <span>{t(lang, "Tower B", "Torre B")}</span>
+        <em>8 {t(lang, "available", "disponibles")}</em>
+      </button>
+
+      <button type="button" class="masterplan-premium-zone-button" data-zone="garden">
+        <span>{t(lang, "Garden court", "Patio ajardinado")}</span>
+        <em>{t(lang, "shared calm", "calma compartida")}</em>
+      </button>
+
+      <button type="button" class="masterplan-premium-zone-button" data-zone="entry">
+        <span>{t(lang, "Arrival", "Llegada")}</span>
+        <em>{t(lang, "private access", "acceso privado")}</em>
+      </button>
+
+      <button type="button" class="masterplan-premium-zone-button" data-zone="amenities">
+        <span>{t(lang, "Amenities", "Servicios")}</span>
+        <em>{t(lang, "resident layer", "capa residencial")}</em>
+      </button>
+    </section>
+
+    <footer class="masterplan-premium-cta">
+      <div>
+        <p class="masterplan-premium-kicker">
+          {t(lang, "Next step", "Siguiente paso")}
+        </p>
+
+        <h2>
+          {t(lang, "Choose a residence from the plan logic", "Elige una residencia desde la lógica del plano")}
+        </h2>
+      </div>
+
+      <div class="masterplan-premium-cta__actions">
+        <a class="masterplan-premium-button masterplan-premium-button--primary" href={`/${lang}/units/`}>
+          <span>{t(lang, "View available residences", "Ver residencias disponibles")}</span>
+          <span aria-hidden="true">→</span>
+        </a>
+
+        <a class="masterplan-premium-button masterplan-premium-button--secondary" href={`/${lang}/contact/`}>
+          <span>{t(lang, "Book a private viewing", "Reservar visita privada")}</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </footer>
   </section>
-  <StickyCTA lang={lang} />
-</BaseLayout>
 
-<script id="masterplan-data" type="application/json" set:html={JSON.stringify({
-  lang,
-  buildings: buildings.map((building) => ({
-    id: String(building.id).toLowerCase(),
-    name: lang === "es" ? building.name_es : building.name_en,
-    floors: building.floors ?? "",
-    deliveryDate: building.delivery_date ?? "",
-  })),
-  amenities: amenities.map((amenity) => ({
-    id: String(amenity.id),
-    label: lang === "es" ? amenity.label_es : amenity.label_en,
-    category: amenityCategoryText(amenity.category),
-  })),
-  units: normalizedUnits,
-  labels: {
-    floors: t(lang, "Floors", "Plantas"),
-    delivery: t(lang, "Delivery", "Entrega"),
-    noData: t(lang, "n/a", "n/d"),
-    selectBuilding: t(lang, "Select a building", "Selecciona un bloque"),
-  },
-})} />
-
-<script is:inline>
+  <script is:inline>
   (() => {
-    const dataEl = document.getElementById("masterplan-data");
-    if (!dataEl) return;
-    const data = JSON.parse(dataEl.textContent || "{}");
+    const root = document.querySelector(".masterplan-premium-shell");
+    if (!root) return;
 
-    const allowedBeds = new Set(["all", "1", "2", "3", "4"]);
-    const allowedStatus = new Set(["all", "available", "reserved", "sold", "coming_soon"]);
+    const stage = root.querySelector("[data-mp-stage]");
+    const hotspotButtons = Array.from(root.querySelectorAll(".masterplan-premium-hotspot"));
+    const zoneButtons = Array.from(root.querySelectorAll(".masterplan-premium-zone-button"));
 
-    const params = new URLSearchParams(window.location.search);
-    const filters = {
-      beds: allowedBeds.has(params.get("beds") || "") ? (params.get("beds") || "all") : "all",
-      status: allowedStatus.has(params.get("status") || "") ? (params.get("status") || "all") : "all",
-      building: (params.get("building") || "").toLowerCase(),
+    const panel = {
+      kicker: root.querySelector("[data-mp-panel-kicker]"),
+      title: root.querySelector("[data-mp-panel-title]"),
+      description: root.querySelector("[data-mp-panel-description]"),
+      residences: root.querySelector("[data-mp-panel-residences]"),
+      available: root.querySelector("[data-mp-panel-available]"),
+      focus: root.querySelector("[data-mp-panel-focus]"),
+      orientation: root.querySelector("[data-mp-panel-orientation]"),
     };
 
-    const buildQuery = (next) => {
-      const query = new URLSearchParams();
-      if (next.beds && next.beds !== "all") query.set("beds", next.beds);
-      if (next.status && next.status !== "all") query.set("status", next.status);
-      if (next.building) query.set("building", next.building);
-      const qs = query.toString();
-      return `${window.location.pathname}${qs ? `?${qs}` : ""}`;
+    const allControls = [...hotspotButtons, ...zoneButtons];
+
+    const findSource = (zone) => hotspotButtons.find((button) => button.dataset.zone === zone);
+
+    const setActiveZone = (zone) => {
+      const source = findSource(zone);
+      if (!source || !stage) return;
+
+      stage.dataset.activeZone = zone;
+
+      allControls.forEach((button) => {
+        button.classList.toggle("is-active", button.dataset.zone === zone);
+      });
+
+      if (panel.kicker) panel.kicker.textContent = source.dataset.kicker || "";
+      if (panel.title) panel.title.textContent = source.dataset.title || "";
+      if (panel.description) panel.description.textContent = source.dataset.description || "";
+      if (panel.residences) panel.residences.textContent = source.dataset.residences || "";
+      if (panel.available) panel.available.textContent = source.dataset.available || "";
+      if (panel.focus) panel.focus.textContent = source.dataset.focus || "";
+      if (panel.orientation) panel.orientation.textContent = source.dataset.orientation || "";
     };
 
-    const updateFilterLinks = () => {
-      document.querySelectorAll("[data-filter]").forEach((group) => {
-        const key = group.getAttribute("data-filter");
-        group.querySelectorAll("a[data-value]").forEach((link) => {
-          const value = link.getAttribute("data-value") || "all";
-          const next = { ...filters, [key]: value };
-          link.setAttribute("href", buildQuery(next));
-          const active = filters[key] === value;
-          link.classList.toggle("is-active", active);
-        });
-      });
-    };
-
-    const getFilteredUnits = () => data.units.filter((unit) => {
-      const bedsMatch = filters.beds === "all" || unit.beds === filters.beds;
-      const statusMatch = filters.status === "all" || unit.status === filters.status;
-      return bedsMatch && statusMatch;
-    });
-
-    const updateBuildingCounts = (filteredUnits) => {
-      const counts = {};
-      filteredUnits.forEach((unit) => {
-        counts[unit.buildingId] = (counts[unit.buildingId] || 0) + 1;
-      });
-      document.querySelectorAll("[data-building-count]").forEach((el) => {
-        const id = el.getAttribute("data-building-count") || "";
-        el.textContent = String(counts[id] || 0);
-      });
-    };
-
-    const updateBuildingPanel = (buildingId, filteredUnits) => {
-      const building = data.buildings.find((item) => item.id === buildingId);
-      if (!building) return;
-
-      document.getElementById("building-name").textContent = building.name;
-      const floors = building.floors || data.labels.noData;
-      const delivery = building.deliveryDate || data.labels.noData;
-      document.getElementById("building-meta").textContent = `${data.labels.floors}: ${floors} · ${data.labels.delivery}: ${delivery}`;
-
-      const scoped = filteredUnits.filter((unit) => unit.buildingId === buildingId);
-      const statuses = { available: 0, reserved: 0, sold: 0, coming_soon: 0 };
-      scoped.forEach((unit) => {
-        if (Object.prototype.hasOwnProperty.call(statuses, unit.status)) statuses[unit.status] += 1;
-      });
-      Object.entries(statuses).forEach(([status, count]) => {
-        const node = document.getElementById(`status-${status}`);
-        if (node) node.textContent = String(count);
-      });
-
-      const unitsLink = document.getElementById("view-units-link");
-      if (unitsLink) unitsLink.setAttribute("href", `/${data.lang}/units/${buildQuery({ ...filters, building: buildingId }).replace(window.location.pathname, "")}`);
-
-      const contactLink = document.getElementById("contact-sales-link");
-      if (contactLink) {
-        const query = new URLSearchParams({ source: "masterplan" });
-        if (buildingId) query.set("building", buildingId);
-        contactLink.setAttribute("href", `/${data.lang}/contact/?${query.toString()}`);
-      }
-
-      document.querySelectorAll(".masterplan-building").forEach((button) => {
-        const active = button.getAttribute("data-building-id") === buildingId;
-        button.classList.toggle("ring-2", active);
-        button.classList.toggle("ring-black", active);
-      });
-    };
-
-    const updateAmenityPanel = (amenityId) => {
-      const amenity = data.amenities.find((item) => item.id === amenityId);
-      if (!amenity) return;
-      const name = document.getElementById("amenity-name");
-      const category = document.getElementById("amenity-category");
-      if (name) name.textContent = amenity.label;
-      if (category) category.textContent = amenity.category;
-    };
-
-    const filteredUnits = getFilteredUnits();
-    updateFilterLinks();
-    updateBuildingCounts(filteredUnits);
-
-    const initialBuilding = filters.building || (data.buildings[0]?.id || "");
-    if (initialBuilding) updateBuildingPanel(initialBuilding, filteredUnits);
-
-    document.querySelectorAll(".masterplan-building").forEach((button) => {
+    allControls.forEach((button) => {
       button.addEventListener("click", () => {
-        const buildingId = button.getAttribute("data-building-id") || "";
-        filters.building = buildingId;
-        updateBuildingPanel(buildingId, filteredUnits);
-      });
-    });
-
-    document.querySelectorAll(".masterplan-amenity").forEach((button) => {
-      button.addEventListener("click", () => {
-        const amenityId = button.getAttribute("data-amenity-id") || "";
-        updateAmenityPanel(amenityId);
+        const zone = button.dataset.zone;
+        if (zone) setActiveZone(zone);
       });
     });
   })();
 </script>
+
+</BaseLayout>
