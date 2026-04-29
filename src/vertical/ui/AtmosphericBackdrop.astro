@@ -1,0 +1,480 @@
+---
+const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<div class="atmo-backdrop" data-atmo-root id={backdropId} aria-hidden="true">
+  <canvas class="atmo-backdrop__canvas" data-atmo-canvas></canvas>
+  <div class="atmo-backdrop__veil"></div>
+  <div class="atmo-backdrop__grain"></div>
+</div>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector("[data-atmo-root]");
+    if (!(root instanceof HTMLElement)) return;
+
+    const canvas = root.querySelector("[data-atmo-canvas]");
+    if (!(canvas instanceof HTMLCanvasElement)) return;
+
+    const ctx = canvas.getContext("2d", { alpha: true });
+    if (!ctx) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isSmallViewport = window.matchMedia("(max-width: 767px)").matches;
+
+    document.body.setAttribute("data-atmo-active", "true");
+
+    let raf = 0;
+    let viewportWidth = 0;
+    let viewportHeight = 0;
+    let quality = 1;
+
+    let pointerX = 0.5;
+    let pointerY = 0.32;
+    let targetX = 0.5;
+    let targetY = 0.32;
+
+    let moodTarget = 0;
+    let moodSoft = 0;
+
+    let lastFrame = 0;
+    const frameInterval = reducedMotion ? 1000 : 50; // ~20fps, enough for slow premium sky
+
+    const cloudBands = [
+      { y: 0.18, speed: 0.15, scale: 0.24, alpha: 0.18, blur: 30, drift: 0.01, tint: "255,255,255" },
+      { y: 0.34, speed: 0.10, scale: 0.36, alpha: 0.15, blur: 42, drift: 0.007, tint: "245,247,250" },
+      { y: 0.54, speed: 0.07, scale: 0.48, alpha: 0.11, blur: 54, drift: 0.005, tint: "236,240,246" },
+    ];
+
+    function clamp(value, min, max) {
+      return Math.min(max, Math.max(min, value));
+    }
+
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    function mixRgb(a, b, t) {
+      return [
+        Math.round(lerp(a[0], b[0], t)),
+        Math.round(lerp(a[1], b[1], t)),
+        Math.round(lerp(a[2], b[2], t)),
+      ];
+    }
+
+    function rgb(color) {
+      return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+    }
+
+    function rgba(color, alpha) {
+      return `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${alpha})`;
+    }
+
+    function smoothstep(edge0, edge1, x) {
+      const t = clamp((x - edge0) / (edge1 - edge0), 0, 1);
+      return t * t * (3 - 2 * t);
+    }
+
+    function getSkyPalette(mood) {
+      // 0 = morning, ~0.55 = blue hour, 1 = sunset
+      const morning = {
+        top: [202, 218, 238],
+        mid: [224, 233, 244],
+        low: [243, 239, 232],
+        warm: [255, 235, 204],
+        cool: [190, 214, 243],
+      };
+
+      const bluehour = {
+        top: [142, 166, 202],
+        mid: [181, 196, 220],
+        low: [230, 220, 210],
+        warm: [255, 219, 180],
+        cool: [150, 176, 215],
+      };
+
+      const sunset = {
+        // Dusk / soft night target, matched to the blue-hour hero photo.
+        // Keeps warm residential haze low on the page, but removes the daytime blue-white wash.
+        top: [58, 76, 112],
+        mid: [92, 108, 146],
+        low: [210, 199, 188],
+        warm: [232, 168, 118],
+        cool: [62, 90, 142],
+      };
+
+      if (mood <= 0.55) {
+        const t = smoothstep(0, 0.55, mood);
+        return {
+          top: mixRgb(morning.top, bluehour.top, t),
+          mid: mixRgb(morning.mid, bluehour.mid, t),
+          low: mixRgb(morning.low, bluehour.low, t),
+          warm: mixRgb(morning.warm, bluehour.warm, t),
+          cool: mixRgb(morning.cool, bluehour.cool, t),
+        };
+      }
+
+      const t = smoothstep(0.55, 1, mood);
+      return {
+        top: mixRgb(bluehour.top, sunset.top, t),
+        mid: mixRgb(bluehour.mid, sunset.mid, t),
+        low: mixRgb(bluehour.low, sunset.low, t),
+        warm: mixRgb(bluehour.warm, sunset.warm, t),
+        cool: mixRgb(bluehour.cool, sunset.cool, t),
+      };
+    }
+
+    function readNumber(value) {
+      const number = Number.parseFloat(String(value || "").trim());
+      return Number.isFinite(number) ? number : null;
+    }
+
+    const MOOD_STORAGE_KEY = "atlas-residences:sun-mood";
+    const MOOD_EVENT = "atlas-residences:sun-mood-change";
+
+    function readStoredMood() {
+      try {
+        const raw = window.localStorage?.getItem(MOOD_STORAGE_KEY);
+        if (raw == null) return null;
+
+        const value = Number.parseFloat(raw);
+        return Number.isFinite(value) ? clamp(value, 0, 1) : null;
+      } catch {
+        return null;
+      }
+    }
+
+    function applyBackdropMoodGlobals(rawMood, visualMood = rawMood) {
+      const raw = clamp(rawMood, 0, 1);
+      const visual = clamp(visualMood, 0, 1);
+
+      document.documentElement.style.setProperty("--atlas-sun-mood", raw.toFixed(3));
+      document.documentElement.style.setProperty("--atmo-mood", visual.toFixed(3));
+
+      if (document.body) {
+        document.body.style.setProperty("--atlas-sun-mood", raw.toFixed(3));
+        document.body.style.setProperty("--atmo-mood", visual.toFixed(3));
+        document.body.setAttribute("data-sun-mood", raw.toFixed(2));
+        document.body.setAttribute("data-atmo-visual-mood", visual.toFixed(2));
+      }
+    }
+
+    function readHeroMood() {
+      // Best path: read SunHero / HeroStage CSS vars if present.
+      const candidates = Array.from(
+        document.querySelectorAll(
+          '[style*="--sun"], [data-sun-hero], [data-hero-stage], .sun-hero, .sun-hero-frame'
+        )
+      );
+
+      for (const element of candidates) {
+        if (!(element instanceof HTMLElement)) continue;
+
+        const styles = getComputedStyle(element);
+
+        const sun = readNumber(styles.getPropertyValue("--sun"));
+        const blue = readNumber(styles.getPropertyValue("--bluehour-opacity"));
+        const sunset = readNumber(styles.getPropertyValue("--sunset-opacity"));
+
+        if (sun !== null && sun >= 0 && sun <= 1) {
+          return clamp(sun, 0, 1);
+        }
+
+        if (blue !== null || sunset !== null) {
+          return clamp((blue || 0) * 0.55 + (sunset || 0), 0, 1);
+        }
+      }
+
+      // Fallback path: read the visible hero slider input if CSS vars are not available.
+      const range = document.querySelector(
+        '.sun-hero input[type="range"], [data-sun-hero] input[type="range"], input[type="range"][aria-label*="sun" i]'
+      );
+
+      if (range instanceof HTMLInputElement) {
+        const min = Number.parseFloat(range.min || "0");
+        const max = Number.parseFloat(range.max || "100");
+        const value = Number.parseFloat(range.value || "0");
+
+        if (Number.isFinite(min) && Number.isFinite(max) && Number.isFinite(value) && max > min) {
+          return clamp((value - min) / (max - min), 0, 1);
+        }
+      }
+
+      const storedMood = readStoredMood();
+      return storedMood === null ? 0 : storedMood;
+    }
+
+    function resize() {
+      viewportWidth = window.innerWidth;
+      viewportHeight = window.innerHeight;
+
+      // Fix clipping: canvas is always viewport-sized in CSS.
+      // Performance: internal resolution can be lower than device DPR on large screens.
+      const maxRenderWidth = 1920;
+      const maxRenderHeight = 1180;
+      const baseDpr = Math.min(window.devicePixelRatio || 1, 1.2);
+      const capScale = Math.min(
+        1,
+        maxRenderWidth / Math.max(1, viewportWidth),
+        maxRenderHeight / Math.max(1, viewportHeight)
+      );
+
+      quality = Math.max(0.72, baseDpr * capScale);
+
+      canvas.width = Math.round(viewportWidth * quality);
+      canvas.height = Math.round(viewportHeight * quality);
+      canvas.style.width = "100vw";
+      canvas.style.height = "100vh";
+
+      ctx.setTransform(quality, 0, 0, quality, 0, 0);
+    }
+
+    function drawEllipseCloud(x, y, size, alpha, blur, tint) {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.filter = `blur(${blur}px)`;
+      ctx.fillStyle = `rgba(${tint}, 1)`;
+
+      for (let i = 0; i < 3; i += 1) {
+        const rx = size * (0.56 + i * 0.1);
+        const ry = size * (0.22 + i * 0.035);
+        const ox = (i - 1) * size * 0.34;
+        const oy = Math.sin(i * 0.9) * size * 0.035;
+
+        ctx.beginPath();
+        ctx.ellipse(x + ox, y + oy, rx, ry, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+    }
+
+    function drawSkyBase(palette, mood) {
+      const base = ctx.createLinearGradient(0, 0, 0, viewportHeight);
+      base.addColorStop(0, rgb(palette.top));
+      base.addColorStop(0.34, rgb(palette.mid));
+      base.addColorStop(0.72, rgb(palette.low));
+      base.addColorStop(1, rgb(palette.low));
+
+      ctx.fillStyle = base;
+      ctx.fillRect(0, 0, viewportWidth, viewportHeight);
+
+      const warmHaze = ctx.createRadialGradient(
+        viewportWidth * 0.18,
+        viewportHeight * 0.22,
+        0,
+        viewportWidth * 0.18,
+        viewportHeight * 0.22,
+        viewportWidth * 0.68
+      );
+      warmHaze.addColorStop(0, rgba(palette.warm, lerp(0.24, 0.38, mood)));
+      warmHaze.addColorStop(0.48, rgba(palette.warm, lerp(0.10, 0.17, mood)));
+      warmHaze.addColorStop(1, rgba(palette.warm, 0));
+
+      ctx.fillStyle = warmHaze;
+      ctx.fillRect(0, 0, viewportWidth, viewportHeight);
+
+      const coolSky = ctx.createRadialGradient(
+        viewportWidth * 0.80,
+        viewportHeight * 0.15,
+        0,
+        viewportWidth * 0.80,
+        viewportHeight * 0.15,
+        viewportWidth * 0.62
+      );
+      coolSky.addColorStop(0, rgba(palette.cool, lerp(0.28, 0.20, mood)));
+      coolSky.addColorStop(0.46, rgba(palette.cool, lerp(0.10, 0.08, mood)));
+      coolSky.addColorStop(1, rgba(palette.cool, 0));
+
+      ctx.fillStyle = coolSky;
+      ctx.fillRect(0, 0, viewportWidth, viewportHeight);
+    }
+
+    function drawLightBloom(palette, time, mood) {
+      // Soft atmospheric bloom only. It fades as the slider moves toward night.
+      const driftX = Math.sin(time * 0.18) * 0.018;
+      const driftY = Math.cos(time * 0.14) * 0.012;
+
+      const glowX = viewportWidth * clamp(0.20 + mood * 0.12 + driftX + (pointerX - 0.5) * 0.03, 0.12, 0.46);
+      const glowY = viewportHeight * clamp(0.18 + mood * 0.06 + driftY + (pointerY - 0.35) * 0.02, 0.12, 0.34);
+
+      const bloom = ctx.createRadialGradient(glowX, glowY, 0, glowX, glowY, viewportWidth * lerp(0.34, 0.44, mood));
+      bloom.addColorStop(0, rgba(palette.warm, lerp(0.24, 0.14, mood)));
+      bloom.addColorStop(0.34, rgba(palette.warm, lerp(0.11, 0.07, mood)));
+      bloom.addColorStop(1, rgba(palette.warm, 0));
+
+      ctx.fillStyle = bloom;
+      ctx.fillRect(0, 0, viewportWidth, viewportHeight);
+    }
+
+    function drawCloudBands(time, mood) {
+      cloudBands.forEach((band, bandIndex) => {
+        const baseY =
+          viewportHeight * (band.y + mood * 0.035) +
+          Math.sin(time * band.speed + bandIndex) * viewportHeight * 0.014;
+
+        const parallax = (pointerX - 0.5) * viewportWidth * (0.012 + bandIndex * 0.004);
+
+        for (let i = -1; i < 3; i += 1) {
+          const progress = (time * band.drift + i * 0.42 + bandIndex * 0.16) % 1.7;
+          const x = progress * viewportWidth - viewportWidth * 0.34 + parallax;
+          const y = baseY + Math.cos(time * 0.2 + i + bandIndex) * viewportHeight * 0.01;
+          const size = Math.min(viewportWidth, viewportHeight) * band.scale;
+          const alpha = band.alpha * lerp(1, 0.68, mood);
+
+          drawEllipseCloud(x, y, size, alpha, band.blur, band.tint);
+        }
+      });
+    }
+
+    function drawDepthMist(palette, mood) {
+      // Morning can stay milkier; dusk/night must not wash the whole page back to white.
+      const horizon = ctx.createLinearGradient(0, viewportHeight * 0.42, 0, viewportHeight);
+      horizon.addColorStop(0, "rgba(255,255,255,0)");
+      horizon.addColorStop(0.44, rgba(palette.low, lerp(0.10, 0.08, mood)));
+      horizon.addColorStop(0.78, rgba(palette.low, lerp(0.28, 0.18, mood)));
+      horizon.addColorStop(1, rgba(palette.low, lerp(0.42, 0.26, mood)));
+
+      ctx.fillStyle = horizon;
+      ctx.fillRect(0, 0, viewportWidth, viewportHeight);
+    }
+
+    function drawNightMoodVeil(mood) {
+      if (mood <= 0.02) return;
+
+      ctx.save();
+
+      const topVeil = ctx.createLinearGradient(0, 0, 0, viewportHeight);
+      topVeil.addColorStop(0, `rgba(28, 42, 72, ${0.04 + mood * 0.24})`);
+      topVeil.addColorStop(0.48, `rgba(42, 54, 84, ${mood * 0.12})`);
+      topVeil.addColorStop(1, `rgba(98, 72, 62, ${mood * 0.06})`);
+
+      ctx.globalCompositeOperation = "multiply";
+      ctx.fillStyle = topVeil;
+      ctx.fillRect(0, 0, viewportWidth, viewportHeight);
+
+      ctx.restore();
+
+      ctx.save();
+
+      const coolWash = ctx.createRadialGradient(
+        viewportWidth * 0.78,
+        viewportHeight * 0.08,
+        0,
+        viewportWidth * 0.78,
+        viewportHeight * 0.08,
+        viewportWidth * 0.74
+      );
+
+      coolWash.addColorStop(0, `rgba(74, 104, 160, ${mood * 0.18})`);
+      coolWash.addColorStop(0.46, `rgba(66, 84, 132, ${mood * 0.10})`);
+      coolWash.addColorStop(1, "rgba(66, 84, 132, 0)");
+
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = coolWash;
+      ctx.fillRect(0, 0, viewportWidth, viewportHeight);
+
+      ctx.restore();
+    }
+
+    function render(ms) {
+      if (ms - lastFrame < frameInterval) {
+        raf = window.requestAnimationFrame(render);
+        return;
+      }
+
+      lastFrame = ms;
+
+      const time = ms * 0.00018;
+
+      moodTarget = readHeroMood();
+      moodSoft += (moodTarget - moodSoft) * 0.08;
+
+      pointerX += (targetX - pointerX) * 0.024;
+      pointerY += (targetY - pointerY) * 0.024;
+
+      // Visual mood is intentionally more cinematic than raw slider value.
+      // Around the middle of the Hero slider, the backdrop should already feel like blue hour.
+      const visualMood = smoothstep(0.08, 0.78, moodSoft);
+      const palette = getSkyPalette(visualMood);
+
+      ctx.clearRect(0, 0, viewportWidth, viewportHeight);
+
+      drawSkyBase(palette, visualMood);
+      drawLightBloom(palette, time, visualMood);
+      drawCloudBands(time, visualMood);
+      drawDepthMist(palette, visualMood);
+      drawNightMoodVeil(visualMood);
+
+      applyBackdropMoodGlobals(moodSoft, visualMood);
+
+      if (!reducedMotion) {
+        raf = window.requestAnimationFrame(render);
+      }
+    }
+
+    function onPointerMove(event) {
+      targetX = clamp(event.clientX / Math.max(1, window.innerWidth), 0, 1);
+      targetY = clamp(event.clientY / Math.max(1, window.innerHeight), 0, 1);
+    }
+
+    function onVisibility() {
+      if (document.hidden) {
+        if (raf) window.cancelAnimationFrame(raf);
+        raf = 0;
+      } else if (!reducedMotion && !raf) {
+        lastFrame = 0;
+        raf = window.requestAnimationFrame(render);
+      }
+    }
+
+    function onMoodEvent(event) {
+      const value = Number(event?.detail?.value);
+      if (!Number.isFinite(value)) return;
+
+      moodTarget = clamp(value, 0, 1);
+    }
+
+    function onMoodStorage(event) {
+      if (event.key !== MOOD_STORAGE_KEY) return;
+
+      const value = readStoredMood();
+      if (value === null) return;
+
+      moodTarget = value;
+    }
+
+    const initialStoredMood = readStoredMood();
+
+    if (initialStoredMood !== null) {
+      moodTarget = initialStoredMood;
+      moodSoft = initialStoredMood;
+      applyBackdropMoodGlobals(moodSoft, smoothstep(0.08, 0.78, moodSoft));
+    }
+
+    resize();
+    render(0);
+
+    if (!reducedMotion) {
+      raf = window.requestAnimationFrame(render);
+    }
+
+    if (!isSmallViewport) {
+      window.addEventListener("pointermove", onPointerMove, { passive: true });
+    }
+
+    window.addEventListener("resize", resize, { passive: true });
+    window.addEventListener(MOOD_EVENT, onMoodEvent);
+    window.addEventListener("storage", onMoodStorage);
+    document.addEventListener("visibilitychange", onVisibility);
+
+    window.addEventListener("beforeunload", () => {
+      if (raf) window.cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("resize", resize);
+      window.removeEventListener(MOOD_EVENT, onMoodEvent);
+      window.removeEventListener("storage", onMoodStorage);
+      document.removeEventListener("visibilitychange", onVisibility);
+    });
+  })();
+</script>
