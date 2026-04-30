@@ -9393,3 +9393,608 @@ body:has(.masterplan-premium-shell) .awards-main-flow {
 .masterplan-premium-panel {
   z-index: 7 !important;
 }
+
+/* ==========================================================================
+   Masterplan Feature Stage v2 — Manual Premium Composition Pass
+   Larger plan / lighter panel / architectural overlays / compact legend rail
+   ========================================================================== */
+
+body:has(.masterplan-premium-shell) {
+  --masterplan-shell: min(76rem, calc(100dvw - 4.5rem));
+  --mp-stage-radius: clamp(1.45rem, 1.9vw, 1.9rem);
+  --mp-map-height: clamp(40rem, 58vw, 52rem);
+}
+
+/* Keep header + page on one force line */
+body:has(.masterplan-premium-shell) [data-header-shell],
+body:has(.masterplan-premium-shell) .site-header__shell,
+body:has(.masterplan-premium-shell) .awards-header__shell,
+body:has(.masterplan-premium-shell) .header-shell,
+body:has(.masterplan-premium-shell) nav[aria-label="Primary"] {
+  width: var(--masterplan-shell) !important;
+  max-width: var(--masterplan-shell) !important;
+  margin-inline: auto !important;
+}
+
+.masterplan-premium-shell {
+  width: var(--masterplan-shell) !important;
+  max-width: var(--masterplan-shell) !important;
+  gap: clamp(1rem, 1.65vw, 1.45rem) !important;
+}
+
+/* 01 / Hero: slightly calmer so the stage becomes the hero of the page */
+.masterplan-premium-hero {
+  padding: clamp(1.15rem, 2vw, 1.8rem) !important;
+}
+
+.masterplan-premium-hero__copy {
+  min-height: clamp(16rem, 24vw, 22rem) !important;
+}
+
+.masterplan-premium-title {
+  max-width: 11.5ch !important;
+  font-size: clamp(3.65rem, 6.3vw, 6.25rem) !important;
+}
+
+.masterplan-premium-lede {
+  max-width: 38rem !important;
+}
+
+.masterplan-premium-signals {
+  margin-top: clamp(1.1rem, 2vw, 1.55rem) !important;
+}
+
+/* 02 / Stage shell: give the actual plan more space */
+.masterplan-premium-stage-shell {
+  grid-template-columns: minmax(13.5rem, 0.23fr) minmax(0, 1fr) !important;
+  gap: clamp(0.9rem, 1.65vw, 1.25rem) !important;
+  padding: clamp(0.95rem, 1.55vw, 1.25rem) !important;
+  border-radius: var(--mp-stage-radius) !important;
+}
+
+.masterplan-premium-stage-copy {
+  padding: clamp(0.45rem, 0.8vw, 0.75rem) !important;
+  justify-content: end !important;
+}
+
+.masterplan-premium-stage-copy h2 {
+  max-width: 9.8ch !important;
+  font-size: clamp(2.55rem, 4.2vw, 4.55rem) !important;
+}
+
+.masterplan-premium-stage-copy p:not(.masterplan-premium-kicker) {
+  max-width: 21rem !important;
+  font-size: 0.92rem !important;
+}
+
+/* 03 / Interactive stage: plan-first composition */
+.masterplan-premium-stage {
+  min-height: var(--mp-map-height) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.45fr) minmax(14.75rem, 0.31fr) !important;
+  gap: clamp(0.75rem, 1.15vw, 1rem) !important;
+  padding: clamp(0.78rem, 1.15vw, 1rem) !important;
+  border-radius: 1.35rem !important;
+  overflow: visible !important;
+  background:
+    radial-gradient(circle at 52% 18%, rgba(255, 255, 255, 0.50), transparent 36%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.13)),
+    rgba(255, 255, 255, 0.10) !important;
+}
+
+/* 04 / Plan plate: make the drawing the main object */
+.masterplan-premium-map {
+  position: relative !important;
+  inset: auto !important;
+  min-height: calc(var(--mp-map-height) - 2rem) !important;
+  width: 100% !important;
+  border-radius: 1.15rem !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.60), transparent 58%),
+    linear-gradient(135deg, rgba(255, 252, 246, 0.90), rgba(235, 228, 218, 0.44)),
+    rgba(255, 255, 255, 0.18) !important;
+  border: 1px solid rgba(255, 255, 255, 0.56) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.72) inset,
+    0 16px 42px rgba(18, 20, 24, 0.065) !important;
+}
+
+/* Real masterplan image must be visible and clean */
+.masterplan-premium-map__image {
+  position: absolute !important;
+  inset: clamp(0.55rem, 0.95vw, 0.85rem) !important;
+  z-index: 1 !important;
+  width: calc(100% - clamp(1.1rem, 1.9vw, 1.7rem)) !important;
+  height: calc(100% - clamp(1.1rem, 1.9vw, 1.7rem)) !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  opacity: 1 !important;
+  filter:
+    saturate(1.06)
+    contrast(1.09)
+    brightness(1.045) !important;
+}
+
+/* Grid should read like architectural paper, not UI noise */
+.masterplan-premium-map__grid {
+  z-index: 2 !important;
+  opacity: 0.075 !important;
+  mix-blend-mode: multiply !important;
+  background-size: 3.6rem 3.6rem !important;
+}
+
+/* 05 / Zones: thin architectural traces, not white blocks */
+.masterplan-premium-zone {
+  z-index: 3 !important;
+  background: rgba(255, 255, 255, 0.025) !important;
+  border: 1px solid rgba(20, 20, 20, 0.105) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.masterplan-premium-zone span {
+  opacity: 0.36 !important;
+  color: rgba(18, 18, 18, 0.48) !important;
+  font-size: 0.58rem !important;
+  letter-spacing: 0.18em !important;
+}
+
+/* Active zone: visible but restrained */
+.masterplan-premium-stage[data-active-zone="tower-a"] .masterplan-premium-zone--tower-a,
+.masterplan-premium-stage[data-active-zone="tower-b"] .masterplan-premium-zone--tower-b,
+.masterplan-premium-stage[data-active-zone="garden"] .masterplan-premium-zone--garden,
+.masterplan-premium-stage[data-active-zone="entry"] .masterplan-premium-zone--entry,
+.masterplan-premium-stage[data-active-zone="amenities"] .masterplan-premium-zone--amenities {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.04)),
+    rgba(255, 255, 255, 0.055) !important;
+  border-color: rgba(14, 14, 14, 0.24) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.50) inset,
+    0 14px 34px rgba(18, 20, 24, 0.075) !important;
+}
+
+.masterplan-premium-stage[data-active-zone="tower-a"] .masterplan-premium-zone--tower-a span,
+.masterplan-premium-stage[data-active-zone="tower-b"] .masterplan-premium-zone--tower-b span,
+.masterplan-premium-stage[data-active-zone="garden"] .masterplan-premium-zone--garden span,
+.masterplan-premium-stage[data-active-zone="entry"] .masterplan-premium-zone--entry span,
+.masterplan-premium-stage[data-active-zone="amenities"] .masterplan-premium-zone--amenities span {
+  opacity: 0.82 !important;
+}
+
+/* 06 / Hotspots: smaller, more precise, premium */
+.masterplan-premium-hotspot {
+  z-index: 7 !important;
+  width: 2.08rem !important;
+  height: 2.08rem !important;
+  border-color: rgba(255, 255, 255, 0.56) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.36)),
+    rgba(255, 255, 255, 0.18) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.78) inset,
+    0 10px 24px rgba(18, 20, 24, 0.14) !important;
+}
+
+.masterplan-premium-hotspot span {
+  font-size: 0.68rem !important;
+  font-weight: 800 !important;
+}
+
+.masterplan-premium-hotspot.is-active {
+  color: #fff !important;
+  background:
+    linear-gradient(180deg, rgba(34, 34, 34, 0.98), rgba(12, 12, 12, 0.96)) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 14px 30px rgba(18, 18, 18, 0.24) !important;
+}
+
+/* Refined hotspot placement after plan enlargement */
+.masterplan-premium-hotspot--tower-a {
+  left: 23.5% !important;
+  top: 37.5% !important;
+}
+
+.masterplan-premium-hotspot--tower-b {
+  right: 22.5% !important;
+  top: 36% !important;
+}
+
+.masterplan-premium-hotspot--garden {
+  left: 50% !important;
+  top: 48.5% !important;
+}
+
+.masterplan-premium-hotspot--entry {
+  left: 50% !important;
+  bottom: 18.5% !important;
+}
+
+.masterplan-premium-hotspot--amenities {
+  right: 24.5% !important;
+  bottom: 21.5% !important;
+}
+
+/* 07 / Right intelligence panel: compact and lighter */
+.masterplan-premium-panel {
+  position: relative !important;
+  inset: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  top: auto !important;
+  left: auto !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 100% !important;
+  align-self: stretch !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  z-index: 5 !important;
+  padding: clamp(0.9rem, 1.2vw, 1.08rem) !important;
+  border-radius: 1.12rem !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.43), rgba(255, 255, 255, 0.16) 56%, rgba(255, 255, 255, 0.25)),
+    rgba(255, 255, 255, 0.12) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.68) inset,
+    0 18px 44px rgba(18, 20, 24, 0.085) !important;
+}
+
+.masterplan-premium-panel h3 {
+  margin: 0.52rem 0 0 !important;
+  font-size: clamp(1.65rem, 1.7vw, 2.25rem) !important;
+  line-height: 0.94 !important;
+}
+
+.masterplan-premium-panel p:not(.masterplan-premium-card-kicker) {
+  margin-top: 0.74rem !important;
+  font-size: 0.84rem !important;
+  line-height: 1.48 !important;
+}
+
+.masterplan-premium-panel__facts {
+  grid-template-columns: 1fr !important;
+  gap: 0.5rem !important;
+  margin-top: 0.8rem !important;
+}
+
+.masterplan-premium-panel__facts div {
+  padding-top: 0.48rem !important;
+}
+
+.masterplan-premium-panel__facts dt {
+  font-size: 0.52rem !important;
+}
+
+.masterplan-premium-panel__facts dd {
+  font-size: 1.04rem !important;
+}
+
+.masterplan-premium-panel__actions {
+  margin-top: 0.9rem !important;
+}
+
+/* 08 / Zone rail: compact legend strip */
+.masterplan-premium-zone-rail {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 0.56rem !important;
+  margin-top: -0.15rem !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+.masterplan-premium-zone-button {
+  min-height: 3.65rem !important;
+  border-radius: 0.92rem !important;
+  padding: 0.72rem 0.76rem !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.12)),
+    rgba(255, 255, 255, 0.08) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.58) inset,
+    0 12px 28px rgba(18, 20, 24, 0.045) !important;
+}
+
+.masterplan-premium-zone-button span {
+  font-size: 0.84rem !important;
+  font-weight: 720 !important;
+}
+
+.masterplan-premium-zone-button em {
+  font-size: 0.58rem !important;
+  letter-spacing: 0.13em !important;
+}
+
+.masterplan-premium-zone-button.is-active {
+  border-color: rgba(255, 255, 255, 0.58) !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.18)),
+    rgba(255, 255, 255, 0.13) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.68) inset,
+    0 16px 38px rgba(18, 20, 24, 0.075) !important;
+}
+
+/* 09 / CTA: reduce visual weight */
+.masterplan-premium-cta {
+  padding: clamp(1rem, 1.7vw, 1.35rem) !important;
+}
+
+.masterplan-premium-cta h2 {
+  max-width: 11.5ch !important;
+  font-size: clamp(2.65rem, 4.1vw, 4.75rem) !important;
+}
+
+/* 10 / Responsive stability */
+@media (max-width: 74rem) {
+  body:has(.masterplan-premium-shell) {
+    --masterplan-shell: min(calc(100dvw - 2rem), 76rem);
+    --mp-map-height: clamp(31rem, 72vw, 41rem);
+  }
+
+  .masterplan-premium-stage-shell {
+    grid-template-columns: 1fr !important;
+  }
+
+  .masterplan-premium-stage {
+    grid-template-columns: 1fr !important;
+  }
+
+  .masterplan-premium-map {
+    min-height: var(--mp-map-height) !important;
+  }
+
+  .masterplan-premium-panel {
+    min-height: auto !important;
+  }
+
+  .masterplan-premium-panel__facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .masterplan-premium-zone-rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 48rem) {
+  body:has(.masterplan-premium-shell) {
+    --masterplan-shell: min(calc(100dvw - 1rem), 76rem);
+    --mp-map-height: 25rem;
+  }
+
+  .masterplan-premium-stage {
+    padding: 0.65rem !important;
+  }
+
+  .masterplan-premium-map {
+    min-height: var(--mp-map-height) !important;
+  }
+
+  .masterplan-premium-map__image {
+    inset: 0.45rem !important;
+    width: calc(100% - 0.9rem) !important;
+    height: calc(100% - 0.9rem) !important;
+  }
+
+  .masterplan-premium-zone span {
+    display: none !important;
+  }
+
+  .masterplan-premium-panel__facts,
+  .masterplan-premium-zone-rail {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ==========================================================================
+   Masterplan Visual Hierarchy v3 — Drawing readability / lighter legend
+   Makes the masterplan feel like an architectural feature, not a card UI
+   ========================================================================== */
+
+body:has(.masterplan-premium-shell) {
+  --mp-map-height: clamp(38rem, 56vw, 50rem);
+}
+
+/* 01 / Give the plan more authority inside the stage */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell {
+  grid-template-columns: minmax(12.5rem, 0.21fr) minmax(0, 1fr) !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage {
+  grid-template-columns: minmax(0, 1.58fr) minmax(13.8rem, 0.28fr) !important;
+  min-height: var(--mp-map-height) !important;
+  gap: clamp(0.65rem, 1vw, 0.9rem) !important;
+}
+
+/* 02 / Left editorial copy should support the plan, not dominate it */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-copy h2 {
+  max-width: 8.9ch !important;
+  font-size: clamp(2.35rem, 3.65vw, 4.05rem) !important;
+  line-height: 0.88 !important;
+  letter-spacing: -0.068em !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-copy p:not(.masterplan-premium-kicker) {
+  max-width: 18.5rem !important;
+  font-size: 0.86rem !important;
+  line-height: 1.52 !important;
+  color: rgba(20, 20, 20, 0.56) !important;
+}
+
+/* 03 / Turn the map into an architectural drawing plate */
+body:has(.masterplan-premium-shell) .masterplan-premium-map {
+  min-height: calc(var(--mp-map-height) - 1.6rem) !important;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.38), transparent 54%),
+    linear-gradient(135deg, rgba(249, 245, 238, 0.86), rgba(224, 216, 205, 0.38)),
+    rgba(255, 255, 255, 0.10) !important;
+  border-color: rgba(255, 255, 255, 0.48) !important;
+}
+
+/* Remove the white poster feeling by blending the plan into the plate */
+body:has(.masterplan-premium-shell) .masterplan-premium-map__image {
+  inset: clamp(0.05rem, 0.28vw, 0.22rem) !important;
+  width: calc(100% - clamp(0.1rem, 0.56vw, 0.44rem)) !important;
+  height: calc(100% - clamp(0.1rem, 0.56vw, 0.44rem)) !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  opacity: 0.94 !important;
+  mix-blend-mode: multiply !important;
+  filter:
+    saturate(1.08)
+    contrast(1.18)
+    brightness(1.02) !important;
+  transform: scale(1.08) !important;
+  transform-origin: center center !important;
+}
+
+/* A very soft paper veil, not a white overlay */
+body:has(.masterplan-premium-shell) .masterplan-premium-map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 46%, transparent 0 52%, rgba(255, 255, 255, 0.18) 76%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+  opacity: 0.45;
+}
+
+/* 04 / Grid almost disappears */
+body:has(.masterplan-premium-shell) .masterplan-premium-map__grid {
+  opacity: 0.045 !important;
+}
+
+/* 05 / Zone outlines should be more technical and less card-like */
+body:has(.masterplan-premium-shell) .masterplan-premium-zone {
+  z-index: 4 !important;
+  background: transparent !important;
+  border: 1px solid rgba(15, 15, 15, 0.115) !important;
+  box-shadow: none !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-zone span {
+  opacity: 0.34 !important;
+  font-size: 0.52rem !important;
+  letter-spacing: 0.19em !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage[data-active-zone="tower-a"] .masterplan-premium-zone--tower-a,
+body:has(.masterplan-premium-shell) .masterplan-premium-stage[data-active-zone="tower-b"] .masterplan-premium-zone--tower-b,
+body:has(.masterplan-premium-shell) .masterplan-premium-stage[data-active-zone="garden"] .masterplan-premium-zone--garden,
+body:has(.masterplan-premium-shell) .masterplan-premium-stage[data-active-zone="entry"] .masterplan-premium-zone--entry,
+body:has(.masterplan-premium-shell) .masterplan-premium-stage[data-active-zone="amenities"] .masterplan-premium-zone--amenities {
+  background: rgba(255, 255, 255, 0.075) !important;
+  border-color: rgba(8, 8, 8, 0.25) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.48) inset,
+    0 12px 28px rgba(18, 20, 24, 0.055) !important;
+}
+
+/* 06 / Hotspots: more precise */
+body:has(.masterplan-premium-shell) .masterplan-premium-hotspot {
+  width: 1.92rem !important;
+  height: 1.92rem !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.74) inset,
+    0 9px 20px rgba(18, 20, 24, 0.15) !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-hotspot span {
+  font-size: 0.62rem !important;
+}
+
+/* 07 / Right panel: lighter, less dashboard */
+body:has(.masterplan-premium-shell) .masterplan-premium-panel {
+  padding: clamp(0.82rem, 1vw, 1rem) !important;
+  border-radius: 1rem !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.13) 58%, rgba(255, 255, 255, 0.22)),
+    rgba(255, 255, 255, 0.10) !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-panel h3 {
+  font-size: clamp(1.55rem, 1.48vw, 2.05rem) !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-panel p:not(.masterplan-premium-card-kicker) {
+  font-size: 0.8rem !important;
+  line-height: 1.45 !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-panel__facts {
+  gap: 0.44rem !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-panel__facts dd {
+  font-size: 0.98rem !important;
+}
+
+/* 08 / Zone rail becomes a legend strip */
+body:has(.masterplan-premium-shell) .masterplan-premium-zone-rail {
+  gap: 0.38rem !important;
+  margin-top: -0.2rem !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-zone-button {
+  min-height: 3rem !important;
+  border-radius: 999px !important;
+  padding: 0.55rem 0.72rem !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.12)),
+    rgba(255, 255, 255, 0.08) !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-zone-button span {
+  font-size: 0.76rem !important;
+  font-weight: 720 !important;
+  white-space: nowrap !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-zone-button em {
+  font-size: 0.52rem !important;
+  letter-spacing: 0.12em !important;
+  white-space: nowrap !important;
+  opacity: 0.72 !important;
+}
+
+/* 09 / CTA no longer competes with the stage */
+body:has(.masterplan-premium-shell) .masterplan-premium-cta {
+  min-height: 10rem !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-cta h2 {
+  font-size: clamp(2.35rem, 3.55vw, 4.15rem) !important;
+}
+
+/* 10 / Responsive */
+@media (max-width: 74rem) {
+  body:has(.masterplan-premium-shell) {
+    --mp-map-height: clamp(31rem, 74vw, 42rem);
+  }
+
+  body:has(.masterplan-premium-shell) .masterplan-premium-stage {
+    grid-template-columns: 1fr !important;
+  }
+
+  body:has(.masterplan-premium-shell) .masterplan-premium-zone-rail {
+    grid-template-columns: 1fr !important;
+  }
+
+  body:has(.masterplan-premium-shell) .masterplan-premium-zone-button {
+    border-radius: 0.95rem !important;
+  }
+}
