@@ -166,25 +166,10 @@ const amenityCategoryText = (category?: string) => {
       </aside>
     </header>
 
-    <section class="masterplan-premium-stage-shell" aria-labelledby="masterplan-stage-title">
-      <div class="masterplan-premium-stage-copy">
-        <p class="masterplan-premium-kicker">
-          {t(lang, "Plan intelligence", "Inteligencia del plano")}
-        </p>
-
-        <h2 id="masterplan-stage-title">
-          {t(lang, "Select a zone to read the residence logic", "Selecciona una zona para leer la lógica residencial")}
-        </h2>
-
-        <p>
-          {t(
-            lang,
-            "The stage highlights the main residential volumes, the calm garden buffer, arrival sequence and shared amenity layer.",
-            "La escena destaca los principales volúmenes residenciales, el jardín interior, la secuencia de llegada y la capa de servicios compartidos.",
-          )}
-        </p>
-      </div>
-
+    <section
+      class="masterplan-premium-stage-shell masterplan-premium-stage-shell--no-copy"
+      aria-label={t(lang, "Interactive masterplan", "Masterplan interactivo")}
+    >
       <div class="masterplan-premium-stage" data-mp-stage data-active-zone="tower-a">
         <div class="masterplan-premium-map" aria-label={t(lang, "Interactive masterplan map", "Mapa interactivo del masterplan")}>
           <img
@@ -230,7 +215,7 @@ const amenityCategoryText = (category?: string) => {
             )}
             data-residences="24"
             data-available="11"
-            data-focus={t(lang, "Morning light", "Luz de mañana")}
+            data-focus={t(lang, "Morning light", "Luz de manana")}
             data-orientation={t(lang, "City / garden", "Ciudad / jardín")}
             aria-label={t(lang, "Select Tower A", "Seleccionar Torre A")}
           >
@@ -250,7 +235,7 @@ const amenityCategoryText = (category?: string) => {
             )}
             data-residences="24"
             data-available="8"
-            data-focus={t(lang, "Sunset aspect", "Orientación atardecer")}
+            data-focus={t(lang, "Sunset aspect", "Orientacion atardecer")}
             data-orientation={t(lang, "Sea / courtyard", "Mar / patio")}
             aria-label={t(lang, "Select Tower B", "Seleccionar Torre B")}
           >
@@ -262,13 +247,13 @@ const amenityCategoryText = (category?: string) => {
             class="masterplan-premium-hotspot masterplan-premium-hotspot--garden"
             data-zone="garden"
             data-title={t(lang, "Garden court", "Patio ajardinado")}
-            data-kicker={t(lang, "Landscape buffer", "Filtro paisajístico")}
+            data-kicker={t(lang, "Landscape buffer", "Filtro paisajistico")}
             data-description={t(
               lang,
               "A planted internal court softens the arrival experience and creates a quieter threshold between residence, city and daily life.",
               "Un patio interior ajardinado suaviza la experiencia de llegada y crea un umbral más tranquilo entre residencia, ciudad y vida diaria.",
             )}
-            data-residences="—"
+            data-residences="?"
             data-available="Shared"
             data-focus={t(lang, "Calm arrival", "Llegada tranquila")}
             data-orientation={t(lang, "Internal green", "Verde interior")}
@@ -288,7 +273,7 @@ const amenityCategoryText = (category?: string) => {
               "The arrival point is planned as a clear and quiet sequence for residents, visitors and private viewing appointments.",
               "El punto de llegada se plantea como una secuencia clara y tranquila para residentes, visitantes y visitas privadas.",
             )}
-            data-residences="—"
+            data-residences="?"
             data-available="Access"
             data-focus={t(lang, "Drop-off", "Acceso")}
             data-orientation={t(lang, "Street / lobby", "Calle / lobby")}
@@ -346,10 +331,10 @@ const amenityCategoryText = (category?: string) => {
             </div>
             <div>
               <dt>{t(lang, "Focus", "Enfoque")}</dt>
-              <dd data-mp-panel-focus>{t(lang, "Morning light", "Luz de mañana")}</dd>
+              <dd data-mp-panel-focus>{t(lang, "Morning light", "Luz de manana")}</dd>
             </div>
             <div>
-              <dt>{t(lang, "Orientation", "Orientación")}</dt>
+              <dt>{t(lang, "Orientation", "Orientacion")}</dt>
               <dd data-mp-panel-orientation>{t(lang, "City / garden", "Ciudad / jardín")}</dd>
             </div>
           </dl>
@@ -357,13 +342,12 @@ const amenityCategoryText = (category?: string) => {
           <div class="masterplan-premium-panel__actions">
             <a class="masterplan-premium-button masterplan-premium-button--primary" href={`/${lang}/units/`}>
               <span>{t(lang, "Browse units", "Ver unidades")}</span>
-              <span aria-hidden="true">→</span>
+              <span aria-hidden="true">></span>
             </a>
           </div>
         </aside>
       </div>
     </section>
-
     <section class="masterplan-premium-zone-rail" aria-label={t(lang, "Masterplan zones", "Zonas del masterplan")}>
       <button type="button" class="masterplan-premium-zone-button is-active" data-zone="tower-a">
         <span>{t(lang, "Tower A", "Torre A")}</span>

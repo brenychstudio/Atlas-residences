@@ -9998,3 +9998,491 @@ body:has(.masterplan-premium-shell) .masterplan-premium-cta h2 {
     border-radius: 0.95rem !important;
   }
 }
+
+/* ==========================================================================
+   Masterplan v6.2 — lift page composition closer to header
+   ========================================================================== */
+
+html body .masterplan-premium-shell {
+  margin-top: clamp(-6.2rem, -8vw, -4.2rem) !important;
+  padding-top: 0 !important;
+}
+
+html body .masterplan-premium-hero {
+  margin-top: 0 !important;
+}
+
+/* Keep a clean gap between hero and masterplan stage */
+html body .masterplan-premium-hero + .masterplan-premium-stage-shell--no-copy {
+  margin-top: clamp(1.15rem, 1.7vw, 1.45rem) !important;
+}
+
+/* Tablet/mobile: avoid pushing too close to header */
+@media (max-width: 74rem) {
+  html body .masterplan-premium-shell {
+    margin-top: clamp(-3.6rem, -5.2vw, -2.2rem) !important;
+  }
+}
+
+@media (max-width: 48rem) {
+  html body .masterplan-premium-shell {
+    margin-top: -0.4rem !important;
+  }
+}
+
+/* ==========================================================================
+   Masterplan v6.1 — direct spacing cleanup / no :has selectors
+   ========================================================================== */
+
+.masterplan-premium-shell {
+  margin-top: clamp(0.85rem, 1.35svh, 1.25rem) !important;
+  padding-top: 0 !important;
+}
+
+.masterplan-premium-hero {
+  margin-top: 0 !important;
+}
+
+.masterplan-premium-stage-shell--no-copy {
+  margin-top: clamp(1rem, 1.5vw, 1.25rem) !important;
+}
+
+/* Make the masterplan block start cleanly after hero */
+.masterplan-premium-hero + .masterplan-premium-stage-shell--no-copy {
+  margin-top: clamp(1.15rem, 1.7vw, 1.45rem) !important;
+}
+
+/* Slightly tighten bottom rhythm after the stage */
+.masterplan-premium-stage-shell--no-copy + .masterplan-premium-zone-rail {
+  margin-top: 0.62rem !important;
+}
+
+/* Keep stage stable after removing intro */
+.masterplan-premium-stage-shell--no-copy .masterplan-premium-stage {
+  min-height: var(--mp-map-height) !important;
+}
+
+/* Avoid any accidental hidden intro occupying space if stale markup remains */
+.masterplan-premium-stage-intro {
+  display: none !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ==========================================================================
+   Masterplan v5 — clean single-frame stage
+   ========================================================================== */
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-intro {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 0.72fr) minmax(18rem, 0.28fr) !important;
+  gap: clamp(1rem, 1.8vw, 1.6rem) !important;
+  align-items: end !important;
+  padding: 0 0.15rem 0.85rem !important;
+  margin: 0 !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-intro > div {
+  max-width: 42rem !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-intro .masterplan-premium-kicker {
+  margin: 0 !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-intro h2 {
+  max-width: 10ch !important;
+  margin: 0.35rem 0 0 !important;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif !important;
+  font-size: clamp(2.25rem, 3.35vw, 3.95rem) !important;
+  line-height: 0.9 !important;
+  letter-spacing: -0.075em !important;
+  color: rgba(12, 12, 12, 0.94) !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-intro > p {
+  max-width: 25rem !important;
+  margin: 0 !important;
+  padding-bottom: 0.3rem !important;
+  justify-self: end !important;
+  font-size: 0.95rem !important;
+  line-height: 1.55 !important;
+  color: rgba(16, 18, 22, 0.56) !important;
+}
+
+/* прибираємо зайву зовнішню рамку */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+}
+
+/* залишаємо тільки одну головну shell-картку */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-stage {
+  min-height: var(--mp-map-height) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.25fr) !important;
+  gap: clamp(0.8rem, 1.05vw, 0.95rem) !important;
+  padding: clamp(0.9rem, 1.2vw, 1.08rem) !important;
+  border-radius: clamp(1.4rem, 1.8vw, 1.75rem) !important;
+  border: 1px solid rgba(255, 255, 255, 0.48) !important;
+  background:
+    radial-gradient(circle at 52% 12%, rgba(255, 255, 255, 0.42), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.1)),
+    rgba(255, 255, 255, 0.08) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.62) inset,
+    0 20px 48px rgba(18, 20, 24, 0.06) !important;
+  overflow: hidden !important;
+}
+
+/* внутрішню рамку навколо plan прибираємо */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-map {
+  min-height: calc(var(--mp-map-height) - 1.7rem) !important;
+  border-radius: 1.05rem !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  background:
+    linear-gradient(180deg, rgba(250, 247, 241, 0.82), rgba(244, 239, 231, 0.7)),
+    rgba(255, 255, 255, 0.06) !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-map::after {
+  opacity: 0.2 !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-map__grid {
+  opacity: 0.018 !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-map__image {
+  transform: scale(1.07) !important;
+}
+
+/* зробити технічні outline менш нав'язливими */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-zone {
+  border-color: rgba(14, 14, 14, 0.09) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-zone span {
+  opacity: 0.28 !important;
+  color: rgba(16, 18, 22, 0.38) !important;
+}
+
+/* права інформаційна карточка */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-panel {
+  border-radius: 1rem !important;
+  padding: 0.95rem !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.16)),
+    rgba(255, 255, 255, 0.08) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.56) inset,
+    0 14px 36px rgba(18, 20, 24, 0.05) !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-panel h3 {
+  font-size: clamp(1.55rem, 1.6vw, 2.05rem) !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-panel p:not(.masterplan-premium-card-kicker) {
+  font-size: 0.82rem !important;
+  line-height: 1.48 !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-zone-rail {
+  margin-top: 0.65rem !important;
+}
+
+@media (max-width: 74rem) {
+  body:has(.masterplan-premium-shell) .masterplan-premium-stage-intro {
+    grid-template-columns: 1fr !important;
+    gap: 0.7rem !important;
+  }
+
+  body:has(.masterplan-premium-shell) .masterplan-premium-stage-intro > p {
+    justify-self: start !important;
+    max-width: 32rem !important;
+    padding-bottom: 0 !important;
+  }
+
+  body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-stage {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 48rem) {
+  body:has(.masterplan-premium-shell) .masterplan-premium-stage-intro h2 {
+    font-size: clamp(2rem, 10vw, 3rem) !important;
+  }
+
+  body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-map__image {
+    transform: scale(1.02) !important;
+  }
+}
+
+
+/* ==========================================================================
+   Masterplan v4 — Remove left column / make plan dominant
+   ========================================================================== */
+
+body:has(.masterplan-premium-shell) {
+  --masterplan-shell: min(76rem, calc(100dvw - 4.5rem));
+  --mp-map-height: clamp(38rem, 54vw, 49rem);
+}
+
+/* Compact intro above the plan */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-intro {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 0.75fr) minmax(18rem, 0.5fr) !important;
+  gap: clamp(1rem, 2vw, 1.6rem) !important;
+  align-items: end !important;
+  padding: 0 clamp(0.35rem, 0.8vw, 0.7rem) 0.15rem !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-intro h2 {
+  max-width: 14ch !important;
+  margin: 0.45rem 0 0 !important;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif !important;
+  font-size: clamp(2.35rem, 4vw, 4.45rem) !important;
+  line-height: 0.88 !important;
+  letter-spacing: -0.07em !important;
+  color: rgba(14, 14, 14, 0.92) !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-intro p:not(.masterplan-premium-kicker) {
+  max-width: 31rem !important;
+  margin: 0 !important;
+  font-size: 0.98rem !important;
+  line-height: 1.52 !important;
+  color: rgba(20, 20, 20, 0.58) !important;
+}
+
+/* Stage no longer has a left text column */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy {
+  display: block !important;
+  padding: clamp(0.85rem, 1.35vw, 1.08rem) !important;
+  border-radius: clamp(1.45rem, 1.9vw, 1.9rem) !important;
+}
+
+/* Main stage: dominant plan + compact right panel */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-stage {
+  min-height: var(--mp-map-height) !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(14.5rem, 0.24fr) !important;
+  gap: clamp(0.68rem, 1vw, 0.9rem) !important;
+  padding: clamp(0.7rem, 1vw, 0.9rem) !important;
+  overflow: visible !important;
+  background:
+    radial-gradient(circle at 48% 12%, rgba(255, 255, 255, 0.48), transparent 34%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.12)),
+    rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Bigger, cleaner map */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-map {
+  position: relative !important;
+  inset: auto !important;
+  min-height: calc(var(--mp-map-height) - 1.4rem) !important;
+  width: 100% !important;
+  border-radius: 1.15rem !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.34), transparent 58%),
+    linear-gradient(135deg, rgba(248, 244, 237, 0.78), rgba(224, 216, 205, 0.30)),
+    rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.48) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.68) inset,
+    0 14px 36px rgba(18, 20, 24, 0.055) !important;
+}
+
+/* Make plan fill the available area */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-map__image {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  opacity: 0.98 !important;
+  mix-blend-mode: multiply !important;
+  filter:
+    saturate(1.08)
+    contrast(1.16)
+    brightness(1.02) !important;
+  transform: scale(1.13) !important;
+  transform-origin: center center !important;
+}
+
+/* Remove heavy white poster feeling */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 48%, transparent 0 58%, rgba(255, 255, 255, 0.13) 78%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015));
+  opacity: 0.42;
+}
+
+/* Minimal paper grid */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-map__grid {
+  z-index: 3 !important;
+  opacity: 0.035 !important;
+  mix-blend-mode: multiply !important;
+}
+
+/* Zones: technical outlines only */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-zone {
+  z-index: 4 !important;
+  background: transparent !important;
+  border: 1px solid rgba(10, 10, 10, 0.105) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-zone span {
+  opacity: 0.36 !important;
+  font-size: 0.52rem !important;
+  letter-spacing: 0.18em !important;
+  color: rgba(20, 20, 20, 0.42) !important;
+}
+
+/* Active zone */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-stage[data-active-zone="tower-a"] .masterplan-premium-zone--tower-a,
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-stage[data-active-zone="tower-b"] .masterplan-premium-zone--tower-b,
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-stage[data-active-zone="garden"] .masterplan-premium-zone--garden,
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-stage[data-active-zone="entry"] .masterplan-premium-zone--entry,
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-stage[data-active-zone="amenities"] .masterplan-premium-zone--amenities {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(10, 10, 10, 0.26) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.46) inset,
+    0 12px 28px rgba(18, 20, 24, 0.05) !important;
+}
+
+/* Hotspots */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-hotspot {
+  z-index: 7 !important;
+  width: 1.88rem !important;
+  height: 1.88rem !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-hotspot span {
+  font-size: 0.6rem !important;
+}
+
+/* Compact right panel */
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-panel {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  min-height: 100% !important;
+  align-self: stretch !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  padding: clamp(0.78rem, 1vw, 0.95rem) !important;
+  border-radius: 1rem !important;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.13) 58%, rgba(255, 255, 255, 0.22)),
+    rgba(255, 255, 255, 0.10) !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-panel h3 {
+  font-size: clamp(1.55rem, 1.55vw, 2.1rem) !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-panel p:not(.masterplan-premium-card-kicker) {
+  font-size: 0.8rem !important;
+  line-height: 1.44 !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-panel__facts {
+  grid-template-columns: 1fr !important;
+  gap: 0.42rem !important;
+  margin-top: 0.72rem !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-panel__facts div {
+  padding-top: 0.42rem !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-panel__facts dd {
+  font-size: 0.96rem !important;
+}
+
+/* Legend rail as one-line control strip */
+body:has(.masterplan-premium-shell) .masterplan-premium-zone-rail {
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 0.38rem !important;
+  margin-top: -0.1rem !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-zone-button {
+  min-height: 2.85rem !important;
+  border-radius: 999px !important;
+  padding: 0.52rem 0.72rem !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-zone-button span {
+  font-size: 0.74rem !important;
+  white-space: nowrap !important;
+}
+
+body:has(.masterplan-premium-shell) .masterplan-premium-zone-button em {
+  font-size: 0.5rem !important;
+  letter-spacing: 0.115em !important;
+  white-space: nowrap !important;
+  opacity: 0.68 !important;
+}
+
+/* Responsive */
+@media (max-width: 74rem) {
+  body:has(.masterplan-premium-shell) {
+    --mp-map-height: clamp(31rem, 74vw, 42rem);
+  }
+
+  body:has(.masterplan-premium-shell) .masterplan-premium-stage-intro {
+    grid-template-columns: 1fr !important;
+  }
+
+  body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-stage {
+    grid-template-columns: 1fr !important;
+  }
+
+  body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-panel {
+    min-height: auto !important;
+  }
+
+  body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy .masterplan-premium-panel__facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  body:has(.masterplan-premium-shell) .masterplan-premium-zone-rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  body:has(.masterplan-premium-shell) .masterplan-premium-zone-button {
+    border-radius: 0.95rem !important;
+  }
+}
