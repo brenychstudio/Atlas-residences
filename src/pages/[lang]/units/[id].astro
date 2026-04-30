@@ -48,7 +48,7 @@ const statusText = (status?: string) => {
   if (normalized === "available") return t(lang, "Available", "Disponible");
   if (normalized === "reserved") return t(lang, "Reserved", "Reservada");
   if (normalized === "sold") return t(lang, "Sold", "Vendida");
-  if (normalized === "coming_soon") return t(lang, "Coming soon", "PrГіximamente");
+  if (normalized === "coming_soon") return t(lang, "Coming soon", "Próximamente");
   return t(lang, "Unknown", "Sin estado");
 };
 
@@ -57,8 +57,8 @@ const orientationText = (orientation?: string) => {
   if (normalized === "sea") return t(lang, "Sea", "Mar");
   if (normalized === "city") return t(lang, "City", "Ciudad");
   if (normalized === "courtyard") return t(lang, "Courtyard", "Patio");
-  if (normalized === "mountain") return t(lang, "Mountain", "MontaГ±a");
-  return t(lang, "Unknown", "Sin orientaciГіn");
+  if (normalized === "mountain") return t(lang, "Mountain", "Montaña");
+  return t(lang, "Unknown", "Sin orientación");
 };
 
 const unitLabel = unit?.number || unit?.id || id;
@@ -66,12 +66,12 @@ const canonicalPath = `/${lang}/units/${id}/`;
 const seoUrl = Astro.site ? new URL(canonicalPath, Astro.site).toString() : canonicalPath;
 
 const seoTitle = unit
-  ? `${t(lang, "Unit", "Unidad")} ${unitLabel} вЂ” ${projectName}`
-  : `${t(lang, "Unit", "Unidad")} вЂ” ${projectName}`;
+  ? `${t(lang, "Unit", "Unidad")} ${unitLabel} \u2014 ${projectName}`
+  : `${t(lang, "Unit", "Unidad")} \u2014 ${projectName}`;
 
 const seoDescription = unit
-  ? `${beds} ${t(lang, "beds", "dorm.")}, ${baths} ${t(lang, "baths", "baГ±os")}, ${area} mВІ${unit?.price_eur ? `, в‚¬${unit.price_eur}` : ""}.`
-  : t(lang, "Residence details are unavailable.", "Los detalles de la unidad no estГЎn disponibles.");
+  ? `${beds} ${t(lang, "beds", "dorm.")}, ${baths} ${t(lang, "baths", "baños")}, ${area} m\u00b2${unit?.price_eur ? `, \u20ac${unit.price_eur}` : ""}.`
+  : t(lang, "Residence details are unavailable.", "Los detalles de la unidad no están disponibles.");
 
 // Prefer gallery cover/first image, then type cover, then OG units, then masterplan.
 const seoImage =
@@ -80,7 +80,7 @@ const seoImage =
 const seoNoindex = !unit;
 const ogLocale = lang === "es" ? "es_ES" : "en_US";
 
-// Unit Detail Canonical Art Direction v1 вЂ” presentation aliases
+// Unit Detail Canonical Art Direction v1 — presentation aliases
 // If your current file uses a different image variable name, change only these 3 alias lines.
 const canonHeroImage = coverImage;
 const canonPlanImage = planImage;
@@ -97,18 +97,18 @@ const getAssetSrc = (image: unknown) => {
   return "";
 };
 
-const formatCanonText = (value: unknown, fallback = "вЂ”") => {
+const formatCanonText = (value: unknown, fallback = "\u2014") => {
   const text = String(value ?? "").trim();
   return text.length ? text : fallback;
 };
 
-const titleCaseCanon = (value: unknown, fallback = "вЂ”") => {
+const titleCaseCanon = (value: unknown, fallback = "\u2014") => {
   const text = formatCanonText(value, fallback)
     .replace(/_/g, " ")
     .replace(/-/g, " ")
     .trim();
 
-  if (!text || text === "вЂ”") return fallback;
+  if (!text || text === "\u2014") return fallback;
 
   return text
     .split(/\s+/)
@@ -123,7 +123,7 @@ const formatCanonBuilding = (value: unknown) => {
     .replace(/^building\s+/i, "")
     .trim();
 
-  if (!raw || raw === "вЂ”") return "Building A";
+  if (!raw || raw === "\u2014") return "Building A";
 
   return `Building ${raw.toUpperCase()}`;
 };
@@ -133,7 +133,7 @@ const formatCanonFloor = (value: unknown) => {
     .replace(/^floor\s+/i, "")
     .trim();
 
-  if (!raw || raw === "вЂ”") return "Floor 1";
+  if (!raw || raw === "\u2014") return "Floor 1";
 
   return `Floor ${raw}`;
 };
@@ -166,7 +166,7 @@ const canonResidenceMeta = `${canonBuildingLabel} / ${canonFloorLabel}`;
 const canonPriceText = formatCanonPrice(unit.price_eur ?? unit.price);
 const canonStatusText = formatCanonStatus(unit.status);
 const canonAreaText = unit.area_m2 ? `${unit.area_m2} m\u00b2` : "—";
-const canonBedsBathsText = `${formatCanonText(unit.beds, "вЂ”")} / ${formatCanonText(unit.baths, "вЂ”")}`;
+const canonBedsBathsText = `${formatCanonText(unit.beds, "\u2014")} / ${formatCanonText(unit.baths, "\u2014")}`;
 const canonOrientationText = formatCanonOrientation(unit.orientation);
 
 const canonHeroSrc = getAssetSrc(canonHeroImage);
@@ -179,7 +179,7 @@ const canonGalleryItems = canonGalleryImages
     return {
       src: getAssetSrc(image),
       caption: captions[index] ?? "Residence view",
-      alt: `${canonResidenceTitle} В· ${captions[index] ?? "Residence view"}`,
+      alt: `${canonResidenceTitle} · ${captions[index] ?? "Residence view"}`,
     };
   })
   .filter((item) => item.src);
@@ -248,7 +248,7 @@ const canonSummaryFacts = [
         {t(
           lang,
           "This residence is no longer available or the link is incorrect.",
-          "Esta residencia ya no estГЎ disponible o el enlace es incorrecto.",
+          "Esta residencia ya no está disponible o el enlace es incorrecto.",
         )}
       </p>
       <a class="ui-btn inline-flex items-center" href={`/${lang}/units/`}>

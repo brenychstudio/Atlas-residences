@@ -28,7 +28,7 @@ const defaultDescription =
   (lang === "es" ? settings.tagline_es : settings.tagline_en) ||
   t(lang, "Premium residences in Barcelona.", "Residencias premium en Barcelona.");
 
-const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Home", "Inicio")} вЂ” ${projectName}`;
+const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Home", "Inicio")} \u2014 ${projectName}`;
 const seoDescription = (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) || defaultDescription;
 const seoImage = pageSeo?.og_image || ATLAS_ASSETS.og.og01Home1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
 const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";
@@ -57,7 +57,7 @@ const minPriceValue =
     .filter((value) => Number.isFinite(value) && value > 0)
     .sort((a, b) => a - b)[0] ?? null;
 
-const minPriceLabel = minPriceValue ? `в‚¬${minPriceValue}` : t(lang, "On request", "A consultar");
+const minPriceLabel = minPriceValue ? `\u20ac${minPriceValue}` : t(lang, "On request", "A consultar");
 
 const projectSignals = [
   t(lang, "Live inventory", "Inventario en vivo"),
@@ -69,7 +69,7 @@ const salesCardEyebrow = t(lang, "Private residences in Barcelona", "Residencias
 const salesCardBody = t(
   lang,
   "A calm residential presentation with live availability, curated unit selection, and direct sales routing.",
-  "Una presentaciГіn residencial serena con disponibilidad en vivo, selecciГіn curada de unidades y acceso directo al equipo comercial.",
+  "Una presentación residencial serena con disponibilidad en vivo, selección curada de unidades y acceso directo al equipo comercial.",
 );
 ---
 
@@ -100,8 +100,8 @@ const salesCardBody = t(
             sunsetImage={heroVariants.sunset}
             mobileImage={heroMobileImage}
             alt={t(lang, "Atlas Residences hero view", "Vista principal de Atlas Residences")}
-            sliderLabel={t(lang, "Sun position", "PosiciГіn del sol")}
-            morningLabel={t(lang, "Morning", "MaГ±ana")}
+            sliderLabel={t(lang, "Sun position", "Posición del sol")}
+            morningLabel={t(lang, "Morning", "Mañana")}
             bluehourLabel={t(lang, "Blue hour", "Hora azul")}
             sunsetLabel={t(lang, "Sunset", "Atardecer")}
           />

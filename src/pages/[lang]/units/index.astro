@@ -21,7 +21,7 @@ const defaultDescription =
   (lang === "es" ? settings.tagline_es : settings.tagline_en) ||
   t(lang, "Browse available units at Atlas Residences.", "Explora las unidades disponibles en Atlas Residences.");
 
-const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Units", "Unidades")} вЂ” ${projectName}`;
+const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Units", "Unidades")} \u2014 ${projectName}`;
 const seoDescription = (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) || defaultDescription;
 const seoImage = pageSeo?.og_image || ATLAS_ASSETS.og.og02Units1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
 const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";

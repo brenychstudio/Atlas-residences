@@ -20,7 +20,7 @@ const projectName = (lang === "es" ? settings.project_name_es : settings.project
 const canonicalPath = `/${lang}/masterplan/`;
 const seoUrl = Astro.site ? new URL(canonicalPath, Astro.site).toString() : canonicalPath;
 
-const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Masterplan", "Plan maestro")} вЂ” ${projectName}`;
+const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Masterplan", "Plan maestro")} \u2014 ${projectName}`;
 const seoDescription =
   (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) ||
   t(lang, "Masterplan overview for Atlas Residences.", "Resumen del plan maestro de Atlas Residences.");
@@ -60,14 +60,14 @@ const statusText = (status: string) => {
   if (status === "available") return t(lang, "Available", "Disponible");
   if (status === "reserved") return t(lang, "Reserved", "Reservada");
   if (status === "sold") return t(lang, "Sold", "Vendida");
-  if (status === "coming_soon") return t(lang, "Coming soon", "PrГіximamente");
+  if (status === "coming_soon") return t(lang, "Coming soon", "Próximamente");
   return t(lang, "Unknown", "Sin estado");
 };
 
 const amenityCategoryText = (category?: string) => {
   const normalized = String(category ?? "").toLowerCase();
   if (normalized === "wellness") return t(lang, "Wellness", "Bienestar");
-  if (normalized === "kids") return t(lang, "Kids", "NiГ±os");
+  if (normalized === "kids") return t(lang, "Kids", "Niños");
   if (normalized === "parking") return t(lang, "Parking", "Aparcamiento");
   if (normalized === "green") return t(lang, "Green", "Zonas verdes");
   if (normalized === "security") return t(lang, "Security", "Seguridad");

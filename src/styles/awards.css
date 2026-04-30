@@ -521,7 +521,7 @@ small,
 }
 
 .home-brief__signals li:not(:last-child)::after {
-  content: "В·";
+  content: "·";
   margin-left: 1rem;
   color: color-mix(in oklab, var(--border), var(--fg) 18%);
 }
@@ -1196,7 +1196,7 @@ textarea.ui-field {
   }
 }
 
-/* Home Hero v2 вЂ” editorial composition over animated sky */
+/* Home Hero v2 — editorial composition over animated sky */
 .home-sky-page {
   position: relative;
   min-height: calc(100svh - var(--header-height));
@@ -1445,7 +1445,7 @@ textarea.ui-field {
   }
 }
 
-/* Animated Sky Backdrop v2.2 вЂ” full viewport + hero-synced mood */
+/* Animated Sky Backdrop v2.2 — full viewport + hero-synced mood */
 .atmo-backdrop {
   position: fixed;
   inset: 0;
@@ -1770,7 +1770,7 @@ body[data-atmo-active="true"] .home-sky-intro__hero [data-sun-slider-wrap] {
   }
 }
 
-/* Home Hero v3 вЂ” architectural cover spread over living sky */
+/* Home Hero v3 — architectural cover spread over living sky */
 body[data-atmo-active="true"] .home-sky-page {
   min-height: calc(100svh - var(--header-height));
   padding-top: clamp(1.5rem, 4.2vh, 3.4rem);
@@ -2005,7 +2005,7 @@ body[data-atmo-active="true"] .sticky-cta {
   }
 }
 
-/* Home Hero v3.1 вЂ” de-overlap + restrained hero halo */
+/* Home Hero v3.1 — de-overlap + restrained hero halo */
 body[data-atmo-active="true"] .home-sky-intro__brief {
   margin-top: clamp(1.15rem, 2.2vw, 2.1rem);
 }
@@ -2066,7 +2066,7 @@ body[data-atmo-active="true"] .home-sky-intro__hero [data-sun-slider-wrap] {
   }
 }
 
-/* Home Hero v3.2 вЂ” premium frosted glass surfaces */
+/* Home Hero v3.2 — premium frosted glass surfaces */
 
 body[data-atmo-active="true"] .home-brief__card--frosted {
   position: relative;
@@ -2191,7 +2191,7 @@ body[data-atmo-active="true"] [data-sun-slider-wrap]:hover {
   }
 }
 
-/* Home Hero v4 вЂ” glass CTA bar + unified atmospheric cover */
+/* Home Hero v4 — glass CTA bar + unified atmospheric cover */
 body[data-atmo-active="true"] .home-sky-intro__hero [data-sun-slider-wrap] {
   border-color: rgba(255, 255, 255, 0.58);
   background:
@@ -2287,7 +2287,7 @@ body[data-atmo-active="true"] .home-brief--sky .home-brief__actions-row > a {
   -webkit-backdrop-filter: blur(18px) saturate(1.08);
 }
 
-/* Lower CTA bar вЂ” glass sales-access layer */
+/* Lower CTA bar — glass sales-access layer */
 .sticky-cta__panel {
   border: 1px solid color-mix(in oklab, var(--border), white 20%);
   background:
@@ -2430,7 +2430,7 @@ body:has(.home-sky-page) .sticky-cta__note {
   }
 }
 
-/* Home Hero v4.1 вЂ” remove redundant home CTA bar + stronger real glass */
+/* Home Hero v4.1 — remove redundant home CTA bar + stronger real glass */
 body:has(.home-sky-page) .sticky-cta--desktop {
   display: none !important;
 }
@@ -2588,7 +2588,7 @@ body[data-atmo-active="true"] .home-sky-intro__hero [data-sun-slider-wrap] input
   background: rgba(18,18,18,0.92);
 }
 
-/* Home Hero v4.3 вЂ” restore cinematic scale + move composition upward */
+/* Home Hero v4.3 — restore cinematic scale + move composition upward */
 @media (min-width: 64rem) {
   body[data-atmo-active="true"] .home-sky-page {
     min-height: calc(100svh - var(--header-height));
@@ -2702,7 +2702,7 @@ body[data-atmo-active="true"] .home-sky-intro__hero [data-sun-slider-wrap] input
   }
 }
 
-/* Home Hero v4.4 вЂ” lift full composition upward without shrinking hero */
+/* Home Hero v4.4 — lift full composition upward without shrinking hero */
 @media (min-width: 64rem) {
   body[data-atmo-active="true"] .home-sky-page {
     height: calc(100svh - var(--header-height));
