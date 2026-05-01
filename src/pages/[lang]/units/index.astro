@@ -224,7 +224,7 @@ const imagePlaceholder =
                   src={loadImageEarly ? coverImage : imagePlaceholder}
                   data-src={loadImageEarly ? undefined : coverImage}
                   alt={`${t(lang, "Unit", "Unidad")} ${unit.number || unit.id}`}
-                  class="unit-card__image h-full w-full object-cover transition duration-500 group-hover:scale-[1.025]"
+                  class="unit-card__image h-full w-full object-cover"
                   loading={loadImageEarly ? "eager" : "lazy"}
                   decoding="async"
                 />
