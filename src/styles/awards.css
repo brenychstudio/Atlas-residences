@@ -10486,3 +10486,114 @@ body:has(.masterplan-premium-shell) .masterplan-premium-zone-button em {
     border-radius: 0.95rem !important;
   }
 }
+
+/* ==========================================================================
+   ATLAS-AWARDS-11A.0 — Canonical Page Rhythm Standard
+   Align all premium pages to the Masterplan vertical standard
+   ========================================================================== */
+
+:root {
+  --atlas-canon-top-gap: clamp(0.12rem, 0.38svh, 0.48rem);
+  --atlas-canon-stack-gap: clamp(1rem, 1.65vw, 1.45rem);
+  --atlas-canon-stack-gap-roomy: clamp(1.15rem, 1.9vw, 1.65rem);
+}
+
+/* 01 / Same first content line after sticky header.
+   Masterplan is the reference. Location / Downloads / Contact previously used
+   much larger top offsets, which caused inconsistent spacing. */
+html body .masterplan-premium-shell,
+html body .location-premium-shell,
+html body .downloads-premium-shell,
+html body .contact-premium-shell,
+html body .unit-detail-canon-v1 {
+  margin-top: var(--atlas-canon-top-gap) !important;
+  padding-top: 0 !important;
+}
+
+/* Units uses a different wrapper pattern, so normalize only its vertical start. */
+html body .units-premium-page {
+  margin-top: var(--atlas-canon-top-gap) !important;
+  padding-top: 0 !important;
+}
+
+/* 02 / Canonical module spacing inside premium pages. */
+html body .masterplan-premium-shell,
+html body .location-premium-shell,
+html body .downloads-premium-shell,
+html body .contact-premium-shell {
+  gap: var(--atlas-canon-stack-gap) !important;
+}
+
+/* Unit detail can stay slightly more editorial, but still aligned to the system. */
+html body .unit-detail-canon-v1 {
+  gap: var(--atlas-canon-stack-gap-roomy) !important;
+}
+
+/* 03 / Remove older extra margins that can double the gap between blocks. */
+html body .masterplan-premium-hero + .masterplan-premium-stage-shell--no-copy,
+html body .masterplan-premium-stage-shell--no-copy,
+html body .units-premium-filters,
+html body .units-premium-grid {
+  margin-top: 0 !important;
+}
+
+/* Units is not a grid shell, so rebuild its block spacing directly. */
+html body .units-premium-page > :not([hidden]) ~ :not([hidden]) {
+  margin-top: var(--atlas-canon-stack-gap) !important;
+  margin-bottom: 0 !important;
+}
+
+/* 04 / Tablet/mobile safety. */
+@media (max-width: 74rem) {
+  :root {
+    --atlas-canon-top-gap: clamp(0.75rem, 1.2svh, 1rem);
+  }
+}
+
+@media (max-width: 48rem) {
+  :root {
+    --atlas-canon-top-gap: 0.65rem;
+    --atlas-canon-stack-gap: 1rem;
+    --atlas-canon-stack-gap-roomy: 1rem;
+  }
+}
+
+/* ==========================================================================
+   ATLAS-AWARDS-11A.0b — Masterplan Canonical Header Offset Fix
+   Bring Masterplan to the same header/content rhythm as Units, Location,
+   Downloads and Contact.
+   ========================================================================== */
+
+/* Masterplan was still inheriting global main / data-dev-main top padding.
+   Other premium pages already reset this, so we mirror that reset here. */
+body:has(.masterplan-premium-shell) main,
+body:has(.masterplan-premium-shell) [data-dev-main],
+body:has(.masterplan-premium-shell) .awards-main-flow,
+body:has(.masterplan-premium-shell) .awards-flow {
+  padding-top: 0 !important;
+}
+
+/* Keep the route full-bleed like the other premium pages. */
+body:has(.masterplan-premium-shell) main {
+  width: 100dvw !important;
+  max-width: none !important;
+  margin-inline: calc(50% - 50dvw) !important;
+  padding-inline: 0 !important;
+  overflow-x: clip !important;
+}
+
+/* Now the shell can use the same canonical top rhythm. */
+html body .masterplan-premium-shell {
+  margin-top: var(--atlas-canon-top-gap, clamp(0.85rem, 1.35svh, 1.25rem)) !important;
+  padding-top: 0 !important;
+}
+
+/* Keep the first card clean after the reset. */
+html body .masterplan-premium-hero {
+  margin-top: 0 !important;
+}
+
+/* Keep the stage gap aligned with the new cross-page rhythm. */
+html body .masterplan-premium-hero + .masterplan-premium-stage-shell--no-copy {
+  margin-top: var(--atlas-canon-stack-gap, clamp(1rem, 1.65vw, 1.45rem)) !important;
+}
