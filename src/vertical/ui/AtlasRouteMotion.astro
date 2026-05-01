@@ -1,0 +1,101 @@
+---
+---
+
+<script is:inline>
+  (() => {
+    const STORAGE_KEY = "atlas-route-motion-intent";
+    const PRESSED_CLASS = "atlas-route-link-pressed";
+
+    const isModifiedClick = (event) =>
+      event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
+
+    const isSkippableHref = (href) => {
+      if (!href) return true;
+
+      const lower = href.toLowerCase();
+
+      return (
+        lower.startsWith("mailto:") ||
+        lower.startsWith("tel:") ||
+        lower.startsWith("sms:") ||
+        lower.startsWith("whatsapp:") ||
+        lower.startsWith("javascript:")
+      );
+    };
+
+    const isSamePageHash = (url) => {
+      return (
+        url.origin === window.location.origin &&
+        url.pathname === window.location.pathname &&
+        url.search === window.location.search &&
+        Boolean(url.hash)
+      );
+    };
+
+    const shouldMarkNavigation = (anchor, event) => {
+      if (!anchor || isModifiedClick(event)) return false;
+
+      const href = anchor.getAttribute("href");
+
+      if (isSkippableHref(href)) return false;
+      if (anchor.target && anchor.target !== "_self") return false;
+      if (anchor.hasAttribute("download")) return false;
+      if (anchor.dataset.noRouteMotion === "true") return false;
+      if (anchor.closest("[data-no-route-motion='true']")) return false;
+
+      let url;
+
+      try {
+        url = new URL(anchor.href, window.location.href);
+      } catch {
+        return false;
+      }
+
+      if (url.origin !== window.location.origin) return false;
+      if (isSamePageHash(url)) return false;
+
+      return true;
+    };
+
+    const markNavigationIntent = () => {
+      try {
+        window.sessionStorage.setItem(STORAGE_KEY, String(Date.now()));
+      } catch {
+        // Ignore storage failures.
+      }
+
+      document.documentElement.classList.add(PRESSED_CLASS);
+    };
+
+    const clearArrivalState = () => {
+      document.documentElement.classList.remove(PRESSED_CLASS);
+
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          document.documentElement.classList.remove("atlas-route-arriving");
+
+          try {
+            window.sessionStorage.removeItem(STORAGE_KEY);
+          } catch {
+            // Ignore storage failures.
+          }
+        });
+      });
+    };
+
+    document.addEventListener(
+      "click",
+      (event) => {
+        const anchor = event.target?.closest?.("a");
+        if (!shouldMarkNavigation(anchor, event)) return;
+
+        // Important: do not preventDefault and do not delay navigation.
+        markNavigationIntent();
+      },
+      { capture: true },
+    );
+
+    window.addEventListener("pageshow", clearArrivalState);
+    window.addEventListener("load", clearArrivalState);
+  })();
+</script>

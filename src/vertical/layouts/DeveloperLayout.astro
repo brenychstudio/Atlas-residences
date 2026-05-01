@@ -2,6 +2,8 @@
 import BaseLayout from "../../core/layouts/BaseLayout.astro";
 import AtmosphericBackdrop from "../ui/AtmosphericBackdrop.astro";
 import DeveloperHeader from "../ui/DeveloperHeader.astro";
+import AtlasFooter from "../ui/AtlasFooter.astro";
+import AtlasRouteMotion from "../ui/AtlasRouteMotion.astro";
 import StickyCTA from "../ui/StickyCTA.astro";
 
 const props = Astro.props;
@@ -15,5 +17,7 @@ const lang = (props as { lang?: string }).lang;
   <div data-dev-main class="awards-main-flow">
     <slot />
   </div>
+  <AtlasFooter lang={lang} />
   <StickyCTA lang={lang} />
+  <AtlasRouteMotion />
 </BaseLayout>
