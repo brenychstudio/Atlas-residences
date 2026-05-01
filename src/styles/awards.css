@@ -11471,6 +11471,246 @@ html body .units-premium-page .units-premium-grid a.unit-card.unit-card--premium
   }
 }
 
+/* ==========================================================================
+   ATLAS-AWARDS-11A.4 — Unit Detail Safety Material Polish
+   Small CSS-only polish. Do not redesign hero/composition/gallery behavior.
+   ========================================================================== */
+
+/* 01 / Keep Unit Detail aligned with the new canonical page rhythm */
+html body .unit-detail-canon-v1 {
+  margin-top: var(--atlas-canon-top-gap, clamp(0.12rem, 0.38svh, 0.48rem)) !important;
+  gap: var(--atlas-canon-stack-gap-roomy, clamp(1.15rem, 1.9vw, 1.65rem)) !important;
+}
+
+/* 02 / Hero image plate: slightly more premium, not darker */
+html body .unit-detail-editorial-hero__media {
+  border-color: rgba(255, 255, 255, 0.56) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0.06)),
+    rgba(255, 255, 255, 0.08) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.72) inset,
+    0 30px 78px rgba(18, 20, 24, 0.14),
+    0 10px 28px rgba(18, 20, 24, 0.06) !important;
+}
+
+/* Keep the image luminous. Do not create a hard text plate. */
+html body .unit-detail-editorial-hero__image {
+  filter: saturate(1.035) contrast(1.03) brightness(1.025) !important;
+}
+
+/* 03 / Floating facts card: align with Downloads / Contact glass material */
+html body .unit-detail-editorial-hero__card {
+  border-color: rgba(255, 255, 255, 0.58) !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.52),
+      rgba(235, 239, 246, 0.22) 52%,
+      rgba(224, 217, 207, 0.26)
+    ),
+    rgba(255, 255, 255, 0.13) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.80) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+    0 26px 68px rgba(0, 0, 0, 0.20) !important;
+  backdrop-filter: blur(26px) saturate(1.14) !important;
+  -webkit-backdrop-filter: blur(26px) saturate(1.14) !important;
+}
+
+html body .unit-detail-editorial-hero__fact {
+  border-top-color: rgba(20, 20, 20, 0.105) !important;
+}
+
+html body .unit-detail-editorial-hero__fact dt {
+  color: rgba(20, 20, 20, 0.36) !important;
+}
+
+html body .unit-detail-editorial-hero__fact dd {
+  color: rgba(14, 14, 14, 0.90) !important;
+}
+
+/* 04 / Hero CTA buttons: calm premium motion */
+html body .unit-detail-editorial-hero__action {
+  transition:
+    translate 620ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 620ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 620ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 620ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+html body .unit-detail-editorial-hero__action:hover,
+html body .unit-detail-editorial-hero__action:focus-visible {
+  transform: none !important;
+  translate: 0 -0.75px !important;
+}
+
+html body .unit-detail-editorial-hero__action--primary {
+  background:
+    linear-gradient(180deg, rgba(32, 32, 32, 0.98), rgba(9, 9, 9, 0.96)) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.13) inset,
+    0 14px 30px rgba(0, 0, 0, 0.18) !important;
+}
+
+html body .unit-detail-editorial-hero__action--secondary {
+  border-color: rgba(255, 255, 255, 0.48) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.28)),
+    rgba(255, 255, 255, 0.14) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.62),
+    0 8px 20px rgba(18, 20, 24, 0.055) !important;
+}
+
+/* 05 / Plan plate: more architectural, less flat-white */
+html body .unit-detail-canon-plan,
+html body .unit-detail-canon-gallery {
+  border-color: rgba(255, 255, 255, 0.48) !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.31),
+      rgba(230, 235, 244, 0.12) 54%,
+      rgba(224, 217, 207, 0.17)
+    ),
+    rgba(255, 255, 255, 0.08) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.68) inset,
+    0 22px 58px rgba(15, 18, 24, 0.08) !important;
+}
+
+html body .unit-detail-canon-plan__plate,
+html body .unit-detail-premium-plan.unit-detail-canon-plan__plate {
+  border-color: rgba(255, 255, 255, 0.58) !important;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 253, 248, 0.98), rgba(242, 236, 226, 0.84) 72%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.36), rgba(225, 220, 212, 0.18)),
+    rgba(255, 255, 255, 0.16) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.86) inset,
+    0 20px 50px rgba(18, 20, 24, 0.08) !important;
+}
+
+html body .unit-detail-canon-plan__plate img,
+html body .unit-detail-premium-plan.unit-detail-canon-plan__plate img {
+  filter: contrast(1.035) saturate(0.92) brightness(1.01) !important;
+}
+
+/* 06 / Gallery: keep the good hover, only improve material/caption */
+html body .unit-detail-canon-gallery__item,
+html body .unit-detail-premium-gallery__item.unit-detail-canon-gallery__item {
+  border-color: rgba(255, 255, 255, 0.52) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.64) inset,
+    0 18px 46px rgba(18, 20, 24, 0.09) !important;
+}
+
+html body .unit-detail-canon-gallery__item img,
+html body .unit-detail-premium-gallery__item.unit-detail-canon-gallery__item img {
+  transition:
+    transform 620ms ease,
+    filter 620ms ease !important;
+}
+
+html body .unit-detail-canon-gallery__item:hover img {
+  transform: scale(1.018) !important;
+  filter: saturate(1.01) contrast(1.025) brightness(1.005) !important;
+}
+
+html body .unit-detail-canon-gallery__caption {
+  border-color: rgba(255, 255, 255, 0.42) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.18)),
+    rgba(255, 255, 255, 0.12) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.46),
+    0 8px 20px rgba(18, 20, 24, 0.08) !important;
+}
+
+/* 07 / Summary shell: closer to Contact/Downloads material */
+html body .unit-detail-canon-summary,
+html body .unit-detail-premium-summary.unit-detail-canon-summary {
+  border-color: rgba(255, 255, 255, 0.54) !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.36),
+      rgba(235, 239, 246, 0.14) 50%,
+      rgba(224, 217, 207, 0.20)
+    ),
+    rgba(255, 255, 255, 0.09) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.72) inset,
+    0 28px 72px rgba(15, 18, 24, 0.10) !important;
+}
+
+html body .unit-detail-canon-summary__fact {
+  border-color: rgba(20, 20, 20, 0.085) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.12)),
+    rgba(255, 255, 255, 0.08) !important;
+}
+
+/* 08 / Touch safety */
+@media (hover: none) {
+  html body .unit-detail-editorial-hero__action:hover {
+    translate: 0 0 !important;
+  }
+
+  html body .unit-detail-canon-gallery__item:hover img {
+    transform: none !important;
+  }
+}
+
+/* ==========================================================================
+   ATLAS-AWARDS-11A.4b — Unit Detail Gallery Shell Rollback
+   The gallery should stay as an open editorial image rhythm, not inside a
+   glass panel. Keep plan polish, remove only the accidental gallery shell.
+   ========================================================================== */
+
+html body .unit-detail-canon-gallery {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  overflow: visible !important;
+}
+
+/* Restore clean editorial spacing for the gallery headline. */
+html body .unit-detail-canon-gallery .unit-detail-canon-section-head {
+  max-width: 42rem !important;
+  margin: 0 !important;
+}
+
+/* Keep the image grid constrained to the page rhythm, not to a card shell. */
+html body .unit-detail-canon-gallery__grid,
+html body .unit-detail-premium-gallery.unit-detail-canon-gallery__grid {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+}
+
+/* Keep only the individual image cards polished. */
+html body .unit-detail-canon-gallery__item,
+html body .unit-detail-premium-gallery__item.unit-detail-canon-gallery__item {
+  border-color: rgba(255, 255, 255, 0.50) !important;
+  background: rgba(255, 255, 255, 0.10) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.62) inset,
+    0 16px 42px rgba(18, 20, 24, 0.085) !important;
+}
+
+/* Safety: gallery images should not create horizontal overflow. */
+html body .unit-detail-canon-gallery__item img,
+html body .unit-detail-premium-gallery__item.unit-detail-canon-gallery__item img {
+  max-width: 100% !important;
+}
+
 /* ========================================================================== 
    ATLAS-AWARDS-11A.3f — Units Hover Source Conflict Fix
    Real fix after ZIP audit: neutralize Tailwind scale/group-hover behavior and
