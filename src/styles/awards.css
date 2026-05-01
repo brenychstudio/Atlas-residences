@@ -10597,3 +10597,252 @@ html body .masterplan-premium-hero {
 html body .masterplan-premium-hero + .masterplan-premium-stage-shell--no-copy {
   margin-top: var(--atlas-canon-stack-gap, clamp(1rem, 1.65vw, 1.45rem)) !important;
 }
+
+/* ==========================================================================
+   ATLAS-AWARDS-11A.2 — Downloads / Contact Material Cohesion
+   Premium material pass + document image crop correction.
+   CSS-only. No Astro / routing / state changes.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   01 / Downloads — make document cards feel like premium architectural plates
+   -------------------------------------------------------------------------- */
+
+.downloads-premium-grid {
+  align-items: stretch !important;
+}
+
+.downloads-premium-card {
+  border-color: rgba(255, 255, 255, 0.56) !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.34),
+      rgba(255, 255, 255, 0.12) 48%,
+      rgba(235, 232, 224, 0.22)
+    ),
+    rgba(255, 255, 255, 0.09) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.72) inset,
+    0 28px 72px rgba(15, 18, 24, 0.12),
+    0 10px 26px rgba(15, 18, 24, 0.07) !important;
+  backdrop-filter: blur(24px) saturate(1.08) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(1.08) !important;
+}
+
+/* Remove the "white PDF side stripe" feeling by treating the image as a cropped
+   architectural cover, not a contained document preview. */
+.downloads-premium-card__media {
+  aspect-ratio: 1 / 1.18 !important;
+  border-radius: calc(clamp(1.25rem, 1.8vw, 1.65rem) - 0.12rem) calc(clamp(1.25rem, 1.8vw, 1.65rem) - 0.12rem) 0 0 !important;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.24), transparent 34%),
+    linear-gradient(180deg, rgba(206, 211, 218, 0.22), rgba(197, 188, 178, 0.18)),
+    rgba(210, 211, 212, 0.18) !important;
+}
+
+/* Critical crop correction. The source images contain light margins, so we crop
+   inward with scale instead of object-contain behavior. */
+.downloads-premium-card__image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  transform: scale(1.17) !important;
+  filter: saturate(1.02) contrast(1.035) brightness(0.99) !important;
+}
+
+/* Slightly different crops for the two current document covers. */
+.downloads-premium-card:nth-child(1) .downloads-premium-card__image {
+  object-position: center 54% !important;
+}
+
+.downloads-premium-card:nth-child(2) .downloads-premium-card__image {
+  object-position: center 50% !important;
+  transform: scale(1.2) !important;
+}
+
+.downloads-premium-card:hover .downloads-premium-card__image {
+  transform: scale(1.22) !important;
+  filter: saturate(1.035) contrast(1.045) brightness(1) !important;
+}
+
+.downloads-premium-card:nth-child(2):hover .downloads-premium-card__image {
+  transform: scale(1.25) !important;
+}
+
+/* Replace the very clean white lower strip with a warmer glass document footer. */
+.downloads-premium-card__body {
+  min-height: clamp(7.2rem, 9vw, 8.5rem) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.52) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(242, 239, 232, 0.46),
+      rgba(221, 216, 207, 0.26)
+    ),
+    rgba(255, 255, 255, 0.14) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.48) inset !important;
+}
+
+.downloads-premium-card__title {
+  color: rgba(14, 14, 14, 0.92) !important;
+}
+
+.downloads-premium-card__meta {
+  color: rgba(18, 18, 18, 0.42) !important;
+}
+
+.downloads-premium-card__link {
+  min-height: 2.45rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background:
+    linear-gradient(180deg, rgba(31, 31, 31, 0.98), rgba(10, 10, 10, 0.96)) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.13) inset,
+    0 13px 26px rgba(12, 12, 12, 0.16) !important;
+}
+
+/* Hero sales card material: less SaaS white, more residence-system glass. */
+.downloads-premium-hero__card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.50),
+      rgba(233, 237, 244, 0.22) 54%,
+      rgba(220, 214, 206, 0.24)
+    ),
+    rgba(255, 255, 255, 0.12) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.76) inset,
+    0 24px 64px rgba(14, 18, 24, 0.12) !important;
+}
+
+/* --------------------------------------------------------------------------
+   02 / Contact — make the form and method cards less default / SaaS
+   -------------------------------------------------------------------------- */
+
+.contact-premium-method {
+  min-height: 5.35rem !important;
+  border-color: rgba(255, 255, 255, 0.54) !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.36),
+      rgba(230, 234, 241, 0.16) 52%,
+      rgba(221, 214, 205, 0.18)
+    ),
+    rgba(255, 255, 255, 0.10) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.68) inset,
+    0 18px 42px rgba(15, 18, 24, 0.08) !important;
+}
+
+.contact-premium-method:hover {
+  transform: translateY(-2px) !important;
+  border-color: rgba(255, 255, 255, 0.68) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.76) inset,
+    0 24px 56px rgba(15, 18, 24, 0.12) !important;
+}
+
+.contact-premium-form-shell {
+  border-color: rgba(255, 255, 255, 0.56) !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.34),
+      rgba(255, 255, 255, 0.12) 54%,
+      rgba(221, 214, 205, 0.20)
+    ),
+    rgba(255, 255, 255, 0.09) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.74) inset,
+    0 30px 78px rgba(15, 18, 24, 0.11) !important;
+}
+
+.contact-premium-form {
+  border-color: rgba(255, 255, 255, 0.58) !important;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.54),
+      rgba(245, 243, 238, 0.34) 52%,
+      rgba(224, 219, 211, 0.26)
+    ),
+    rgba(255, 255, 255, 0.18) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.72) inset,
+    0 18px 48px rgba(15, 18, 24, 0.08) !important;
+}
+
+.contact-premium-field input,
+.contact-premium-field select,
+.contact-premium-field textarea {
+  border-color: rgba(20, 20, 20, 0.085) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.66), rgba(246, 244, 240, 0.38)),
+    rgba(255, 255, 255, 0.20) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.70),
+    0 1px 0 rgba(255, 255, 255, 0.34) !important;
+}
+
+.contact-premium-field input:focus,
+.contact-premium-field select:focus,
+.contact-premium-field textarea:focus {
+  border-color: rgba(16, 16, 16, 0.24) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(250, 248, 244, 0.48)),
+    rgba(255, 255, 255, 0.26) !important;
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.34),
+    0 10px 28px rgba(15, 18, 24, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.76) !important;
+}
+
+.contact-premium-note {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.38), rgba(230, 225, 216, 0.18)),
+    rgba(255, 255, 255, 0.10) !important;
+}
+
+/* Contact hero side card should match Downloads hero side card. */
+.contact-premium-gallery-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.50),
+      rgba(233, 237, 244, 0.22) 54%,
+      rgba(220, 214, 206, 0.24)
+    ),
+    rgba(255, 255, 255, 0.12) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.76) inset,
+    0 24px 64px rgba(14, 18, 24, 0.12) !important;
+}
+
+/* --------------------------------------------------------------------------
+   03 / Mobile safety
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 48rem) {
+  .downloads-premium-card__media {
+    aspect-ratio: 1 / 1.05 !important;
+  }
+
+  .downloads-premium-card__image,
+  .downloads-premium-card:nth-child(2) .downloads-premium-card__image {
+    transform: scale(1.13) !important;
+  }
+
+  .downloads-premium-card:hover .downloads-premium-card__image,
+  .downloads-premium-card:nth-child(2):hover .downloads-premium-card__image {
+    transform: scale(1.15) !important;
+  }
+
+  .contact-premium-method {
+    min-height: 4.85rem !important;
+  }
+}
