@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { LANGS, type Lang, isLang, t } from "../../content/languages";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const langParam = Astro.params.lang ?? "en";
+if (!isLang(langParam)) throw new Error("Invalid lang");
+const lang = langParam as Lang;
+---
+
+<BaseLayout lang={lang} title={t(lang, "Terms | Atlas Residences", "Términos | Atlas Residences")}>
+  <section class="legal-premium-shell">
+    <p class="legal-premium-kicker">{t(lang, "Legal", "Legal")}</p>
+    <h1>{t(lang, "Terms of use", "Términos de uso")}</h1>
+    <p>
+      {t(
+        lang,
+        "Atlas Residences is presented as a premium real-estate demo experience. Availability, pricing, residence details and sales materials should be treated as indicative unless connected to a verified production data source.",
+        "Atlas Residences se presenta como una experiencia demo premium de real estate. La disponibilidad, precios, detalles de residencias y materiales comerciales deben considerarse indicativos salvo conexión a una fuente de datos verificada.",
+      )}
+    </p>
+    <p>
+      {t(
+        lang,
+        "For production use, legal terms should be reviewed and adapted to the final property owner, sales operator, jurisdiction and commercial process.",
+        "Para uso en producción, los términos legales deben revisarse y adaptarse al propietario final, operador comercial, jurisdicción y proceso de venta.",
+      )}
+    </p>
+  </section>
+</BaseLayout>

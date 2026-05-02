@@ -1,0 +1,88 @@
+---
+import { type Lang, isLang, t } from "../../content/languages";
+
+const { lang } = Astro.props as { lang?: string };
+
+const langParam = lang ?? "en";
+if (!isLang(langParam)) throw new Error("Invalid lang");
+const L = langParam as Lang;
+
+const year = new Date().getFullYear();
+
+const socials = [
+  { label: "Instagram", href: "https://www.instagram.com/" },
+  { label: "Facebook", href: "https://www.facebook.com/" },
+  { label: "Telegram", href: "https://telegram.org/" },
+  { label: "WhatsApp", href: "https://www.whatsapp.com/" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/" },
+];
+
+const footerLinks = [
+  { label: t(L, "Privacy", "Privacidad"), href: `/${L}/privacy/` },
+  { label: t(L, "Terms", "Términos"), href: `/${L}/terms/` },
+  { label: t(L, "Contact", "Contacto"), href: `/${L}/contact/` },
+];
+---
+
+<footer class="atlas-footer" aria-label={t(L, "Footer", "Pie de página")}>
+  <div class="atlas-footer__inner">
+    <div class="atlas-footer__brand">
+      <p class="atlas-footer__kicker">
+        {t(L, "Private residences in Barcelona", "Residencias privadas en Barcelona")}
+      </p>
+
+      <a class="atlas-footer__logo" href={`/${L}/`}>
+        Atlas Residences
+      </a>
+
+      <p class="atlas-footer__copy">
+        {t(
+          L,
+          "A premium residence presentation system with curated availability, private viewing requests and direct sales routing.",
+          "Un sistema premium de presentación residencial con disponibilidad curada, solicitudes de visita privada y contacto directo con ventas.",
+        )}
+      </p>
+    </div>
+
+    <nav class="atlas-footer__nav" aria-label={t(L, "Social links", "Enlaces sociales")}>
+      <p class="atlas-footer__label">
+        {t(L, "Social", "Social")}
+      </p>
+
+      <div class="atlas-footer__links">
+        {socials.map((item) => (
+          <a href={item.href} target="_blank" rel="noreferrer">
+            {item.label}
+          </a>
+        ))}
+      </div>
+    </nav>
+
+    <nav class="atlas-footer__nav" aria-label={t(L, "Legal links", "Enlaces legales")}>
+      <p class="atlas-footer__label">
+        {t(L, "Project", "Proyecto")}
+      </p>
+
+      <div class="atlas-footer__links">
+        {footerLinks.map((item) => (
+          <a href={item.href}>
+            {item.label}
+          </a>
+        ))}
+      </div>
+    </nav>
+  </div>
+
+  <div class="atlas-footer__bottom">
+    <p>© {year} Atlas Residences</p>
+
+    <a
+      class="atlas-footer__credit"
+      href="https://brenychstudio.com"
+      target="_blank"
+      rel="noreferrer"
+    >
+      Design &amp; development — brenychstudio
+    </a>
+  </div>
+</footer>

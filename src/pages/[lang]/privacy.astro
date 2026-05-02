@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { LANGS, type Lang, isLang, t } from "../../content/languages";
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const langParam = Astro.params.lang ?? "en";
+if (!isLang(langParam)) throw new Error("Invalid lang");
+const lang = langParam as Lang;
+---
+
+<BaseLayout lang={lang} title={t(lang, "Privacy | Atlas Residences", "Privacidad | Atlas Residences")}>
+  <section class="legal-premium-shell">
+    <p class="legal-premium-kicker">{t(lang, "Legal", "Legal")}</p>
+    <h1>{t(lang, "Privacy policy", "Política de privacidad")}</h1>
+    <p>
+      {t(
+        lang,
+        "This demo website presents Atlas Residences as a private residential sales interface. Contact details submitted through the preview form are not connected to a production CRM unless explicitly configured.",
+        "Este sitio demo presenta Atlas Residences como una interfaz privada de venta residencial. Los datos enviados a través del formulario de vista previa no están conectados a un CRM de producción salvo configuración explícita.",
+      )}
+    </p>
+    <p>
+      {t(
+        lang,
+        "If this project moves to production, privacy terms should be reviewed and adapted to the final business entity, data processor, analytics stack and contact workflow.",
+        "Si el proyecto pasa a producción, los términos de privacidad deben revisarse y adaptarse a la entidad final, el procesador de datos, la analítica y el flujo de contacto.",
+      )}
+    </p>
+  </section>
+</BaseLayout>
