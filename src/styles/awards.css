@@ -11947,399 +11947,308 @@ html body [data-dev-header] {
   }
 }
 
-/* ==========================================================================
-   ATLAS-SHELL-01F — Fixed Floating Header
-   Keep the premium pill header visible while scrolling without restoring
-   the full-width horizontal band.
-   ========================================================================== */
-
-html body [data-dev-header] {
-  position: fixed !important;
-  top: clamp(0.5rem, 0.9vw, 0.8rem) !important;
-  left: 0 !important;
-  right: 0 !important;
-  z-index: 80 !important;
-  pointer-events: none !important;
-  background: transparent !important;
-  background-image: none !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html body [data-dev-header] [data-header-shell] {
-  pointer-events: auto !important;
-}
-
-/* Prevent content from feeling too close under the fixed header. */
-html body .awards-main-flow {
-  padding-top: clamp(4.15rem, 5vw, 4.9rem) !important;
-}
-
-/* Home has its own hero rhythm, keep it slightly calmer. */
-html body:has(.home-premium-shell) .awards-main-flow {
-  padding-top: clamp(4.35rem, 5.4vw, 5.2rem) !important;
-}
-
-@media (max-width: 48rem) {
-  html body [data-dev-header] {
-    top: 0.55rem !important;
-  }
-
-  html body .awards-main-flow {
-    padding-top: 4.6rem !important;
-  }
-}
-
-/* ==========================================================================
-   ATLAS-SHELL-01F — Fixed Floating Header
-   Keep the premium pill header visible while scrolling without restoring
-   the full-width horizontal band.
-   ========================================================================== */
-
-html body [data-dev-header] {
-  position: fixed !important;
-  top: clamp(0.5rem, 0.9vw, 0.8rem) !important;
-  left: 0 !important;
-  right: 0 !important;
-  z-index: 80 !important;
-  pointer-events: none !important;
-  background: transparent !important;
-  background-image: none !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html body [data-dev-header] [data-header-shell] {
-  pointer-events: auto !important;
-}
-
-/* Prevent content from feeling too close under the fixed header. */
-html body .awards-main-flow {
-  padding-top: clamp(4.15rem, 5vw, 4.9rem) !important;
-}
-
-/* Home has its own hero rhythm, keep it slightly calmer. */
-html body:has(.home-premium-shell) .awards-main-flow {
-  padding-top: clamp(4.35rem, 5.4vw, 5.2rem) !important;
-}
-
-@media (max-width: 48rem) {
-  html body [data-dev-header] {
-    top: 0.55rem !important;
-  }
-
-  html body .awards-main-flow {
-    padding-top: 4.6rem !important;
-  }
-}
-
-/* ==========================================================================
-   ATLAS-SHELL-01F — Fixed Floating Header
-   Keep the premium pill header visible while scrolling without restoring
-   the full-width horizontal band.
-   ========================================================================== */
-
-html body [data-dev-header] {
-  position: fixed !important;
-  top: clamp(0.5rem, 0.9vw, 0.8rem) !important;
-  left: 0 !important;
-  right: 0 !important;
-  z-index: 80 !important;
-  pointer-events: none !important;
-  background: transparent !important;
-  background-image: none !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html body [data-dev-header] [data-header-shell] {
-  pointer-events: auto !important;
-}
-
-/* Prevent content from feeling too close under the fixed header. */
-html body .awards-main-flow {
-  padding-top: clamp(4.15rem, 5vw, 4.9rem) !important;
-}
-
-/* Home has its own hero rhythm, keep it slightly calmer. */
-html body:has(.home-premium-shell) .awards-main-flow {
-  padding-top: clamp(4.35rem, 5.4vw, 5.2rem) !important;
-}
-
-@media (max-width: 48rem) {
-  html body [data-dev-header] {
-    top: 0.55rem !important;
-  }
-
-  html body .awards-main-flow {
-    padding-top: 4.6rem !important;
-  }
-}
-
-/* ==========================================================================
-   ATLAS-SHELL-01D — True Header Band Removal
-   Keep the floating pill. Remove the full-width glass strip behind it.
-   ========================================================================== */
-
-html body [data-dev-header],
-html body[data-atmo-active="true"] [data-dev-header],
-html body:has(.unit-detail-premium-page) [data-dev-header],
-html body:has(.unit-detail-canon-v1) [data-dev-header] {
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-  border: 0 !important;
-  border-bottom: 0 !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html body [data-dev-header]::before,
-html body [data-dev-header]::after,
-html body[data-atmo-active="true"] [data-dev-header]::before,
-html body[data-atmo-active="true"] [data-dev-header]::after,
-html body:has(.unit-detail-premium-page) [data-dev-header]::before,
-html body:has(.unit-detail-premium-page) [data-dev-header]::after,
-html body:has(.unit-detail-canon-v1) [data-dev-header]::before,
-html body:has(.unit-detail-canon-v1) [data-dev-header]::after {
-  content: none !important;
-  display: none !important;
-  opacity: 0 !important;
-  background: none !important;
-}
-
-/* Preserve the actual premium floating header pill. */
-html body [data-dev-header] [data-header-shell] {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.15)),
-    rgba(255, 255, 255, 0.09) !important;
-  border-color: rgba(255, 255, 255, 0.48) !important;
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.74) inset,
-    0 18px 42px rgba(15, 18, 24, 0.08) !important;
-  backdrop-filter: blur(26px) saturate(1.18) !important;
-  -webkit-backdrop-filter: blur(26px) saturate(1.18) !important;
-}
-
-/* ==========================================================================
-   ATLAS-SHELL-01E — Footer Editorial Link Refinement
-   Replace chip-like footer links with quieter premium text links.
-   ========================================================================== */
-
-.atlas-footer__links {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-  gap: 0.42rem 0.72rem !important;
-}
-
-.atlas-footer__links a {
-  position: relative !important;
-  min-height: auto !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  color: rgba(18, 18, 18, 0.54) !important;
-  font-size: 0.82rem !important;
-  font-weight: 560 !important;
-  line-height: 1.35 !important;
-  text-decoration: none !important;
-  transition:
-    color 420ms ease,
-    opacity 420ms ease !important;
-}
-
-.atlas-footer__links a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -0.18rem;
-  height: 1px;
-  background: rgba(18, 18, 18, 0.34);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.atlas-footer__links a:hover,
-.atlas-footer__links a:focus-visible {
-  translate: none !important;
-  color: rgba(10, 10, 10, 0.88) !important;
-  background: transparent !important;
-  border: 0 !important;
-}
-
-.atlas-footer__links a:hover::after,
-.atlas-footer__links a:focus-visible::after {
-  transform: scaleX(1);
-}
-
-/* Add quiet separators between footer links on wider screens. */
-@media (min-width: 48rem) {
-  .atlas-footer__links a:not(:last-child)::before {
-    content: "";
-    position: absolute;
-    right: -0.38rem;
-    top: 50%;
-    width: 1px;
-    height: 0.72em;
-    background: rgba(18, 18, 18, 0.16);
-    transform: translateY(-50%);
-  }
-}
-
-/* Make the studio credit feel intentional, not like a default footer note. */
-.atlas-footer__credit {
-  color: rgba(18, 18, 18, 0.50) !important;
-}
-
-.atlas-footer__credit:hover,
-.atlas-footer__credit:focus-visible {
-  color: rgba(10, 10, 10, 0.86) !important;
-}
-
-/* ==========================================================================
-   ATLAS-SHELL-01D — True Header Band Removal
-   Keep the floating pill. Remove the full-width glass strip behind it.
-   ========================================================================== */
-
-html body [data-dev-header],
-html body[data-atmo-active="true"] [data-dev-header],
-html body:has(.unit-detail-premium-page) [data-dev-header],
-html body:has(.unit-detail-canon-v1) [data-dev-header] {
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-  border: 0 !important;
-  border-bottom: 0 !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html body [data-dev-header]::before,
-html body [data-dev-header]::after,
-html body[data-atmo-active="true"] [data-dev-header]::before,
-html body[data-atmo-active="true"] [data-dev-header]::after,
-html body:has(.unit-detail-premium-page) [data-dev-header]::before,
-html body:has(.unit-detail-premium-page) [data-dev-header]::after,
-html body:has(.unit-detail-canon-v1) [data-dev-header]::before,
-html body:has(.unit-detail-canon-v1) [data-dev-header]::after {
-  content: none !important;
-  display: none !important;
-  opacity: 0 !important;
-  background: none !important;
-}
-
-/* Preserve the actual premium floating header pill. */
-html body [data-dev-header] [data-header-shell] {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.15)),
-    rgba(255, 255, 255, 0.09) !important;
-  border-color: rgba(255, 255, 255, 0.48) !important;
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.74) inset,
-    0 18px 42px rgba(15, 18, 24, 0.08) !important;
-  backdrop-filter: blur(26px) saturate(1.18) !important;
-  -webkit-backdrop-filter: blur(26px) saturate(1.18) !important;
-}
-
-/* ==========================================================================
-   ATLAS-SHELL-01E — Footer Editorial Link Refinement
-   Replace chip-like footer links with quieter premium text links.
-   ========================================================================== */
-
-.atlas-footer__links {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-  gap: 0.42rem 0.72rem !important;
-}
-
-.atlas-footer__links a {
-  position: relative !important;
-  min-height: auto !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  color: rgba(18, 18, 18, 0.54) !important;
-  font-size: 0.82rem !important;
-  font-weight: 560 !important;
-  line-height: 1.35 !important;
-  text-decoration: none !important;
-  transition:
-    color 420ms ease,
-    opacity 420ms ease !important;
-}
-
-.atlas-footer__links a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -0.18rem;
-  height: 1px;
-  background: rgba(18, 18, 18, 0.34);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.atlas-footer__links a:hover,
-.atlas-footer__links a:focus-visible {
-  translate: none !important;
-  color: rgba(10, 10, 10, 0.88) !important;
-  background: transparent !important;
-  border: 0 !important;
-}
-
-.atlas-footer__links a:hover::after,
-.atlas-footer__links a:focus-visible::after {
-  transform: scaleX(1);
-}
-
-/* Add quiet separators between footer links on wider screens. */
-@media (min-width: 48rem) {
-  .atlas-footer__links a:not(:last-child)::before {
-    content: "";
-    position: absolute;
-    right: -0.38rem;
-    top: 50%;
-    width: 1px;
-    height: 0.72em;
-    background: rgba(18, 18, 18, 0.16);
-    transform: translateY(-50%);
-  }
-}
-
-/* Make the studio credit feel intentional, not like a default footer note. */
-.atlas-footer__credit {
-  color: rgba(18, 18, 18, 0.50) !important;
-}
-
-.atlas-footer__credit:hover,
-.atlas-footer__credit:focus-visible {
-  color: rgba(10, 10, 10, 0.86) !important;
-}
-
 /* ========================================================================== 
-   ATLAS-AWARDS-11A.3f — Units Hover Source Conflict Fix
-   Real fix after ZIP audit: neutralize Tailwind scale/group-hover behavior and
-   let Units cards use the same calm image hover rhythm as Unit Detail gallery.
+   ATLAS-STABILIZE-01B вЂ” Controlled CSS Tail Cleanup + Single Tablet Authority
+   Replace all late duplicate shell/responsive blocks from ATLAS-SHELL-01F to EOF.
+   Scope: layout authority only. No page markup, motion, CMS or image changes.
    ========================================================================== */
 
+:root {
+  --atlas-canon-frame-width: min(72rem, calc(100dvw - 4.5rem));
+  --atlas-canon-frame-width-mobile: min(100% - 1.25rem, 72rem);
+  --atlas-canon-header-top: clamp(0.5rem, 0.9vw, 0.8rem);
+  --atlas-fixed-header-clearance: clamp(5.1rem, 5.8vw, 5.85rem);
+  --atlas-fixed-page-gap: clamp(0.16rem, 0.35svh, 0.42rem);
+}
+
+/* 01 / Fixed floating header: remove the old full-width header band everywhere. */
+html body [data-dev-header],
+html body [data-dev-header][data-header-style="glass"],
+html body[data-atmo-active="true"] [data-dev-header],
+html body:has(.home-sky-page) [data-dev-header],
+html body:has(.units-premium-page) [data-dev-header],
+html body:has(.masterplan-premium-shell) [data-dev-header],
+html body:has(.location-premium-shell) [data-dev-header],
+html body:has(.downloads-premium-shell) [data-dev-header],
+html body:has(.contact-premium-shell) [data-dev-header],
+html body:has(.unit-detail-canon-v1) [data-dev-header],
+html body:has(.legal-premium-shell) [data-dev-header] {
+  position: fixed !important;
+  top: var(--atlas-canon-header-top) !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 140 !important;
+  width: 100% !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html body [data-dev-header]::before,
+html body [data-dev-header]::after,
+html body[data-atmo-active="true"] [data-dev-header]::before,
+html body[data-atmo-active="true"] [data-dev-header]::after {
+  content: none !important;
+  display: none !important;
+  opacity: 0 !important;
+  background: none !important;
+}
+
+html body [data-dev-header] > [data-header-shell],
+html body [data-dev-header][data-header-style="glass"] > [data-header-shell],
+html body[data-atmo-active="true"] [data-dev-header] > [data-header-shell],
+html body:has(.home-sky-page) [data-dev-header] > [data-header-shell],
+html body:has(.units-premium-page) [data-dev-header] > [data-header-shell],
+html body:has(.masterplan-premium-shell) [data-dev-header] > [data-header-shell],
+html body:has(.location-premium-shell) [data-dev-header] > [data-header-shell],
+html body:has(.downloads-premium-shell) [data-dev-header] > [data-header-shell],
+html body:has(.contact-premium-shell) [data-dev-header] > [data-header-shell],
+html body:has(.unit-detail-canon-v1) [data-dev-header] > [data-header-shell],
+html body:has(.legal-premium-shell) [data-dev-header] > [data-header-shell] {
+  width: var(--atlas-canon-frame-width) !important;
+  max-width: var(--atlas-canon-frame-width) !important;
+  margin-inline: auto !important;
+  pointer-events: auto !important;
+  overflow: visible !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.15)),
+    rgba(255, 255, 255, 0.09) !important;
+  border-color: rgba(255, 255, 255, 0.48) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.74) inset,
+    0 18px 42px rgba(15, 18, 24, 0.08) !important;
+  backdrop-filter: blur(26px) saturate(1.18) !important;
+  -webkit-backdrop-filter: blur(26px) saturate(1.18) !important;
+}
+
+html body [data-dev-header] a,
+html body [data-dev-header] button,
+html body [data-dev-header] nav {
+  pointer-events: auto !important;
+}
+
+/* 02 / Fixed-header content clearance belongs to the flow wrapper, not to page-specific hacks. */
+html body main {
+  padding-top: 0 !important;
+}
+
+html body [data-dev-main].awards-main-flow,
+html body .awards-main-flow,
+html body:has(.home-sky-page) [data-dev-main].awards-main-flow,
+html body:has(.units-premium-page) [data-dev-main].awards-main-flow,
+html body:has(.masterplan-premium-shell) [data-dev-main].awards-main-flow,
+html body:has(.location-premium-shell) [data-dev-main].awards-main-flow,
+html body:has(.downloads-premium-shell) [data-dev-main].awards-main-flow,
+html body:has(.contact-premium-shell) [data-dev-main].awards-main-flow,
+html body:has(.unit-detail-canon-v1) [data-dev-main].awards-main-flow,
+html body:has(.legal-premium-shell) [data-dev-main].awards-main-flow {
+  padding-top: var(--atlas-fixed-header-clearance) !important;
+}
+
+/* 03 / Canonical page frame: all primary routes share one outer line. */
+html body .home-sky-page,
+html body .units-premium-page,
+html body .masterplan-premium-shell,
+html body .location-premium-shell,
+html body .downloads-premium-shell,
+html body .contact-premium-shell,
+html body .unit-detail-canon-v1,
+html body .legal-premium-shell,
+html body .atlas-footer {
+  width: var(--atlas-canon-frame-width) !important;
+  max-width: var(--atlas-canon-frame-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+}
+
+html body .units-premium-page,
+html body .masterplan-premium-shell,
+html body .location-premium-shell,
+html body .downloads-premium-shell,
+html body .contact-premium-shell,
+html body .unit-detail-canon-v1,
+html body .legal-premium-shell {
+  margin-top: var(--atlas-fixed-page-gap) !important;
+}
+
+/* 04 / Home frame normalization without touching SunHero logic. */
+html body .home-sky-intro,
+html body .home-sky-intro__hero,
+html body .home-sky-intro__brief,
+html body .home-brief,
+html body .home-hero-premium-balance-v3,
+html body .home-hero-premium-balance-v3__hero,
+html body .home-hero-premium-balance-v3__lower,
+html body .home-hero-premium-balance-v4,
+html body .home-hero-premium-balance-v4__hero,
+html body .home-hero-premium-balance-v4__lower,
+html body .home-hero-premium-balance-v4__signal {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
+  transform: none !important;
+}
+
+html body .home-sky-intro__hero [data-hero-stage],
+html body .home-sky-intro__hero [data-hero-stage-content],
+html body .home-sky-intro__hero [data-sun-hero],
+html body .home-sky-intro__hero [data-sun-hero-frame],
+html body .home-sky-intro__hero .sun-hero-frame,
+html body .home-sky-intro__hero [data-sun-slider-wrap],
+html body .home-hero-premium-balance-v3__hero [data-hero-stage],
+html body .home-hero-premium-balance-v3__hero [data-sun-hero],
+html body .home-hero-premium-balance-v3__hero [data-sun-hero-frame],
+html body .home-hero-premium-balance-v3__hero .sun-hero-frame,
+html body .home-hero-premium-balance-v4__hero [data-hero-stage],
+html body .home-hero-premium-balance-v4__hero [data-sun-hero],
+html body .home-hero-premium-balance-v4__hero [data-sun-hero-frame],
+html body .home-hero-premium-balance-v4__hero .sun-hero-frame {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
+  transform: none !important;
+}
+
+/* 05 / Units frame normalization; grid remains 3 columns on desktop. */
+html body .units-premium-hero,
+html body .units-premium-filters,
+html body .units-filter-console,
+html body .units-premium-grid {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
+  transform: none !important;
+}
+
+html body .units-premium-hero {
+  margin-top: 0 !important;
+}
+
+/* 06 / Reference pages keep their current composition but use the same outer frame. */
+html body .masterplan-premium-hero,
+html body .masterplan-premium-stage-shell,
+html body .masterplan-premium-stage-shell--no-copy,
+html body .masterplan-premium-zone-rail,
+html body .masterplan-premium-cta,
+html body .location-premium-hero,
+html body .location-premium-control,
+html body .location-premium-list,
+html body .downloads-premium-hero,
+html body .downloads-premium-grid,
+html body .contact-premium-hero,
+html body .contact-premium-methods,
+html body .contact-premium-form-shell,
+html body .unit-detail-editorial-hero,
+html body .unit-detail-canon-plan,
+html body .unit-detail-canon-gallery,
+html body .unit-detail-canon-summary {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+html body {
+  --unit-detail-shell: var(--atlas-canon-frame-width);
+}
+
+html body .legal-premium-shell {
+  max-width: min(54rem, var(--atlas-canon-frame-width)) !important;
+}
+
+/* 07 / Footer link refinement: keep quiet editorial links, not chunky badges. */
+.atlas-footer__links {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 0.42rem 0.72rem !important;
+}
+
+.atlas-footer__links a {
+  position: relative !important;
+  min-height: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(18, 18, 18, 0.54) !important;
+  font-size: 0.82rem !important;
+  font-weight: 560 !important;
+  line-height: 1.35 !important;
+  text-decoration: none !important;
+  transition:
+    color 420ms ease,
+    opacity 420ms ease !important;
+}
+
+.atlas-footer__links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.18rem;
+  height: 1px;
+  background: rgba(18, 18, 18, 0.34);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.atlas-footer__links a:hover,
+.atlas-footer__links a:focus-visible {
+  translate: none !important;
+  color: rgba(10, 10, 10, 0.88) !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.atlas-footer__links a:hover::after,
+.atlas-footer__links a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+@media (min-width: 48rem) {
+  .atlas-footer__links a:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    right: -0.38rem;
+    top: 50%;
+    width: 1px;
+    height: 0.72em;
+    background: rgba(18, 18, 18, 0.16);
+    transform: translateY(-50%);
+  }
+}
+
+.atlas-footer__credit {
+  color: rgba(18, 18, 18, 0.50) !important;
+}
+
+.atlas-footer__credit:hover,
+.atlas-footer__credit:focus-visible {
+  color: rgba(10, 10, 10, 0.86) !important;
+}
+
+/* 08 / Units hover source conflict fix retained from the previous working state. */
 .units-premium-grid .unit-card.unit-card--premium,
 .units-premium-grid .unit-card.unit-card--premium:hover,
 .units-premium-grid .unit-card.unit-card--premium:focus-visible,
@@ -12368,8 +12277,6 @@ html body [data-dev-header] [data-header-shell] {
   overflow: hidden !important;
 }
 
-/* Important: Tailwind v4 group-hover scale uses the individual `scale` property,
-   not only `transform`. Reset both so the image does not double-zoom. */
 .units-premium-grid .unit-card.unit-card--premium .unit-card__image,
 .units-premium-grid .unit-card.unit-card--premium img.unit-card__image {
   --tw-scale-x: 1 !important;
@@ -12411,583 +12318,148 @@ html body [data-dev-header] [data-header-shell] {
   }
 }
 
-/* ==========================================================================
-   ATLAS-SHELL-01A — Header Seam Removal
-   Remove the accidental horizontal seam below the sticky glass header.
-   ========================================================================== */
-
-html body [data-dev-header]::after {
-  opacity: 0 !important;
-  display: none !important;
-}
-
-html body [data-dev-header] {
-  border-bottom: 0 !important;
-  box-shadow: none !important;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(247, 244, 238, 0.46),
-      rgba(247, 244, 238, 0.10)
-    ) !important;
-}
-
-/* ==========================================================================
-   ATLAS-SHELL-01B — Premium Footer
-   Quiet footer, not a heavy card. Integrated into the atmospheric system.
-   ========================================================================== */
-
-.atlas-footer {
-  position: relative;
-  z-index: 1;
-  width: min(76rem, calc(100dvw - 4.5rem));
-  margin: clamp(3.2rem, 6vw, 6rem) auto 0;
-  padding: clamp(1.4rem, 2.2vw, 2rem) 0 clamp(5.5rem, 8vw, 7rem);
-  color: rgba(18, 18, 18, 0.72);
-}
-
-.atlas-footer::before {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 1px;
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.52),
-      rgba(18, 18, 18, 0.12),
-      rgba(255, 255, 255, 0.42),
-      transparent
-    );
-}
-
-.atlas-footer__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(10rem, 0.7fr) minmax(10rem, 0.7fr);
-  gap: clamp(1.5rem, 4vw, 4.5rem);
-  align-items: start;
-  padding-top: clamp(1.35rem, 2.2vw, 2rem);
-}
-
-.atlas-footer__kicker,
-.atlas-footer__label {
-  margin: 0 0 0.68rem;
-  font-size: 0.62rem;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: rgba(18, 18, 18, 0.36);
-}
-
-.atlas-footer__logo {
-  display: inline-flex;
-  margin: 0;
-  color: rgba(12, 12, 12, 0.92);
-  font-size: clamp(1.55rem, 2.8vw, 2.55rem);
-  line-height: 0.94;
-  letter-spacing: -0.055em;
-  text-decoration: none;
-}
-
-.atlas-footer__copy {
-  max-width: 32rem;
-  margin: 0.9rem 0 0;
-  color: rgba(18, 18, 18, 0.54);
-  font-size: clamp(0.9rem, 1vw, 1rem);
-  line-height: 1.55;
-}
-
-.atlas-footer__nav {
-  min-width: 0;
-}
-
-.atlas-footer__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.atlas-footer__links a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.40);
-  padding: 0.42rem 0.72rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.10)),
-    rgba(255, 255, 255, 0.08);
-  color: rgba(18, 18, 18, 0.66);
-  font-size: 0.78rem;
-  font-weight: 560;
-  text-decoration: none;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.46),
-    0 8px 18px rgba(15, 18, 24, 0.035);
-  transition:
-    translate 520ms cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 520ms cubic-bezier(0.16, 1, 0.3, 1),
-    color 520ms cubic-bezier(0.16, 1, 0.3, 1),
-    background 520ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.atlas-footer__links a:hover,
-.atlas-footer__links a:focus-visible {
-  translate: 0 -0.75px;
-  border-color: rgba(255, 255, 255, 0.62);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0.16)),
-    rgba(255, 255, 255, 0.10);
-  color: rgba(10, 10, 10, 0.90);
-}
-
-.atlas-footer__bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: clamp(1.8rem, 3vw, 3rem);
-  padding-top: clamp(0.95rem, 1.4vw, 1.25rem);
-  border-top: 1px solid rgba(18, 18, 18, 0.08);
-  color: rgba(18, 18, 18, 0.42);
-  font-size: 0.76rem;
-  letter-spacing: 0.02em;
-}
-
-.atlas-footer__bottom p {
-  margin: 0;
-}
-
-.atlas-footer__credit {
-  color: rgba(18, 18, 18, 0.58);
-  text-decoration: none;
-  transition: color 420ms ease;
-}
-
-.atlas-footer__credit:hover,
-.atlas-footer__credit:focus-visible {
-  color: rgba(10, 10, 10, 0.88);
-}
-
-@media (max-width: 63.99rem) {
-  .atlas-footer {
-    width: min(100% - 2rem, 44rem);
-    margin-top: 3rem;
-  }
-
-  .atlas-footer__inner {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .atlas-footer__bottom {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-}
-
-/* ==========================================================================
-   ATLAS-SHELL-01C — Minimal Legal Pages
-   ========================================================================== */
-
-.legal-premium-shell {
-  width: min(54rem, calc(100dvw - 4.5rem));
-  margin: var(--atlas-canon-top-gap, 0.5rem) auto 0;
-  border: 1px solid rgba(255, 255, 255, 0.52);
-  border-radius: clamp(1.4rem, 2vw, 2rem);
-  padding: clamp(1.4rem, 3vw, 3rem);
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255, 255, 255, 0.34),
-      rgba(230, 235, 244, 0.13) 48%,
-      rgba(218, 212, 204, 0.18)
-    ),
-    rgba(255, 255, 255, 0.09);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.72) inset,
-    0 26px 68px rgba(15, 18, 24, 0.10);
-}
-
-.legal-premium-kicker {
-  margin: 0 0 1rem;
-  font-size: 0.62rem;
-  line-height: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: rgba(18, 18, 18, 0.38);
-}
-
-.legal-premium-shell h1 {
-  max-width: 11ch;
-  margin: 0;
-  color: rgba(12, 12, 12, 0.94);
-  font-size: clamp(3rem, 7vw, 6rem);
-  line-height: 0.88;
-  letter-spacing: -0.075em;
-}
-
-.legal-premium-shell p:not(.legal-premium-kicker) {
-  max-width: 44rem;
-  margin: 1.2rem 0 0;
-  color: rgba(18, 18, 18, 0.58);
-  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
-  line-height: 1.6;
-}
-
-@media (max-width: 63.99rem) {
-  .legal-premium-shell {
-    width: min(100% - 2rem, 44rem);
-  }
-
-  .legal-premium-shell h1 {
-    font-size: clamp(2.6rem, 13vw, 4.2rem);
-  }
-}
-/* ========================================================================== 
-   ATLAS-CSS-STABILIZE-01 — Clean Shell / Header / Frame Tail
-   Single source of truth for fixed header, page frame, footer links and Units hover.
-   Keep this as the final shell block. Do not duplicate ATLAS-SHELL blocks below.
-   ========================================================================== */
-
-:root {
-  --atlas-shell: min(74rem, calc(100dvw - 4.5rem));
-  --atlas-shell-mobile: min(100% - 1.25rem, 74rem);
-  --atlas-header-top: clamp(0.5rem, 0.9vw, 0.8rem);
-  --atlas-header-clearance: clamp(5.1rem, 5.65vw, 5.85rem);
-  --atlas-page-gap: clamp(0.14rem, 0.35svh, 0.42rem);
-}
-
-/* --------------------------------------------------------------------------
-   01 / Header: one fixed floating pill, no full-width band
-   -------------------------------------------------------------------------- */
-
-html body [data-dev-header] {
-  position: fixed !important;
-  top: var(--atlas-header-top) !important;
-  left: 0 !important;
-  right: 0 !important;
-  z-index: 80 !important;
-  padding: 0 !important;
-  pointer-events: none !important;
-  background: transparent !important;
-  background-color: transparent !important;
-  background-image: none !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-html body [data-dev-header]::before,
-html body [data-dev-header]::after {
-  content: none !important;
-  display: none !important;
-}
-
-html body [data-dev-header] [data-header-shell] {
-  width: var(--atlas-shell) !important;
-  max-width: var(--atlas-shell) !important;
-  margin-inline: auto !important;
-  pointer-events: auto !important;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.15)),
-    rgba(255, 255, 255, 0.09) !important;
-  border-color: rgba(255, 255, 255, 0.48) !important;
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.74) inset,
-    0 18px 42px rgba(15, 18, 24, 0.08) !important;
-  backdrop-filter: blur(26px) saturate(1.18) !important;
-  -webkit-backdrop-filter: blur(26px) saturate(1.18) !important;
-}
-
-/* --------------------------------------------------------------------------
-   02 / Fixed-header content clearance
-   -------------------------------------------------------------------------- */
-
-html body [data-dev-main].awards-main-flow {
-  padding-top: var(--atlas-header-clearance) !important;
-}
-
-/* Reset route-specific main padding that was created during earlier passes. */
-html body main {
-  padding-top: 0 !important;
-}
-
-/* --------------------------------------------------------------------------
-   03 / One page frame standard
-   -------------------------------------------------------------------------- */
-
-html body .home-sky-page,
-html body .units-premium-page,
-html body .masterplan-premium-shell,
-html body .location-premium-shell,
-html body .downloads-premium-shell,
-html body .contact-premium-shell,
-html body .unit-detail-canon-v1,
-html body .atlas-footer {
-  width: var(--atlas-shell) !important;
-  max-width: var(--atlas-shell) !important;
-  margin-inline: auto !important;
-}
-
-/* Use one shell value for the older page-specific variable systems. */
-html body:has(.location-premium-shell) {
-  --location-shell: var(--atlas-shell);
-}
-
-html body:has(.downloads-premium-shell) {
-  --downloads-shell: var(--atlas-shell);
-}
-
-html body:has(.contact-premium-shell) {
-  --contact-shell: var(--atlas-shell);
-}
-
-html body:has(.masterplan-premium-shell) {
-  --masterplan-shell: var(--atlas-shell);
-}
-
-html body:has(.unit-detail-canon-v1),
-html body:has(.unit-detail-editorial-hero) {
-  --unit-detail-shell: var(--atlas-shell);
-}
-
-/* --------------------------------------------------------------------------
-   04 / Home frame correction
-   Home had its own 70rem / expanded hero logic. Keep the visual language,
-   but make it use the same force line as the header.
-   -------------------------------------------------------------------------- */
-
+/* 09 / Desktop guard: Units must remain 3-column and use the canonical 72rem frame. */
 @media (min-width: 64rem) {
-  html body:has(.home-sky-page) {
-    height: auto !important;
-    min-height: 100svh !important;
-    overflow: auto !important;
-  }
-
-  html body:has(.home-sky-page) main {
-    width: 100dvw !important;
-    max-width: none !important;
-    height: auto !important;
-    min-height: 100svh !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: visible !important;
-  }
-
-  html body:has(.home-sky-page) [data-dev-main].awards-main-flow {
-    height: auto !important;
-    min-height: 100svh !important;
-    padding-top: var(--atlas-header-clearance) !important;
-    overflow: visible !important;
-  }
-
-  html body[data-atmo-active="true"] .home-sky-page {
-    width: var(--atlas-shell) !important;
-    max-width: var(--atlas-shell) !important;
-    height: auto !important;
-    min-height: auto !important;
-    padding: 0 !important;
-    overflow: visible !important;
-  }
-
-  html body[data-atmo-active="true"] .home-sky-intro {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
-    margin-inline: auto !important;
-    padding-top: 0 !important;
-    overflow: visible !important;
-  }
-
-  html body .home-hero-premium-balance-v3__hero,
-  html body .home-hero-premium-balance-v4__hero {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
-
-  html body .home-sky-intro__hero,
-  html body .home-sky-intro__brief,
-  html body .home-brief,
-  html body .home-hero-premium-balance-v4__signal {
-    width: 100% !important;
-    max-width: 100% !important;
+  html body .units-premium-page {
+    width: var(--atlas-canon-frame-width) !important;
+    max-width: var(--atlas-canon-frame-width) !important;
     margin-inline: auto !important;
   }
-}
 
-/* --------------------------------------------------------------------------
-   05 / Units drift correction
-   -------------------------------------------------------------------------- */
-
-html body .units-premium-page {
-  margin-top: var(--atlas-page-gap) !important;
-  padding-top: 0 !important;
-}
-
-html body .units-premium-hero,
-html body .units-premium-filters,
-html body .units-filter-console,
-html body .units-premium-grid {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin-inline: auto !important;
-}
-
-html body .units-premium-hero {
-  margin-top: 0 !important;
-  transform: none !important;
-}
-
-html body .units-premium-filters.units-filter-console {
-  margin-top: var(--atlas-canon-stack-gap, clamp(1rem, 1.65vw, 1.45rem)) !important;
-}
-
-html body .units-premium-grid {
-  margin-top: var(--atlas-canon-stack-gap-roomy, clamp(1.15rem, 1.9vw, 1.65rem)) !important;
-  padding-top: 0 !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-}
-
-/* Final Units hover source of truth. */
-html body .units-premium-grid .unit-card.unit-card--premium {
-  transform: none !important;
-  transition:
-    translate 820ms cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 760ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 760ms cubic-bezier(0.16, 1, 0.3, 1),
-    background 760ms cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
-
-html body .units-premium-grid .unit-card.unit-card--premium:hover,
-html body .units-premium-grid .unit-card.unit-card--premium:focus-visible {
-  translate: 0 -1.4px !important;
-}
-
-html body .units-premium-grid .unit-card.unit-card--premium .unit-card__image {
-  transform: none !important;
-  transition:
-    transform 620ms ease,
-    filter 620ms ease !important;
-  will-change: transform !important;
-}
-
-html body .units-premium-grid .unit-card.unit-card--premium:hover .unit-card__image,
-html body .units-premium-grid .unit-card.unit-card--premium:focus-visible .unit-card__image {
-  transform: scale(1.018) !important;
-  filter: saturate(0.98) contrast(1.02) !important;
-}
-
-/* --------------------------------------------------------------------------
-   06 / Masterplan / Location / Downloads / Contact children use parent frame
-   -------------------------------------------------------------------------- */
-
-html body .masterplan-premium-hero,
-html body .masterplan-premium-stage-shell,
-html body .masterplan-premium-stage-shell--no-copy,
-html body .masterplan-premium-zone-rail,
-html body .masterplan-premium-cta,
-html body .location-premium-hero,
-html body .location-premium-filter,
-html body .location-premium-list,
-html body .downloads-premium-hero,
-html body .downloads-premium-grid,
-html body .contact-premium-hero,
-html body .contact-premium-methods,
-html body .contact-premium-form-shell,
-html body .unit-detail-editorial-hero,
-html body .unit-detail-canon-plan,
-html body .unit-detail-canon-gallery,
-html body .unit-detail-canon-summary {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin-inline: auto !important;
-}
-
-/* --------------------------------------------------------------------------
-   07 / Footer editorial links
-   -------------------------------------------------------------------------- */
-
-.atlas-footer__links {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-  gap: 0.42rem 0.72rem !important;
-}
-
-.atlas-footer__links a {
-  position: relative !important;
-  min-height: auto !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  color: rgba(18, 18, 18, 0.54) !important;
-  font-size: 0.82rem !important;
-  font-weight: 560 !important;
-  line-height: 1.35 !important;
-  text-decoration: none !important;
-  transition:
-    color 420ms ease,
-    opacity 420ms ease !important;
-}
-
-.atlas-footer__links a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -0.18rem;
-  height: 1px;
-  background: rgba(18, 18, 18, 0.34);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.atlas-footer__links a:hover,
-.atlas-footer__links a:focus-visible {
-  translate: none !important;
-  color: rgba(10, 10, 10, 0.88) !important;
-  background: transparent !important;
-  border: 0 !important;
-}
-
-.atlas-footer__links a:hover::after,
-.atlas-footer__links a:focus-visible::after {
-  transform: scaleX(1);
-}
-
-@media (min-width: 48rem) {
-  .atlas-footer__links a:not(:last-child)::before {
-    content: "";
-    position: absolute;
-    right: -0.38rem;
-    top: 50%;
-    width: 1px;
-    height: 0.72em;
-    background: rgba(18, 18, 18, 0.16);
-    transform: translateY(-50%);
+  html body .units-premium-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: clamp(1rem, 1.8vw, 1.45rem) !important;
   }
 }
 
-/* --------------------------------------------------------------------------
-   08 / Mobile safety
-   -------------------------------------------------------------------------- */
-
-@media (max-width: 63.99rem) {
+/* 10 / Single tablet authority. Replaces old ATLAS-RESPONSIVE-01A.2 and 01C. */
+@media (min-width: 48rem) and (max-width: 63.99rem) {
   :root {
-    --atlas-shell: var(--atlas-shell-mobile);
-    --atlas-header-clearance: 5.35rem;
+    --atlas-tablet-frame: min(calc(100dvw - 4rem), 58rem);
+    --atlas-tablet-header-top: 0.72rem;
+    --atlas-tablet-header-clearance: 5.75rem;
+    --atlas-canon-frame-width: var(--atlas-tablet-frame);
+    --atlas-fixed-header-clearance: var(--atlas-tablet-header-clearance);
+    --atlas-fixed-page-gap: 0.18rem;
   }
 
-  html body [data-dev-header] [data-header-shell],
+  html,
+  body {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  html body [data-dev-header],
+  html body [data-dev-header][data-header-style="glass"],
+  html body[data-atmo-active="true"] [data-dev-header] {
+    top: var(--atlas-tablet-header-top) !important;
+    z-index: 140 !important;
+  }
+
+  html body [data-dev-header] > [data-header-shell],
+  html body [data-dev-header][data-header-style="glass"] > [data-header-shell],
+  html body[data-atmo-active="true"] [data-dev-header] > [data-header-shell] {
+    width: var(--atlas-tablet-frame) !important;
+    max-width: var(--atlas-tablet-frame) !important;
+    min-height: 3.02rem !important;
+    margin-inline: auto !important;
+    padding: 0.34rem 0.38rem !important;
+    display: grid !important;
+    grid-template-columns: minmax(6.8rem, 8.9rem) minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 0.28rem !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  html body [data-dev-header] [data-header-brand] {
+    min-width: 0 !important;
+    max-width: 8.9rem !important;
+    min-height: 2.08rem !important;
+    padding-inline: 0.52rem !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 0.56rem !important;
+    line-height: 1 !important;
+    letter-spacing: 0.2em !important;
+  }
+
+  html body [data-dev-header] [data-header-nav="desktop"] {
+    display: flex !important;
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.04rem !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+  }
+
+  html body [data-dev-header] [data-header-nav="desktop"]::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  html body [data-dev-header] [data-header-link] {
+    flex: 0 0 auto !important;
+    min-height: 2.05rem !important;
+    padding: 0.32rem 0.48rem !important;
+    border-radius: 999px !important;
+    font-size: 0.69rem !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  html body [data-dev-header] [data-header-actions] {
+    justify-self: end !important;
+    width: auto !important;
+    min-width: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0.24rem !important;
+  }
+
+  html body [data-dev-header] [data-header-lang] {
+    min-height: 2.08rem !important;
+    padding: 0.16rem !important;
+  }
+
+  html body [data-dev-header] [data-lang-link] {
+    min-width: 1.72rem !important;
+    min-height: 1.72rem !important;
+    padding-inline: 0.38rem !important;
+    font-size: 0.64rem !important;
+  }
+
+  html body [data-dev-header] [data-header-cta] {
+    min-height: 2.08rem !important;
+    padding-inline: 0.64rem !important;
+    font-size: 0.72rem !important;
+    white-space: nowrap !important;
+  }
+
+  html body [data-dev-header] [data-header-mobile] {
+    display: none !important;
+  }
+
+  html body [data-dev-main],
+  html body .awards-main-flow {
+    width: var(--atlas-tablet-frame) !important;
+    max-width: var(--atlas-tablet-frame) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: var(--atlas-tablet-header-clearance) !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
   html body .home-sky-page,
   html body .units-premium-page,
   html body .masterplan-premium-shell,
@@ -12995,783 +12467,461 @@ html body .unit-detail-canon-summary {
   html body .downloads-premium-shell,
   html body .contact-premium-shell,
   html body .unit-detail-canon-v1,
+  html body .legal-premium-shell,
   html body .atlas-footer {
-    width: var(--atlas-shell-mobile) !important;
-    max-width: var(--atlas-shell-mobile) !important;
-  }
-
-  html body .units-premium-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-}
-
-@media (max-width: 47.99rem) {
-  html body .units-premium-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  html body .units-premium-grid .unit-card.unit-card--premium:hover {
-    translate: 0 0 !important;
-  }
-}
-
-/* ==========================================================================
-   ATLAS-SHELL-03 — Home Hero Restore + Units Route Centering
-   Header is now correct. Do not change header width here.
-   Fix only:
-   1) Home hero frame becoming too wide.
-   2) Units page drifting right because it is centered inside the old main flow.
-   ========================================================================== */
-
-:root {
-  --atlas-route-frame: var(--atlas-shell, var(--atlas-canon-frame-width, min(74rem, calc(100vw - 4.5rem))));
-  --atlas-home-hero-frame: min(70rem, var(--atlas-route-frame));
-}
-
-/* --------------------------------------------------------------------------
-   01 / Home — restore the premium hero image frame
-   Header stays full canonical width, but the visual hero image should be
-   slightly narrower and more cinematic, like the earlier approved state.
-   -------------------------------------------------------------------------- */
-
-@media (min-width: 64rem) {
-  html body:has(.home-sky-page) .home-sky-page {
-    width: var(--atlas-route-frame) !important;
-    max-width: var(--atlas-route-frame) !important;
-    margin-inline: auto !important;
-  }
-
-  html body:has(.home-sky-page) .home-sky-intro {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-inline: auto !important;
-  }
-
-  html body:has(.home-sky-page) .home-sky-intro__hero,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v3__hero,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v4__hero {
-    width: var(--atlas-home-hero-frame) !important;
-    max-width: var(--atlas-home-hero-frame) !important;
-    margin-inline: auto !important;
-  }
-
-  html body:has(.home-sky-page) .home-sky-intro__hero [data-hero-stage],
-  html body:has(.home-sky-page) .home-hero-premium-balance-v3__hero [data-hero-stage],
-  html body:has(.home-sky-page) .home-hero-premium-balance-v4__hero [data-hero-stage],
-  html body:has(.home-sky-page) .home-sky-intro__hero [data-sun-hero],
-  html body:has(.home-sky-page) .home-hero-premium-balance-v3__hero [data-sun-hero],
-  html body:has(.home-sky-page) .home-hero-premium-balance-v4__hero [data-sun-hero] {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-inline: auto !important;
-  }
-
-  html body:has(.home-sky-page) .home-sky-intro__hero .sun-hero-frame {
-    border-radius: 1.2rem !important;
-    overflow: hidden !important;
-  }
-
-  html body:has(.home-sky-page) .home-sky-intro__brief,
-  html body:has(.home-sky-page) .home-brief,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v3__lower,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v4__lower,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v4__signal {
-    width: var(--atlas-home-hero-frame) !important;
-    max-width: var(--atlas-home-hero-frame) !important;
-    margin-inline: auto !important;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   02 / Units — center the route from viewport, not from nested main container
-   This matches the centering strategy already used by Location / Downloads /
-   Contact, but only for Units.
-   -------------------------------------------------------------------------- */
-
-@media (min-width: 64rem) {
-  html body:has(.units-premium-page) [data-dev-main].awards-main-flow {
-    width: 100vw !important;
-    max-width: none !important;
-    margin-inline: calc(50% - 50vw) !important;
-    padding-inline: 0 !important;
-    overflow-x: clip !important;
-  }
-
-  html body:has(.units-premium-page) .awards-flow {
-    width: var(--atlas-route-frame) !important;
-    max-width: var(--atlas-route-frame) !important;
-    margin-inline: auto !important;
-  }
-
-  html body:has(.units-premium-page) .units-premium-page {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-inline: auto !important;
-    padding-inline: 0 !important;
-  }
-
-  html body:has(.units-premium-page) .units-premium-hero,
-  html body:has(.units-premium-page) .units-premium-filters,
-  html body:has(.units-premium-page) .units-filter-console,
-  html body:has(.units-premium-page) .units-premium-grid {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-inline: auto !important;
-  }
-
-  html body:has(.units-premium-page) .units-premium-hero {
-    margin-top: 0 !important;
-  }
-
-  html body:has(.units-premium-page) .units-premium-filters.units-filter-console {
-    margin-top: var(--atlas-canon-stack-gap, clamp(1rem, 1.65vw, 1.45rem)) !important;
-  }
-
-  html body:has(.units-premium-page) .units-premium-grid {
-    margin-top: var(--atlas-canon-stack-gap-roomy, clamp(1.15rem, 1.9vw, 1.65rem)) !important;
-    padding-top: 0 !important;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   03 / Tablet/mobile safety
-   -------------------------------------------------------------------------- */
-
-@media (max-width: 63.99rem) {
-  :root {
-    --atlas-home-hero-frame: var(--atlas-shell-mobile, min(100% - 1.25rem, 74rem));
-  }
-
-  html body:has(.home-sky-page) .home-sky-intro__hero,
-  html body:has(.home-sky-page) .home-sky-intro__brief,
-  html body:has(.home-sky-page) .home-brief,
-  html body:has(.units-premium-page) .awards-flow,
-  html body:has(.units-premium-page) .units-premium-page {
-    width: var(--atlas-shell-mobile, min(100% - 1.25rem, 74rem)) !important;
-    max-width: var(--atlas-shell-mobile, min(100% - 1.25rem, 74rem)) !important;
-    margin-inline: auto !important;
-  }
-}
-
-/* ==========================================================================
-   ATLAS-SHELL-04 — Home Hero Restore + Location Filter Restore
-   Keep fixed header and stabilized Units untouched.
-   Fix:
-   1) Home hero approved narrower cinematic frame.
-   2) Location filter strip returning to horizontal desktop control.
-   ========================================================================== */
-
-:root {
-  --atlas-home-hero-approved: min(66rem, calc(100dvw - 4.5rem));
-}
-
-/* --------------------------------------------------------------------------
-   01 / Home — restore approved hero frame
-   Header remains canonical width. Hero image/slider/brief return to the
-   narrower premium cinematic frame used before shell cleanup.
-   -------------------------------------------------------------------------- */
-
-@media (min-width: 64rem) {
-  html body:has(.home-sky-page) .home-sky-page {
-    width: var(--atlas-shell, min(74rem, calc(100dvw - 4.5rem))) !important;
-    max-width: var(--atlas-shell, min(74rem, calc(100dvw - 4.5rem))) !important;
-    margin-inline: auto !important;
-  }
-
-  html body:has(.home-sky-page) .home-sky-intro {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-inline: auto !important;
-  }
-
-  html body:has(.home-sky-page) .home-sky-intro__hero,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v3__hero,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v4__hero {
-    width: var(--atlas-home-hero-approved) !important;
-    max-width: var(--atlas-home-hero-approved) !important;
+    width: var(--atlas-tablet-frame) !important;
+    max-width: var(--atlas-tablet-frame) !important;
     margin-left: auto !important;
     margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Home: remove the extra local top gap that made it sit lower than other pages. */
+  html body .home-sky-page {
+    padding-top: 0.18rem !important;
+    padding-bottom: clamp(2rem, 4svh, 3rem) !important;
     overflow: visible !important;
   }
 
-  /* Cancel older hero expansion/negative margins. */
-  html body:has(.home-sky-page) .home-hero-premium-balance-v3__hero,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v4__hero {
-    margin-top: 0 !important;
-  }
-
-  html body:has(.home-sky-page) .home-sky-intro__hero [data-hero-stage],
-  html body:has(.home-sky-page) .home-sky-intro__hero [data-hero-stage-content],
-  html body:has(.home-sky-page) .home-sky-intro__hero [data-sun-hero],
-  html body:has(.home-sky-page) .home-sky-intro__hero [data-sun-hero-frame],
-  html body:has(.home-sky-page) .home-sky-intro__hero [data-sun-slider-wrap] {
+  html body .home-sky-intro,
+  html body .home-sky-intro__hero,
+  html body .home-sky-intro__brief,
+  html body .home-brief,
+  html body .home-hero-premium-balance-v3__lower,
+  html body .home-hero-premium-balance-v4__lower,
+  html body .home-hero-premium-balance-v4__signal,
+  html body .units-premium-hero,
+  html body .units-premium-filters,
+  html body .units-filter-console,
+  html body .units-premium-grid {
     width: 100% !important;
     max-width: 100% !important;
-    margin-inline: auto !important;
-  }
-
-  html body:has(.home-sky-page) .home-sky-intro__hero .sun-hero-frame,
-  html body:has(.home-sky-page) .home-sky-intro__hero [data-sun-hero-frame] {
-    border-radius: 1.18rem !important;
-    overflow: hidden !important;
-  }
-
-  html body:has(.home-sky-page) .home-sky-intro__brief,
-  html body:has(.home-sky-page) .home-brief,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v3__lower,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v4__lower,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v4__signal {
-    width: var(--atlas-home-hero-approved) !important;
-    max-width: var(--atlas-home-hero-approved) !important;
-    margin-inline: auto !important;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   02 / Location — restore desktop horizontal filter strip
-   The filter strip accidentally fell into stacked/full-width responsive mode.
-   Force the premium desktop control layout back for desktop/tablet landscape.
-   -------------------------------------------------------------------------- */
-
-@media (min-width: 64rem) {
-  html body:has(.location-premium-shell) .location-premium-control {
-    display: grid !important;
-    grid-template-columns: minmax(12rem, 0.28fr) minmax(0, 1fr) !important;
-    gap: clamp(1rem, 2vw, 1.6rem) !important;
-    align-items: center !important;
-  }
-
-  html body:has(.location-premium-shell) .location-premium-filters {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    justify-content: flex-end !important;
-    align-items: center !important;
-    gap: 0.52rem !important;
-    width: auto !important;
-    max-width: none !important;
-  }
-
-  html body:has(.location-premium-shell) .location-premium-filter {
-    width: auto !important;
-    max-width: max-content !important;
     min-width: 0 !important;
-    flex: 0 0 auto !important;
-    min-height: 2.35rem !important;
-    padding: 0.58rem 0.92rem !important;
-    border-radius: 999px !important;
-    white-space: nowrap !important;
-  }
-
-  html body:has(.location-premium-shell) .location-premium-control__meta {
-    max-width: 16rem !important;
-  }
-}
-
-/* Keep Location mobile intentionally stacked later during Responsive QA. */
-@media (max-width: 63.99rem) {
-  html body:has(.location-premium-shell) .location-premium-filter {
-    max-width: none !important;
-  }
-}
-
-/* ==========================================================================
-   ATLAS-SHELL-04B — Home Header Clearance + Frame Restore
-   Corrects the previous Home fix: do not narrow the hero. Lower it below the
-   fixed header and align it to the same force line as the header shell.
-   ========================================================================== */
-
-:root {
-  --atlas-home-top-clearance: clamp(2.45rem, 3.25vw, 3.25rem);
-}
-
-/* Home only. Header is fixed, so the first visual block needs its own breathing. */
-@media (min-width: 64rem) {
-  html body:has(.home-sky-page) .home-sky-page {
-    width: var(--atlas-shell, min(74rem, calc(100dvw - 4.5rem))) !important;
-    max-width: var(--atlas-shell, min(74rem, calc(100dvw - 4.5rem))) !important;
-    margin-inline: auto !important;
-    margin-top: var(--atlas-home-top-clearance) !important;
-    padding-top: 0 !important;
-  }
-
-  html body:has(.home-sky-page) .home-sky-intro {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-inline: auto !important;
-    padding-top: 0 !important;
-  }
-
-  /* Hero + slider must align to header force line, not use the narrower 66rem frame. */
-  html body:has(.home-sky-page) .home-sky-intro__hero,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v3__hero,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v4__hero {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-inline: auto !important;
-    margin-top: 0 !important;
-  }
-
-  html body:has(.home-sky-page) .home-sky-intro__hero [data-hero-stage],
-  html body:has(.home-sky-page) .home-sky-intro__hero [data-hero-stage-content],
-  html body:has(.home-sky-page) .home-sky-intro__hero [data-sun-hero],
-  html body:has(.home-sky-page) .home-sky-intro__hero [data-sun-hero-frame],
-  html body:has(.home-sky-page) .home-sky-intro__hero [data-sun-slider-wrap],
-  html body:has(.home-sky-page) .home-sky-intro__hero .sun-hero-frame {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-inline: auto !important;
-  }
-
-  html body:has(.home-sky-page) .home-sky-intro__hero .sun-hero-frame,
-  html body:has(.home-sky-page) .home-sky-intro__hero [data-sun-hero-frame] {
-    border-radius: 1.18rem !important;
-    overflow: hidden !important;
-  }
-
-  /* Lower Home editorial block should follow the same outer frame. */
-  html body:has(.home-sky-page) .home-sky-intro__brief,
-  html body:has(.home-sky-page) .home-brief,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v3__lower,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v4__lower,
-  html body:has(.home-sky-page) .home-hero-premium-balance-v4__signal {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin-inline: auto !important;
-  }
-}
-
-/* Tablet/mobile safety. Leave full responsive QA for the next phase. */
-@media (max-width: 63.99rem) {
-  html body:has(.home-sky-page) .home-sky-page {
-    margin-top: 0.8rem !important;
-  }
-}
-
-/* ==========================================================================
-   ATLAS-LOCATION-01 — Restore Premium Location Filter Control
-   Keep Home / Units / Header untouched. Restore Location filters to compact,
-   premium, right-aligned control rhythm.
-   ========================================================================== */
-
-@media (min-width: 64rem) {
-  html body:has(.location-premium-shell) .location-premium-control {
-    display: grid !important;
-    grid-template-columns: minmax(14rem, 0.32fr) minmax(0, 1fr) !important;
-    align-items: center !important;
-    column-gap: clamp(1.35rem, 2.4vw, 2.2rem) !important;
-    row-gap: 0 !important;
-    padding: clamp(1rem, 1.45vw, 1.28rem) clamp(1.15rem, 1.8vw, 1.6rem) !important;
-  }
-
-  html body:has(.location-premium-shell) .location-premium-control > div {
-    min-width: 0 !important;
-  }
-
-  html body:has(.location-premium-shell) .location-premium-control__kicker {
-    margin-bottom: 0.42rem !important;
-  }
-
-  html body:has(.location-premium-shell) .location-premium-control__meta {
-    margin: 0 !important;
-    max-width: 16rem !important;
-    white-space: normal !important;
-  }
-
-  html body:has(.location-premium-shell) .location-premium-filters {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    justify-content: flex-end !important;
-    align-items: center !important;
-    gap: 0.56rem !important;
-    width: auto !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  html body:has(.location-premium-shell) .location-premium-filter {
-    width: auto !important;
-    max-width: none !important;
-    min-width: 0 !important;
-    flex: 0 0 auto !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    min-height: 2.18rem !important;
-    padding: 0.52rem 0.86rem !important;
-    border-radius: 999px !important;
-    white-space: nowrap !important;
-    font-size: 0.8rem !important;
-    font-weight: 650 !important;
-    line-height: 1 !important;
-    letter-spacing: -0.01em !important;
-    color: rgba(18, 18, 18, 0.58) !important;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.50), rgba(255, 255, 255, 0.22)),
-      rgba(255, 255, 255, 0.12) !important;
-    border: 1px solid rgba(255, 255, 255, 0.46) !important;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.58),
-      0 6px 14px rgba(15, 18, 24, 0.035) !important;
-    transition:
-      color 420ms ease,
-      background 420ms ease,
-      border-color 420ms ease,
-      box-shadow 420ms ease,
-      translate 520ms cubic-bezier(0.16, 1, 0.3, 1) !important;
-  }
-
-  html body:has(.location-premium-shell) .location-premium-filter:hover,
-  html body:has(.location-premium-shell) .location-premium-filter:focus-visible {
-    translate: 0 -0.75px !important;
-    color: rgba(10, 10, 10, 0.88) !important;
-    border-color: rgba(255, 255, 255, 0.62) !important;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.60), rgba(255, 255, 255, 0.28)),
-      rgba(255, 255, 255, 0.14) !important;
-  }
-
-  html body:has(.location-premium-shell) .location-premium-filter.is-active {
-    color: rgba(255, 255, 255, 0.96) !important;
-    background:
-      linear-gradient(180deg, rgba(34, 34, 34, 0.98), rgba(10, 10, 10, 0.96)) !important;
-    border-color: rgba(255, 255, 255, 0.12) !important;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.13),
-      0 11px 24px rgba(10, 10, 10, 0.17) !important;
-  }
-}
-
-/* Tablet fallback: allow wrapping, but do not stretch pills full-width. */
-@media (min-width: 48rem) and (max-width: 63.99rem) {
-  html body:has(.location-premium-shell) .location-premium-control {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 0.95rem !important;
-  }
-
-  html body:has(.location-premium-shell) .location-premium-filters {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    justify-content: flex-start !important;
-    gap: 0.5rem !important;
-  }
-
-  html body:has(.location-premium-shell) .location-premium-filter {
-    width: auto !important;
-    flex: 0 0 auto !important;
-    max-width: max-content !important;
-  }
-}
-
-/* ==========================================================================
-   ATLAS-LOCATION-02 — Hard Restore Location Filter Bar
-   Fixes current real DOM issue: chips are spread too far apart.
-   Scoped only to Location page. Does not touch Home / Units / Header.
-   ========================================================================== */
-
-@media (min-width: 64rem) {
-  /* The whole control bar */
-  html body:has(.location-premium-shell) .location-premium-control {
-    display: grid !important;
-    grid-template-columns: minmax(13rem, 18rem) minmax(0, 1fr) !important;
-    align-items: center !important;
-    gap: clamp(1.25rem, 2vw, 2rem) !important;
-    padding: clamp(1rem, 1.35vw, 1.22rem) clamp(1.15rem, 1.8vw, 1.55rem) !important;
-  }
-
-  /* Left meta column */
-  html body:has(.location-premium-shell) .location-premium-control > :first-child {
-    min-width: 0 !important;
-    width: auto !important;
-    max-width: 18rem !important;
-    justify-self: start !important;
-  }
-
-  /* Right filters column — target real child even if class names drift */
-  html body:has(.location-premium-shell) .location-premium-control > :last-child,
-  html body:has(.location-premium-shell) .location-premium-filters {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    align-items: center !important;
-    justify-content: flex-end !important;
-    justify-self: end !important;
-
-    width: max-content !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-
-    gap: 0.5rem !important;
-    margin: 0 !important;
-    padding: 0 !important;
-
-    grid-template-columns: none !important;
-  }
-
-  /* Kill accidental distribution rules from earlier passes */
-  html body:has(.location-premium-shell) .location-premium-control > :last-child {
-    justify-items: end !important;
-    place-items: center end !important;
-  }
-
-  /* Target all possible chip elements, not only one class */
-  html body:has(.location-premium-shell) .location-premium-control > :last-child > *,
-  html body:has(.location-premium-shell) .location-premium-filters > *,
-  html body:has(.location-premium-shell) .location-premium-filter,
-  html body:has(.location-premium-shell) .location-premium-control button,
-  html body:has(.location-premium-shell) .location-premium-control a {
-    width: auto !important;
-    max-width: max-content !important;
-    min-width: 0 !important;
-
-    flex: 0 0 auto !important;
-    flex-grow: 0 !important;
-    flex-shrink: 0 !important;
-    align-self: center !important;
-
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-
-    min-height: 2.15rem !important;
-    padding: 0.52rem 0.86rem !important;
-    border-radius: 999px !important;
-
-    white-space: nowrap !important;
-    text-align: center !important;
-
-    font-size: 0.8rem !important;
-    font-weight: 650 !important;
-    line-height: 1 !important;
-    letter-spacing: -0.01em !important;
-  }
-
-  /* Inactive chip material */
-  html body:has(.location-premium-shell) .location-premium-control button:not(.is-active),
-  html body:has(.location-premium-shell) .location-premium-control a:not(.is-active),
-  html body:has(.location-premium-shell) .location-premium-filter:not(.is-active) {
-    color: rgba(18, 18, 18, 0.58) !important;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.22)),
-      rgba(255, 255, 255, 0.12) !important;
-    border: 1px solid rgba(255, 255, 255, 0.48) !important;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.58),
-      0 6px 14px rgba(15, 18, 24, 0.035) !important;
-  }
-
-  /* Active chip material */
-  html body:has(.location-premium-shell) .location-premium-control button.is-active,
-  html body:has(.location-premium-shell) .location-premium-control a.is-active,
-  html body:has(.location-premium-shell) .location-premium-filter.is-active {
-    color: rgba(255, 255, 255, 0.96) !important;
-    background:
-      linear-gradient(180deg, rgba(34, 34, 34, 0.98), rgba(10, 10, 10, 0.96)) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.13),
-      0 11px 24px rgba(10, 10, 10, 0.17) !important;
-  }
-
-  /* Hover */
-  html body:has(.location-premium-shell) .location-premium-control button:hover,
-  html body:has(.location-premium-shell) .location-premium-control a:hover,
-  html body:has(.location-premium-shell) .location-premium-filter:hover {
-    translate: 0 -0.75px !important;
-  }
-}
-
-/* Tablet safety: wrap, but never stretch chips full-width. */
-@media (min-width: 48rem) and (max-width: 63.99rem) {
-  html body:has(.location-premium-shell) .location-premium-control {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 0.95rem !important;
-  }
-
-  html body:has(.location-premium-shell) .location-premium-control > :last-child,
-  html body:has(.location-premium-shell) .location-premium-filters {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    justify-content: flex-start !important;
-    gap: 0.5rem !important;
-    width: auto !important;
-    max-width: 100% !important;
-  }
-
-  html body:has(.location-premium-shell) .location-premium-control > :last-child > *,
-  html body:has(.location-premium-shell) .location-premium-filters > *,
-  html body:has(.location-premium-shell) .location-premium-filter,
-  html body:has(.location-premium-shell) .location-premium-control button,
-  html body:has(.location-premium-shell) .location-premium-control a {
-    width: auto !important;
-    max-width: max-content !important;
-    flex: 0 0 auto !important;
-  }
-}
-
-/* ==========================================================================
-   ATLAS-MOTION-03 — Fast Smooth MPA Motion
-   No ClientRouter, no native snapshots, no preventDefault, no delay.
-   Uses an early arrival veil to reduce flashes between normal MPA loads.
-   ========================================================================== */
-
-@view-transition {
-  navigation: none;
-}
-
-/* Remove any legacy native snapshot state. */
-html body [data-dev-header],
-html body [data-dev-main].awards-main-flow,
-html body .atlas-footer {
-  view-transition-name: none !important;
-  contain: none !important;
-}
-
-/* --------------------------------------------------------------------------
-   01 / Arrival veil
-   Lightweight paint-only overlay. No backdrop-filter.
-   It masks occasional browser white flashes without slowing navigation.
-   -------------------------------------------------------------------------- */
-
-html.atlas-route-arriving::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 9998;
-  pointer-events: none;
-  opacity: 0;
-  background:
-    radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0) 34%),
-    linear-gradient(
-      180deg,
-      rgba(72, 86, 116, 0.42),
-      rgba(191, 190, 187, 0.52) 58%,
-      rgba(214, 207, 198, 0.64)
-    );
-    animation: atlas-arrival-veil 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes atlas-arrival-veil {
-  0% {
-    opacity: 0.88;
-  }
-
-  52% {
-    opacity: 0.42;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   02 / Page enter
-   Softer than previous version: no big jump, no scale drama.
-   -------------------------------------------------------------------------- */
-
-@media (prefers-reduced-motion: no-preference) {
-  html body [data-dev-main].awards-main-flow > .awards-flow,
-  html body [data-dev-main].awards-main-flow > .home-sky-page,
-  html body [data-dev-main].awards-main-flow > .units-premium-page,
-  html body [data-dev-main].awards-main-flow > .masterplan-premium-shell,
-  html body [data-dev-main].awards-main-flow > .location-premium-shell,
-  html body [data-dev-main].awards-main-flow > .downloads-premium-shell,
-  html body [data-dev-main].awards-main-flow > .contact-premium-shell,
-  html body [data-dev-main].awards-main-flow > .unit-detail-canon-v1,
-  html body [data-dev-main].awards-main-flow > .legal-premium-shell {
-    animation: atlas-page-enter-smooth 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  html body .atlas-footer {
-    animation: atlas-footer-enter-smooth 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-}
-
-html.atlas-route-arriving body [data-dev-main].awards-main-flow > .awards-flow,
-html.atlas-route-arriving body [data-dev-main].awards-main-flow > .home-sky-page,
-html.atlas-route-arriving body [data-dev-main].awards-main-flow > .units-premium-page,
-html.atlas-route-arriving body [data-dev-main].awards-main-flow > .masterplan-premium-shell,
-html.atlas-route-arriving body [data-dev-main].awards-main-flow > .location-premium-shell,
-html.atlas-route-arriving body [data-dev-main].awards-main-flow > .downloads-premium-shell,
-html.atlas-route-arriving body [data-dev-main].awards-main-flow > .contact-premium-shell,
-html.atlas-route-arriving body [data-dev-main].awards-main-flow > .unit-detail-canon-v1,
-html.atlas-route-arriving body [data-dev-main].awards-main-flow > .legal-premium-shell {
-  animation-duration: 660ms;
-}
-
-@keyframes atlas-page-enter-smooth {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 0.28rem, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes atlas-footer-enter-smooth {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 0.24rem, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* --------------------------------------------------------------------------
-   03 / Header/link feedback
-   Header stays fixed and stable. Only tiny interaction feedback.
-   -------------------------------------------------------------------------- */
-
-html body [data-dev-header] {
-  animation: none !important;
-}
-
-html body [data-header-shell] a,
-html body [data-header-shell] button,
-html body .atlas-footer a,
-html body .sticky-cta a,
-html body .sticky-cta button {
-  transition:
-    color 300ms ease,
-    background 360ms ease,
-    border-color 360ms ease,
-    box-shadow 360ms ease,
-    opacity 300ms ease,
-    translate 360ms cubic-bezier(0.16, 1, 0.3, 1) !important;
-}
-
-html body [data-header-shell] a:hover,
-html body [data-header-shell] button:hover,
-html body .atlas-footer a:hover,
-html body .sticky-cta a:hover,
-html body .sticky-cta button:hover {
-  translate: 0 -0.5px;
-}
-
-html.atlas-route-link-pressed body [data-header-shell] a:active,
-html.atlas-route-link-pressed body [data-header-shell] button:active {
-  opacity: 0.78;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html.atlas-route-arriving::before,
-  html body [data-dev-main].awards-main-flow > *,
-  html body .atlas-footer,
-  html body [data-header-shell] a,
-  html body [data-header-shell] button {
-    animation: none !important;
-    transition: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
     transform: none !important;
+  }
+
+  html body .home-sky-intro__hero [data-hero-stage],
+  html body .home-sky-intro__hero [data-hero-stage-content],
+  html body .home-sky-intro__hero [data-sun-hero],
+  html body .home-sky-intro__hero [data-sun-hero-frame],
+  html body .home-sky-intro__hero .sun-hero-frame,
+  html body .home-sky-intro__hero [data-sun-slider-wrap] {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .home-sky-intro__hero [data-sun-hero-frame],
+  html body .home-sky-intro__hero .sun-hero-frame {
+    aspect-ratio: 16 / 9 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: hidden !important;
+    border-radius: 1.18rem !important;
+  }
+
+  html body .home-sky-intro__hero picture,
+  html body .home-sky-intro__hero img,
+  html body .home-sky-intro__hero .sun-hero-layer {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .home-sky-intro__hero [data-sun-slider-wrap] {
+    margin-top: 0.58rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    overflow: hidden !important;
+  }
+
+  html body .home-sky-intro__hero input[type="range"],
+  html body .home-sky-intro__hero input[type="range"]:focus,
+  html body .home-sky-intro__hero input[type="range"]:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  html body .home-brief {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(18.5rem, 22rem) !important;
+    column-gap: 1.25rem !important;
+    row-gap: 1rem !important;
+    align-items: start !important;
+  }
+
+  html body .home-brief__title {
+    font-size: clamp(4.15rem, 9vw, 5.75rem) !important;
+    line-height: 0.86 !important;
+  }
+
+  html body .home-brief__card {
+    width: 100% !important;
+    max-width: none !important;
+    justify-self: stretch !important;
+  }
+
+  /* Units: tablet stays 2-column and aligned to the same frame as Location/Downloads. */
+  html body .units-premium-page {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: 0.18rem !important;
+  }
+
+  html body .units-premium-hero {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 1rem !important;
+    margin-top: 0 !important;
+  }
+
+  html body .units-premium-hero h1 {
+    max-width: 9.5ch !important;
+    font-size: clamp(4.15rem, 9vw, 5.5rem) !important;
+    line-height: 0.86 !important;
+  }
+
+  html body .units-premium-hero__panel {
+    width: 100% !important;
+    max-width: none !important;
+    justify-self: stretch !important;
+  }
+
+  html body .units-premium-filters,
+  html body .units-premium-filters.units-filter-console {
+    position: relative !important;
+    top: auto !important;
+    z-index: 5 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.8rem 0.9rem !important;
+    margin-top: 1rem !important;
+    margin-bottom: 1.25rem !important;
+    padding: 0.92rem !important;
+    overflow: visible !important;
+  }
+
+  html body .units-premium-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 1.05rem !important;
+    padding-top: 0 !important;
+  }
+
+  html body .unit-card--premium {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Location: compact premium pill row; no full-width stacked bars. */
+  html body .location-premium-control {
+    display: grid !important;
+    grid-template-columns: minmax(9.5rem, 0.28fr) minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 0.76rem !important;
+    padding: 1rem !important;
+  }
+
+  html body .location-premium-filters {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0.38rem !important;
+    width: auto !important;
+    max-width: 100% !important;
+  }
+
+  html body .location-premium-filter,
+  html body .location-premium-filters .location-premium-filter {
+    width: auto !important;
+    max-width: none !important;
+    min-width: auto !important;
+    flex: 0 0 auto !important;
+    min-height: 2.08rem !important;
+    padding: 0.46rem 0.66rem !important;
+    font-size: 0.78rem !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* 11 / Phone guard remains compact. Full mobile navigation pass comes later. */
+@media (max-width: 47.99rem) {
+  :root {
+    --atlas-canon-frame-width: var(--atlas-canon-frame-width-mobile);
+    --atlas-fixed-header-clearance: 5.35rem;
+    --atlas-fixed-page-gap: 0.25rem;
+  }
+
+  html body [data-dev-header] {
+    top: 0.55rem !important;
+  }
+
+  html body [data-dev-header] > [data-header-shell],
+  html body [data-dev-header][data-header-style="glass"] > [data-header-shell],
+  html body .home-sky-page,
+  html body .units-premium-page,
+  html body .masterplan-premium-shell,
+  html body .location-premium-shell,
+  html body .downloads-premium-shell,
+  html body .contact-premium-shell,
+  html body .unit-detail-canon-v1,
+  html body .legal-premium-shell,
+  html body .atlas-footer {
+    width: var(--atlas-canon-frame-width-mobile) !important;
+    max-width: var(--atlas-canon-frame-width-mobile) !important;
+  }
+}
+
+/* ========================================================================== 
+   ATLAS-STABILIZE-01C -- Home Desktop Recovery + Flow Unlock
+   Scope: CSS only. Undo old desktop Home viewport lock after 01B.
+   ========================================================================== */
+
+@media (min-width: 64rem) {
+  /* 01 / Restore normal desktop document flow for Home.
+     This neutralizes the older Home Hero v6 viewport lock. */
+  html body:has(.home-sky-page) {
+    width: auto !important;
+    height: auto !important;
+    min-height: 100svh !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+  }
+
+  html body:has(.home-sky-page) main {
+    width: var(--atlas-canon-frame-width) !important;
+    max-width: var(--atlas-canon-frame-width) !important;
+    height: auto !important;
+    min-height: auto !important;
+    margin-inline: auto !important;
+    padding-top: var(--atlas-fixed-header-clearance) !important;
+    overflow: visible !important;
+  }
+
+  html body:has(.home-sky-page) [data-dev-main] {
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: auto !important;
+    margin: 0 !important;
+    padding-top: 0 !important;
+    overflow: visible !important;
+  }
+
+  html body:has(.home-sky-page) .awards-flow {
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* 02 / Keep Home inside the canonical frame, not a forced 100vw scene. */
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-page {
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    padding-top: 0 !important;
+    padding-bottom: clamp(2.2rem, 4vw, 3.8rem) !important;
+    overflow: visible !important;
+  }
+
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro {
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    margin-inline: auto !important;
+    display: grid !important;
+    grid-template-rows: auto auto !important;
+    align-content: start !important;
+    gap: clamp(0.85rem, 1.35vw, 1.2rem) !important;
+    padding-top: 0 !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__brief,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-brief__signals--sky {
+    width: 100% !important;
+    max-width: none !important;
+    margin-inline: auto !important;
+    overflow: visible !important;
+  }
+
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__brief {
+    margin-top: clamp(0.85rem, 1.55vw, 1.35rem) !important;
+  }
+
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero::before,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero::after {
+    display: none !important;
+  }
+
+  /* 03 / Keep the visual quality of the Home hero but remove the full-screen lock. */
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero .sun-hero-frame {
+    width: 100% !important;
+    max-height: clamp(27rem, 50svh, 35rem) !important;
+    overflow: hidden !important;
+    border-radius: 1.16rem !important;
+  }
+
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero .sun-hero-frame img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero [data-sun-slider-wrap] {
+    margin-top: 0.55rem !important;
+    min-height: 2.9rem !important;
+  }
+
+  /* 04 / Home lower block stays two-column on desktop, but within the same frame. */
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-brief--sky {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(22rem, 26rem) !important;
+    align-items: start !important;
+    gap: clamp(1.45rem, 2.6vw, 3rem) !important;
+  }
+
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-brief--sky .home-brief__editorial {
+    padding-top: clamp(0.25rem, 0.7vw, 0.65rem) !important;
+    max-width: 33rem !important;
+  }
+
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-brief--sky .home-brief__card.home-brief__card--glass {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-brief__signals--sky {
+    margin-top: clamp(0.95rem, 1.6vw, 1.35rem) !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0 !important;
+  }
+}
+/* ========================================================================== 
+   ATLAS-STABILIZE-01D -- Frame / Shadow / Centering Correction
+   Scope: CSS-only final override after 01B/01C.
+   Goals:
+   - remove the oversized tablet Home hero halo/shadow;
+   - keep Home SunHero inside the shared tablet frame;
+   - recenter desktop Units into the same canonical shell;
+   - avoid touching images, slider state, routes, or markup.
+   END ATLAS-STABILIZE-01D
+   ========================================================================== */
+
+/* 01 / Desktop: one real center authority for Units. */
+@media (min-width: 64rem) {
+  html body:has(.units-premium-page),
+  html body:has(.units-premium-page) main,
+  html body:has(.units-premium-page) [data-dev-main].awards-main-flow,
+  html body:has(.units-premium-page) .awards-main-flow {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  html body:has(.units-premium-page) [data-dev-main].awards-main-flow {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: var(--atlas-fixed-header-clearance) !important;
+  }
+
+  html body .units-premium-page {
+    width: var(--atlas-canon-frame-width) !important;
+    max-width: var(--atlas-canon-frame-width) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+    transform: none !important;
+  }
+
+  html body .units-premium-hero,
+  html body .units-premium-filters,
+  html body .units-filter-console,
+  html body .units-premium-grid {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .units-premium-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    justify-content: center !important;
+    justify-items: stretch !important;
+    align-items: start !important;
+  }
+}
+
+/* 02 / Tablet: remove the Home image halo that reads as a large dirty shadow. */
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero::before,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero::after,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v3__hero::before,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v3__hero::after,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v4__hero::before,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v4__hero::after {
+    content: none !important;
+    display: none !important;
+    opacity: 0 !important;
+    filter: none !important;
+    background: none !important;
+  }
+
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v3__hero,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v4__hero {
+    isolation: auto !important;
+    overflow: visible !important;
+    box-shadow: none !important;
+    filter: none !important;
+  }
+
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero [data-sun-hero-frame],
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero .sun-hero-frame,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v3__hero [data-sun-hero-frame],
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v3__hero .sun-hero-frame,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v4__hero [data-sun-hero-frame],
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v4__hero .sun-hero-frame {
+    border-radius: 1.18rem !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.56) inset,
+      0 10px 24px rgba(23, 28, 38, 0.055) !important;
+  }
+
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero [data-sun-slider-wrap] {
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.62) inset,
+      0 6px 16px rgba(23, 23, 22, 0.04) !important;
+  }
+}
+
+/* 03 / Tablet: keep Units card frame visually closer to Location/Downloads. */
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  html body .units-premium-hero,
+  html body .units-premium-filters,
+  html body .units-filter-console {
+    border-radius: 1.45rem !important;
+    border-color: rgba(255, 255, 255, 0.44) !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.66) inset,
+      0 16px 38px rgba(23, 23, 22, 0.06) !important;
   }
 }
