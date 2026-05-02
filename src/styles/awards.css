@@ -12925,3 +12925,4142 @@ html body .legal-premium-shell {
       0 16px 38px rgba(23, 23, 22, 0.06) !important;
   }
 }
+/* ========================================================================== 
+   ATLAS-MOBILE-01 -- Real Mobile Header Drawer + Mobile Frame Clearance
+   Scope: DeveloperHeader mobile architecture + mobile CSS authority only.
+   ========================================================================== */
+
+@media (min-width: 48rem) {
+  html body [data-mobile-menu-toggle],
+  html body [data-mobile-menu-panel],
+  html body [data-mobile-menu-backdrop] {
+    display: none !important;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  :root {
+    --atlas-mobile-frame: min(calc(100dvw - 1.5rem), 28rem);
+    --atlas-mobile-header-top: 0.72rem;
+    --atlas-mobile-header-clearance: 6.85rem;
+    --atlas-canon-frame-width: var(--atlas-mobile-frame);
+    --atlas-canon-frame-width-mobile: var(--atlas-mobile-frame);
+    --atlas-fixed-header-clearance: var(--atlas-mobile-header-clearance);
+    --atlas-fixed-page-gap: 0.12rem;
+  }
+
+  html,
+  body {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: clip !important;
+  }
+
+  html body[data-atlas-mobile-menu-open] {
+    overflow: hidden !important;
+  }
+
+  html body [data-dev-header],
+  html body [data-dev-header][data-header-style="glass"],
+  html body[data-atmo-active="true"] [data-dev-header],
+  html body:has(.home-sky-page) [data-dev-header],
+  html body:has(.units-premium-page) [data-dev-header],
+  html body:has(.masterplan-premium-shell) [data-dev-header],
+  html body:has(.location-premium-shell) [data-dev-header],
+  html body:has(.downloads-premium-shell) [data-dev-header],
+  html body:has(.contact-premium-shell) [data-dev-header],
+  html body:has(.unit-detail-canon-v1) [data-dev-header],
+  html body:has(.legal-premium-shell) [data-dev-header] {
+    position: fixed !important;
+    top: var(--atlas-mobile-header-top) !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 180 !important;
+    width: 100% !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html body [data-dev-header] > [data-header-shell],
+  html body [data-dev-header][data-header-style="glass"] > [data-header-shell],
+  html body[data-atmo-active="true"] [data-dev-header] > [data-header-shell] {
+    width: var(--atlas-mobile-frame) !important;
+    max-width: var(--atlas-mobile-frame) !important;
+    min-height: 3.74rem !important;
+    margin-inline: auto !important;
+    padding: 0.5rem 0.52rem !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    border-radius: 999px !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+    box-sizing: border-box !important;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.20)),
+      rgba(255, 255, 255, 0.16) !important;
+    border: 1px solid rgba(255, 255, 255, 0.52) !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.78) inset,
+      0 16px 38px rgba(15, 18, 24, 0.10) !important;
+    backdrop-filter: blur(26px) saturate(1.2) !important;
+    -webkit-backdrop-filter: blur(26px) saturate(1.2) !important;
+  }
+
+  html body [data-dev-header] [data-header-brand] {
+    min-width: 0 !important;
+    max-width: none !important;
+    min-height: 2.62rem !important;
+    padding-inline: 0.72rem !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 0.64rem !important;
+    line-height: 1 !important;
+    letter-spacing: 0.22em !important;
+  }
+
+  html body [data-dev-header] [data-header-nav="desktop"],
+  html body [data-dev-header] [data-header-actions],
+  html body [data-dev-header] [data-header-mobile] {
+    display: none !important;
+  }
+
+  html body [data-dev-header] [data-mobile-menu-toggle] {
+    display: inline-flex !important;
+    min-height: 2.62rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 999px !important;
+    border: 1px solid rgba(255, 255, 255, 0.36) !important;
+    padding: 0.62rem 0.92rem !important;
+    background: rgba(18, 18, 18, 0.92) !important;
+    color: #fff !important;
+    font-size: 0.84rem !important;
+    font-weight: 650 !important;
+    line-height: 1 !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 8px 18px rgba(18, 18, 18, 0.16) !important;
+  }
+
+  html body [data-mobile-menu-backdrop] {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 175 !important;
+    pointer-events: auto !important;
+    background: rgba(22, 28, 40, 0.22) !important;
+    backdrop-filter: blur(3px) !important;
+    -webkit-backdrop-filter: blur(3px) !important;
+  }
+
+  html body [data-mobile-menu-backdrop][hidden],
+  html body [data-mobile-menu-panel][hidden] {
+    display: none !important;
+  }
+
+  html body [data-mobile-menu-panel] {
+    position: fixed !important;
+    top: calc(var(--atlas-mobile-header-top) + 4.35rem) !important;
+    left: 50% !important;
+    z-index: 185 !important;
+    width: var(--atlas-mobile-frame) !important;
+    max-width: var(--atlas-mobile-frame) !important;
+    max-height: calc(100dvh - 6rem) !important;
+    overflow: auto !important;
+    transform: translateX(-50%) !important;
+    pointer-events: auto !important;
+    border-radius: 1.35rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.48) !important;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0.18) 58%, rgba(255, 255, 255, 0.28)),
+      rgba(255, 255, 255, 0.16) !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.76) inset,
+      0 24px 70px rgba(15, 18, 24, 0.18) !important;
+    backdrop-filter: blur(30px) saturate(1.22) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(1.22) !important;
+  }
+
+  html body [data-mobile-menu-inner] {
+    display: grid !important;
+    gap: 0.9rem !important;
+    padding: 0.85rem !important;
+  }
+
+  html body [data-mobile-menu-head] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    padding: 0.15rem 0.12rem 0.65rem !important;
+    border-bottom: 1px solid rgba(20, 20, 20, 0.11) !important;
+  }
+
+  html body [data-mobile-menu-eyebrow] {
+    margin: 0 !important;
+    font-size: 0.62rem !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.18em !important;
+    text-transform: uppercase !important;
+    color: rgba(20, 20, 20, 0.48) !important;
+  }
+
+  html body [data-mobile-menu-close] {
+    min-height: 2.2rem !important;
+    border-radius: 999px !important;
+    border: 1px solid rgba(255, 255, 255, 0.38) !important;
+    padding: 0.45rem 0.72rem !important;
+    background: rgba(255, 255, 255, 0.18) !important;
+    color: rgba(20, 20, 20, 0.72) !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+  }
+
+  html body [data-mobile-menu-links] {
+    display: grid !important;
+    gap: 0.48rem !important;
+  }
+
+  html body [data-mobile-menu-link],
+  html body [data-mobile-menu-cta] {
+    min-height: 3.05rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    border-radius: 0.95rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.34) !important;
+    padding: 0.82rem 0.95rem !important;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.12)),
+      rgba(255, 255, 255, 0.10) !important;
+    color: rgba(18, 18, 18, 0.84) !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    line-height: 1.1 !important;
+    text-decoration: none !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52) !important;
+  }
+
+  html body [data-mobile-menu-link][data-active="true"] {
+    border-color: rgba(255, 255, 255, 0.16) !important;
+    background: rgba(18, 18, 18, 0.92) !important;
+    color: #fff !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 10px 22px rgba(18, 18, 18, 0.15) !important;
+  }
+
+  html body [data-mobile-menu-tools] {
+    display: grid !important;
+    gap: 0.62rem !important;
+    padding-top: 0.2rem !important;
+  }
+
+  html body [data-mobile-menu-lang] {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.5rem !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html body [data-mobile-menu-lang] [data-lang-link] {
+    min-height: 2.65rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 999px !important;
+    border: 1px solid rgba(255, 255, 255, 0.34) !important;
+    background: rgba(255, 255, 255, 0.16) !important;
+    color: rgba(18, 18, 18, 0.64) !important;
+    font-size: 0.86rem !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+  }
+
+  html body [data-mobile-menu-lang] [data-lang-link][data-active="true"] {
+    background: rgba(18, 18, 18, 0.92) !important;
+    color: #fff !important;
+  }
+
+  html body [data-mobile-menu-cta] {
+    background: rgba(18, 18, 18, 0.94) !important;
+    color: #fff !important;
+  }
+
+  html body main,
+  html body [data-dev-main],
+  html body [data-dev-main].awards-main-flow,
+  html body .awards-main-flow,
+  html body:has(.home-sky-page) [data-dev-main].awards-main-flow,
+  html body:has(.units-premium-page) [data-dev-main].awards-main-flow,
+  html body:has(.masterplan-premium-shell) [data-dev-main].awards-main-flow,
+  html body:has(.location-premium-shell) [data-dev-main].awards-main-flow,
+  html body:has(.downloads-premium-shell) [data-dev-main].awards-main-flow,
+  html body:has(.contact-premium-shell) [data-dev-main].awards-main-flow,
+  html body:has(.unit-detail-canon-v1) [data-dev-main].awards-main-flow,
+  html body:has(.legal-premium-shell) [data-dev-main].awards-main-flow {
+    width: var(--atlas-mobile-frame) !important;
+    max-width: var(--atlas-mobile-frame) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: var(--atlas-mobile-header-clearance) !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .home-sky-page,
+  html body .units-premium-page,
+  html body .masterplan-premium-shell,
+  html body .location-premium-shell,
+  html body .downloads-premium-shell,
+  html body .contact-premium-shell,
+  html body .unit-detail-canon-v1,
+  html body .legal-premium-shell,
+  html body .atlas-footer {
+    width: var(--atlas-mobile-frame) !important;
+    max-width: var(--atlas-mobile-frame) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .home-sky-page,
+  html body .units-premium-page,
+  html body .masterplan-premium-shell,
+  html body .location-premium-shell,
+  html body .downloads-premium-shell,
+  html body .contact-premium-shell,
+  html body .unit-detail-canon-v1 {
+    margin-top: 0 !important;
+  }
+
+  html body .home-sky-intro__hero,
+  html body .home-hero-premium-balance-v3__hero,
+  html body .home-hero-premium-balance-v4__hero,
+  html body .home-sky-intro__brief,
+  html body .home-brief,
+  html body .home-brief--sky,
+  html body .units-premium-hero,
+  html body .units-premium-filters,
+  html body .units-filter-console,
+  html body .units-premium-grid,
+  html body .masterplan-premium-hero,
+  html body .masterplan-premium-stage-shell,
+  html body .location-premium-hero,
+  html body .location-premium-control,
+  html body .location-premium-list,
+  html body .downloads-premium-hero,
+  html body .downloads-premium-grid,
+  html body .contact-premium-hero,
+  html body .contact-premium-methods,
+  html body .contact-premium-form-shell,
+  html body .unit-detail-editorial-hero,
+  html body .unit-detail-canon-plan,
+  html body .unit-detail-canon-gallery,
+  html body .unit-detail-canon-summary {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+    transform: none !important;
+  }
+
+  html body .home-sky-intro__hero::before,
+  html body .home-sky-intro__hero::after,
+  html body .home-hero-premium-balance-v3__hero::before,
+  html body .home-hero-premium-balance-v3__hero::after,
+  html body .home-hero-premium-balance-v4__hero::before,
+  html body .home-hero-premium-balance-v4__hero::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  html body .home-sky-intro__hero [data-sun-hero-frame],
+  html body .home-sky-intro__hero .sun-hero-frame {
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: 16 / 10.4 !important;
+    border-radius: 1rem !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.56) inset,
+      0 10px 24px rgba(23, 28, 38, 0.055) !important;
+  }
+
+  html body .home-sky-intro__hero [data-sun-slider-wrap] {
+    min-height: 2.75rem !important;
+    margin-top: 0.5rem !important;
+    padding: 0.55rem 0.68rem !important;
+    border-radius: 0.95rem !important;
+  }
+
+  html body h1,
+  html body .units-premium-hero h1,
+  html body .masterplan-premium-title,
+  html body .location-premium-title,
+  html body .downloads-premium-title,
+  html body .contact-premium-title,
+  html body .unit-detail-canon-hero__title,
+  html body .unit-detail-canon-section-title {
+    max-width: 10.5ch !important;
+    font-size: clamp(3.05rem, 13vw, 4.25rem) !important;
+    line-height: 0.88 !important;
+    letter-spacing: -0.065em !important;
+  }
+
+  html body p,
+  html body .home-brief__lede,
+  html body .units-premium-hero__lede,
+  html body .masterplan-premium-lede,
+  html body .location-premium-lede,
+  html body .downloads-premium-lede,
+  html body .contact-premium-lede,
+  html body .unit-detail-canon-section-body {
+    max-width: 100% !important;
+    font-size: 0.98rem !important;
+    line-height: 1.55 !important;
+  }
+
+  html body .home-brief--sky,
+  html body .units-premium-hero,
+  html body .unit-detail-canon-hero__overlay,
+  html body .unit-detail-canon-plan,
+  html body .unit-detail-canon-summary {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  html body .units-premium-hero,
+  html body .masterplan-premium-hero,
+  html body .location-premium-hero,
+  html body .downloads-premium-hero,
+  html body .contact-premium-hero,
+  html body .unit-detail-canon-plan,
+  html body .unit-detail-canon-summary {
+    border-radius: 1.18rem !important;
+    padding: 1rem !important;
+  }
+
+  html body .units-premium-filters,
+  html body .units-filter-console {
+    position: relative !important;
+    top: auto !important;
+    z-index: 4 !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.9rem !important;
+    padding: 0.95rem !important;
+    border-radius: 1.12rem !important;
+    overflow: visible !important;
+  }
+
+  html body .units-filter-options,
+  html body .location-premium-filters {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 0.42rem !important;
+  }
+
+  html body .units-filter-console .ui-chip,
+  html body .location-premium-filter,
+  html body .location-premium-filters .location-premium-filter {
+    min-height: 2.12rem !important;
+    padding: 0.44rem 0.7rem !important;
+    font-size: 0.78rem !important;
+    white-space: nowrap !important;
+  }
+
+  html body .units-premium-grid,
+  html body .downloads-premium-grid,
+  html body .unit-detail-canon-gallery__grid,
+  html body .contact-premium-methods {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  html body .unit-card--premium,
+  html body .download-card,
+  html body .contact-method,
+  html body .poi-row {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 1rem !important;
+  }
+
+  html body .unit-detail-canon-hero__overlay {
+    width: 100% !important;
+    margin-top: 1rem !important;
+    padding-bottom: 0 !important;
+  }
+
+  html body .unit-detail-canon-hero__media img,
+  html body .unit-detail-premium-hero__media.unit-detail-canon-hero__media img {
+    height: auto !important;
+    max-height: none !important;
+    aspect-ratio: 4 / 5 !important;
+    object-fit: cover !important;
+  }
+
+  html body .unit-detail-canon-hero__title,
+  html body .unit-detail-canon-hero__lead,
+  html body .unit-detail-canon-hero__secondary {
+    color: rgba(18, 18, 18, 0.92) !important;
+    text-shadow: none !important;
+  }
+
+  html body .unit-detail-canon-facts-grid,
+  html body .unit-detail-premium-summary__facts,
+  html body .unit-detail-premium-summary dl,
+  html body .unit-detail-premium-summary .unit-meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  html body .contact-form-grid,
+  html body .contact-premium-form-shell form {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.86rem !important;
+  }
+
+  html body input,
+  html body select,
+  html body textarea,
+  html body .ui-field {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .atlas-footer {
+    padding-bottom: 3rem !important;
+  }
+}
+
+@media (max-width: 23.5rem) {
+  :root {
+    --atlas-mobile-frame: min(calc(100dvw - 1rem), 22.5rem);
+  }
+
+  html body [data-dev-header] [data-header-brand] {
+    font-size: 0.58rem !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  html body [data-dev-header] [data-mobile-menu-toggle] {
+    padding-inline: 0.78rem !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+
+
+/* ========================================================================== 
+   ATLAS-MOBILE-02 -- Compact Header Language + Mobile Page Density Polish
+   Scope: mobile-only refinements after ATLAS-MOBILE-01.
+   ========================================================================== */
+
+@media (min-width: 48rem) {
+  html body [data-dev-header] [data-header-mobile-lang] {
+    display: none !important;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  :root {
+    --atlas-mobile-frame: min(calc(100dvw - 1.25rem), 28rem);
+    --atlas-mobile-header-top: 0.62rem;
+    --atlas-mobile-header-clearance: 5.05rem;
+    --atlas-mobile-page-gap: 0.58rem;
+    --atlas-mobile-card-pad: 0.92rem;
+    --atlas-mobile-radius: 1.05rem;
+    --atlas-canon-frame-width: var(--atlas-mobile-frame);
+    --atlas-canon-frame-width-mobile: var(--atlas-mobile-frame);
+    --atlas-fixed-header-clearance: var(--atlas-mobile-header-clearance);
+    --atlas-fixed-page-gap: 0;
+  }
+
+  html body [data-dev-header] > [data-header-shell],
+  html body [data-dev-header][data-header-style="glass"] > [data-header-shell],
+  html body[data-atmo-active="true"] [data-dev-header] > [data-header-shell] {
+    min-height: 3.34rem !important;
+    padding: 0.38rem 0.42rem !important;
+    grid-template-columns: minmax(0, 1fr) auto auto !important;
+    gap: 0.36rem !important;
+  }
+
+  html body [data-dev-header] [data-header-brand] {
+    min-height: 2.34rem !important;
+    padding-inline: 0.68rem !important;
+    font-size: 0.61rem !important;
+    letter-spacing: 0.21em !important;
+  }
+
+  html body [data-dev-header] [data-header-mobile-lang] {
+    display: inline-flex !important;
+    min-height: 2.34rem !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 999px !important;
+    border: 1px solid rgba(255, 255, 255, 0.36) !important;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.34), rgba(255,255,255,0.14)),
+      rgba(255,255,255,0.10) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.54),
+      0 6px 14px rgba(18,18,18,0.045) !important;
+    backdrop-filter: blur(18px) saturate(1.14) !important;
+    -webkit-backdrop-filter: blur(18px) saturate(1.14) !important;
+  }
+
+  html body [data-dev-header] [data-header-mobile-lang] [data-lang-link] {
+    min-width: 2.02rem !important;
+    min-height: 1.82rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 999px !important;
+    padding: 0 0.48rem !important;
+    border: 1px solid transparent !important;
+    font-size: 0.66rem !important;
+    font-weight: 700 !important;
+    color: rgba(18,18,18,0.54) !important;
+    text-decoration: none !important;
+  }
+
+  html body [data-dev-header] [data-header-mobile-lang] [data-lang-link][data-active="true"] {
+    border-color: rgba(255,255,255,0.16) !important;
+    background: rgba(18,18,18,0.92) !important;
+    color: #fff !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.10),
+      0 6px 14px rgba(18,18,18,0.14) !important;
+  }
+
+  html body [data-dev-header] [data-mobile-menu-toggle] {
+    min-height: 2.34rem !important;
+    padding: 0.56rem 0.78rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  html body [data-mobile-menu-panel] {
+    top: calc(var(--atlas-mobile-header-top) + 3.82rem) !important;
+    max-height: calc(100dvh - 5.2rem) !important;
+    border-radius: 1.18rem !important;
+  }
+
+  html body [data-mobile-menu-inner] {
+    gap: 0.54rem !important;
+    padding: 0.72rem !important;
+  }
+
+  html body [data-mobile-menu-head] {
+    padding: 0.06rem 0.06rem 0.42rem !important;
+  }
+
+  html body [data-mobile-menu-links] {
+    gap: 0.34rem !important;
+  }
+
+  html body [data-mobile-menu-link],
+  html body [data-mobile-menu-cta] {
+    min-height: 2.62rem !important;
+    border-radius: 0.82rem !important;
+    padding: 0.68rem 0.78rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  html body [data-mobile-menu-link] span:last-child:not(:first-child),
+  html body [data-mobile-menu-cta] span:last-child:not(:first-child),
+  html body [data-mobile-menu-lang] {
+    display: none !important;
+  }
+
+  html body main,
+  html body [data-dev-main],
+  html body [data-dev-main].awards-main-flow,
+  html body .awards-main-flow,
+  html body:has(.home-sky-page) [data-dev-main].awards-main-flow,
+  html body:has(.units-premium-page) [data-dev-main].awards-main-flow,
+  html body:has(.masterplan-premium-shell) [data-dev-main].awards-main-flow,
+  html body:has(.location-premium-shell) [data-dev-main].awards-main-flow,
+  html body:has(.downloads-premium-shell) [data-dev-main].awards-main-flow,
+  html body:has(.contact-premium-shell) [data-dev-main].awards-main-flow,
+  html body:has(.unit-detail-canon-v1) [data-dev-main].awards-main-flow,
+  html body:has(.legal-premium-shell) [data-dev-main].awards-main-flow {
+    padding-top: var(--atlas-mobile-header-clearance) !important;
+  }
+
+  html body .home-sky-page,
+  html body .units-premium-page,
+  html body .masterplan-premium-shell,
+  html body .location-premium-shell,
+  html body .downloads-premium-shell,
+  html body .contact-premium-shell,
+  html body .unit-detail-canon-v1,
+  html body .legal-premium-shell {
+    margin-top: var(--atlas-mobile-page-gap) !important;
+  }
+
+  html body .home-sky-page {
+    padding-top: 0 !important;
+  }
+
+  html body .home-sky-intro,
+  html body .home-hero-premium-balance-v3,
+  html body .home-hero-premium-balance-v4 {
+    display: grid !important;
+    gap: 0.72rem !important;
+    padding-top: 0 !important;
+    transform: none !important;
+  }
+
+  html body .home-sky-intro__hero,
+  html body .home-hero-premium-balance-v3__hero,
+  html body .home-hero-premium-balance-v4__hero {
+    margin-top: 0 !important;
+  }
+
+  html body .home-sky-intro__hero [data-sun-hero-frame],
+  html body .home-sky-intro__hero .sun-hero-frame {
+    aspect-ratio: 16 / 9.6 !important;
+  }
+
+  html body .home-sky-intro__brief,
+  html body .home-hero-premium-balance-v3__lower,
+  html body .home-hero-premium-balance-v4__lower {
+    margin-top: 0.18rem !important;
+  }
+
+  html body .home-brief {
+    gap: 0.86rem !important;
+  }
+
+  html body .home-brief__chapter,
+  html body .home-brief__kicker {
+    margin-bottom: 0.18rem !important;
+  }
+
+  html body .home-brief__title {
+    font-size: clamp(2.85rem, 12vw, 3.75rem) !important;
+    line-height: 0.88 !important;
+  }
+
+  html body .home-brief__lede {
+    margin-top: 0.7rem !important;
+  }
+
+  html body .home-brief__card,
+  html body .home-brief__card.home-brief__card--glass {
+    padding: var(--atlas-mobile-card-pad) !important;
+    border-radius: var(--atlas-mobile-radius) !important;
+  }
+
+  /* Standard mobile hero density across content pages */
+  html body .units-premium-page,
+  html body .masterplan-premium-shell,
+  html body .location-premium-shell,
+  html body .downloads-premium-shell,
+  html body .contact-premium-shell,
+  html body .unit-detail-canon-v1 {
+    display: grid !important;
+    gap: 1rem !important;
+  }
+
+  html body .units-premium-hero,
+  html body .masterplan-premium-hero,
+  html body .location-premium-hero,
+  html body .downloads-premium-hero,
+  html body .contact-premium-hero,
+  html body .unit-detail-canon-plan,
+  html body .unit-detail-canon-summary {
+    padding: var(--atlas-mobile-card-pad) !important;
+    border-radius: var(--atlas-mobile-radius) !important;
+  }
+
+  html body .masterplan-premium-title,
+  html body .units-premium-hero h1,
+  html body .location-premium-title,
+  html body .downloads-premium-title,
+  html body .contact-premium-title,
+  html body .unit-detail-canon-section-title {
+    font-size: clamp(2.78rem, 11.6vw, 3.65rem) !important;
+    line-height: 0.88 !important;
+    max-width: 10.5ch !important;
+  }
+
+  html body .masterplan-premium-hero__copy {
+    min-height: 0 !important;
+    justify-content: start !important;
+  }
+
+  html body .masterplan-premium-lede,
+  html body .units-premium-hero__lede,
+  html body .location-premium-lede,
+  html body .downloads-premium-lede,
+  html body .contact-premium-lede {
+    margin-top: 0.72rem !important;
+    font-size: 0.94rem !important;
+    line-height: 1.48 !important;
+  }
+
+  html body .masterplan-premium-signals,
+  html body .masterplan-premium-overview,
+  html body .masterplan-premium-panel__facts,
+  html body .contact-premium-signals,
+  html body .location-premium-signals {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.62rem 0.9rem !important;
+    margin-top: 0.85rem !important;
+    padding-top: 0.72rem !important;
+  }
+
+  html body .masterplan-premium-signals strong,
+  html body .masterplan-premium-overview dd,
+  html body .masterplan-premium-panel__facts dd,
+  html body .contact-premium-signals strong,
+  html body .location-premium-signals strong {
+    font-size: 1.08rem !important;
+  }
+
+  html body .masterplan-premium-hero__card,
+  html body .masterplan-premium-panel,
+  html body .location-premium-address-card,
+  html body .downloads-premium-hero__card,
+  html body .contact-premium-gallery-card {
+    padding: 0.88rem !important;
+    border-radius: 1rem !important;
+  }
+
+  html body .masterplan-premium-zone-rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.5rem !important;
+  }
+
+  html body .masterplan-premium-zone-button {
+    min-height: 3.35rem !important;
+    padding: 0.68rem 0.76rem !important;
+    border-radius: 0.82rem !important;
+    gap: 0.28rem !important;
+  }
+
+  html body .masterplan-premium-zone-button span {
+    font-size: 0.86rem !important;
+  }
+
+  html body .masterplan-premium-zone-button em {
+    font-size: 0.56rem !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  html body .masterplan-premium-cta h2 {
+    font-size: clamp(2.5rem, 10.5vw, 3.25rem) !important;
+  }
+
+  /* Units: compact filters and tighter card rhythm */
+  html body .units-premium-hero {
+    gap: 0.78rem !important;
+  }
+
+  html body .units-premium-hero__panel {
+    padding: 0.84rem !important;
+    border-radius: 0.98rem !important;
+  }
+
+  html body .units-premium-hero__stats {
+    gap: 0.56rem 0.72rem !important;
+  }
+
+  html body .units-premium-hero__stats div {
+    padding-top: 0.48rem !important;
+  }
+
+  html body .units-premium-filters,
+  html body .units-filter-console {
+    gap: 0.66rem !important;
+    padding: 0.78rem !important;
+    border-radius: 1rem !important;
+  }
+
+  html body .units-filter-group > p,
+  html body .units-premium-filters p {
+    margin-bottom: 0.36rem !important;
+    font-size: 0.56rem !important;
+  }
+
+  html body .units-filter-options {
+    gap: 0.34rem !important;
+  }
+
+  html body .units-filter-console .ui-chip,
+  html body .units-premium-filters .ui-chip {
+    min-height: 1.86rem !important;
+    padding: 0.34rem 0.55rem !important;
+    font-size: 0.72rem !important;
+  }
+
+  html body .units-premium-grid {
+    gap: 0.86rem !important;
+  }
+
+  html body .unit-card--premium .unit-card__content {
+    padding: 0.78rem !important;
+  }
+
+  /* Location: less vertical mass */
+  html body .location-premium-control {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.72rem !important;
+    padding: 0.82rem !important;
+    border-radius: 1rem !important;
+  }
+
+  html body .location-premium-filters {
+    gap: 0.36rem !important;
+  }
+
+  html body .location-premium-filter,
+  html body .location-premium-filters .location-premium-filter {
+    min-height: 1.95rem !important;
+    padding: 0.36rem 0.58rem !important;
+    font-size: 0.72rem !important;
+  }
+
+  html body .location-premium-results__intro h2 {
+    font-size: clamp(2.65rem, 11vw, 3.55rem) !important;
+    line-height: 0.9 !important;
+  }
+
+  html body .location-premium-poi {
+    padding: 0.82rem !important;
+    border-radius: 1rem !important;
+    gap: 0.72rem !important;
+  }
+
+  html body .location-premium-poi__index {
+    width: 3.25rem !important;
+    min-height: 4.65rem !important;
+  }
+
+  html body .location-premium-poi__link,
+  html body .location-premium-button,
+  html body .downloads-premium-button,
+  html body .downloads-premium-card__link,
+  html body .contact-premium-button,
+  html body .contact-premium-submit {
+    min-height: 2.72rem !important;
+    border-radius: 999px !important;
+  }
+
+  /* Contact: cleaner mobile form */
+  html body .contact-premium-methods {
+    gap: 0.62rem !important;
+  }
+
+  html body .contact-premium-method {
+    min-height: 4.25rem !important;
+    padding: 0.82rem !important;
+    border-radius: 0.95rem !important;
+  }
+
+  html body .contact-premium-form-shell {
+    padding: 0.92rem !important;
+    border-radius: 1.05rem !important;
+  }
+
+  html body .contact-premium-form-intro h2 {
+    font-size: clamp(2.65rem, 11vw, 3.55rem) !important;
+    line-height: 0.9 !important;
+  }
+
+  html body .contact-premium-note {
+    padding: 0.72rem 0.82rem !important;
+    border-radius: 0.82rem !important;
+  }
+
+  html body .contact-premium-field input,
+  html body .contact-premium-field select,
+  html body .contact-premium-field textarea,
+  html body input,
+  html body select,
+  html body textarea,
+  html body .ui-field {
+    min-height: 3rem !important;
+    border-radius: 0.85rem !important;
+  }
+
+  html body .contact-premium-field textarea,
+  html body textarea.ui-field {
+    min-height: 7.25rem !important;
+  }
+
+  html body .contact-premium-consent {
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    align-items: start !important;
+    gap: 0.72rem !important;
+  }
+
+  html body .contact-premium-consent input {
+    width: 1.45rem !important;
+    height: 1.45rem !important;
+    min-height: 1.45rem !important;
+    margin-top: 0.12rem !important;
+  }
+
+  /* Unit detail: restore editorial overlay on first image */
+  html body .unit-detail-canon-hero {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    isolation: isolate !important;
+  }
+
+  html body .unit-detail-canon-hero__media,
+  html body .unit-detail-premium-hero__media.unit-detail-canon-hero__media {
+    grid-area: 1 / 1 !important;
+    z-index: 1 !important;
+    border-radius: 1.05rem !important;
+  }
+
+  html body .unit-detail-canon-hero__media img,
+  html body .unit-detail-premium-hero__media.unit-detail-canon-hero__media img {
+    aspect-ratio: 4 / 5.15 !important;
+  }
+
+  html body .unit-detail-canon-hero__media::after {
+    opacity: 1 !important;
+    background:
+      linear-gradient(180deg, rgba(8,12,20,0.02) 0%, rgba(8,12,20,0.18) 48%, rgba(8,12,20,0.50) 100%) !important;
+  }
+
+  html body .unit-detail-canon-hero__overlay {
+    grid-area: 1 / 1 !important;
+    align-self: end !important;
+    z-index: 3 !important;
+    width: calc(100% - 1.2rem) !important;
+    margin: 0 auto 0.65rem !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.72rem !important;
+    padding: 0 !important;
+  }
+
+  html body .unit-detail-canon-hero__copy {
+    padding: 0 !important;
+  }
+
+  html body .unit-detail-canon-hero__title {
+    max-width: 8ch !important;
+    font-size: clamp(2.7rem, 12vw, 3.8rem) !important;
+    line-height: 0.86 !important;
+    color: rgba(255,255,255,0.95) !important;
+    text-shadow: 0 16px 46px rgba(0,0,0,0.42) !important;
+  }
+
+  html body .unit-detail-canon-hero__lead,
+  html body .unit-detail-canon-hero__secondary {
+    color: rgba(255,255,255,0.82) !important;
+    text-shadow: 0 12px 32px rgba(0,0,0,0.38) !important;
+  }
+
+  html body .unit-detail-canon-hero__lead {
+    margin-top: 0.52rem !important;
+    font-size: 0.9rem !important;
+    line-height: 1.42 !important;
+  }
+
+  html body .unit-detail-canon-hero__facts {
+    padding: 0.82rem !important;
+    border-radius: 0.95rem !important;
+  }
+
+  html body .unit-detail-canon-facts-grid {
+    gap: 0.52rem 0.72rem !important;
+  }
+
+  html body .unit-detail-canon-hero__actions {
+    gap: 0.48rem !important;
+    margin-top: 0.72rem !important;
+  }
+
+  html body .unit-detail-canon-button {
+    min-height: 2.58rem !important;
+  }
+
+  /* Footer: reduce mobile mass */
+  html body .atlas-footer {
+    margin-top: 2.2rem !important;
+    padding-top: 1rem !important;
+    padding-bottom: 2.4rem !important;
+  }
+
+  html body .atlas-footer__inner {
+    gap: 1rem !important;
+    padding-top: 1rem !important;
+  }
+
+  html body .atlas-footer__logo {
+    font-size: 1.45rem !important;
+  }
+
+  html body .atlas-footer__copy {
+    margin-top: 0.6rem !important;
+    font-size: 0.88rem !important;
+    line-height: 1.48 !important;
+  }
+
+  html body .atlas-footer__bottom {
+    margin-top: 1.2rem !important;
+    padding-top: 0.85rem !important;
+    gap: 0.55rem !important;
+  }
+}
+
+@media (max-width: 23.5rem) {
+  html body [data-dev-header] > [data-header-shell] {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+  }
+
+  html body [data-dev-header] [data-header-mobile-lang] {
+    display: none !important;
+  }
+}
+
+
+/* ========================================================================== 
+   ATLAS-MOBILE-03 -- Canon Mobile Rhythm + Detail Overlay Recovery
+   Scope: mobile-only density, frame rhythm, Units filters, Location/Contact compacting.
+   ========================================================================== */
+
+@media (max-width: 47.99rem) {
+  :root {
+    --atlas-mobile-frame: min(calc(100dvw - 1rem), 28rem);
+    --atlas-mobile-header-top: 0.55rem;
+    --atlas-mobile-header-clearance: 4.55rem;
+    --atlas-mobile-page-gap: 0.34rem;
+    --atlas-mobile-card-pad: 0.9rem;
+    --atlas-mobile-radius: 1.05rem;
+    --atlas-canon-frame-width: var(--atlas-mobile-frame);
+    --atlas-canon-frame-width-mobile: var(--atlas-mobile-frame);
+    --atlas-fixed-header-clearance: var(--atlas-mobile-header-clearance);
+    --atlas-fixed-page-gap: 0;
+  }
+
+  /* Header: keep compact language switch + menu, remove redundant CTA from drawer. */
+  html body [data-mobile-menu-tools],
+  html body [data-mobile-menu-cta] {
+    display: none !important;
+  }
+
+  html body [data-mobile-menu-inner] {
+    gap: 0.44rem !important;
+    padding: 0.86rem !important;
+    border-radius: 1.05rem !important;
+  }
+
+  html body [data-mobile-menu-links] {
+    gap: 0.42rem !important;
+  }
+
+  html body [data-mobile-menu-link] {
+    min-height: 2.7rem !important;
+    padding: 0.68rem 0.78rem !important;
+    border-radius: 0.78rem !important;
+    font-size: 0.92rem !important;
+  }
+
+  html body [data-mobile-menu-link]::after {
+    content: none !important;
+  }
+
+  html body [data-dev-header],
+  html body[data-atmo-active="true"] [data-dev-header] {
+    top: var(--atlas-mobile-header-top) !important;
+  }
+
+  html body [data-dev-header] [data-header-shell] {
+    width: var(--atlas-mobile-frame) !important;
+    max-width: var(--atlas-mobile-frame) !important;
+    min-height: 2.88rem !important;
+    padding: 0.28rem 0.34rem 0.28rem 0.55rem !important;
+    gap: 0.42rem !important;
+  }
+
+  html body [data-dev-header] [data-header-brand] {
+    min-height: 2.28rem !important;
+    padding-inline: 0.16rem !important;
+    font-size: 0.62rem !important;
+    letter-spacing: 0.21em !important;
+  }
+
+  html body [data-dev-header] [data-header-mobile-lang] {
+    min-height: 2.28rem !important;
+    padding: 0.18rem !important;
+  }
+
+  html body [data-dev-header] [data-header-mobile-lang] [data-lang-link] {
+    min-height: 1.88rem !important;
+    min-width: 2rem !important;
+    padding-inline: 0.56rem !important;
+    font-size: 0.72rem !important;
+  }
+
+  html body [data-dev-header] [data-mobile-menu-toggle] {
+    min-height: 2.34rem !important;
+    padding-inline: 0.86rem !important;
+    font-size: 0.86rem !important;
+  }
+
+  /* Canonical mobile page frame: Downloads is the rhythm reference. */
+  html body main,
+  html body [data-dev-main],
+  html body [data-dev-main].awards-main-flow,
+  html body .awards-main-flow,
+  html body:has(.home-sky-page) [data-dev-main].awards-main-flow,
+  html body:has(.units-premium-page) [data-dev-main].awards-main-flow,
+  html body:has(.masterplan-premium-shell) [data-dev-main].awards-main-flow,
+  html body:has(.location-premium-shell) [data-dev-main].awards-main-flow,
+  html body:has(.downloads-premium-shell) [data-dev-main].awards-main-flow,
+  html body:has(.contact-premium-shell) [data-dev-main].awards-main-flow,
+  html body:has(.unit-detail-canon-v1) [data-dev-main].awards-main-flow {
+    width: var(--atlas-mobile-frame) !important;
+    max-width: var(--atlas-mobile-frame) !important;
+    margin-inline: auto !important;
+    padding-inline: 0 !important;
+    padding-top: var(--atlas-mobile-header-clearance) !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .home-sky-page,
+  html body .units-premium-page,
+  html body .masterplan-premium-shell,
+  html body .location-premium-shell,
+  html body .downloads-premium-shell,
+  html body .contact-premium-shell,
+  html body .unit-detail-canon-v1,
+  html body .legal-premium-shell,
+  html body .atlas-footer {
+    width: var(--atlas-mobile-frame) !important;
+    max-width: var(--atlas-mobile-frame) !important;
+    margin-inline: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Home: remove the extra top void and align hero with Downloads page rhythm. */
+  html body:has(.home-sky-page) [data-dev-main].awards-main-flow,
+  html body:has(.home-sky-page) [data-dev-main],
+  html body:has(.home-sky-page) main {
+    padding-top: var(--atlas-mobile-header-clearance) !important;
+  }
+
+  html body .home-sky-page,
+  html body[data-atmo-active="true"] .home-sky-page {
+    padding-top: 0 !important;
+    padding-bottom: 1.45rem !important;
+    margin-top: 0 !important;
+    transform: translateY(-0.18rem) !important;
+  }
+
+  html body .home-sky-intro,
+  html body[data-atmo-active="true"] .home-sky-intro {
+    gap: 0.72rem !important;
+    min-height: auto !important;
+    transform: none !important;
+  }
+
+  html body .home-sky-intro__hero,
+  html body .home-hero-premium-balance-v3__hero,
+  html body .home-hero-premium-balance-v4__hero {
+    margin-top: 0 !important;
+  }
+
+  html body .home-sky-intro__brief,
+  html body[data-atmo-active="true"] .home-sky-intro__brief {
+    margin-top: 0.78rem !important;
+  }
+
+  html body .home-brief,
+  html body .home-brief--sky {
+    gap: 0.78rem !important;
+  }
+
+  html body .home-brief__title {
+    font-size: clamp(2.88rem, 12.2vw, 3.82rem) !important;
+    line-height: 0.9 !important;
+  }
+
+  html body .home-brief__lede {
+    margin-top: 0.62rem !important;
+    font-size: 0.94rem !important;
+    line-height: 1.44 !important;
+  }
+
+  /* Shared compact first-block density for all non-Downloads content pages. */
+  html body .units-premium-page,
+  html body .masterplan-premium-shell,
+  html body .location-premium-shell,
+  html body .contact-premium-shell,
+  html body .unit-detail-canon-v1 {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    gap: 0.9rem !important;
+  }
+
+  html body .units-premium-hero,
+  html body .masterplan-premium-hero,
+  html body .location-premium-hero,
+  html body .contact-premium-hero {
+    margin-top: 0 !important;
+    padding: 0.92rem !important;
+    border-radius: var(--atlas-mobile-radius) !important;
+  }
+
+  html body .masterplan-premium-title,
+  html body .units-premium-hero h1,
+  html body .location-premium-title,
+  html body .contact-premium-title {
+    font-size: clamp(2.75rem, 11.4vw, 3.55rem) !important;
+    line-height: 0.9 !important;
+    max-width: 10ch !important;
+  }
+
+  html body .masterplan-premium-lede,
+  html body .units-premium-hero__lede,
+  html body .location-premium-lede,
+  html body .contact-premium-lede {
+    margin-top: 0.66rem !important;
+    font-size: 0.92rem !important;
+    line-height: 1.43 !important;
+  }
+
+  /* Masterplan: make plan plate wider and keep navigation markers inside the image/card. */
+  html body .masterplan-premium-stage-shell,
+  html body .masterplan-map-card,
+  html body .masterplan-premium-map,
+  html body .masterplan-premium-stage,
+  html body [data-masterplan-map],
+  html body [data-masterplan-stage] {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    border-radius: var(--atlas-mobile-radius) !important;
+  }
+
+  html body .masterplan-premium-stage-shell,
+  html body .masterplan-map-card {
+    padding: 0.72rem !important;
+  }
+
+  html body .masterplan-premium-stage-shell img,
+  html body .masterplan-map-card img,
+  html body [data-masterplan-map] img,
+  html body [data-masterplan-stage] img {
+    width: 100% !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+  }
+
+  html body .masterplan-building,
+  html body .masterplan-amenity,
+  html body [data-masterplan-marker],
+  html body [data-masterplan-point] {
+    max-width: 2.32rem !important;
+    max-height: 2.32rem !important;
+    min-width: 2.32rem !important;
+    min-height: 2.32rem !important;
+    font-size: 0.68rem !important;
+    line-height: 1 !important;
+  }
+
+  html body .masterplan-premium-zone-rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.42rem !important;
+    margin-top: 0.7rem !important;
+  }
+
+  html body .masterplan-premium-zone-button,
+  html body .masterplan-premium-zone-rail button,
+  html body .masterplan-premium-zone-rail a {
+    min-height: 2.58rem !important;
+    padding: 0.54rem 0.62rem !important;
+    border-radius: 0.78rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  html body .masterplan-premium-panel,
+  html body .masterplan-premium-hero__card {
+    padding: 0.82rem !important;
+    border-radius: 0.95rem !important;
+  }
+
+  /* Units: raise page and put Beds beside Tower to save vertical space. */
+  html body .units-premium-page {
+    transform: translateY(-0.08rem) !important;
+  }
+
+  html body .units-premium-filters,
+  html body .units-premium-filters.units-filter-console,
+  html body .units-filter-console {
+    grid-template-columns: 0.78fr 1fr !important;
+    gap: 0.72rem 0.7rem !important;
+    padding: 0.82rem !important;
+    margin-top: 0.74rem !important;
+    margin-bottom: 0.85rem !important;
+    border-radius: 0.98rem !important;
+  }
+
+  html body .units-filter-group,
+  html body .units-premium-filters > div {
+    min-width: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body .units-filter-group--tower { order: 1 !important; }
+  html body .units-filter-group--beds { order: 2 !important; }
+  html body .units-filter-group--status { order: 3 !important; grid-column: 1 / -1 !important; }
+  html body .units-filter-group--orientation { order: 4 !important; grid-column: 1 / -1 !important; }
+
+  html body .units-filter-group > p,
+  html body .units-premium-filters p {
+    margin-bottom: 0.42rem !important;
+    font-size: 0.56rem !important;
+    letter-spacing: 0.16em !important;
+  }
+
+  html body .units-filter-options {
+    gap: 0.32rem !important;
+  }
+
+  html body .units-filter-console .ui-chip,
+  html body .units-premium-filters .ui-chip {
+    min-height: 1.84rem !important;
+    padding: 0.28rem 0.56rem !important;
+    font-size: 0.72rem !important;
+  }
+
+  html body .units-premium-grid {
+    gap: 0.9rem !important;
+    padding-top: 0 !important;
+  }
+
+  /* Unit detail: restore editorial text inside first image; facts card no longer overlaps copy. */
+  html body .unit-detail-editorial-hero,
+  html body .unit-detail-canon-hero {
+    position: relative !important;
+    display: grid !important;
+    gap: 0.78rem !important;
+    margin-top: 0 !important;
+  }
+
+  html body .unit-detail-editorial-hero__media,
+  html body .unit-detail-canon-hero__media,
+  html body .unit-detail-premium-hero__media.unit-detail-canon-hero__media {
+    position: relative !important;
+    display: block !important;
+    overflow: hidden !important;
+    min-height: 33.5rem !important;
+    aspect-ratio: auto !important;
+    border-radius: var(--atlas-mobile-radius) !important;
+  }
+
+  html body .unit-detail-editorial-hero__image,
+  html body .unit-detail-editorial-hero__media img,
+  html body .unit-detail-canon-hero__media img,
+  html body .unit-detail-premium-hero__media.unit-detail-canon-hero__media img {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    aspect-ratio: auto !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+
+  html body .unit-detail-editorial-hero__media::after,
+  html body .unit-detail-canon-hero__media::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.06) 48%, rgba(0,0,0,0.46) 100%),
+      radial-gradient(86% 54% at 18% 86%, rgba(0,0,0,0.54), rgba(0,0,0,0.22) 46%, transparent 74%) !important;
+  }
+
+  html body .unit-detail-editorial-hero__copy {
+    position: absolute !important;
+    left: 1rem !important;
+    right: 1rem !important;
+    bottom: 1.05rem !important;
+    z-index: 4 !important;
+    width: auto !important;
+    max-width: none !important;
+    display: grid !important;
+    gap: 0.42rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body .unit-detail-editorial-hero__copy *,
+  html body .unit-detail-editorial-hero__title,
+  html body .unit-detail-editorial-hero__lede,
+  html body .unit-detail-editorial-hero__secondary {
+    color: rgba(255,255,255,0.94) !important;
+    text-shadow: 0 12px 34px rgba(0,0,0,0.42) !important;
+  }
+
+  html body .unit-detail-editorial-hero__title {
+    font-size: clamp(3.05rem, 13vw, 4.1rem) !important;
+    line-height: 0.88 !important;
+    max-width: 8.5ch !important;
+  }
+
+  html body .unit-detail-editorial-hero__lede {
+    max-width: 21rem !important;
+    font-size: 0.88rem !important;
+    line-height: 1.36 !important;
+  }
+
+  html body .unit-detail-editorial-hero__card,
+  html body .unit-detail-canon-hero__facts {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    z-index: 2 !important;
+    transform: none !important;
+    border-radius: 1rem !important;
+  }
+
+  html body .unit-detail-canon-plan,
+  html body .unit-detail-canon-summary {
+    padding: 0.92rem !important;
+    border-radius: var(--atlas-mobile-radius) !important;
+  }
+
+  /* Location: reduce first block and make place cards much tighter. */
+  html body .location-premium-hero {
+    padding: 0.92rem !important;
+  }
+
+  html body .location-premium-signals {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.58rem 0.72rem !important;
+    margin-top: 0.72rem !important;
+    padding-top: 0.64rem !important;
+  }
+
+  html body .location-premium-control {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.62rem !important;
+    padding: 0.78rem !important;
+    border-radius: 0.96rem !important;
+  }
+
+  html body .location-premium-filters {
+    justify-content: flex-start !important;
+    gap: 0.36rem !important;
+  }
+
+  html body .location-premium-filter {
+    min-height: 1.9rem !important;
+    padding: 0.36rem 0.6rem !important;
+    font-size: 0.74rem !important;
+  }
+
+  html body .location-premium-results {
+    gap: 0.76rem !important;
+  }
+
+  html body .location-premium-results__intro {
+    position: relative !important;
+    top: auto !important;
+    padding-top: 0 !important;
+  }
+
+  html body .location-premium-results__intro h2 {
+    font-size: clamp(2.55rem, 10.5vw, 3.3rem) !important;
+    line-height: 0.9 !important;
+    margin-top: 0.5rem !important;
+    max-width: 11ch !important;
+  }
+
+  html body .location-premium-results__intro p:not(.location-premium-kicker) {
+    margin-top: 0.56rem !important;
+    font-size: 0.88rem !important;
+    line-height: 1.38 !important;
+  }
+
+  html body .location-premium-list {
+    gap: 0.56rem !important;
+  }
+
+  html body .location-premium-poi {
+    grid-template-columns: 2.45rem minmax(0, 1fr) !important;
+    gap: 0.56rem !important;
+    padding: 0.58rem !important;
+    border-radius: 0.88rem !important;
+  }
+
+  html body .location-premium-poi__index {
+    border-radius: 0.68rem !important;
+    font-size: 0.64rem !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  html body .location-premium-poi__body {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 0.38rem 0.54rem !important;
+  }
+
+  html body .location-premium-poi h3 {
+    margin-top: 0.08rem !important;
+    font-size: 1.12rem !important;
+    line-height: 1 !important;
+  }
+
+  html body .location-premium-poi__time,
+  html body .location-premium-poi strong {
+    font-size: 1.15rem !important;
+    line-height: 1 !important;
+  }
+
+  html body .location-premium-poi .ui-btn,
+  html body .location-premium-poi a {
+    min-height: 2.15rem !important;
+    padding: 0.46rem 0.72rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Contact: stats and contact-route cards become compact rows. */
+  html body .contact-premium-signals {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.42rem !important;
+    margin-top: 0.72rem !important;
+    padding-top: 0.66rem !important;
+  }
+
+  html body .contact-premium-signals strong {
+    font-size: 1.05rem !important;
+  }
+
+  html body .contact-premium-signals em {
+    font-size: 0.62rem !important;
+    line-height: 1.1 !important;
+  }
+
+  html body .contact-premium-methods {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.45rem !important;
+  }
+
+  html body .contact-premium-method {
+    min-height: 3.2rem !important;
+    width: auto !important;
+    padding: 0.62rem 0.52rem !important;
+    border-radius: 0.82rem !important;
+  }
+
+  html body .contact-premium-method strong,
+  html body .contact-premium-method h3 {
+    font-size: 0.82rem !important;
+    line-height: 1.1 !important;
+  }
+
+  html body .contact-premium-method span,
+  html body .contact-premium-method p {
+    font-size: 0.56rem !important;
+    line-height: 1.05 !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  html body .contact-premium-form-shell,
+  html body .contact-premium-form {
+    padding: 0.9rem !important;
+    border-radius: var(--atlas-mobile-radius) !important;
+  }
+
+  html body .contact-premium-form-intro h2 {
+    font-size: clamp(2.52rem, 10.6vw, 3.3rem) !important;
+    line-height: 0.9 !important;
+  }
+
+  html body .contact-premium-fields,
+  html body .contact-premium-form-shell form {
+    gap: 0.68rem !important;
+  }
+
+  html body .contact-premium-submit-row {
+    margin-top: 0.82rem !important;
+    padding-top: 0.78rem !important;
+  }
+
+  /* Footer: quieter premium footer, less bulky but still usable. */
+  html body .atlas-footer {
+    margin-top: 1.2rem !important;
+    padding: 1.55rem 0 2.45rem !important;
+    border-top: 1px solid rgba(20, 20, 20, 0.08) !important;
+  }
+
+  html body .atlas-footer__inner,
+  html body .atlas-footer__grid,
+  html body .atlas-footer__main {
+    gap: 0.9rem !important;
+  }
+
+  html body .atlas-footer h2,
+  html body .atlas-footer__title {
+    font-size: 1.42rem !important;
+    line-height: 1 !important;
+  }
+
+  html body .atlas-footer p,
+  html body .atlas-footer__copy {
+    font-size: 0.82rem !important;
+    line-height: 1.42 !important;
+  }
+
+  html body .atlas-footer__links,
+  html body .atlas-footer nav {
+    gap: 0.42rem 0.72rem !important;
+  }
+
+  html body .atlas-footer__links a,
+  html body .atlas-footer nav a {
+    font-size: 0.78rem !important;
+  }
+}
+
+@media (max-width: 23.5rem) {
+  :root {
+    --atlas-mobile-frame: min(calc(100dvw - 0.75rem), 22.5rem);
+  }
+
+  html body [data-dev-header] [data-header-brand] {
+    font-size: 0.56rem !important;
+    letter-spacing: 0.17em !important;
+  }
+
+  html body [data-dev-header] [data-header-mobile-lang] {
+    display: none !important;
+  }
+}
+
+/* ATLAS-MOBILE-04 START
+   Final mobile rhythm correction after screenshot QA.
+   Scope: mobile-only. Do not touch Downloads baseline or desktop/tablet.
+*/
+@media (max-width: 47.99rem) {
+  /* 01 / Lift only the pages that still sit too low. Downloads stays as the visual baseline. */
+  html body:has(.home-sky-page) main,
+  html body:has(.home-sky-page) [data-dev-main],
+  html body:has(.home-sky-page) [data-dev-main].awards-main-flow,
+  html body:has(.units-premium-page) main,
+  html body:has(.units-premium-page) [data-dev-main],
+  html body:has(.units-premium-page) [data-dev-main].awards-main-flow,
+  html body:has(.masterplan-premium-shell) main,
+  html body:has(.masterplan-premium-shell) [data-dev-main],
+  html body:has(.masterplan-premium-shell) [data-dev-main].awards-main-flow,
+  html body:has(.location-premium-shell) main,
+  html body:has(.location-premium-shell) [data-dev-main],
+  html body:has(.location-premium-shell) [data-dev-main].awards-main-flow,
+  html body:has(.contact-premium-shell) main,
+  html body:has(.contact-premium-shell) [data-dev-main],
+  html body:has(.contact-premium-shell) [data-dev-main].awards-main-flow,
+  html body:has(.unit-detail-canon-v1) main,
+  html body:has(.unit-detail-canon-v1) [data-dev-main],
+  html body:has(.unit-detail-canon-v1) [data-dev-main].awards-main-flow {
+    padding-top: 3.58rem !important;
+  }
+
+  /* Home: remove the remaining empty sky pocket above the architectural hero. */
+  html body:has(.home-sky-page) .home-sky-page,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-page {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    transform: translateY(-1.25rem) !important;
+  }
+
+  html body:has(.home-sky-page) .home-sky-intro,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro {
+    gap: 0.58rem !important;
+    transform: none !important;
+    align-content: start !important;
+  }
+
+  html body:has(.home-sky-page) .home-sky-intro__hero,
+  html body:has(.home-sky-page) .home-hero-premium-balance-v3__hero,
+  html body:has(.home-sky-page) .home-hero-premium-balance-v4__hero {
+    margin-top: 0 !important;
+    transform: none !important;
+  }
+
+  html body:has(.home-sky-page) .home-sky-intro__brief {
+    margin-top: 0.68rem !important;
+  }
+
+  /* Units: align first hero block with the Downloads vertical rhythm. */
+  html body:has(.units-premium-page) .units-premium-page {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    transform: translateY(-1rem) !important;
+    gap: 0.82rem !important;
+  }
+
+  html body:has(.units-premium-page) .units-premium-hero {
+    margin-top: 0 !important;
+  }
+
+  html body:has(.units-premium-page) .units-premium-filters.units-filter-console,
+  html body:has(.units-premium-page) .units-filter-console {
+    margin-top: 0.56rem !important;
+  }
+
+  /* 02 / Masterplan: plan plate should share the same visual width as the other cards. */
+  html body:has(.masterplan-premium-shell) .masterplan-premium-shell {
+    padding-top: 0 !important;
+    transform: translateY(-0.72rem) !important;
+    gap: 0.82rem !important;
+  }
+
+  html body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell,
+  html body:has(.masterplan-premium-shell) .masterplan-premium-stage-shell--no-copy {
+    width: calc(100% + 0.9rem) !important;
+    max-width: calc(100% + 0.9rem) !important;
+    margin-left: -0.45rem !important;
+    margin-right: -0.45rem !important;
+    padding: 0.58rem !important;
+    border-radius: 1.08rem !important;
+    overflow: hidden !important;
+  }
+
+  html body:has(.masterplan-premium-shell) .masterplan-premium-stage {
+    padding: 0.52rem !important;
+    border-radius: 1rem !important;
+    overflow: hidden !important;
+  }
+
+  html body:has(.masterplan-premium-shell) .masterplan-premium-map {
+    min-height: clamp(26rem, 98vw, 31.5rem) !important;
+    border-radius: 0.96rem !important;
+    overflow: hidden !important;
+    clip-path: inset(0 round 0.96rem) !important;
+  }
+
+  html body:has(.masterplan-premium-shell) .masterplan-premium-map__image {
+    inset: 0.8rem !important;
+    width: calc(100% - 1.6rem) !important;
+    height: calc(100% - 1.6rem) !important;
+  }
+
+  html body:has(.masterplan-premium-shell) .masterplan-premium-zone {
+    box-sizing: border-box !important;
+    max-width: calc(100% - 1rem) !important;
+    max-height: calc(100% - 1rem) !important;
+  }
+
+  html body:has(.masterplan-premium-shell) .masterplan-premium-hotspot,
+  html body:has(.masterplan-premium-shell) .masterplan-building,
+  html body:has(.masterplan-premium-shell) .masterplan-amenity,
+  html body:has(.masterplan-premium-shell) [data-masterplan-marker],
+  html body:has(.masterplan-premium-shell) [data-masterplan-point] {
+    transform: translate3d(0, 0, 0) scale(0.88) !important;
+    transform-origin: center !important;
+  }
+
+  /* 03 / Unit detail: only the text overlays the first image; facts/actions sit below. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-v1 {
+    padding-top: 0 !important;
+    transform: translateY(-0.92rem) !important;
+    gap: 0.92rem !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-auto-rows: auto !important;
+    gap: 0.74rem !important;
+    margin-top: 0 !important;
+    position: relative !important;
+    overflow: visible !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media {
+    grid-area: 1 / 1 !important;
+    min-height: 33.25rem !important;
+    position: relative !important;
+    z-index: 1 !important;
+    overflow: hidden !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__overlay {
+    display: contents !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__copy {
+    grid-area: 1 / 1 !important;
+    align-self: end !important;
+    justify-self: stretch !important;
+    position: relative !important;
+    z-index: 5 !important;
+    margin: 0 1rem 1.02rem !important;
+    padding: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+    display: grid !important;
+    gap: 0.42rem !important;
+    pointer-events: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy *,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__copy * {
+    color: rgba(255, 255, 255, 0.94) !important;
+    text-shadow: 0 14px 38px rgba(0, 0, 0, 0.46) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__title,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__title {
+    font-size: clamp(3rem, 13vw, 4rem) !important;
+    line-height: 0.86 !important;
+    max-width: 8.6ch !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__lead,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__lede {
+    max-width: 21rem !important;
+    font-size: 0.88rem !important;
+    line-height: 1.36 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__facts,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__card {
+    grid-area: auto !important;
+    position: relative !important;
+    z-index: 2 !important;
+    inset: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    transform: none !important;
+    padding: 0.88rem !important;
+    border-radius: 1rem !important;
+  }
+
+  /* 04 / Location: compact cards with stable text layout. */
+  html body:has(.location-premium-shell) .location-premium-shell {
+    padding-top: 0 !important;
+    transform: translateY(-0.82rem) !important;
+    gap: 0.78rem !important;
+  }
+
+  html body:has(.location-premium-shell) .location-premium-hero {
+    padding: 0.86rem !important;
+  }
+
+  html body:has(.location-premium-shell) .location-premium-list {
+    gap: 0.52rem !important;
+  }
+
+  html body:has(.location-premium-shell) .location-premium-poi {
+    display: grid !important;
+    grid-template-columns: 3.1rem minmax(0, 1fr) !important;
+    align-items: center !important;
+    gap: 0.58rem !important;
+    min-height: 6.35rem !important;
+    padding: 0.58rem !important;
+    border-radius: 0.9rem !important;
+    overflow: hidden !important;
+  }
+
+  html body:has(.location-premium-shell) .location-premium-poi__index {
+    width: 3.1rem !important;
+    min-width: 3.1rem !important;
+    min-height: 5.1rem !important;
+    align-self: stretch !important;
+  }
+
+  html body:has(.location-premium-shell) .location-premium-poi__body {
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-areas:
+      "category time"
+      "title time"
+      "link link" !important;
+    align-items: start !important;
+    gap: 0.16rem 0.62rem !important;
+  }
+
+  html body:has(.location-premium-shell) .location-premium-poi__category {
+    grid-area: category !important;
+    min-width: 0 !important;
+    font-size: 0.64rem !important;
+    line-height: 1 !important;
+    letter-spacing: 0.16em !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  html body:has(.location-premium-shell) .location-premium-poi h3 {
+    grid-area: title !important;
+    min-width: 0 !important;
+    margin: 0.1rem 0 0 !important;
+    font-size: 1.04rem !important;
+    line-height: 1.02 !important;
+    letter-spacing: -0.03em !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  html body:has(.location-premium-shell) .location-premium-poi__time,
+  html body:has(.location-premium-shell) .location-premium-poi strong {
+    grid-area: time !important;
+    justify-self: end !important;
+    text-align: right !important;
+    min-width: 2.7rem !important;
+    font-size: 1rem !important;
+    line-height: 1 !important;
+  }
+
+  html body:has(.location-premium-shell) .location-premium-poi__link,
+  html body:has(.location-premium-shell) .location-premium-poi .ui-btn,
+  html body:has(.location-premium-shell) .location-premium-poi a {
+    grid-area: link !important;
+    width: 100% !important;
+    min-height: 2.05rem !important;
+    margin-top: 0.34rem !important;
+    padding: 0.42rem 0.7rem !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* 05 / Contact: keep three route cards in one row, but make the route name primary. */
+  html body:has(.contact-premium-shell) .contact-premium-shell {
+    padding-top: 0 !important;
+    transform: translateY(-0.78rem) !important;
+    gap: 0.78rem !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.48rem !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-methods {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.44rem !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-method {
+    min-height: 3.38rem !important;
+    padding: 0.58rem 0.52rem !important;
+    border-radius: 0.82rem !important;
+    display: grid !important;
+    align-content: center !important;
+    gap: 0.22rem !important;
+    overflow: hidden !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-method span,
+  html body:has(.contact-premium-shell) .contact-premium-method strong,
+  html body:has(.contact-premium-shell) .contact-premium-method h3 {
+    display: block !important;
+    font-size: 0.78rem !important;
+    line-height: 1.08 !important;
+    font-weight: 720 !important;
+    letter-spacing: -0.01em !important;
+    text-transform: none !important;
+    color: rgba(18, 18, 18, 0.9) !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-method em,
+  html body:has(.contact-premium-shell) .contact-premium-method p {
+    display: block !important;
+    margin: 0 !important;
+    font-size: 0.52rem !important;
+    line-height: 1.08 !important;
+    letter-spacing: 0.13em !important;
+    text-transform: uppercase !important;
+    color: rgba(20, 20, 20, 0.42) !important;
+  }
+}
+
+@media (max-width: 23.5rem) {
+  html body:has(.contact-premium-shell) .contact-premium-method span,
+  html body:has(.contact-premium-shell) .contact-premium-method strong,
+  html body:has(.contact-premium-shell) .contact-premium-method h3 {
+    font-size: 0.7rem !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-method em,
+  html body:has(.contact-premium-shell) .contact-premium-method p {
+    font-size: 0.48rem !important;
+    letter-spacing: 0.1em !important;
+  }
+}
+/* ATLAS-MOBILE-04 END */
+
+/* ==========================================================================
+   ATLAS-MOBILE-05 -- Final Micro Alignment Polish
+   Scope: mobile-only final corrections for Units count, Unit Detail hero, Contact signals.
+   Append at the very end of src/styles/awards.css.
+   ========================================================================== */
+
+@media (max-width: 47.99rem) {
+  /* 01 / Units: place the secondary "showing" information below the main count.
+     Works when the count markup is split into spans; also narrows the first stat
+     enough to prevent the current "showing 12" text from hanging awkwardly. */
+  html body:has(.units-premium-page) .units-premium-hero__stats > :first-child,
+  html body:has(.units-premium-page) .units-premium-hero__stats div:first-child {
+    min-width: 0 !important;
+  }
+
+  html body:has(.units-premium-page) .units-premium-hero__stats > :first-child dd,
+  html body:has(.units-premium-page) .units-premium-hero__stats div:first-child dd {
+    display: block !important;
+    width: min(100%, 6.7rem) !important;
+    max-width: 6.7rem !important;
+    line-height: 0.98 !important;
+    white-space: normal !important;
+    overflow-wrap: normal !important;
+    text-wrap: balance !important;
+  }
+
+  html body:has(.units-premium-page) .units-premium-hero__stats > :first-child dd > :is(span, small, em, b, strong),
+  html body:has(.units-premium-page) .units-premium-hero__stats div:first-child dd > :is(span, small, em, b, strong),
+  html body:has(.units-premium-page) .units-premium-hero__stats [data-showing],
+  html body:has(.units-premium-page) .units-premium-hero__stats .showing,
+  html body:has(.units-premium-page) .units-premium-hero__stats .units-showing,
+  html body:has(.units-premium-page) .units-premium-hero__stats .units-premium-showing {
+    display: block !important;
+    margin-top: 0.1rem !important;
+    font-family: var(--font-sans) !important;
+    font-size: 0.76rem !important;
+    line-height: 1.05 !important;
+    letter-spacing: 0.01em !important;
+    color: rgba(20, 20, 20, 0.54) !important;
+  }
+
+  /* 02 / Unit Detail: only editorial text stays over the first image.
+     Facts / booking glass card moves below the photo as its own card. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto auto !important;
+    gap: 0.72rem !important;
+    margin-top: 0 !important;
+    overflow: visible !important;
+    isolation: isolate !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media {
+    grid-area: 1 / 1 !important;
+    position: relative !important;
+    display: block !important;
+    min-height: 33.5rem !important;
+    overflow: hidden !important;
+    border-radius: var(--atlas-mobile-radius, 1.05rem) !important;
+    z-index: 1 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__image,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media img,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media img,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media img {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    aspect-ratio: auto !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media::after,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    opacity: 1 !important;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.08) 40%, rgba(0,0,0,0.58) 100%),
+      radial-gradient(92% 62% at 18% 88%, rgba(0,0,0,0.58), rgba(0,0,0,0.28) 46%, transparent 76%) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__overlay {
+    display: contents !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__copy {
+    grid-area: 1 / 1 !important;
+    align-self: end !important;
+    justify-self: stretch !important;
+    position: relative !important;
+    z-index: 5 !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 1.05rem 1.12rem !important;
+    padding: 0 !important;
+    display: grid !important;
+    gap: 0.38rem !important;
+    pointer-events: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy *,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__copy *,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__title,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__lead,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__secondary,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__title,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__lede,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__secondary {
+    color: rgba(255, 255, 255, 0.94) !important;
+    text-shadow: 0 14px 38px rgba(0, 0, 0, 0.48) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__title,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__title {
+    max-width: 8.4ch !important;
+    font-size: clamp(3rem, 13vw, 4rem) !important;
+    line-height: 0.86 !important;
+    letter-spacing: -0.068em !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__lead,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__lede {
+    max-width: 21.5rem !important;
+    margin-top: 0.36rem !important;
+    font-size: 0.9rem !important;
+    line-height: 1.38 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__secondary,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__secondary {
+    margin-top: 0.32rem !important;
+    font-size: 0.64rem !important;
+    line-height: 1.18 !important;
+    letter-spacing: 0.15em !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__facts,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__card {
+    grid-area: 2 / 1 !important;
+    position: relative !important;
+    z-index: 2 !important;
+    inset: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    top: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0.92rem !important;
+    border-radius: 1rem !important;
+    background:
+      linear-gradient(145deg, rgba(255,255,255,0.54), rgba(255,255,255,0.28) 56%, rgba(255,255,255,0.36)),
+      rgba(255,255,255,0.20) !important;
+    border-color: rgba(255,255,255,0.52) !important;
+    backdrop-filter: blur(24px) saturate(1.14) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(1.14) !important;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.74) inset,
+      0 14px 34px rgba(23,23,22,0.075) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-facts-grid,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__facts {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.62rem 0.9rem !important;
+    margin: 0 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__actions,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__actions {
+    display: grid !important;
+    gap: 0.56rem !important;
+    margin-top: 0.82rem !important;
+  }
+
+  /* 03 / Contact: make the 3 / EN-ES / Private signal row optically centered. */
+  html body:has(.contact-premium-shell) .contact-premium-signals {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    align-items: start !important;
+    gap: 0.42rem !important;
+    margin-top: 0.82rem !important;
+    padding-top: 0.68rem !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals span {
+    min-width: 0 !important;
+    display: grid !important;
+    grid-template-rows: 1.05rem 1.9rem !important;
+    align-items: start !important;
+    justify-items: center !important;
+    text-align: center !important;
+    gap: 0.16rem !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals strong {
+    display: block !important;
+    width: 100% !important;
+    font-size: 1.02rem !important;
+    line-height: 1 !important;
+    letter-spacing: -0.025em !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals :is(small, em, p, b):not(strong),
+  html body:has(.contact-premium-shell) .contact-premium-signals span > :not(strong) {
+    display: block !important;
+    width: 100% !important;
+    max-width: 6.2rem !important;
+    margin: 0 auto !important;
+    font-size: 0.54rem !important;
+    line-height: 1.08 !important;
+    letter-spacing: 0.02em !important;
+    text-transform: none !important;
+    text-align: center !important;
+    color: rgba(20, 20, 20, 0.48) !important;
+    overflow-wrap: normal !important;
+  }
+}
+
+@media (max-width: 23.5rem) {
+  html body:has(.contact-premium-shell) .contact-premium-signals strong {
+    font-size: 0.92rem !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals :is(small, em, p, b):not(strong),
+  html body:has(.contact-premium-shell) .contact-premium-signals span > :not(strong) {
+    font-size: 0.5rem !important;
+    max-width: 5.4rem !important;
+  }
+}
+
+/* ATLAS-MOBILE-05 END */
+
+
+/* ATLAS-MOBILE-06 START вЂ” unit detail facts below image + contact stats readability */
+@media (max-width: 63.99rem) {
+  /* Unit detail: split the mobile hero into photo/text + separate facts card below. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero {
+    display: grid !important;
+    gap: 0.72rem !important;
+    overflow: visible !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media {
+    position: relative !important;
+    display: block !important;
+    min-height: 0 !important;
+    height: auto !important;
+    aspect-ratio: auto !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    isolation: isolate !important;
+  }
+
+  /* Image becomes its own visual plate. The facts card is no longer part of the image overlay. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__image,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media > img,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media > img,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media > img {
+    position: relative !important;
+    inset: auto !important;
+    z-index: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: 4 / 3.05 !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    border-radius: 1.08rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.46) !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.58) inset,
+      0 18px 42px rgba(18, 20, 24, 0.10) !important;
+  }
+
+  /* Keep only a readability veil over the photo height, not over the facts block. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media::after,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media::after,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: auto !important;
+    z-index: 1 !important;
+    height: min(74vw, 20.4rem) !important;
+    pointer-events: none !important;
+    border-radius: 1.08rem !important;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.04) 42%, rgba(0,0,0,0.48) 100%),
+      radial-gradient(92% 64% at 14% 82%, rgba(0,0,0,0.58), rgba(0,0,0,0.24) 46%, transparent 76%) !important;
+    mix-blend-mode: normal !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__copy,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__copy {
+    position: absolute !important;
+    left: 1rem !important;
+    right: 1rem !important;
+    top: auto !important;
+    bottom: 1rem !important;
+    z-index: 4 !important;
+    width: auto !important;
+    max-width: 22rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__title,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__title {
+    max-width: 8.5ch !important;
+    font-size: clamp(3.05rem, 13vw, 4.05rem) !important;
+    line-height: 0.86 !important;
+    color: rgba(255, 255, 255, 0.97) !important;
+    text-shadow: 0 16px 42px rgba(0, 0, 0, 0.48) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__lede,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__lead {
+    max-width: 21rem !important;
+    font-size: 0.9rem !important;
+    line-height: 1.36 !important;
+    color: rgba(255, 255, 255, 0.92) !important;
+    text-shadow: 0 12px 34px rgba(0, 0, 0, 0.48) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__secondary,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__secondary,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__kicker,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-kicker {
+    color: rgba(255, 255, 255, 0.76) !important;
+    text-shadow: 0 12px 32px rgba(0, 0, 0, 0.42) !important;
+  }
+
+  /* The data glass card now sits below the photo, not on top of it. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__card,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__facts {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    z-index: 2 !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0.68rem 0 0 !important;
+    transform: none !important;
+    border-radius: 1.08rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.46) !important;
+    background:
+      linear-gradient(145deg, rgba(255,255,255,0.44), rgba(255,255,255,0.18) 54%, rgba(255,255,255,0.28)),
+      rgba(255,255,255,0.12) !important;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.70) inset,
+      0 18px 42px rgba(18,20,24,0.08) !important;
+    backdrop-filter: blur(24px) saturate(1.14) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(1.14) !important;
+    padding: 0.88rem !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-facts-grid,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__facts,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__stats,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.68rem 0.82rem !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__actions,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__actions {
+    display: grid !important;
+    gap: 0.58rem !important;
+    margin-top: 0.82rem !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-button,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__action {
+    min-height: 2.72rem !important;
+    border-radius: 0.85rem !important;
+  }
+
+  /* Contact: make 3 / EN ES / Private readable and optically centered. */
+  html body:has(.contact-premium-shell) .contact-premium-signals {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    align-items: start !important;
+    gap: 0.48rem !important;
+    padding-top: 0.72rem !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals span {
+    display: grid !important;
+    justify-items: center !important;
+    align-content: start !important;
+    gap: 0.18rem !important;
+    min-height: 2.35rem !important;
+    text-align: center !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals strong {
+    display: block !important;
+    font-size: clamp(1.2rem, 5.3vw, 1.55rem) !important;
+    line-height: 0.95 !important;
+    letter-spacing: -0.045em !important;
+    color: rgba(14, 14, 14, 0.94) !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals em {
+    display: block !important;
+    max-width: 6.5rem !important;
+    font-size: 0.62rem !important;
+    line-height: 1.05 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    color: rgba(20, 20, 20, 0.50) !important;
+  }
+}
+
+@media (max-width: 23.5rem) {
+  html body:has(.contact-premium-shell) .contact-premium-signals strong {
+    font-size: 1.08rem !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals em {
+    font-size: 0.58rem !important;
+  }
+}
+/* ATLAS-MOBILE-06 END */
+
+/* ATLAS-MOBILE-07 START — restore unit overlay text + normalize contact signals */
+@media (max-width: 63.99rem) {
+  /* UNIT DETAIL — keep only editorial text on top of the photo, while facts card stays below. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero {
+    position: relative !important;
+    display: grid !important;
+    gap: 0.78rem !important;
+    isolation: isolate !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media {
+    position: relative !important;
+    z-index: 1 !important;
+    overflow: hidden !important;
+    border-radius: 1.08rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.46) !important;
+  }
+
+  /* Break the old overlay shell so copy can sit on the image and facts can flow below it. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__overlay {
+    position: static !important;
+    z-index: auto !important;
+    display: contents !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy {
+    position: absolute !important;
+    left: 1rem !important;
+    right: 1rem !important;
+    bottom: 1rem !important;
+    z-index: 4 !important;
+    max-width: 23rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-kicker,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__secondary {
+    color: rgba(255, 255, 255, 0.76) !important;
+    text-shadow: 0 10px 28px rgba(0, 0, 0, 0.40) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__title {
+    margin-top: 0.32rem !important;
+    max-width: 8.4ch !important;
+    font-size: clamp(3.15rem, 14vw, 4.8rem) !important;
+    line-height: 0.84 !important;
+    color: rgba(255, 255, 255, 0.98) !important;
+    text-shadow:
+      0 1px 0 rgba(0, 0, 0, 0.12),
+      0 16px 40px rgba(0, 0, 0, 0.42) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__lead {
+    margin-top: 0.62rem !important;
+    max-width: 21rem !important;
+    font-size: 0.92rem !important;
+    line-height: 1.34 !important;
+    color: rgba(255, 255, 255, 0.94) !important;
+    text-shadow: 0 10px 28px rgba(0, 0, 0, 0.44) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__secondary {
+    margin-top: 0.5rem !important;
+    font-size: 0.7rem !important;
+    line-height: 1.18 !important;
+    letter-spacing: 0.14em !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__facts {
+    position: relative !important;
+    z-index: 2 !important;
+    order: 3 !important;
+    margin: 0 !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+  }
+
+  /* CONTACT — make 3 / EN ES / Private optically aligned and readable. */
+  html body:has(.contact-premium-shell) .contact-premium-signals {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    align-items: start !important;
+    gap: 0.52rem !important;
+    margin-top: 1.05rem !important;
+    padding-top: 0.92rem !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals span {
+    display: grid !important;
+    justify-items: center !important;
+    align-content: start !important;
+    gap: 0.14rem !important;
+    min-height: 2.8rem !important;
+    text-align: center !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals strong {
+    display: block !important;
+    white-space: nowrap !important;
+    font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif !important;
+    font-size: clamp(1.36rem, 5.4vw, 1.8rem) !important;
+    line-height: 0.95 !important;
+    letter-spacing: -0.04em !important;
+    color: rgba(14, 14, 14, 0.92) !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals em {
+    display: block !important;
+    max-width: 7rem !important;
+    margin: 0 auto !important;
+    font-style: normal !important;
+    font-size: 0.68rem !important;
+    line-height: 1.1 !important;
+    color: rgba(20, 20, 20, 0.54) !important;
+  }
+}
+
+@media (max-width: 23.5rem) {
+  html body:has(.contact-premium-shell) .contact-premium-signals strong {
+    font-size: 1.18rem !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals em {
+    font-size: 0.6rem !important;
+  }
+}
+/* ATLAS-MOBILE-07 END */
+
+/* ATLAS-MOBILE-07 START — restore unit overlay text + normalize contact signals */
+@media (max-width: 63.99rem) {
+  /* UNIT DETAIL — keep only editorial text on top of the photo, while facts card stays below. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero {
+    position: relative !important;
+    display: grid !important;
+    gap: 0.78rem !important;
+    isolation: isolate !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media {
+    position: relative !important;
+    z-index: 1 !important;
+    overflow: hidden !important;
+    border-radius: 1.08rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.46) !important;
+  }
+
+  /* Break the old overlay shell so copy can sit on the image and facts can flow below it. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__overlay {
+    position: static !important;
+    z-index: auto !important;
+    display: contents !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy {
+    position: absolute !important;
+    left: 1rem !important;
+    right: 1rem !important;
+    bottom: 1rem !important;
+    z-index: 4 !important;
+    max-width: 23rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-kicker,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__secondary {
+    color: rgba(255, 255, 255, 0.76) !important;
+    text-shadow: 0 10px 28px rgba(0, 0, 0, 0.40) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__title {
+    margin-top: 0.32rem !important;
+    max-width: 8.4ch !important;
+    font-size: clamp(3.15rem, 14vw, 4.8rem) !important;
+    line-height: 0.84 !important;
+    color: rgba(255, 255, 255, 0.98) !important;
+    text-shadow:
+      0 1px 0 rgba(0, 0, 0, 0.12),
+      0 16px 40px rgba(0, 0, 0, 0.42) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__lead {
+    margin-top: 0.62rem !important;
+    max-width: 21rem !important;
+    font-size: 0.92rem !important;
+    line-height: 1.34 !important;
+    color: rgba(255, 255, 255, 0.94) !important;
+    text-shadow: 0 10px 28px rgba(0, 0, 0, 0.44) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__secondary {
+    margin-top: 0.5rem !important;
+    font-size: 0.7rem !important;
+    line-height: 1.18 !important;
+    letter-spacing: 0.14em !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__facts {
+    position: relative !important;
+    z-index: 2 !important;
+    order: 3 !important;
+    margin: 0 !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+  }
+
+  /* CONTACT — make 3 / EN ES / Private optically aligned and readable. */
+  html body:has(.contact-premium-shell) .contact-premium-signals {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    align-items: start !important;
+    gap: 0.52rem !important;
+    margin-top: 1.05rem !important;
+    padding-top: 0.92rem !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals span {
+    display: grid !important;
+    justify-items: center !important;
+    align-content: start !important;
+    gap: 0.14rem !important;
+    min-height: 2.8rem !important;
+    text-align: center !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals strong {
+    display: block !important;
+    white-space: nowrap !important;
+    font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif !important;
+    font-size: clamp(1.36rem, 5.4vw, 1.8rem) !important;
+    line-height: 0.95 !important;
+    letter-spacing: -0.04em !important;
+    color: rgba(14, 14, 14, 0.92) !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals em {
+    display: block !important;
+    max-width: 7rem !important;
+    margin: 0 auto !important;
+    font-style: normal !important;
+    font-size: 0.68rem !important;
+    line-height: 1.1 !important;
+    color: rgba(20, 20, 20, 0.54) !important;
+  }
+}
+
+@media (max-width: 23.5rem) {
+  html body:has(.contact-premium-shell) .contact-premium-signals strong {
+    font-size: 1.18rem !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals em {
+    font-size: 0.6rem !important;
+  }
+}
+/* ATLAS-MOBILE-07 END */
+
+/* ATLAS-MOBILE-09 START вЂ” restore unit facts card + clean contact signal alignment */
+@media (max-width: 47.99rem) {
+  /*
+    UNIT DETAIL
+    Goal:
+    - image remains the first hero plate;
+    - only editorial text sits over the image;
+    - data/facts glass card returns below the image.
+  */
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.76rem !important;
+    overflow: visible !important;
+    isolation: isolate !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__media {
+    position: relative !important;
+    z-index: 1 !important;
+    order: 1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    border-radius: 1.08rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.46) !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.58) inset,
+      0 18px 42px rgba(18, 20, 24, 0.10) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media::after,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media::after,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__media::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 2 !important;
+    pointer-events: none !important;
+    background:
+      linear-gradient(180deg, rgba(7, 10, 16, 0.00) 0%, rgba(7, 10, 16, 0.08) 42%, rgba(7, 10, 16, 0.58) 100%),
+      radial-gradient(92% 72% at 24% 96%, rgba(0, 0, 0, 0.44), transparent 64%) !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__overlay,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__overlay {
+    display: contents !important;
+    position: static !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    inset: auto !important;
+    transform: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__copy {
+    position: absolute !important;
+    left: clamp(1rem, 4vw, 1.18rem) !important;
+    right: clamp(1rem, 4vw, 1.18rem) !important;
+    bottom: clamp(1rem, 4vw, 1.16rem) !important;
+    top: auto !important;
+    z-index: 6 !important;
+    display: grid !important;
+    gap: 0.28rem !important;
+    width: auto !important;
+    max-width: 22.5rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy *,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__copy * {
+    color: rgba(255, 255, 255, 0.96) !important;
+    text-shadow: 0 14px 38px rgba(0, 0, 0, 0.56) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-kicker,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__eyebrow,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__kicker {
+    margin: 0 !important;
+    font-size: 0.64rem !important;
+    line-height: 1.08 !important;
+    letter-spacing: 0.17em !important;
+    color: rgba(255, 255, 255, 0.78) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__title,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__title {
+    margin: 0.18rem 0 0 !important;
+    max-width: 8.2ch !important;
+    font-size: clamp(3.25rem, 15vw, 4.55rem) !important;
+    line-height: 0.82 !important;
+    letter-spacing: -0.074em !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__lead,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__lede,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__lead {
+    margin: 0.34rem 0 0 !important;
+    max-width: 21.5rem !important;
+    font-size: 0.9rem !important;
+    line-height: 1.34 !important;
+    font-weight: 560 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__secondary,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__secondary,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__micro {
+    margin: 0.32rem 0 0 !important;
+    max-width: 22rem !important;
+    font-size: 0.68rem !important;
+    line-height: 1.16 !important;
+    letter-spacing: 0.15em !important;
+    color: rgba(255, 255, 255, 0.78) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__facts,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__facts,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__card,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__facts {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative !important;
+    z-index: 4 !important;
+    order: 3 !important;
+    grid-area: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0.88rem !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
+    border-radius: 1.08rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.52) !important;
+    background:
+      linear-gradient(145deg, rgba(255,255,255,0.54), rgba(255,255,255,0.28) 56%, rgba(255,255,255,0.36)),
+      rgba(255,255,255,0.20) !important;
+    color: rgba(18, 18, 18, 0.92) !important;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.74) inset,
+      0 14px 34px rgba(23,23,22,0.075) !important;
+    backdrop-filter: blur(24px) saturate(1.14) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(1.14) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__facts *,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__facts *,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__card *,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__facts * {
+    color: inherit !important;
+    text-shadow: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-facts-grid,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__facts-grid,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__meta {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.66rem 0.86rem !important;
+    margin: 0 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-fact,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__fact {
+    min-width: 0 !important;
+    padding-top: 0.56rem !important;
+    border-top: 1px solid rgba(20,20,20,0.12) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__actions,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__actions {
+    display: grid !important;
+    gap: 0.58rem !important;
+    margin-top: 0.82rem !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-button,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__action {
+    min-height: 2.72rem !important;
+    border-radius: 0.85rem !important;
+  }
+
+  /*
+    CONTACT
+    Stronger text, but with fixed rhythm so labels do not collide with values.
+  */
+  html body:has(.contact-premium-shell) .contact-premium-signals {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    align-items: stretch !important;
+    justify-items: stretch !important;
+    gap: 0.5rem !important;
+    margin-top: 0.95rem !important;
+    padding-top: 0.82rem !important;
+    border-top: 1px solid rgba(20,20,20,0.10) !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals span {
+    position: relative !important;
+    display: grid !important;
+    grid-template-rows: 1.55rem 0.92rem !important;
+    align-items: center !important;
+    justify-items: center !important;
+    gap: 0.18rem !important;
+    min-width: 0 !important;
+    min-height: 2.72rem !important;
+    padding: 0 !important;
+    text-align: center !important;
+    overflow: visible !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals strong {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    transform: none !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+    font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif !important;
+    font-size: clamp(1.34rem, 5.7vw, 1.68rem) !important;
+    line-height: 1 !important;
+    letter-spacing: -0.04em !important;
+    color: rgba(14,14,14,0.94) !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals em,
+  html body:has(.contact-premium-shell) .contact-premium-signals small,
+  html body:has(.contact-premium-shell) .contact-premium-signals span > :not(strong) {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 6.8rem !important;
+    margin: 0 auto !important;
+    transform: none !important;
+    font-style: normal !important;
+    font-size: 0.56rem !important;
+    line-height: 1.08 !important;
+    letter-spacing: 0.01em !important;
+    text-transform: none !important;
+    text-align: center !important;
+    color: rgba(20,20,20,0.52) !important;
+    white-space: normal !important;
+    overflow-wrap: normal !important;
+  }
+}
+
+@media (max-width: 23.5rem) {
+  html body:has(.contact-premium-shell) .contact-premium-signals {
+    gap: 0.38rem !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals strong {
+    font-size: 1.18rem !important;
+  }
+
+  html body:has(.contact-premium-shell) .contact-premium-signals em,
+  html body:has(.contact-premium-shell) .contact-premium-signals small,
+  html body:has(.contact-premium-shell) .contact-premium-signals span > :not(strong) {
+    font-size: 0.52rem !important;
+  }
+}
+/* ATLAS-MOBILE-09 END */
+/* ATLAS-MOBILE-10 START вЂ” final unit detail mobile split: photo text only + facts card below */
+@media (max-width: 47.99rem) {
+  /* Canonical mobile structure:
+     1) image plate
+     2) editorial white text over image
+     3) separate glass facts card below image
+  */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero {
+    --atlas-unit-hero-media-h: clamp(20.75rem, 74vw, 24.25rem);
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0.72rem !important;
+    overflow: visible !important;
+    isolation: isolate !important;
+    margin-top: 0 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media {
+    position: relative !important;
+    z-index: 1 !important;
+    order: 1 !important;
+    display: block !important;
+    width: 100% !important;
+    height: var(--atlas-unit-hero-media-h) !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    border-radius: 1.08rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.48) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.62) inset,
+      0 18px 44px rgba(18,20,24,0.10) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media img,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media img,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media img,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media picture,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media picture img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    border-radius: inherit !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media::after,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media::after,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 2 !important;
+    pointer-events: none !important;
+    opacity: 1 !important;
+    background:
+      linear-gradient(180deg, rgba(7,10,16,0.00) 0%, rgba(7,10,16,0.10) 38%, rgba(7,10,16,0.60) 100%),
+      radial-gradient(90% 72% at 20% 96%, rgba(0,0,0,0.48), transparent 66%) !important;
+    mix-blend-mode: normal !important;
+  }
+
+  /* Overlay wrapper should not become a visual/card layer on mobile. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__overlay,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__overlay {
+    position: static !important;
+    display: contents !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    inset: auto !important;
+    transform: none !important;
+  }
+
+  /* Only the editorial copy sits over the image. It is positioned by the image height,
+     so it can never slide down onto the facts card. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__copy {
+    position: absolute !important;
+    z-index: 5 !important;
+    top: calc(var(--atlas-unit-hero-media-h) - 9.4rem) !important;
+    bottom: auto !important;
+    left: clamp(0.9rem, 4vw, 1.15rem) !important;
+    right: clamp(0.9rem, 4vw, 1.15rem) !important;
+    width: auto !important;
+    max-width: 23.5rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy .unit-detail-canon-kicker,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy .unit-detail-canon-hero__secondary,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__copy .unit-detail-canon-kicker,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__copy .unit-detail-canon-hero__secondary {
+    color: rgba(255,255,255,0.78) !important;
+    text-shadow: 0 10px 26px rgba(0,0,0,0.44) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy .unit-detail-canon-kicker {
+    margin: 0 !important;
+    font-size: 0.64rem !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__title,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__title {
+    margin: 0.28rem 0 0 !important;
+    max-width: 8ch !important;
+    font-size: clamp(3.6rem, 16vw, 5.15rem) !important;
+    line-height: 0.82 !important;
+    letter-spacing: -0.075em !important;
+    color: rgba(255,255,255,0.98) !important;
+    text-shadow:
+      0 1px 0 rgba(0,0,0,0.18),
+      0 18px 42px rgba(0,0,0,0.46) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__lead,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__lead {
+    margin: 0.48rem 0 0 !important;
+    max-width: 23rem !important;
+    font-size: clamp(0.88rem, 3.45vw, 0.98rem) !important;
+    line-height: 1.35 !important;
+    font-weight: 650 !important;
+    color: rgba(255,255,255,0.92) !important;
+    text-shadow: 0 12px 30px rgba(0,0,0,0.50) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__secondary,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__secondary {
+    margin: 0.58rem 0 0 !important;
+    max-width: 24rem !important;
+    font-size: 0.68rem !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0.17em !important;
+    color: rgba(255,255,255,0.72) !important;
+  }
+
+  /* Facts card is explicitly below the image, not over it. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__facts,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__facts {
+    position: relative !important;
+    z-index: 3 !important;
+    order: 2 !important;
+    display: grid !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0.95rem 1rem 1rem !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
+    border-radius: 1.08rem !important;
+    border: 1px solid rgba(255,255,255,0.48) !important;
+    background:
+      linear-gradient(145deg, rgba(255,255,255,0.44), rgba(255,255,255,0.20) 56%, rgba(255,255,255,0.30)),
+      rgba(255,255,255,0.18) !important;
+    backdrop-filter: blur(26px) saturate(1.16) !important;
+    -webkit-backdrop-filter: blur(26px) saturate(1.16) !important;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.70) inset,
+      0 14px 34px rgba(18,20,24,0.08) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__facts::before,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__facts::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+    border-radius: inherit !important;
+    background:
+      linear-gradient(125deg, rgba(255,255,255,0.42), rgba(255,255,255,0.06) 46%, rgba(188,210,236,0.08)),
+      radial-gradient(circle at 12% 0%, rgba(255,255,255,0.20), transparent 34%) !important;
+    opacity: 0.68 !important;
+    mix-blend-mode: screen !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-facts-grid,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__facts-grid {
+    position: relative !important;
+    z-index: 1 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.66rem 0.95rem !important;
+    margin: 0 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-fact {
+    min-width: 0 !important;
+    padding-top: 0.5rem !important;
+    border-top: 1px solid rgba(20,20,20,0.12) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-fact dt {
+    margin: 0 0 0.22rem !important;
+    font-size: 0.58rem !important;
+    line-height: 1.1 !important;
+    letter-spacing: 0.15em !important;
+    color: rgba(20,20,20,0.44) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-fact dd {
+    margin: 0 !important;
+    font-size: clamp(0.94rem, 3.4vw, 1.08rem) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.02em !important;
+    color: rgba(14,14,14,0.92) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__actions,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__actions {
+    position: relative !important;
+    z-index: 1 !important;
+    display: grid !important;
+    gap: 0.58rem !important;
+    margin-top: 0.86rem !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-button,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__action {
+    min-height: 2.72rem !important;
+    border-radius: 0.9rem !important;
+  }
+}
+
+@media (max-width: 23.5rem) {
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero {
+    --atlas-unit-hero-media-h: 21rem;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__copy {
+    top: calc(var(--atlas-unit-hero-media-h) - 8.9rem) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__title,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__title {
+    font-size: 3.35rem !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__lead,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__lead {
+    font-size: 0.84rem !important;
+  }
+}
+/* ATLAS-MOBILE-10 END */
+
+/* ATLAS-MOBILE-11 START вЂ” unit detail hero/facts reset */
+@media (max-width: 47.99rem) {
+  /* Scope only: Unit detail. Contact remains as-is. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto auto !important;
+    gap: 0.72rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    isolation: isolate !important;
+  }
+
+  /* Photo plate: no vertical poster stretch. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media {
+    grid-area: 1 / 1 !important;
+    position: relative !important;
+    z-index: 1 !important;
+    display: block !important;
+    width: 100% !important;
+    height: clamp(20.5rem, 82vw, 24rem) !important;
+    min-height: 0 !important;
+    max-height: 24rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border-radius: 1.08rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.46) !important;
+    background: transparent !important;
+    transform: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media img,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media img,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__image,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media img {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    transform: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media::after,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media::after,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    opacity: 1 !important;
+    background:
+      linear-gradient(180deg, rgba(5, 8, 14, 0.00) 0%, rgba(5, 8, 14, 0.06) 38%, rgba(5, 8, 14, 0.42) 78%, rgba(5, 8, 14, 0.72) 100%),
+      radial-gradient(86% 52% at 22% 92%, rgba(0, 0, 0, 0.48), transparent 70%) !important;
+    mix-blend-mode: normal !important;
+  }
+
+  /* Make the wrapper transparent for layout: copy overlays row 1, facts flows into row 2. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__overlay,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__overlay {
+    display: contents !important;
+    position: static !important;
+    inset: auto !important;
+    width: auto !important;
+    max-width: none !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+
+  /* Editorial copy only over the photo. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__copy {
+    grid-area: 1 / 1 !important;
+    align-self: end !important;
+    justify-self: stretch !important;
+    position: relative !important;
+    z-index: 5 !important;
+    display: grid !important;
+    gap: 0.38rem !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 1rem 0.95rem !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+    transform: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-kicker,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__eyebrow,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__secondary,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__secondary {
+    color: rgba(255, 255, 255, 0.78) !important;
+    text-shadow: 0 12px 32px rgba(0, 0, 0, 0.52) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__title,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__title {
+    margin: 0 !important;
+    max-width: 8.5ch !important;
+    font-size: clamp(3rem, 13.4vw, 4.1rem) !important;
+    line-height: 0.84 !important;
+    color: rgba(255, 255, 255, 0.98) !important;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.14), 0 16px 42px rgba(0, 0, 0, 0.52) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__lead,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__lede {
+    max-width: 22rem !important;
+    margin: 0 !important;
+    font-size: 0.88rem !important;
+    line-height: 1.32 !important;
+    color: rgba(255, 255, 255, 0.94) !important;
+    text-shadow: 0 12px 32px rgba(0, 0, 0, 0.58) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__secondary,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__secondary {
+    margin: 0 !important;
+    max-width: 24rem !important;
+    font-size: 0.66rem !important;
+    line-height: 1.18 !important;
+    letter-spacing: 0.14em !important;
+  }
+
+  /* Facts/data card: restore below photo as a separate glass card. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__facts,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__card,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__facts {
+    grid-area: 2 / 1 !important;
+    position: relative !important;
+    z-index: 2 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0.96rem !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    transform: none !important;
+    overflow: visible !important;
+    border-radius: 1.08rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.58) !important;
+    background:
+      linear-gradient(145deg, rgba(255,255,255,0.56), rgba(255,255,255,0.24) 58%, rgba(255,255,255,0.34)),
+      rgba(255,255,255,0.16) !important;
+    color: rgba(18, 18, 18, 0.9) !important;
+    box-shadow: 0 18px 52px rgba(12, 16, 22, 0.14) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-facts-grid,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__facts,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-summary__facts {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.64rem 0.86rem !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__actions,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__actions {
+    display: grid !important;
+    gap: 0.5rem !important;
+    margin-top: 0.86rem !important;
+  }
+
+  /* Final CTA readability fix: override the facts-card inherit color rule. */
+  html body:has(.unit-detail-canon-v1)
+    .unit-detail-canon-hero__facts
+    .unit-detail-canon-button--primary,
+  html body:has(.unit-detail-canon-v1)
+    .unit-detail-editorial-hero__card
+    .unit-detail-editorial-button--primary,
+  html body:has(.unit-detail-canon-v1)
+    .unit-detail-editorial-hero__card
+    .unit-detail-editorial-hero__action--primary {
+    color: #fff !important;
+    background:
+      linear-gradient(180deg, rgba(24, 24, 24, 0.98), rgba(7, 7, 7, 0.97)) !important;
+    border-color: rgba(255, 255, 255, 0.14) !important;
+    opacity: 1 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1)
+    .unit-detail-canon-hero__facts
+    .unit-detail-canon-button--primary *,
+  html body:has(.unit-detail-canon-v1)
+    .unit-detail-editorial-hero__card
+    .unit-detail-editorial-button--primary *,
+  html body:has(.unit-detail-canon-v1)
+    .unit-detail-editorial-hero__card
+    .unit-detail-editorial-hero__action--primary * {
+    color: #fff !important;
+    opacity: 1 !important;
+  }
+}
+/* ATLAS-MOBILE-11 END */
+/* ==========================================================================
+   ATLAS-UNIT-DETAIL-FINAL-MOBILE-01
+   Scope: unit detail only.
+   Goal:
+   - photo stays as a clean image plate;
+   - only editorial text sits over the photo;
+   - glass facts/data card sits below the photo, not over it;
+   - tablet + mobile use the same safe structure.
+   ========================================================================== */
+
+@media (max-width: 63.99rem) {
+  html body:has(.unit-detail-canon-v1) {
+    --atlas-unit-detail-photo-h: clamp(18rem, 58vw, 31rem);
+    --atlas-unit-detail-photo-radius: 1.14rem;
+    --atlas-unit-detail-gap: 0.82rem;
+  }
+
+  /* Page shell: do not let older negative/overlay spacing affect the detail hero. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-v1 {
+    gap: clamp(1.15rem, 3.2vw, 1.75rem) !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     A) Canon hero structure, if this route renders unit-detail-canon-hero
+     -------------------------------------------------------------------------- */
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "photo"
+      "facts" !important;
+    gap: var(--atlas-unit-detail-gap) !important;
+    overflow: visible !important;
+    isolation: isolate !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__overlay {
+    display: contents !important;
+    position: static !important;
+    inset: auto !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    transform: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media {
+    grid-area: photo !important;
+    position: relative !important;
+    z-index: 1 !important;
+    width: 100% !important;
+    height: var(--atlas-unit-detail-photo-h) !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    border-radius: var(--atlas-unit-detail-photo-radius) !important;
+    border: 1px solid rgba(255, 255, 255, 0.48) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.62) inset,
+      0 18px 42px rgba(18, 20, 24, 0.10) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media img,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    border-radius: inherit !important;
+    filter: saturate(1.02) contrast(1.02) brightness(1.02) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media::before,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media::before {
+    display: none !important;
+    content: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__media::after,
+  html body:has(.unit-detail-canon-v1) .unit-detail-premium-hero__media.unit-detail-canon-hero__media::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 2 !important;
+    pointer-events: none !important;
+    border-radius: inherit !important;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(5, 8, 14, 0.00) 0%,
+        rgba(5, 8, 14, 0.06) 38%,
+        rgba(5, 8, 14, 0.42) 78%,
+        rgba(5, 8, 14, 0.68) 100%
+      ),
+      radial-gradient(86% 52% at 22% 92%, rgba(0, 0, 0, 0.46), transparent 70%) !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy {
+    grid-area: photo !important;
+    align-self: end !important;
+    justify-self: start !important;
+    position: relative !important;
+    z-index: 5 !important;
+    display: grid !important;
+    gap: 0.38rem !important;
+    width: auto !important;
+    max-width: min(24rem, calc(100% - 2rem)) !important;
+    margin: 0 1rem 1rem !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transform: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy::before,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__copy::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__facts {
+    grid-area: facts !important;
+    position: relative !important;
+    z-index: 3 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 1rem !important;
+    overflow: visible !important;
+    border-radius: 1.12rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.58) !important;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.22) 58%, rgba(255, 255, 255, 0.34)),
+      rgba(255, 255, 255, 0.14) !important;
+    color: rgba(18, 18, 18, 0.9) !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.72) inset,
+      0 18px 46px rgba(12, 16, 22, 0.12) !important;
+    backdrop-filter: blur(22px) saturate(1.12) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(1.12) !important;
+    transform: none !important;
+  }
+
+  /* --------------------------------------------------------------------------
+     B) Editorial hero structure, if this route renders unit-detail-editorial-hero
+     -------------------------------------------------------------------------- */
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-areas:
+      "photo"
+      "card" !important;
+    gap: var(--atlas-unit-detail-gap) !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    isolation: isolate !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media::before {
+    display: none !important;
+    content: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media::after {
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    z-index: 2 !important;
+    height: var(--atlas-unit-detail-photo-h) !important;
+    pointer-events: none !important;
+    border-radius: var(--atlas-unit-detail-photo-radius) !important;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(5, 8, 14, 0.00) 0%,
+        rgba(5, 8, 14, 0.06) 38%,
+        rgba(5, 8, 14, 0.42) 78%,
+        rgba(5, 8, 14, 0.68) 100%
+      ),
+      radial-gradient(86% 52% at 22% 92%, rgba(0, 0, 0, 0.46), transparent 70%) !important;
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__image,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media img {
+    grid-area: photo !important;
+    position: relative !important;
+    z-index: 1 !important;
+    display: block !important;
+    width: 100% !important;
+    height: var(--atlas-unit-detail-photo-h) !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    border-radius: var(--atlas-unit-detail-photo-radius) !important;
+    border: 1px solid rgba(255, 255, 255, 0.48) !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.62) inset,
+      0 18px 42px rgba(18, 20, 24, 0.10) !important;
+    filter: saturate(1.02) contrast(1.02) brightness(1.02) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__copy {
+    grid-area: photo !important;
+    align-self: end !important;
+    justify-self: start !important;
+    position: relative !important;
+    inset: auto !important;
+    z-index: 5 !important;
+    display: grid !important;
+    gap: 0.38rem !important;
+    width: auto !important;
+    max-width: min(24rem, calc(100% - 2rem)) !important;
+    margin: 0 1rem 1rem !important;
+    padding: 0 !important;
+    pointer-events: none !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transform: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__copy::before,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__copy::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__card {
+    grid-area: card !important;
+    position: relative !important;
+    inset: auto !important;
+    z-index: 3 !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 1rem !important;
+    overflow: visible !important;
+    border-radius: 1.12rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.58) !important;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.22) 58%, rgba(255, 255, 255, 0.34)),
+      rgba(255, 255, 255, 0.14) !important;
+    color: rgba(18, 18, 18, 0.9) !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.72) inset,
+      0 18px 46px rgba(12, 16, 22, 0.12) !important;
+    backdrop-filter: blur(22px) saturate(1.12) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(1.12) !important;
+    transform: none !important;
+  }
+
+  /* Shared overlay typography. Readability through shadow only, no transparent block. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-kicker,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__eyebrow,
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__secondary,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__micro {
+    color: rgba(255, 255, 255, 0.78) !important;
+    text-shadow: 0 12px 32px rgba(0, 0, 0, 0.52) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__title,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__title {
+    margin: 0 !important;
+    max-width: 8.6ch !important;
+    font-size: clamp(3rem, 10vw, 5rem) !important;
+    line-height: 0.84 !important;
+    color: rgba(255, 255, 255, 0.98) !important;
+    text-shadow:
+      0 1px 0 rgba(0, 0, 0, 0.14),
+      0 16px 42px rgba(0, 0, 0, 0.52) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__lead,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__lede {
+    max-width: 24rem !important;
+    margin: 0 !important;
+    font-size: 0.92rem !important;
+    line-height: 1.34 !important;
+    color: rgba(255, 255, 255, 0.94) !important;
+    text-shadow: 0 12px 32px rgba(0, 0, 0, 0.58) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__secondary,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__micro {
+    margin: 0 !important;
+    max-width: 24rem !important;
+    font-size: 0.66rem !important;
+    line-height: 1.18 !important;
+    letter-spacing: 0.14em !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-facts-grid,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__facts {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.68rem 0.88rem !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-hero__actions,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__actions {
+    display: grid !important;
+    gap: 0.58rem !important;
+    margin-top: 0.9rem !important;
+  }
+}
+
+/* ==========================================================================
+   ATLAS-UNIT-DETAIL-MOBILE-FLOW-FIX-02
+   Fix only mobile overlap:
+   - editorial media wrapper must grow with facts card;
+   - facts card stays below photo;
+   - next Plan section starts after full facts card height.
+   ========================================================================== */
+
+@media (max-width: 47.99rem) {
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    isolation: isolate !important;
+  }
+
+  /*
+    Critical fix:
+    older mobile patches forced this wrapper to the same height as the photo.
+    That made the facts card overflow visually, so the next section overlapped it.
+  */
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__media {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: var(--atlas-unit-detail-photo-h) auto !important;
+    grid-template-areas:
+      "photo"
+      "card" !important;
+    gap: var(--atlas-unit-detail-gap, 0.72rem) !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    contain: none !important;
+    content-visibility: visible !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__image,
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__media > img,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__image,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__media > img {
+    grid-area: photo !important;
+    position: relative !important;
+    z-index: 1 !important;
+    display: block !important;
+    width: 100% !important;
+    height: var(--atlas-unit-detail-photo-h) !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    border-radius: var(--atlas-unit-detail-photo-radius, 1.08rem) !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__copy,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__copy {
+    grid-area: photo !important;
+    align-self: end !important;
+    justify-self: start !important;
+    position: relative !important;
+    z-index: 5 !important;
+    width: auto !important;
+    max-width: min(24rem, calc(100% - 1.8rem)) !important;
+    margin: 0 0.9rem 0.86rem !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transform: none !important;
+    pointer-events: none !important;
+  }
+
+  /*
+    Facts card is the actual block below photo.
+    Keep the card as a card, but stop the inner facts grid from becoming
+    another absolute/outer card.
+  */
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__card,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__card {
+    grid-area: card !important;
+    position: relative !important;
+    z-index: 3 !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0.96rem !important;
+    overflow: visible !important;
+    border-radius: 1.08rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.58) !important;
+    background:
+      linear-gradient(145deg, rgba(255,255,255,0.56), rgba(255,255,255,0.24) 58%, rgba(255,255,255,0.34)),
+      rgba(255,255,255,0.16) !important;
+    color: rgba(18, 18, 18, 0.9) !important;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.72) inset,
+      0 18px 46px rgba(12, 16, 22, 0.12) !important;
+    backdrop-filter: blur(22px) saturate(1.12) !important;
+    -webkit-backdrop-filter: blur(22px) saturate(1.12) !important;
+    transform: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__facts,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__facts {
+    position: relative !important;
+    z-index: 1 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.64rem 0.86rem !important;
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    transform: none !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero__actions,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero__actions {
+    position: relative !important;
+    z-index: 1 !important;
+    display: grid !important;
+    gap: 0.56rem !important;
+    margin-top: 0.86rem !important;
+  }
+
+  /* Force the next content block to start after the completed hero. */
+  html body:has(.unit-detail-canon-v1) .unit-detail-editorial-hero + *,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-editorial-hero + * {
+    position: relative !important;
+    z-index: 0 !important;
+    margin-top: clamp(1rem, 4vw, 1.45rem) !important;
+    clear: both !important;
+  }
+
+  html body:has(.unit-detail-canon-v1) .unit-detail-canon-plan,
+  html body:has(.unit-detail-editorial-hero) .unit-detail-canon-plan {
+    position: relative !important;
+    z-index: 0 !important;
+  }
+}
