@@ -4123,6 +4123,243 @@ body[data-atmo-active="true"] .home-brief--sky .home-brief__stat--price dd {
   mix-blend-mode: multiply;
 }
 
+
+/* ATLAS-POLISH-01 START
+   Footer + Mobile Menu Micro Polish
+   Scope: visual polish only. Keeps current layout, routes, header architecture and mobile frame intact.
+*/
+
+/* 01 / Footer: quieter editorial finish, less badge-like, less bulky. */
+html body .atlas-footer {
+  margin-top: clamp(2.25rem, 4vw, 4.75rem) !important;
+  padding: clamp(1.15rem, 2vw, 1.65rem) 0 clamp(4.2rem, 6vw, 5.6rem) !important;
+  color: rgba(18, 18, 18, 0.68) !important;
+}
+
+html body .atlas-footer::before {
+  opacity: 0.78 !important;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.48),
+      rgba(18, 18, 18, 0.10),
+      rgba(255, 255, 255, 0.36),
+      transparent
+    ) !important;
+}
+
+html body .atlas-footer__inner {
+  grid-template-columns: minmax(0, 1.35fr) minmax(9rem, 0.52fr) minmax(8rem, 0.46fr) !important;
+  gap: clamp(1.25rem, 3vw, 3.5rem) !important;
+  padding-top: clamp(1rem, 1.6vw, 1.45rem) !important;
+}
+
+html body .atlas-footer__kicker,
+html body .atlas-footer__label {
+  margin-bottom: 0.58rem !important;
+  font-size: 0.6rem !important;
+  letter-spacing: 0.2em !important;
+  color: rgba(18, 18, 18, 0.34) !important;
+}
+
+html body .atlas-footer__logo {
+  font-size: clamp(1.35rem, 2.1vw, 2rem) !important;
+  letter-spacing: -0.045em !important;
+  color: rgba(12, 12, 12, 0.88) !important;
+}
+
+html body .atlas-footer__copy {
+  max-width: 29rem !important;
+  margin-top: 0.7rem !important;
+  font-size: clamp(0.82rem, 0.92vw, 0.95rem) !important;
+  line-height: 1.5 !important;
+  color: rgba(18, 18, 18, 0.52) !important;
+}
+
+html body .atlas-footer__links {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 0.38rem 0.64rem !important;
+}
+
+html body .atlas-footer__links a,
+html body .atlas-footer nav a {
+  min-height: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(18, 18, 18, 0.56) !important;
+  font-size: 0.78rem !important;
+  font-weight: 560 !important;
+  line-height: 1.35 !important;
+  text-decoration: none !important;
+  transform: none !important;
+  translate: none !important;
+}
+
+html body .atlas-footer__links a:hover,
+html body .atlas-footer__links a:focus-visible,
+html body .atlas-footer nav a:hover,
+html body .atlas-footer nav a:focus-visible {
+  color: rgba(10, 10, 10, 0.88) !important;
+  background: transparent !important;
+  border: 0 !important;
+  translate: none !important;
+}
+
+html body .atlas-footer__bottom {
+  margin-top: clamp(1.25rem, 2.3vw, 2.25rem) !important;
+  padding-top: 0.9rem !important;
+  border-top-color: rgba(18, 18, 18, 0.075) !important;
+  font-size: 0.72rem !important;
+  color: rgba(18, 18, 18, 0.42) !important;
+}
+
+html body .atlas-footer__credit {
+  color: rgba(18, 18, 18, 0.48) !important;
+}
+
+/* 02 / Mobile drawer: compact, premium, readable, no redundant CTA bulk. */
+@media (max-width: 47.99rem) {
+  html body [data-mobile-menu-backdrop] {
+    background: rgba(16, 20, 30, 0.28) !important;
+    backdrop-filter: blur(9px) saturate(1.08) !important;
+    -webkit-backdrop-filter: blur(9px) saturate(1.08) !important;
+  }
+
+  html body [data-mobile-menu-panel] {
+    top: calc(var(--atlas-mobile-header-top) + 3.18rem) !important;
+    max-height: min(25rem, calc(100dvh - 4.35rem)) !important;
+    border-radius: 1.08rem !important;
+    border-color: rgba(255, 255, 255, 0.52) !important;
+    background:
+      linear-gradient(145deg, rgba(246, 248, 250, 0.58), rgba(206, 214, 226, 0.24) 58%, rgba(245, 241, 235, 0.34)),
+      rgba(232, 236, 242, 0.20) !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.78) inset,
+      0 26px 72px rgba(10, 14, 22, 0.22) !important;
+    backdrop-filter: blur(30px) saturate(1.18) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(1.18) !important;
+  }
+
+  html body [data-mobile-menu-inner] {
+    gap: 0.44rem !important;
+    padding: 0.66rem !important;
+  }
+
+  html body [data-mobile-menu-head] {
+    padding: 0.1rem 0.1rem 0.5rem !important;
+    border-bottom-color: rgba(18, 18, 18, 0.095) !important;
+  }
+
+  html body [data-mobile-menu-eyebrow] {
+    font-size: 0.58rem !important;
+    letter-spacing: 0.2em !important;
+    color: rgba(18, 18, 18, 0.44) !important;
+  }
+
+  html body [data-mobile-menu-close] {
+    min-height: 2rem !important;
+    padding: 0.42rem 0.68rem !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.20) !important;
+    color: rgba(18, 18, 18, 0.68) !important;
+    font-size: 0.76rem !important;
+    font-weight: 620 !important;
+  }
+
+  html body [data-mobile-menu-links] {
+    gap: 0.34rem !important;
+  }
+
+  html body [data-mobile-menu-link] {
+    min-height: 2.48rem !important;
+    border-radius: 0.78rem !important;
+    padding: 0.66rem 0.76rem !important;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.10)),
+      rgba(255, 255, 255, 0.08) !important;
+    color: rgba(18, 18, 18, 0.76) !important;
+    font-size: 0.9rem !important;
+    font-weight: 620 !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  html body [data-mobile-menu-link]::after {
+    content: "→" !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 0.42 !important;
+    font-size: 0.85rem !important;
+  }
+
+  html body [data-mobile-menu-link][data-active="true"] {
+    background: rgba(18, 18, 18, 0.94) !important;
+    color: rgba(255, 255, 255, 0.96) !important;
+    border-color: rgba(255, 255, 255, 0.14) !important;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      0 12px 26px rgba(12, 14, 18, 0.16) !important;
+  }
+
+  html body [data-mobile-menu-link][data-active="true"]::after {
+    opacity: 0.72 !important;
+  }
+
+  html body .atlas-footer {
+    width: var(--atlas-mobile-frame) !important;
+    max-width: var(--atlas-mobile-frame) !important;
+    margin-top: 1.15rem !important;
+    padding: 1.25rem 0 2.05rem !important;
+  }
+
+  html body .atlas-footer__inner {
+    grid-template-columns: 1fr !important;
+    gap: 0.82rem !important;
+    padding-top: 0.92rem !important;
+  }
+
+  html body .atlas-footer__kicker,
+  html body .atlas-footer__label {
+    margin-bottom: 0.42rem !important;
+    font-size: 0.58rem !important;
+    letter-spacing: 0.19em !important;
+  }
+
+  html body .atlas-footer__logo {
+    font-size: 1.34rem !important;
+    line-height: 1 !important;
+  }
+
+  html body .atlas-footer__copy {
+    max-width: 100% !important;
+    margin-top: 0.55rem !important;
+    font-size: 0.82rem !important;
+    line-height: 1.42 !important;
+  }
+
+  html body .atlas-footer__links {
+    gap: 0.32rem 0.58rem !important;
+  }
+
+  html body .atlas-footer__links a,
+  html body .atlas-footer nav a {
+    font-size: 0.78rem !important;
+  }
+
+  html body .atlas-footer__bottom {
+    margin-top: 0.95rem !important;
+    padding-top: 0.76rem !important;
+    gap: 0.42rem !important;
+    font-size: 0.7rem !important;
+  }
+}
+/* ATLAS-POLISH-01 END */
 /* Home Hero final cleanup — cancel the global SunHero intensity pass for the homepage. */
 @media (min-width: 64rem) {
   body[data-atmo-active="true"] .home-sky-page .home-sky-intro__hero [data-sun-hero-frame] {
