@@ -1494,10 +1494,43 @@ body[data-atmo-active="true"] main {
   background: transparent;
 }
 
-[data-dev-header],
-[data-dev-main] {
-  position: relative;
-  z-index: 1;
+/* Device stability guard:
+   Touch/tablet/mobile browsers can flicker with fixed canvas + backdrop-filter.
+   Keep the premium atmospheric surface, but make it static and artifact-free. */
+@media (max-width: 63.99rem), (hover: none) and (pointer: coarse) {
+  html,
+  body,
+  body[data-atmo-active="true"] {
+    background:
+      radial-gradient(110% 80% at 50% 0%, rgba(139, 158, 190, 0.42), transparent 48%),
+      linear-gradient(180deg, #d8e1ee 0%, #bec6d0 48%, #b8b3ae 100%) !important;
+  }
+
+  body[data-atmo-active="true"] .atmo-backdrop__canvas {
+    display: none !important;
+  }
+
+  body[data-atmo-active="true"] .atmo-backdrop__veil {
+    opacity: 0.18 !important;
+    mix-blend-mode: normal !important;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.16)) !important;
+  }
+
+  body[data-atmo-active="true"] .atmo-backdrop::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  body[data-atmo-active="true"] .atmo-backdrop__grain {
+    opacity: 0.006 !important;
+  }
+}
+  
+  [data-dev-header],
+  [data-dev-main] {
+    position: relative;
+    z-index: 1;
 }
 
 [data-dev-header] {
@@ -12665,6 +12698,15 @@ html body .legal-premium-shell {
     max-height: none !important;
     overflow: hidden !important;
     border-radius: 1.18rem !important;
+    isolation: isolate !important;
+    transform: translateZ(0) !important;
+  }
+
+  html body .home-sky-intro__hero [data-sun-hero-frame] picture,
+  html body .home-sky-intro__hero [data-sun-hero-frame] img,
+  html body .home-sky-intro__hero .sun-hero-frame picture,
+  html body .home-sky-intro__hero .sun-hero-frame img {
+    border-radius: inherit !important;
   }
 
   html body .home-sky-intro__hero picture,
@@ -14240,11 +14282,34 @@ html body .legal-premium-shell {
 
 @media (max-width: 23.5rem) {
   html body [data-dev-header] > [data-header-shell] {
-    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-columns: minmax(0, 1fr) auto auto !important;
+    gap: 0.24rem !important;
+  }
+
+  html body [data-dev-header] [data-header-brand] {
+    min-width: 0 !important;
+    padding-inline: 0.12rem !important;
+    font-size: 0.52rem !important;
+    letter-spacing: 0.15em !important;
   }
 
   html body [data-dev-header] [data-header-mobile-lang] {
-    display: none !important;
+    display: inline-flex !important;
+    min-height: 2.12rem !important;
+    padding: 0.14rem !important;
+  }
+
+  html body [data-dev-header] [data-header-mobile-lang] [data-lang-link] {
+    min-width: 1.68rem !important;
+    min-height: 1.66rem !important;
+    padding-inline: 0.36rem !important;
+    font-size: 0.62rem !important;
+  }
+
+  html body [data-dev-header] [data-mobile-menu-toggle] {
+    min-height: 2.18rem !important;
+    padding-inline: 0.68rem !important;
+    font-size: 0.78rem !important;
   }
 }
 
@@ -14867,13 +14932,33 @@ html body .legal-premium-shell {
     --atlas-mobile-frame: min(calc(100dvw - 0.75rem), 22.5rem);
   }
 
+  html body [data-dev-header] > [data-header-shell] {
+    grid-template-columns: minmax(0, 1fr) auto auto !important;
+    gap: 0.24rem !important;
+  }
+
   html body [data-dev-header] [data-header-brand] {
-    font-size: 0.56rem !important;
-    letter-spacing: 0.17em !important;
+    font-size: 0.52rem !important;
+    letter-spacing: 0.15em !important;
   }
 
   html body [data-dev-header] [data-header-mobile-lang] {
-    display: none !important;
+    display: inline-flex !important;
+    min-height: 2.12rem !important;
+    padding: 0.14rem !important;
+  }
+
+  html body [data-dev-header] [data-header-mobile-lang] [data-lang-link] {
+    min-width: 1.68rem !important;
+    min-height: 1.66rem !important;
+    padding-inline: 0.36rem !important;
+    font-size: 0.62rem !important;
+  }
+
+  html body [data-dev-header] [data-mobile-menu-toggle] {
+    min-height: 2.18rem !important;
+    padding-inline: 0.68rem !important;
+    font-size: 0.78rem !important;
   }
 }
 
