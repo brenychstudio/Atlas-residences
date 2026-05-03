@@ -45,7 +45,9 @@ const heroVariants = {
 
 const defaultHeroVariant: keyof typeof heroVariants = "morning";
 const heroImage = heroVariants[defaultHeroVariant] || ATLAS_ASSETS.hero.hr01Morning16x9;
-const heroMobileImage = heroVariants.mobile;
+// Keep all SunHero states on the same source ratio.
+// Separate mobile image caused wrong visual blending with bluehour/sunset layers.
+const heroMobileImage = "";
 
 const unitsCount = units.length;
 const buildingsCount = buildings.length;

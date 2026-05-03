@@ -65,8 +65,8 @@ const hasBlend = hasSunset || hasBluehour;
           class="sun-hero-layer h-full w-full object-cover"
           loading="eager"
           decoding="async"
-          width="1600"
-          height="900"
+          width="2048"
+          height="1365"
           style="transform: translate3d(var(--px), var(--py), 0);"
         />
       </picture>
@@ -79,8 +79,8 @@ const hasBlend = hasSunset || hasBluehour;
           class="sun-hero-layer pointer-events-none absolute inset-0 h-full w-full object-cover"
           loading="lazy"
           decoding="async"
-          width="1600"
-          height="900"
+          width="2048"
+          height="1365"
           style="opacity: var(--bluehour-opacity); transform: translate3d(var(--px), var(--py), 0);"
         />
       )}
@@ -93,8 +93,8 @@ const hasBlend = hasSunset || hasBluehour;
           class="sun-hero-layer pointer-events-none absolute inset-0 h-full w-full object-cover"
           loading="lazy"
           decoding="async"
-          width="1600"
-          height="900"
+          width="2048"
+          height="1365"
           style="opacity: var(--sunset-opacity); transform: translate3d(var(--px), var(--py), 0);"
         />
       )}
@@ -129,9 +129,9 @@ const hasBlend = hasSunset || hasBluehour;
   </div>
 )}
 
-<style>
+  <style>
   .sun-hero-frame {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 2048 / 1365;
   }
 
   .sun-hero-layer {

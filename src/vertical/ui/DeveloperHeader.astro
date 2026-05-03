@@ -1,4 +1,4 @@
----
+﻿---
 import { type Lang, isLang, t } from "../../content/languages";
 
 const { lang, pathname = "/" } = Astro.props as { lang?: string; pathname?: string };
@@ -11,7 +11,7 @@ const nav = [
   { href: `/${L}/`, label: t(L, "Home", "Inicio") },
   { href: `/${L}/masterplan/`, label: t(L, "Masterplan", "Plan maestro") },
   { href: `/${L}/units/`, label: t(L, "Units", "Unidades") },
-  { href: `/${L}/location/`, label: t(L, "Location", "Ubicación") },
+  { href: `/${L}/location/`, label: t(L, "Location", "UbicaciГіn") },
   { href: `/${L}/downloads/`, label: t(L, "Downloads", "Descargas") },
   { href: `/${L}/contact/`, label: t(L, "Contact", "Contacto") },
 ];
@@ -31,6 +31,7 @@ function isActive(href: string) {
 <header
   data-dev-header
   data-header-style="glass"
+  data-mobile-menu-root
   class="sticky top-0 z-50"
 >
   <div
@@ -44,6 +45,34 @@ function isActive(href: string) {
     >
       Atlas Residences
     </a>
+
+    <nav
+      data-header-mobile-lang
+      class="hidden items-center rounded-[var(--radius-pill)] p-1"
+      aria-label="Switch language"
+      data-lang-switcher
+    >
+      <a
+        href={pathForLang("en")}
+        data-lang="en"
+        data-lang-link
+        data-active={pathLang === "en" ? "true" : "false"}
+        class="inline-flex items-center rounded-[var(--radius-pill)] text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/20"
+        aria-current={pathLang === "en" ? "page" : undefined}
+      >
+        EN
+      </a>
+      <a
+        href={pathForLang("es")}
+        data-lang="es"
+        data-lang-link
+        data-active={pathLang === "es" ? "true" : "false"}
+        class="inline-flex items-center rounded-[var(--radius-pill)] text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/20"
+        aria-current={pathLang === "es" ? "page" : undefined}
+      >
+        ES
+      </a>
+    </nav>
 
     <nav data-header-nav="desktop" class="hidden items-center gap-1 md:flex">
       {nav.map((item) => {
@@ -64,6 +93,7 @@ function isActive(href: string) {
 
     <div
       data-header-actions
+      data-header-actions="desktop"
       class="ml-auto flex w-full items-center justify-end gap-2 md:ml-0 md:w-auto md:flex-none md:gap-2"
     >
       <nav
@@ -102,33 +132,59 @@ function isActive(href: string) {
         {t(L, "Book a viewing", "Reservar visita")}
       </a>
     </div>
+
+    <button
+      type="button"
+      data-mobile-menu-toggle
+      aria-controls="atlas-mobile-menu"
+      aria-expanded="false"
+      class="hidden min-h-[40px] items-center rounded-[var(--radius-pill)] px-4 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/20"
+    >
+      Menu
+    </button>
   </div>
 
-  <nav
-    data-header-mobile
-    class="mx-auto flex w-full max-w-[72rem] items-center gap-2 overflow-x-auto px-3 pb-2 md:hidden"
+  <div data-mobile-menu-backdrop hidden></div>
+
+  <aside
+    id="atlas-mobile-menu"
+    data-mobile-menu-panel
+    hidden
+    aria-label="Mobile navigation"
   >
-    {nav.map((item) => {
-      const active = isActive(item.href);
-      return (
-        <a
-          href={item.href}
-          data-header-mobile-link
-          data-active={active ? "true" : "false"}
-          class="inline-flex min-h-[40px] shrink-0 items-center rounded-[var(--radius-pill)] px-4 text-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/20"
-          aria-current={active ? "page" : undefined}
+    <div data-mobile-menu-inner>
+      <div data-mobile-menu-head>
+        <p data-mobile-menu-eyebrow>Atlas Residences</p>
+        <button
+          type="button"
+          data-mobile-menu-close
+          aria-label="Close menu"
         >
-          {item.label}
-        </a>
-      );
-    })}
-  </nav>
+          Close
+        </button>
+      </div>
+
+      <nav data-mobile-menu-links aria-label="Primary navigation">
+        {nav.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <a
+              href={item.href}
+              data-mobile-menu-link
+              data-active={active ? "true" : "false"}
+              aria-current={active ? "page" : undefined}
+            >
+              <span>{item.label}</span>
+            </a>
+          );
+        })}
+      </nav>
+</div>
+  </aside>
 </header>
 
 <script>
-  const switcher = document.querySelector("[data-lang-switcher]");
-
-  if (switcher) {
+  document.querySelectorAll("[data-lang-switcher]").forEach((switcher) => {
     const match = window.location.pathname.match(/^\/(en|es)(?=\/|$)/);
     const currentLang = match?.[1] ?? "en";
 
@@ -141,5 +197,50 @@ function isActive(href: string) {
       if (currentLang === nextLang) link.setAttribute("aria-current", "page");
       else link.removeAttribute("aria-current");
     });
-  }
+  });
+
+  document.querySelectorAll("[data-mobile-menu-root]").forEach((root) => {
+    const toggle = root.querySelector("[data-mobile-menu-toggle]");
+    const close = root.querySelector("[data-mobile-menu-close]");
+    const panel = root.querySelector("[data-mobile-menu-panel]");
+    const backdrop = root.querySelector("[data-mobile-menu-backdrop]");
+    const links = root.querySelectorAll("[data-mobile-menu-link]");
+    const desktopQuery = window.matchMedia("(min-width: 48rem)");
+
+    if (!(toggle instanceof HTMLButtonElement) || !(panel instanceof HTMLElement)) return;
+
+    const setOpen = (open) => {
+      root.setAttribute("data-mobile-menu-open", open ? "true" : "false");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      panel.hidden = !open;
+      if (backdrop instanceof HTMLElement) backdrop.hidden = !open;
+      document.body.toggleAttribute("data-atlas-mobile-menu-open", open);
+    };
+
+    toggle.addEventListener("click", () => {
+      setOpen(toggle.getAttribute("aria-expanded") !== "true");
+    });
+
+    if (close instanceof HTMLButtonElement) {
+      close.addEventListener("click", () => setOpen(false));
+    }
+
+    if (backdrop instanceof HTMLElement) {
+      backdrop.addEventListener("click", () => setOpen(false));
+    }
+
+    links.forEach((link) => {
+      link.addEventListener("click", () => setOpen(false));
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setOpen(false);
+    });
+
+    desktopQuery.addEventListener("change", (event) => {
+      if (event.matches) setOpen(false);
+    });
+  });
 </script>
+
+
