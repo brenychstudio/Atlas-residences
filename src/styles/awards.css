@@ -3027,7 +3027,7 @@ body:has(.home-sky-page) .sticky-cta--desktop {
     display: none !important;
   }
 
-  /* Add a controlled centered atmospheric pocket instead of side shadow */
+  /* Keep Home Hero image clean: no milky overlay, no decorative pocket. */
   body[data-atmo-active="true"] .home-sky-intro__hero .sun-hero-frame {
     position: relative;
     overflow: hidden;
@@ -3035,24 +3035,21 @@ body:has(.home-sky-page) .sticky-cta--desktop {
     border: 1px solid rgba(255, 255, 255, 0.42);
     background: transparent !important;
     box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.44) inset,
-      0 12px 30px rgba(23, 28, 38, 0.055) !important;
+      0 1px 0 rgba(255, 255, 255, 0.34) inset,
+      0 8px 18px rgba(23, 28, 38, 0.045) !important;
   }
 
   body[data-atmo-active="true"] .home-sky-intro__hero .sun-hero-frame::before,
-  body[data-atmo-active="true"] .home-sky-intro__hero .sun-hero-frame::after,
-  body[data-atmo-active="true"] .home-sky-intro__hero [data-sun-hero-frame]::before,
-  body[data-atmo-active="true"] .home-sky-intro__hero [data-sun-hero-frame]::after {
+  body[data-atmo-active="true"] .home-sky-intro__hero .sun-hero-frame::after {
     content: none !important;
     display: none !important;
-    opacity: 0 !important;
     background: none !important;
+    opacity: 0 !important;
     filter: none !important;
     mix-blend-mode: normal !important;
   }
 
-  body[data-atmo-active="true"] .home-sky-intro__hero .sun-hero-frame img,
-  body[data-atmo-active="true"] .home-sky-intro__hero [data-sun-hero-frame] img {
+  body[data-atmo-active="true"] .home-sky-intro__hero .sun-hero-frame img {
     position: relative;
     z-index: 1;
     filter: none !important;
@@ -4124,6 +4121,33 @@ body[data-atmo-active="true"] .home-brief--sky .home-brief__stat--price dd {
     );
   opacity: clamp(0, calc((var(--sun, 0) - 0.28) * 1.4), 0.9);
   mix-blend-mode: multiply;
+}
+
+/* Home Hero final cleanup — cancel the global SunHero intensity pass for the homepage. */
+@media (min-width: 64rem) {
+  body[data-atmo-active="true"] .home-sky-page .home-sky-intro__hero [data-sun-hero-frame] {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  body[data-atmo-active="true"] .home-sky-page .home-sky-intro__hero [data-sun-hero-frame]::before,
+  body[data-atmo-active="true"] .home-sky-page .home-sky-intro__hero [data-sun-hero-frame]::after,
+  body[data-atmo-active="true"] .home-sky-page .home-sky-intro__hero [data-sun-hero-frame] .sun-disc,
+  body[data-atmo-active="true"] .home-sky-page .home-sky-intro__hero [data-sun-hero-frame] .sun-glint {
+    content: none !important;
+    display: none !important;
+    opacity: 0 !important;
+    background: none !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    box-shadow: none !important;
+  }
+
+  body[data-atmo-active="true"] .home-sky-page .home-sky-intro__hero [data-sun-hero-frame] > picture > img.sun-hero-layer,
+  body[data-atmo-active="true"] .home-sky-page .home-sky-intro__hero [data-sun-hero-frame] > img.sun-hero-layer[aria-hidden="true"] {
+    filter: none !important;
+  }
 }
 
 /* Atmospheric Backdrop night sync v3 — stop washing night mood back to daytime */
@@ -12572,17 +12596,18 @@ html body .legal-premium-shell {
     overflow: visible !important;
   }
 
-  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__brief {
+  html body[data-atmo-active="true"] .home-sky-page .home-sky-intro__brief {
     margin-top: clamp(0.85rem, 1.55vw, 1.35rem) !important;
   }
 
-  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero::before,
-  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero::after {
+  html body[data-atmo-active="true"] .home-sky-page .home-sky-intro__hero::before,
+  html body[data-atmo-active="true"] .home-sky-page .home-sky-intro__hero::after {
     display: none !important;
   }
 
   /* 03 / Keep the visual quality of the Home hero but remove the full-screen lock. */
-  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero .sun-hero-frame {
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero .sun-hero-frame,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero [data-sun-hero-frame] {
     width: 100% !important;
     /* Desktop crop: trims the top sky area while preserving the building mass. */
     aspect-ratio: 16 / 9.55 !important;
@@ -12591,14 +12616,31 @@ html body .legal-premium-shell {
     max-height: 40rem !important;
     overflow: hidden !important;
     border-radius: 1.16rem !important;
+    background: transparent !important;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.34) inset,
+      0 8px 18px rgba(23, 28, 38, 0.045) !important;
   }
 
-  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero .sun-hero-frame img {
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero .sun-hero-frame::before,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero .sun-hero-frame::after,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero [data-sun-hero-frame]::before,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero [data-sun-hero-frame]::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+    opacity: 0 !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+  }
+
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero .sun-hero-frame img,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero [data-sun-hero-frame] img {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
-    /* Slight bottom bias: cuts more sky from the top, not the building base. */
-    object-position: center 70% !important;
+    object-position: center center !important;
+    filter: none !important;
   }
 
   html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero [data-sun-slider-wrap] {
@@ -12719,12 +12761,11 @@ html body .legal-premium-shell {
 
   html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero .sun-hero-frame,
   html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v3__hero .sun-hero-frame,
-  html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v4__hero .sun-hero-frame {
-    border: 1px solid rgba(255, 255, 255, 0.42) !important;
-    background: transparent !important;
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.44) inset,
-      0 12px 30px rgba(23, 28, 38, 0.055) !important;
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v4__hero .sun-hero-frame,
+  html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero [data-sun-hero-frame] {
+    border: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
   }
 
   html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero .sun-hero-frame::before,
@@ -12763,9 +12804,7 @@ html body .legal-premium-shell {
     min-height: 0 !important;
     max-height: none !important;
     border-radius: 1.18rem !important;
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.56) inset,
-      0 10px 24px rgba(23, 28, 38, 0.055) !important;
+    box-shadow: none !important;
   }
 
   html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero [data-sun-slider-wrap] {
@@ -16926,4 +16965,5 @@ html body .legal-premium-shell {
     z-index: 0 !important;
   }
 }
+
 

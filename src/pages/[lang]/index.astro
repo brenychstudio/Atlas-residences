@@ -4,7 +4,6 @@ import { LANGS, type Lang, isLang, t } from "../../content/languages";
 import { getBuildings, getPageBySlug, getSettings, getUnits } from "../../vertical/cms/sheets";
 import { ATLAS_ASSETS } from "../../vertical/content/assets";
 import SunHero from "../../vertical/ui/SunHero.astro";
-import HeroStage from "../../vertical/ui/HeroStage.astro";
 
 export function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
@@ -95,19 +94,17 @@ const salesCardBody = t(
     <div class="home-sky-intro">
       {/* STABILITY LOCK (canonical): keep SunHero prop contract/order stable unless intentional redesign. */}
       <div class="home-sky-intro__hero home-hero-premium-balance-v3__hero home-hero-premium-balance-v4__hero">
-        <HeroStage>
-          <SunHero
-            morningImage={heroImage}
-            bluehourImage={heroVariants.bluehour}
-            sunsetImage={heroVariants.sunset}
-            mobileImage={heroMobileImage}
-            alt={t(lang, "Atlas Residences hero view", "Vista principal de Atlas Residences")}
-            sliderLabel={t(lang, "Sun position", "Posición del sol")}
-            morningLabel={t(lang, "Morning", "Mañana")}
-            bluehourLabel={t(lang, "Blue hour", "Hora azul")}
-            sunsetLabel={t(lang, "Sunset", "Atardecer")}
-          />
-        </HeroStage>
+        <SunHero
+          morningImage={heroImage}
+          bluehourImage={heroVariants.bluehour}
+          sunsetImage={heroVariants.sunset}
+          mobileImage={heroMobileImage}
+          alt={t(lang, "Atlas Residences hero view", "Vista principal de Atlas Residences")}
+          sliderLabel={t(lang, "Sun position", "Posición del sol")}
+          morningLabel={t(lang, "Morning", "Mañana")}
+          bluehourLabel={t(lang, "Blue hour", "Hora azul")}
+          sunsetLabel={t(lang, "Sunset", "Atardecer")}
+        />
       </div>
 
       <div class="home-sky-intro__brief">

@@ -67,7 +67,7 @@ const hasBlend = hasSunset || hasBluehour;
           decoding="async"
           width="2048"
           height="1365"
-          style="transform: translate3d(var(--px), var(--py), 0);"
+          style="transform: translate3d(var(--px), var(--py), 0) scale(var(--hero-zoom, 1));"
         />
       </picture>
 
@@ -81,7 +81,7 @@ const hasBlend = hasSunset || hasBluehour;
           decoding="async"
           width="2048"
           height="1365"
-          style="opacity: var(--bluehour-opacity); transform: translate3d(var(--px), var(--py), 0);"
+          style="opacity: var(--bluehour-opacity); transform: translate3d(var(--px), var(--py), 0) scale(var(--hero-zoom, 1));"
         />
       )}
 
@@ -95,7 +95,7 @@ const hasBlend = hasSunset || hasBluehour;
           decoding="async"
           width="2048"
           height="1365"
-          style="opacity: var(--sunset-opacity); transform: translate3d(var(--px), var(--py), 0);"
+          style="opacity: var(--sunset-opacity); transform: translate3d(var(--px), var(--py), 0) scale(var(--hero-zoom, 1));"
         />
       )}
 
@@ -136,7 +136,9 @@ const hasBlend = hasSunset || hasBluehour;
 
   .sun-hero-layer {
     will-change: transform, opacity;
-    transition: transform 180ms ease-out;
+    transition:
+      transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 500ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .sun-hero-frame::before {
@@ -209,6 +211,30 @@ const hasBlend = hasSunset || hasBluehour;
       display: none;
     }
   }
+
+  @media (min-width: 64rem) {
+    .sun-hero-frame {
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    .sun-hero-frame::before,
+    .sun-hero-frame::after,
+    .sun-disc,
+    .sun-glint {
+      content: none !important;
+      display: none !important;
+      opacity: 0 !important;
+      background: none !important;
+      box-shadow: none !important;
+    }
+
+    .sun-hero-frame img,
+    .sun-hero-layer {
+      filter: none !important;
+    }
+  }
 </style>
 
 <!-- STABILITY LOCK (canonical): Do NOT change script flow, data attributes, or CSS variable contract without intentional redesign. -->
@@ -219,6 +245,10 @@ const hasBlend = hasSunset || hasBluehour;
 
     const clamp01 = (v) => Math.max(0, Math.min(1, v));
     const lerp = (a, b, t) => a + (b - a) * t;
+    const smoothstep = (edge0, edge1, x) => {
+      const t = clamp01((x - edge0) / (edge1 - edge0));
+      return t * t * (3 - 2 * t);
+    };
 
     const MOOD_STORAGE_KEY = "atlas-residences:sun-mood";
     const MOOD_EVENT = "atlas-residences:sun-mood-change";
@@ -293,28 +323,25 @@ const hasBlend = hasSunset || hasBluehour;
         applyMoodGlobals(v);
 
         const sunX = 32 + v * 42;
-        const sunY = 34 - v * 8;
+        const sunY = 34 - v * 9;
         root.style.setProperty("--sun-x", `${sunX.toFixed(2)}%`);
         root.style.setProperty("--sun-y", `${sunY.toFixed(2)}%`);
-        root.style.setProperty("--glint-offset", `${((v - 0.5) * 18).toFixed(2)}%`);
+        root.style.setProperty("--glint-offset", `${((v - 0.5) * 24).toFixed(2)}%`);
+        root.style.setProperty("--hero-zoom", `${(1 + smoothstep(0.06, 0.9, v) * 0.028).toFixed(4)}`);
 
         if (hasBluehour) {
-          let b = 0;
-          let s = 0;
+          const bluehourRise = smoothstep(0.02, 0.4, v);
+          const bluehourFall = 1 - smoothstep(0.48, 0.96, v);
+          const sunsetRise = smoothstep(0.56, 1.0, v);
 
-          if (v <= 0.5) {
-            b = v / 0.5;
-            s = 0;
-          } else {
-            b = 1 - (v - 0.5) / 0.5;
-            s = (v - 0.5) / 0.5;
-          }
+          const b = clamp01(bluehourRise * bluehourFall);
+          const s = clamp01(sunsetRise);
 
           root.style.setProperty("--bluehour-opacity", String(b));
           root.style.setProperty("--sunset-opacity", String(s));
         } else {
           root.style.setProperty("--bluehour-opacity", "0");
-          root.style.setProperty("--sunset-opacity", String(v));
+          root.style.setProperty("--sunset-opacity", String(smoothstep(0.26, 0.96, v)));
         }
       };
 
@@ -329,12 +356,12 @@ const hasBlend = hasSunset || hasBluehour;
           return;
         }
 
-        const label = x < 0.33 ? morningText : x < 0.66 ? bluehourText : sunsetText;
+        const label = x < 0.24 ? morningText : x < 0.72 ? bluehourText : sunsetText;
         slider.setAttribute("aria-valuetext", `${ariaBase}: ${label}`);
       };
 
       const tick = () => {
-        current = lerp(current, target, 0.12);
+        current = lerp(current, target, 0.06);
 
         if (Math.abs(current - target) < 0.001) {
           current = target;
