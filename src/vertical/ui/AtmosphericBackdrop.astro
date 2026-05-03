@@ -492,13 +492,19 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
       const next = clamp(value, 0, 1);
       moodTarget = next;
 
-      // Important for touch/tablet:
-      // canvas animation is disabled there for stability, but CSS background still needs live mood vars.
-      applyBackdropMoodGlobals(next, next);
+      const isTouchOrNarrow =
+        window.matchMedia("(max-width: 63.99rem)").matches ||
+        window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
-      if (!shouldAnimateBackdrop) {
+      /*
+        Desktop must not get forced CSS mood updates on every slider input.
+        It causes backdrop repaint flicker while the normal atmospheric loop is also running.
+
+        Touch/tablet keep canvas disabled for stability, so they need immediate CSS variables.
+      */
+      if (isTouchOrNarrow || (typeof shouldAnimateBackdrop !== "undefined" && !shouldAnimateBackdrop)) {
         moodSoft = next;
-        render(performance.now());
+        applyBackdropMoodGlobals(next, next);
       }
     }
 
