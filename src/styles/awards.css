@@ -1494,16 +1494,37 @@ body[data-atmo-active="true"] main {
   background: transparent;
 }
 
-/* Device stability guard:
-   Touch/tablet/mobile browsers can flicker with fixed canvas + backdrop-filter.
-   Keep the premium atmospheric surface, but make it static and artifact-free. */
+/* Device stability guard v2:
+   Keep canvas hidden on touch/tablet to prevent flicker,
+   but restore live mood color changes through CSS variables. */
 @media (max-width: 63.99rem), (hover: none) and (pointer: coarse) {
   html,
   body,
-  body[data-atmo-active="true"] {
+  body[data-atmo-active="true"],
+  body[data-atmo-active="true"] .atmo-backdrop {
     background:
-      radial-gradient(110% 80% at 50% 0%, rgba(139, 158, 190, 0.42), transparent 48%),
-      linear-gradient(180deg, #d8e1ee 0%, #bec6d0 48%, #b8b3ae 100%) !important;
+      linear-gradient(
+        180deg,
+        rgba(42, 58, 96, calc(var(--atmo-bluehour, 0) * 0.52)),
+        rgba(92, 82, 92, calc(var(--atmo-bluehour, 0) * 0.18))
+      ),
+      radial-gradient(
+        110% 76% at 20% 10%,
+        rgba(255, 205, 158, calc(var(--atmo-sunset, 0) * 0.34)),
+        transparent 58%
+      ),
+      radial-gradient(
+        105% 82% at 82% 0%,
+        rgba(180, 204, 236, calc(0.22 + var(--atmo-bluehour, 0) * 0.12)),
+        transparent 52%
+      ),
+      linear-gradient(
+        180deg,
+        #d8e1ee 0%,
+        #c2cad5 42%,
+        #b9b5af 100%
+      ) !important;
+    transition: background 520ms cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
 
   body[data-atmo-active="true"] .atmo-backdrop__canvas {
@@ -1511,10 +1532,19 @@ body[data-atmo-active="true"] main {
   }
 
   body[data-atmo-active="true"] .atmo-backdrop__veil {
-    opacity: 0.18 !important;
+    opacity: calc(0.14 + var(--atmo-sunset, 0) * 0.06) !important;
     mix-blend-mode: normal !important;
     background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.16)) !important;
+      radial-gradient(
+        90% 62% at 22% 8%,
+        rgba(255, 244, 224, calc(0.08 + var(--atmo-sunset, 0) * 0.18)),
+        transparent 62%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, calc(0.04 - var(--atmo-bluehour, 0) * 0.02)),
+        rgba(255, 255, 255, calc(0.10 - var(--atmo-bluehour, 0) * 0.04))
+      ) !important;
   }
 
   body[data-atmo-active="true"] .atmo-backdrop::after {
@@ -12729,6 +12759,56 @@ html body .legal-premium-shell {
   html body .home-sky-intro__hero input[type="range"]:focus-visible {
     outline: none !important;
     box-shadow: none !important;
+  }
+
+  /* SunHero mobile/tablet radius lock:
+     Safari/Chrome mobile can lose border radius on the blended absolute image layers.
+     Clip the frame and every image layer, not only the first picture image. */
+  @media (max-width: 63.99rem) {
+    html body .home-sky-intro__hero [data-sun-hero-frame],
+    html body .home-sky-intro__hero .sun-hero-frame {
+      overflow: hidden !important;
+      border-radius: 1.18rem !important;
+      isolation: isolate !important;
+      contain: paint !important;
+      clip-path: inset(0 round 1.18rem) !important;
+      -webkit-mask-image: -webkit-radial-gradient(white, black) !important;
+      transform: translateZ(0) !important;
+    }
+
+    html body .home-sky-intro__hero [data-sun-hero-frame] picture,
+    html body .home-sky-intro__hero [data-sun-hero-frame] > picture,
+    html body .home-sky-intro__hero [data-sun-hero-frame] img.sun-hero-layer,
+    html body .home-sky-intro__hero [data-sun-hero-frame] > img.sun-hero-layer,
+    html body .home-sky-intro__hero .sun-hero-frame picture,
+    html body .home-sky-intro__hero .sun-hero-frame > picture,
+    html body .home-sky-intro__hero .sun-hero-frame img.sun-hero-layer,
+    html body .home-sky-intro__hero .sun-hero-frame > img.sun-hero-layer {
+      overflow: hidden !important;
+      border-radius: inherit !important;
+      clip-path: inset(0 round 1.18rem) !important;
+      transform-style: flat !important;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    html body .home-sky-intro__hero [data-sun-hero-frame],
+    html body .home-sky-intro__hero .sun-hero-frame {
+      border-radius: 1rem !important;
+      clip-path: inset(0 round 1rem) !important;
+    }
+
+    html body .home-sky-intro__hero [data-sun-hero-frame] picture,
+    html body .home-sky-intro__hero [data-sun-hero-frame] > picture,
+    html body .home-sky-intro__hero [data-sun-hero-frame] img.sun-hero-layer,
+    html body .home-sky-intro__hero [data-sun-hero-frame] > img.sun-hero-layer,
+    html body .home-sky-intro__hero .sun-hero-frame picture,
+    html body .home-sky-intro__hero .sun-hero-frame > picture,
+    html body .home-sky-intro__hero .sun-hero-frame img.sun-hero-layer,
+    html body .home-sky-intro__hero .sun-hero-frame > img.sun-hero-layer {
+      border-radius: inherit !important;
+      clip-path: inset(0 round 1rem) !important;
+    }
   }
 
   html body .home-brief {

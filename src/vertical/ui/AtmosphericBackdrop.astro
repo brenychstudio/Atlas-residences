@@ -158,13 +158,19 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
     function applyBackdropMoodGlobals(rawMood, visualMood = rawMood) {
       const raw = clamp(rawMood, 0, 1);
       const visual = clamp(visualMood, 0, 1);
+      const blue = blueHourAmount(visual);
+      const sunset = sunsetAmount(visual);
 
       document.documentElement.style.setProperty("--atlas-sun-mood", raw.toFixed(3));
       document.documentElement.style.setProperty("--atmo-mood", visual.toFixed(3));
+      document.documentElement.style.setProperty("--atmo-bluehour", blue.toFixed(3));
+      document.documentElement.style.setProperty("--atmo-sunset", sunset.toFixed(3));
 
       if (document.body) {
         document.body.style.setProperty("--atlas-sun-mood", raw.toFixed(3));
         document.body.style.setProperty("--atmo-mood", visual.toFixed(3));
+        document.body.style.setProperty("--atmo-bluehour", blue.toFixed(3));
+        document.body.style.setProperty("--atmo-sunset", sunset.toFixed(3));
         document.body.setAttribute("data-sun-mood", raw.toFixed(2));
         document.body.setAttribute("data-atmo-visual-mood", visual.toFixed(2));
       }
@@ -483,10 +489,15 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
       const value = Number(event?.detail?.value);
       if (!Number.isFinite(value)) return;
 
-      moodTarget = clamp(value, 0, 1);
+      const next = clamp(value, 0, 1);
+      moodTarget = next;
+
+      // Important for touch/tablet:
+      // canvas animation is disabled there for stability, but CSS background still needs live mood vars.
+      applyBackdropMoodGlobals(next, next);
 
       if (!shouldAnimateBackdrop) {
-        moodSoft = moodTarget;
+        moodSoft = next;
         render(performance.now());
       }
     }
