@@ -12366,6 +12366,22 @@ html body .legal-premium-shell {
     border-radius: 1.18rem !important;
   }
 
+  html body .home-sky-intro__hero [data-sun-hero-frame] picture,
+  html body .home-sky-intro__hero [data-sun-hero-frame] > picture,
+  html body .home-sky-intro__hero [data-sun-hero-frame] img.sun-hero-layer,
+  html body .home-sky-intro__hero [data-sun-hero-frame] > img.sun-hero-layer,
+  html body .home-sky-intro__hero .sun-hero-frame picture,
+  html body .home-sky-intro__hero .sun-hero-frame > picture,
+  html body .home-sky-intro__hero .sun-hero-frame img.sun-hero-layer,
+  html body .home-sky-intro__hero .sun-hero-frame > img.sun-hero-layer,
+  html body .home-sky-intro__hero .sun-hero-frame .sun-hero-media,
+  html body .home-sky-intro__hero .sun-hero-frame .sun-hero-image,
+  html body .home-sky-intro__hero .sun-hero-frame .sun-hero-shell,
+  html body .home-sky-intro__hero .sun-hero-frame .sun-hero-layer {
+    overflow: hidden !important;
+    border-radius: inherit !important;
+  }
+
   html body .home-sky-intro__hero picture,
   html body .home-sky-intro__hero img,
   html body .home-sky-intro__hero .sun-hero-layer {

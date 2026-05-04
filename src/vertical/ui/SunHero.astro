@@ -134,6 +134,17 @@ const hasBlend = hasSunset || hasBluehour;
     aspect-ratio: 2048 / 1365;
   }
 
+  .sun-hero-frame,
+  .sun-hero-frame picture,
+  .sun-hero-frame img,
+  .sun-hero-frame .sun-hero-media,
+  .sun-hero-frame .sun-hero-image,
+  .sun-hero-frame .sun-hero-shell,
+  .sun-hero-frame .sun-hero-layer {
+    border-radius: inherit;
+    overflow: hidden;
+  }
+
   .sun-hero-layer {
     will-change: transform, opacity;
     transition:
