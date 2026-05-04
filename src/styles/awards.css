@@ -12364,6 +12364,8 @@ html body .legal-premium-shell {
     max-height: none !important;
     overflow: hidden !important;
     border-radius: 1.18rem !important;
+    isolation: isolate !important;
+    transform: translateZ(0) !important;
   }
 
   html body .home-sky-intro__hero [data-sun-hero-frame] picture,
@@ -16979,6 +16981,68 @@ html body .legal-premium-shell {
   html body:has(.unit-detail-editorial-hero) .unit-detail-canon-plan {
     position: relative !important;
     z-index: 0 !important;
+  }
+}
+
+/* ==========================================================================
+   ATLAS-MOTION-01B — Premium Route Enter Transition
+   Soft opacity + micro lift. No blur, no scale, no overlay, no route delay.
+   Also stabilizes scrollbar gutter to avoid Units page micro-jump.
+   ========================================================================== */
+
+@supports (scrollbar-gutter: stable) {
+  html {
+    scrollbar-gutter: stable;
+  }
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+@keyframes atlasRouteEnter {
+  0% {
+    opacity: 0.001;
+    transform: translate3d(0, -0.22rem, 0);
+  }
+
+  42% {
+    opacity: 0.82;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html body .home-sky-page,
+  html body .units-premium-page,
+  html body .masterplan-premium-shell,
+  html body .location-premium-shell,
+  html body .downloads-premium-shell,
+  html body .contact-premium-shell,
+  html body .unit-detail-canon-v1,
+  html body .legal-premium-shell {
+    animation: atlasRouteEnter 460ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    transform-origin: 50% 0;
+    backface-visibility: hidden;
+    will-change: opacity, transform;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body .home-sky-page,
+  html body .units-premium-page,
+  html body .masterplan-premium-shell,
+  html body .location-premium-shell,
+  html body .downloads-premium-shell,
+  html body .contact-premium-shell,
+  html body .unit-detail-canon-v1,
+  html body .legal-premium-shell {
+    animation: none !important;
   }
 }
 
