@@ -20,11 +20,18 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
     if (!ctx) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isTouchViewport = window.matchMedia("(hover: none), (pointer: coarse)").matches;
-    const isTabletOrMobile = window.matchMedia("(max-width: 1023px)").matches;
-    const shouldAnimateBackdrop = !reducedMotion && !isTouchViewport && !isTabletOrMobile;
+    const isSmallViewport = window.matchMedia("(max-width: 767px)").matches;
+    const isCssOnlyViewport = window.matchMedia("(max-width: 1023px), (pointer: coarse)").matches;
+    const useCanvas = !reducedMotion && !isCssOnlyViewport;
 
     document.body.setAttribute("data-atmo-active", "true");
+    root.setAttribute("data-atmo-mode", useCanvas ? "canvas" : "css");
+
+    if (!useCanvas) {
+      canvas.hidden = true;
+      canvas.style.display = "none";
+      canvas.setAttribute("aria-hidden", "true");
+    }
 
     let raf = 0;
     let viewportWidth = 0;
@@ -40,7 +47,7 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
     let moodSoft = 0;
 
     let lastFrame = 0;
-    const frameInterval = reducedMotion ? 1000 : 50; // ~20fps, enough for slow premium sky
+    const frameInterval = useCanvas ? 50 : 1000; // CSS mode keeps variables alive without drawing canvas.
 
     const cloudBands = [
       { y: 0.18, speed: 0.15, scale: 0.24, alpha: 0.18, blur: 30, drift: 0.01, tint: "255,255,255" },
@@ -158,19 +165,13 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
     function applyBackdropMoodGlobals(rawMood, visualMood = rawMood) {
       const raw = clamp(rawMood, 0, 1);
       const visual = clamp(visualMood, 0, 1);
-      const blue = blueHourAmount(visual);
-      const sunset = sunsetAmount(visual);
 
       document.documentElement.style.setProperty("--atlas-sun-mood", raw.toFixed(3));
       document.documentElement.style.setProperty("--atmo-mood", visual.toFixed(3));
-      document.documentElement.style.setProperty("--atmo-bluehour", blue.toFixed(3));
-      document.documentElement.style.setProperty("--atmo-sunset", sunset.toFixed(3));
 
       if (document.body) {
         document.body.style.setProperty("--atlas-sun-mood", raw.toFixed(3));
         document.body.style.setProperty("--atmo-mood", visual.toFixed(3));
-        document.body.style.setProperty("--atmo-bluehour", blue.toFixed(3));
-        document.body.style.setProperty("--atmo-sunset", sunset.toFixed(3));
         document.body.setAttribute("data-sun-mood", raw.toFixed(2));
         document.body.setAttribute("data-atmo-visual-mood", visual.toFixed(2));
       }
@@ -224,6 +225,14 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
     function resize() {
       viewportWidth = window.innerWidth;
       viewportHeight = window.innerHeight;
+
+      if (!useCanvas) {
+        canvas.width = 1;
+        canvas.height = 1;
+        canvas.style.width = "1px";
+        canvas.style.height = "1px";
+        return;
+      }
 
       // Fix clipping: canvas is always viewport-sized in CSS.
       // Performance: internal resolution can be lower than device DPR on large screens.
@@ -439,20 +448,6 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
       const visualMood = clamp(moodSoft, 0, 1);
       const blue = blueHourAmount(visualMood);
       const sunset = sunsetAmount(visualMood);
-      const palette = getSkyPalette(visualMood);
-
-      ctx.clearRect(0, 0, viewportWidth, viewportHeight);
-
-      drawSkyBase(palette, visualMood);
-      drawLightBloom(palette, time, visualMood);
-
-      // Disabled after device QA:
-      // the large blurred cloud bands caused visible pale artifacts and flicker
-      // on iPad/Safari and some mobile browsers.
-      // drawCloudBands(time, visualMood);
-
-      drawDepthMist(palette, visualMood);
-      drawMoodColorVeil(visualMood);
 
       document.documentElement.style.setProperty("--atlas-sun-mood", moodSoft.toFixed(3));
       document.documentElement.style.setProperty("--atmo-mood", visualMood.toFixed(3));
@@ -464,8 +459,26 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
       document.body.style.setProperty("--atmo-bluehour", blue.toFixed(3));
       document.body.style.setProperty("--atmo-sunset", sunset.toFixed(3));
       document.body.setAttribute("data-sun-mood", moodSoft.toFixed(2));
+      document.body.setAttribute("data-atmo-visual-mood", visualMood.toFixed(2));
 
-      if (shouldAnimateBackdrop) {
+      if (!useCanvas) {
+        if (!reducedMotion) {
+          raf = window.requestAnimationFrame(render);
+        }
+        return;
+      }
+
+      const palette = getSkyPalette(visualMood);
+
+      ctx.clearRect(0, 0, viewportWidth, viewportHeight);
+
+      drawSkyBase(palette, visualMood);
+      drawLightBloom(palette, time, visualMood);
+      drawCloudBands(time, visualMood);
+      drawDepthMist(palette, visualMood);
+      drawMoodColorVeil(visualMood);
+
+      if (!reducedMotion) {
         raf = window.requestAnimationFrame(render);
       }
     }
@@ -479,7 +492,7 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
       if (document.hidden) {
         if (raf) window.cancelAnimationFrame(raf);
         raf = 0;
-      } else if (shouldAnimateBackdrop && !raf) {
+      } else if (!reducedMotion && !raf) {
         lastFrame = 0;
         raf = window.requestAnimationFrame(render);
       }
@@ -489,23 +502,7 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
       const value = Number(event?.detail?.value);
       if (!Number.isFinite(value)) return;
 
-      const next = clamp(value, 0, 1);
-      moodTarget = next;
-
-      const isTouchOrNarrow =
-        window.matchMedia("(max-width: 63.99rem)").matches ||
-        window.matchMedia("(hover: none) and (pointer: coarse)").matches;
-
-      /*
-        Desktop must not get forced CSS mood updates on every slider input.
-        It causes backdrop repaint flicker while the normal atmospheric loop is also running.
-
-        Touch/tablet keep canvas disabled for stability, so they need immediate CSS variables.
-      */
-      if (isTouchOrNarrow || (typeof shouldAnimateBackdrop !== "undefined" && !shouldAnimateBackdrop)) {
-        moodSoft = next;
-        applyBackdropMoodGlobals(next, next);
-      }
+      moodTarget = clamp(value, 0, 1);
     }
 
     function onMoodStorage(event) {
@@ -541,8 +538,11 @@ const backdropId = `atmo-${Math.random().toString(36).slice(2, 9)}`;
     resize();
     render(0);
 
-    if (shouldAnimateBackdrop) {
+    if (!reducedMotion) {
       raf = window.requestAnimationFrame(render);
+    }
+
+    if (useCanvas && !isSmallViewport) {
       window.addEventListener("pointermove", onPointerMove, { passive: true });
     }
 

@@ -275,11 +275,21 @@ const hasBlend = hasSunset || hasBluehour;
 
     const applyMoodGlobals = (value) => {
       const v = clamp01(value);
+      const blue = clamp01(smoothstep(0.18, 0.58, v) * (1 - smoothstep(0.76, 1, v)));
+      const sunset = clamp01(smoothstep(0.66, 1, v));
+
       document.documentElement.style.setProperty("--atlas-sun-mood", v.toFixed(3));
+      document.documentElement.style.setProperty("--atmo-mood", v.toFixed(3));
+      document.documentElement.style.setProperty("--atmo-bluehour", blue.toFixed(3));
+      document.documentElement.style.setProperty("--atmo-sunset", sunset.toFixed(3));
 
       if (document.body) {
         document.body.style.setProperty("--atlas-sun-mood", v.toFixed(3));
+        document.body.style.setProperty("--atmo-mood", v.toFixed(3));
+        document.body.style.setProperty("--atmo-bluehour", blue.toFixed(3));
+        document.body.style.setProperty("--atmo-sunset", sunset.toFixed(3));
         document.body.setAttribute("data-sun-mood", v.toFixed(2));
+        document.body.setAttribute("data-atmo-visual-mood", v.toFixed(2));
       }
     };
 

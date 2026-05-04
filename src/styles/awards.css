@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --bg: #f7f7f4;
   --fg: #171716;
   --muted: #6f6c67;
@@ -1494,88 +1494,10 @@ body[data-atmo-active="true"] main {
   background: transparent;
 }
 
-/* Device stability guard v3:
-   Touch/tablet keep the canvas hidden to prevent flicker.
-   Mood remains live through stronger CSS variable-based atmosphere.
-   No background transition here: gradient transitions can repaint/flicker on mobile browsers. */
-@media (max-width: 63.99rem), (hover: none) and (pointer: coarse) {
-  html,
-  body {
-    min-height: 100%;
-    background-color: #b8b4af !important;
-    overscroll-behavior-y: none;
-  }
-
-  body[data-atmo-active="true"] .atmo-backdrop {
-    position: fixed !important;
-    inset: -10px !important;
-    width: auto !important;
-    height: auto !important;
-    min-height: calc(100dvh + 20px) !important;
-    background:
-      radial-gradient(
-        120% 72% at 18% 0%,
-        rgba(255, 214, 168, calc(var(--atmo-sunset, 0) * 0.58)),
-        transparent 62%
-      ),
-      radial-gradient(
-        110% 82% at 86% 4%,
-        rgba(123, 157, 214, calc(var(--atmo-bluehour, 0) * 0.44)),
-        transparent 58%
-      ),
-      linear-gradient(
-        180deg,
-        rgba(34, 52, 88, calc(var(--atmo-bluehour, 0) * 0.42)),
-        rgba(112, 102, 112, calc(var(--atmo-sunset, 0) * 0.18)) 52%,
-        rgba(166, 154, 143, calc(var(--atmo-sunset, 0) * 0.24))
-      ),
-      linear-gradient(
-        180deg,
-        #dbe4ef 0%,
-        #c1cad6 42%,
-        #b9b4ae 100%
-      ) !important;
-    transition: none !important;
-    transform: translateZ(0) !important;
-    backface-visibility: hidden !important;
-  }
-
-  body[data-atmo-active="true"] .atmo-backdrop__canvas {
-    display: none !important;
-  }
-
-  body[data-atmo-active="true"] .atmo-backdrop__veil {
-    opacity: calc(0.12 + var(--atmo-sunset, 0) * 0.1 + var(--atmo-bluehour, 0) * 0.04) !important;
-    mix-blend-mode: normal !important;
-    background:
-      radial-gradient(
-        90% 58% at 20% 8%,
-        rgba(255, 246, 228, calc(var(--atmo-sunset, 0) * 0.22)),
-        transparent 64%
-      ),
-      linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.035),
-        rgba(255, 255, 255, 0.085)
-      ) !important;
-    transition: none !important;
-  }
-
-  body[data-atmo-active="true"] .atmo-backdrop::before,
-  body[data-atmo-active="true"] .atmo-backdrop::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  body[data-atmo-active="true"] .atmo-backdrop__grain {
-    opacity: 0.005 !important;
-  }
-}
-  
-  [data-dev-header],
-  [data-dev-main] {
-    position: relative;
-    z-index: 1;
+[data-dev-header],
+[data-dev-main] {
+  position: relative;
+  z-index: 1;
 }
 
 [data-dev-header] {
@@ -4201,307 +4123,6 @@ body[data-atmo-active="true"] .home-brief--sky .home-brief__stat--price dd {
   mix-blend-mode: multiply;
 }
 
-
-/* ATLAS-POLISH-01 START
-   Footer + Mobile Menu Micro Polish
-   Scope: visual polish only. Keeps current layout, routes, header architecture and mobile frame intact.
-*/
-
-/* 01 / Footer: quieter editorial finish, less badge-like, less bulky. */
-html body .atlas-footer {
-  margin-top: clamp(2.25rem, 4vw, 4.75rem) !important;
-  padding: clamp(1.15rem, 2vw, 1.65rem) 0 clamp(4.2rem, 6vw, 5.6rem) !important;
-  color: rgba(18, 18, 18, 0.68) !important;
-}
-
-html body .atlas-footer::before {
-  opacity: 0.78 !important;
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.48),
-      rgba(18, 18, 18, 0.10),
-      rgba(255, 255, 255, 0.36),
-      transparent
-    ) !important;
-}
-
-html body .atlas-footer__inner {
-  grid-template-columns: minmax(0, 1.35fr) minmax(9rem, 0.52fr) minmax(8rem, 0.46fr) !important;
-  gap: clamp(1.25rem, 3vw, 3.5rem) !important;
-  padding-top: clamp(1rem, 1.6vw, 1.45rem) !important;
-}
-
-html body .atlas-footer__kicker,
-html body .atlas-footer__label {
-  margin-bottom: 0.58rem !important;
-  font-size: 0.6rem !important;
-  letter-spacing: 0.2em !important;
-  color: rgba(18, 18, 18, 0.34) !important;
-}
-
-html body .atlas-footer__logo {
-  font-size: clamp(1.35rem, 2.1vw, 2rem) !important;
-  letter-spacing: -0.045em !important;
-  color: rgba(12, 12, 12, 0.88) !important;
-}
-
-html body .atlas-footer__copy {
-  max-width: 29rem !important;
-  margin-top: 0.7rem !important;
-  font-size: clamp(0.82rem, 0.92vw, 0.95rem) !important;
-  line-height: 1.5 !important;
-  color: rgba(18, 18, 18, 0.52) !important;
-}
-
-html body .atlas-footer__links {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  align-items: center !important;
-  gap: 0.38rem 0.64rem !important;
-}
-
-html body .atlas-footer__links a,
-html body .atlas-footer nav a {
-  min-height: auto !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  color: rgba(18, 18, 18, 0.56) !important;
-  font-size: 0.78rem !important;
-  font-weight: 560 !important;
-  line-height: 1.35 !important;
-  text-decoration: none !important;
-  transform: none !important;
-  translate: none !important;
-}
-
-html body .atlas-footer__links a:hover,
-html body .atlas-footer__links a:focus-visible,
-html body .atlas-footer nav a:hover,
-html body .atlas-footer nav a:focus-visible {
-  color: rgba(10, 10, 10, 0.88) !important;
-  background: transparent !important;
-  border: 0 !important;
-  translate: none !important;
-}
-
-html body .atlas-footer__bottom {
-  margin-top: clamp(1.25rem, 2.3vw, 2.25rem) !important;
-  padding-top: 0.9rem !important;
-  border-top-color: rgba(18, 18, 18, 0.075) !important;
-  font-size: 0.72rem !important;
-  color: rgba(18, 18, 18, 0.42) !important;
-}
-
-html body .atlas-footer__credit {
-  color: rgba(18, 18, 18, 0.48) !important;
-}
-
-/* 02 / Mobile drawer: compact, premium, readable, no redundant CTA bulk. */
-@media (max-width: 47.99rem) {
-  html body [data-mobile-menu-backdrop] {
-    background: rgba(16, 20, 30, 0.28) !important;
-    backdrop-filter: blur(9px) saturate(1.08) !important;
-    -webkit-backdrop-filter: blur(9px) saturate(1.08) !important;
-  }
-
-  html body [data-mobile-menu-panel] {
-    top: calc(var(--atlas-mobile-header-top) + 3.18rem) !important;
-    max-height: min(25rem, calc(100dvh - 4.35rem)) !important;
-    border-radius: 1.08rem !important;
-    border-color: rgba(255, 255, 255, 0.52) !important;
-    background:
-      linear-gradient(145deg, rgba(246, 248, 250, 0.58), rgba(206, 214, 226, 0.24) 58%, rgba(245, 241, 235, 0.34)),
-      rgba(232, 236, 242, 0.20) !important;
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.78) inset,
-      0 26px 72px rgba(10, 14, 22, 0.22) !important;
-    backdrop-filter: blur(30px) saturate(1.18) !important;
-    -webkit-backdrop-filter: blur(30px) saturate(1.18) !important;
-  }
-
-  html body [data-mobile-menu-inner] {
-    gap: 0.44rem !important;
-    padding: 0.66rem !important;
-  }
-
-  html body [data-mobile-menu-head] {
-    padding: 0.1rem 0.1rem 0.5rem !important;
-    border-bottom-color: rgba(18, 18, 18, 0.095) !important;
-  }
-
-  html body [data-mobile-menu-eyebrow] {
-    font-size: 0.58rem !important;
-    letter-spacing: 0.2em !important;
-    color: rgba(18, 18, 18, 0.44) !important;
-  }
-
-  html body [data-mobile-menu-close] {
-    min-height: 2rem !important;
-    padding: 0.42rem 0.68rem !important;
-    border-radius: 999px !important;
-    background: rgba(255, 255, 255, 0.20) !important;
-    color: rgba(18, 18, 18, 0.68) !important;
-    font-size: 0.76rem !important;
-    font-weight: 620 !important;
-  }
-
-  html body [data-mobile-menu-links] {
-    gap: 0.34rem !important;
-  }
-
-  html body [data-mobile-menu-link] {
-    min-height: 2.48rem !important;
-    border-radius: 0.78rem !important;
-    padding: 0.66rem 0.76rem !important;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.30), rgba(255, 255, 255, 0.10)),
-      rgba(255, 255, 255, 0.08) !important;
-    color: rgba(18, 18, 18, 0.76) !important;
-    font-size: 0.9rem !important;
-    font-weight: 620 !important;
-    letter-spacing: -0.01em !important;
-  }
-
-  html body [data-mobile-menu-link]::after {
-    content: "→" !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    opacity: 0.42 !important;
-    font-size: 0.85rem !important;
-  }
-
-  html body [data-mobile-menu-link][data-active="true"] {
-    background: rgba(18, 18, 18, 0.94) !important;
-    color: rgba(255, 255, 255, 0.96) !important;
-    border-color: rgba(255, 255, 255, 0.14) !important;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.12),
-      0 12px 26px rgba(12, 14, 18, 0.16) !important;
-  }
-
-  html body [data-mobile-menu-link][data-active="true"]::after {
-    opacity: 0.72 !important;
-  }
-
-  html body .atlas-footer {
-    width: var(--atlas-mobile-frame) !important;
-    max-width: var(--atlas-mobile-frame) !important;
-    margin-top: 1.15rem !important;
-    padding: 1.25rem 0 2.05rem !important;
-  }
-
-  html body .atlas-footer__inner {
-    grid-template-columns: 1fr !important;
-    gap: 0.82rem !important;
-    padding-top: 0.92rem !important;
-  }
-
-  html body .atlas-footer__kicker,
-  html body .atlas-footer__label {
-    margin-bottom: 0.42rem !important;
-    font-size: 0.58rem !important;
-    letter-spacing: 0.19em !important;
-  }
-
-  html body .atlas-footer__logo {
-    font-size: 1.34rem !important;
-    line-height: 1 !important;
-  }
-
-  html body .atlas-footer__copy {
-    max-width: 100% !important;
-    margin-top: 0.55rem !important;
-    font-size: 0.82rem !important;
-    line-height: 1.42 !important;
-  }
-
-  html body .atlas-footer__links {
-    gap: 0.32rem 0.58rem !important;
-  }
-
-  html body .atlas-footer__links a,
-  html body .atlas-footer nav a {
-    font-size: 0.78rem !important;
-  }
-
-  html body .atlas-footer__bottom {
-    margin-top: 0.95rem !important;
-    padding-top: 0.76rem !important;
-    gap: 0.42rem !important;
-    font-size: 0.7rem !important;
-  }
-}
-/* ATLAS-POLISH-01 END */
-
-/* ==========================================================================
-   ATLAS-MOTION-01B — Premium Route Enter Transition
-   Soft opacity + micro lift. No blur, no scale, no overlay, no route delay.
-   Also stabilizes scrollbar gutter to avoid Units page micro-jump.
-   ========================================================================== */
-
-@supports (scrollbar-gutter: stable) {
-  html {
-    scrollbar-gutter: stable;
-  }
-}
-
-html,
-body {
-  overflow-x: clip;
-}
-
-@keyframes atlasRouteEnter {
-  0% {
-    opacity: 0.001;
-    transform: translate3d(0, -0.22rem, 0);
-  }
-
-  42% {
-    opacity: 0.82;
-  }
-
-  100% {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  html body .home-sky-page,
-  html body .units-premium-page,
-  html body .masterplan-premium-shell,
-  html body .location-premium-shell,
-  html body .downloads-premium-shell,
-  html body .contact-premium-shell,
-  html body .unit-detail-canon-v1,
-  html body .legal-premium-shell {
-    animation: atlasRouteEnter 460ms cubic-bezier(0.16, 1, 0.3, 1) both;
-    transform-origin: 50% 0;
-    backface-visibility: hidden;
-    will-change: opacity, transform;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html body .home-sky-page,
-  html body .units-premium-page,
-  html body .masterplan-premium-shell,
-  html body .location-premium-shell,
-  html body .downloads-premium-shell,
-  html body .contact-premium-shell,
-  html body .unit-detail-canon-v1,
-  html body .legal-premium-shell {
-    animation: none !important;
-    transform: none !important;
-    opacity: 1 !important;
-  }
-}
 /* Home Hero final cleanup — cancel the global SunHero intensity pass for the homepage. */
 @media (min-width: 64rem) {
   body[data-atmo-active="true"] .home-sky-page .home-sky-intro__hero [data-sun-hero-frame] {
@@ -12743,15 +12364,6 @@ html body .legal-premium-shell {
     max-height: none !important;
     overflow: hidden !important;
     border-radius: 1.18rem !important;
-    isolation: isolate !important;
-    transform: translateZ(0) !important;
-  }
-
-  html body .home-sky-intro__hero [data-sun-hero-frame] picture,
-  html body .home-sky-intro__hero [data-sun-hero-frame] img,
-  html body .home-sky-intro__hero .sun-hero-frame picture,
-  html body .home-sky-intro__hero .sun-hero-frame img {
-    border-radius: inherit !important;
   }
 
   html body .home-sky-intro__hero picture,
@@ -12774,56 +12386,6 @@ html body .legal-premium-shell {
   html body .home-sky-intro__hero input[type="range"]:focus-visible {
     outline: none !important;
     box-shadow: none !important;
-  }
-
-  /* SunHero mobile/tablet radius lock:
-     Safari/Chrome mobile can lose border radius on the blended absolute image layers.
-     Clip the frame and every image layer, not only the first picture image. */
-  @media (max-width: 63.99rem) {
-    html body .home-sky-intro__hero [data-sun-hero-frame],
-    html body .home-sky-intro__hero .sun-hero-frame {
-      overflow: hidden !important;
-      border-radius: 1.18rem !important;
-      isolation: isolate !important;
-      contain: paint !important;
-      clip-path: inset(0 round 1.18rem) !important;
-      -webkit-mask-image: -webkit-radial-gradient(white, black) !important;
-      transform: translateZ(0) !important;
-    }
-
-    html body .home-sky-intro__hero [data-sun-hero-frame] picture,
-    html body .home-sky-intro__hero [data-sun-hero-frame] > picture,
-    html body .home-sky-intro__hero [data-sun-hero-frame] img.sun-hero-layer,
-    html body .home-sky-intro__hero [data-sun-hero-frame] > img.sun-hero-layer,
-    html body .home-sky-intro__hero .sun-hero-frame picture,
-    html body .home-sky-intro__hero .sun-hero-frame > picture,
-    html body .home-sky-intro__hero .sun-hero-frame img.sun-hero-layer,
-    html body .home-sky-intro__hero .sun-hero-frame > img.sun-hero-layer {
-      overflow: hidden !important;
-      border-radius: inherit !important;
-      clip-path: inset(0 round 1.18rem) !important;
-      transform-style: flat !important;
-    }
-  }
-
-  @media (max-width: 47.99rem) {
-    html body .home-sky-intro__hero [data-sun-hero-frame],
-    html body .home-sky-intro__hero .sun-hero-frame {
-      border-radius: 1rem !important;
-      clip-path: inset(0 round 1rem) !important;
-    }
-
-    html body .home-sky-intro__hero [data-sun-hero-frame] picture,
-    html body .home-sky-intro__hero [data-sun-hero-frame] > picture,
-    html body .home-sky-intro__hero [data-sun-hero-frame] img.sun-hero-layer,
-    html body .home-sky-intro__hero [data-sun-hero-frame] > img.sun-hero-layer,
-    html body .home-sky-intro__hero .sun-hero-frame picture,
-    html body .home-sky-intro__hero .sun-hero-frame > picture,
-    html body .home-sky-intro__hero .sun-hero-frame img.sun-hero-layer,
-    html body .home-sky-intro__hero .sun-hero-frame > img.sun-hero-layer {
-      border-radius: inherit !important;
-      clip-path: inset(0 round 1rem) !important;
-    }
   }
 
   html body .home-brief {
@@ -14377,34 +13939,11 @@ html body .legal-premium-shell {
 
 @media (max-width: 23.5rem) {
   html body [data-dev-header] > [data-header-shell] {
-    grid-template-columns: minmax(0, 1fr) auto auto !important;
-    gap: 0.24rem !important;
-  }
-
-  html body [data-dev-header] [data-header-brand] {
-    min-width: 0 !important;
-    padding-inline: 0.12rem !important;
-    font-size: 0.52rem !important;
-    letter-spacing: 0.15em !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
   }
 
   html body [data-dev-header] [data-header-mobile-lang] {
-    display: inline-flex !important;
-    min-height: 2.12rem !important;
-    padding: 0.14rem !important;
-  }
-
-  html body [data-dev-header] [data-header-mobile-lang] [data-lang-link] {
-    min-width: 1.68rem !important;
-    min-height: 1.66rem !important;
-    padding-inline: 0.36rem !important;
-    font-size: 0.62rem !important;
-  }
-
-  html body [data-dev-header] [data-mobile-menu-toggle] {
-    min-height: 2.18rem !important;
-    padding-inline: 0.68rem !important;
-    font-size: 0.78rem !important;
+    display: none !important;
   }
 }
 
@@ -15027,33 +14566,13 @@ html body .legal-premium-shell {
     --atlas-mobile-frame: min(calc(100dvw - 0.75rem), 22.5rem);
   }
 
-  html body [data-dev-header] > [data-header-shell] {
-    grid-template-columns: minmax(0, 1fr) auto auto !important;
-    gap: 0.24rem !important;
-  }
-
   html body [data-dev-header] [data-header-brand] {
-    font-size: 0.52rem !important;
-    letter-spacing: 0.15em !important;
+    font-size: 0.56rem !important;
+    letter-spacing: 0.17em !important;
   }
 
   html body [data-dev-header] [data-header-mobile-lang] {
-    display: inline-flex !important;
-    min-height: 2.12rem !important;
-    padding: 0.14rem !important;
-  }
-
-  html body [data-dev-header] [data-header-mobile-lang] [data-lang-link] {
-    min-width: 1.68rem !important;
-    min-height: 1.66rem !important;
-    padding-inline: 0.36rem !important;
-    font-size: 0.62rem !important;
-  }
-
-  html body [data-dev-header] [data-mobile-menu-toggle] {
-    min-height: 2.18rem !important;
-    padding-inline: 0.68rem !important;
-    font-size: 0.78rem !important;
+    display: none !important;
   }
 }
 
@@ -17447,4 +16966,181 @@ html body .legal-premium-shell {
   }
 }
 
+/* ==========================================================================
+   ATLAS-QA-FIX-04 — Mobile Viewport Gap + Premium Tablet Mood
+   Scope: background stability only.
+   - mobile/tablet use CSS atmosphere, not canvas, to avoid WebKit flicker;
+   - html/body receive a real fallback color so dynamic browser bars never flash white;
+   - tablet receives a stronger premium mood response from the SunHero slider.
+   ========================================================================== */
 
+html {
+  background-color: #cbd3de;
+}
+
+body {
+  background-color: #cbd3de;
+}
+
+html body[data-atmo-active="true"] {
+  background-color: #cbd3de !important;
+  background-image:
+    radial-gradient(110% 82% at 18% 8%, rgba(255, 235, 208, calc(0.10 + var(--atmo-sunset, 0) * 0.10)), transparent 64%),
+    radial-gradient(96% 76% at 78% 6%, rgba(97, 125, 176, calc(0.10 + var(--atmo-bluehour, 0) * 0.16)), transparent 66%),
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, #d8e2ef, #556a93 calc(var(--atmo-bluehour, 0) * 22%)) 0%,
+      color-mix(in oklab, #d8d4ce, #d9a982 calc(var(--atmo-sunset, 0) * 16%)) 58%,
+      color-mix(in oklab, #cfcac2, #c99b77 calc(var(--atmo-sunset, 0) * 10%)) 100%
+    ) !important;
+}
+
+html body[data-atmo-active="true"] .atmo-backdrop {
+  position: fixed !important;
+  inset: -2px !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(85vw 42vw at 20% 8%, rgba(255, 234, 204, calc(0.12 + var(--atmo-sunset, 0) * 0.16)), transparent 66%),
+    radial-gradient(92vw 50vw at 78% 10%, rgba(92, 122, 178, calc(0.10 + var(--atmo-bluehour, 0) * 0.24)), transparent 68%),
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, #d7e1ef, #40547e calc(var(--atmo-bluehour, 0) * 30%)) 0%,
+      color-mix(in oklab, #d5d1cc, #3e465e calc(var(--atmo-bluehour, 0) * 16%)) 58%,
+      color-mix(in oklab, #cac5be, #e0aa7a calc(var(--atmo-sunset, 0) * 20%)) 100%
+    ) !important;
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  contain: layout paint style !important;
+}
+
+html body[data-atmo-active="true"] .atmo-backdrop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(72vw 30vw at 34% 14%, rgba(255, 255, 255, calc(0.16 - var(--atmo-bluehour, 0) * 0.05)), transparent 70%),
+    radial-gradient(78vw 36vw at 62% 36%, rgba(255, 255, 255, calc(0.10 + var(--atmo-sunset, 0) * 0.05)), transparent 72%);
+  opacity: calc(0.62 + var(--atmo-sunset, 0) * 0.08 - var(--atmo-bluehour, 0) * 0.10);
+}
+
+html body[data-atmo-active="true"] .atmo-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(28, 42, 72, calc(var(--atmo-bluehour, 0) * 0.18)), transparent 46%),
+    radial-gradient(86vw 42vw at 22% 8%, rgba(255, 196, 145, calc(var(--atmo-sunset, 0) * 0.20)), transparent 68%);
+  mix-blend-mode: soft-light;
+  opacity: calc(0.42 + var(--atmo-bluehour, 0) * 0.18 + var(--atmo-sunset, 0) * 0.10);
+}
+
+@media (max-width: 63.99rem), (pointer: coarse) {
+  html body[data-atmo-active="true"] .atmo-backdrop__canvas {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+
+  html body[data-atmo-active="true"] .atmo-backdrop__veil {
+    z-index: 3 !important;
+    mix-blend-mode: normal !important;
+    opacity: calc(0.18 + var(--atmo-sunset, 0) * 0.08) !important;
+    background:
+      radial-gradient(90vw 34vw at 16% 8%, rgba(255, 238, 216, calc(0.12 + var(--atmo-sunset, 0) * 0.12)), transparent 72%),
+      linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.10) 58%, rgba(255,255,255,0.16)) !important;
+  }
+
+  html body[data-atmo-active="true"] .atmo-backdrop__grain {
+    z-index: 4 !important;
+    opacity: 0.012 !important;
+  }
+}
+
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  html,
+  html body,
+  html body[data-atmo-active="true"] {
+    background-color: #c8d2df !important;
+  }
+
+  html body[data-atmo-active="true"] .atmo-backdrop {
+    inset: -72px -26px -128px !important;
+    background:
+      radial-gradient(84vw 34vw at 24% 4%, rgba(255, 230, 202, calc(0.13 + var(--atmo-sunset, 0) * 0.18)), transparent 70%),
+      radial-gradient(92vw 42vw at 80% 2%, rgba(70, 96, 150, calc(0.12 + var(--atmo-bluehour, 0) * 0.34)), transparent 68%),
+      radial-gradient(78vw 34vw at 56% 44%, rgba(255,255,255, calc(0.08 + var(--atmo-sunset, 0) * 0.06)), transparent 72%),
+      linear-gradient(
+        180deg,
+        color-mix(in oklab, #c9d7e8, #314771 calc(var(--atmo-bluehour, 0) * 42%)) 0%,
+        color-mix(in oklab, #cfd1d1, #58627b calc(var(--atmo-bluehour, 0) * 24%)) 54%,
+        color-mix(in oklab, #c9c2ba, #e2a878 calc(var(--atmo-sunset, 0) * 28%)) 100%
+      ) !important;
+  }
+
+  html body[data-atmo-active="true"] .atmo-backdrop::before {
+    background:
+      radial-gradient(70vw 22vw at 28% 12%, rgba(255,255,255, calc(0.16 - var(--atmo-bluehour, 0) * 0.04)), transparent 70%),
+      radial-gradient(82vw 30vw at 62% 34%, rgba(255,255,255, calc(0.10 + var(--atmo-sunset, 0) * 0.08)), transparent 74%);
+    opacity: calc(0.72 - var(--atmo-bluehour, 0) * 0.10 + var(--atmo-sunset, 0) * 0.10) !important;
+  }
+
+  html body[data-atmo-active="true"] .atmo-backdrop::after {
+    background:
+      linear-gradient(180deg, rgba(22, 36, 70, calc(var(--atmo-bluehour, 0) * 0.28)), transparent 48%),
+      radial-gradient(78vw 34vw at 20% 5%, rgba(255, 188, 136, calc(var(--atmo-sunset, 0) * 0.26)), transparent 72%);
+    opacity: calc(0.46 + var(--atmo-bluehour, 0) * 0.24 + var(--atmo-sunset, 0) * 0.16) !important;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  html,
+  html body,
+  html body[data-atmo-active="true"] {
+    min-height: 100% !important;
+    background-color: #c9d1dc !important;
+  }
+
+  html body[data-atmo-active="true"] {
+    min-height: 100svh !important;
+    background-image:
+      radial-gradient(135% 82% at 18% 0%, rgba(255, 235, 206, calc(0.10 + var(--atmo-sunset, 0) * 0.12)), transparent 66%),
+      radial-gradient(130% 80% at 80% 0%, rgba(63, 89, 140, calc(0.10 + var(--atmo-bluehour, 0) * 0.22)), transparent 68%),
+      linear-gradient(
+        180deg,
+        color-mix(in oklab, #cbd7e6, #40547b calc(var(--atmo-bluehour, 0) * 26%)) 0%,
+        color-mix(in oklab, #d0d0cf, #4f586e calc(var(--atmo-bluehour, 0) * 16%)) 54%,
+        color-mix(in oklab, #c9c2bb, #dca67b calc(var(--atmo-sunset, 0) * 18%)) 100%
+      ) !important;
+  }
+
+  html body[data-atmo-active="true"] .atmo-backdrop {
+    inset: -96px -28px -190px !important;
+    min-height: calc(100svh + 286px) !important;
+    background:
+      radial-gradient(138% 56% at 20% 0%, rgba(255, 230, 202, calc(0.12 + var(--atmo-sunset, 0) * 0.12)), transparent 68%),
+      radial-gradient(126% 58% at 86% 2%, rgba(58, 84, 137, calc(0.13 + var(--atmo-bluehour, 0) * 0.24)), transparent 70%),
+      linear-gradient(
+        180deg,
+        color-mix(in oklab, #cbd7e6, #384c72 calc(var(--atmo-bluehour, 0) * 30%)) 0%,
+        color-mix(in oklab, #d0d0cf, #4f586e calc(var(--atmo-bluehour, 0) * 16%)) 56%,
+        color-mix(in oklab, #c7c1bb, #dca67b calc(var(--atmo-sunset, 0) * 18%)) 100%
+      ) !important;
+  }
+
+  @supports (height: 100dvh) {
+    html body[data-atmo-active="true"] {
+      min-height: 100dvh !important;
+    }
+
+    html body[data-atmo-active="true"] .atmo-backdrop {
+      min-height: calc(100dvh + 286px) !important;
+    }
+  }
+}
+/* ATLAS-QA-FIX-04 END */
