@@ -131,9 +131,14 @@ const hasBlend = hasSunset || hasBluehour;
 
   <style>
   .sun-hero-frame {
+    --sun-hero-radius: 1rem;
     aspect-ratio: 2048 / 1365;
     isolation: isolate;
+    overflow: hidden;
+    border-radius: var(--sun-hero-radius);
     transform: translateZ(0);
+    clip-path: inset(0 round var(--sun-hero-radius));
+    -webkit-clip-path: inset(0 round var(--sun-hero-radius));
   }
 
   .sun-hero-frame,
@@ -145,6 +150,10 @@ const hasBlend = hasSunset || hasBluehour;
   .sun-hero-frame .sun-hero-layer {
     border-radius: inherit;
     overflow: hidden;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    clip-path: inset(0 round var(--sun-hero-radius));
+    -webkit-clip-path: inset(0 round var(--sun-hero-radius));
   }
 
   .sun-hero-layer {

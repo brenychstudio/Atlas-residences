@@ -46,33 +46,45 @@ function isActive(href: string) {
       Atlas Residences
     </a>
 
-    <nav
-      data-header-mobile-lang
-      class="hidden items-center rounded-[var(--radius-pill)] p-1"
-      aria-label="Switch language"
-      data-lang-switcher
-    >
-      <a
-        href={pathForLang("en")}
-        data-lang="en"
-        data-lang-link
-        data-active={pathLang === "en" ? "true" : "false"}
-        class="inline-flex items-center rounded-[var(--radius-pill)] text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/20"
-        aria-current={pathLang === "en" ? "page" : undefined}
+    <div data-header-mobile-actions class="flex items-center gap-2 md:hidden">
+      <nav
+        data-header-mobile-lang
+        class="items-center rounded-[var(--radius-pill)] p-1"
+        aria-label="Switch language"
+        data-lang-switcher
       >
-        EN
-      </a>
-      <a
-        href={pathForLang("es")}
-        data-lang="es"
-        data-lang-link
-        data-active={pathLang === "es" ? "true" : "false"}
-        class="inline-flex items-center rounded-[var(--radius-pill)] text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/20"
-        aria-current={pathLang === "es" ? "page" : undefined}
+        <a
+          href={pathForLang("en")}
+          data-lang="en"
+          data-lang-link
+          data-active={pathLang === "en" ? "true" : "false"}
+          class="inline-flex items-center rounded-[var(--radius-pill)] text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/20"
+          aria-current={pathLang === "en" ? "page" : undefined}
+        >
+          EN
+        </a>
+        <a
+          href={pathForLang("es")}
+          data-lang="es"
+          data-lang-link
+          data-active={pathLang === "es" ? "true" : "false"}
+          class="inline-flex items-center rounded-[var(--radius-pill)] text-xs font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/20"
+          aria-current={pathLang === "es" ? "page" : undefined}
+        >
+          ES
+        </a>
+      </nav>
+
+      <button
+        type="button"
+        data-mobile-menu-toggle
+        aria-controls="atlas-mobile-menu"
+        aria-expanded="false"
+        class="inline-flex min-h-[40px] items-center rounded-[var(--radius-pill)] px-4 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/20"
       >
-        ES
-      </a>
-    </nav>
+        Menu
+      </button>
+    </div>
 
     <nav data-header-nav="desktop" class="hidden items-center gap-1 md:flex">
       {nav.map((item) => {
@@ -132,16 +144,6 @@ function isActive(href: string) {
         {t(L, "Book a viewing", "Reservar visita")}
       </a>
     </div>
-
-    <button
-      type="button"
-      data-mobile-menu-toggle
-      aria-controls="atlas-mobile-menu"
-      aria-expanded="false"
-      class="hidden min-h-[40px] items-center rounded-[var(--radius-pill)] px-4 text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--fg)]/20"
-    >
-      Menu
-    </button>
   </div>
 
   <div data-mobile-menu-backdrop hidden></div>

@@ -4018,6 +4018,10 @@ body[data-atmo-active="true"] .home-brief--sky .home-brief__stat--price dd {
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  border-radius: inherit;
+  transform: translateZ(0);
+  clip-path: inset(0 round var(--sun-hero-radius, 1rem));
+  -webkit-clip-path: inset(0 round var(--sun-hero-radius, 1rem));
 }
 
 /* Base morning image stays as the bottom image layer */
@@ -4027,6 +4031,10 @@ body[data-atmo-active="true"] .home-brief--sky .home-brief__stat--price dd {
   display: block;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  transform: translateZ(0);
+  clip-path: inset(0 round var(--sun-hero-radius, 1rem));
+  -webkit-clip-path: inset(0 round var(--sun-hero-radius, 1rem));
 }
 
 [data-sun-hero-frame] > picture > img.sun-hero-layer {
@@ -4035,6 +4043,11 @@ body[data-atmo-active="true"] .home-brief--sky .home-brief__stat--price dd {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  overflow: hidden;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  clip-path: inset(0 round var(--sun-hero-radius, 1rem));
+  -webkit-clip-path: inset(0 round var(--sun-hero-radius, 1rem));
 }
 
 /* Blue hour / sunset overlay images must stay absolute above the base image */
@@ -4046,6 +4059,11 @@ body[data-atmo-active="true"] .home-brief--sky .home-brief__stat--price dd {
   height: 100%;
   object-fit: cover;
   will-change: opacity, transform;
+  overflow: hidden;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  clip-path: inset(0 round var(--sun-hero-radius, 1rem));
+  -webkit-clip-path: inset(0 round var(--sun-hero-radius, 1rem));
 }
 
 /* Keep cinematic overlays above image states, without blocking the image blending */
@@ -12359,6 +12377,7 @@ html body .legal-premium-shell {
 
   html body .home-sky-intro__hero [data-sun-hero-frame],
   html body .home-sky-intro__hero .sun-hero-frame {
+    --sun-hero-radius: 1.18rem !important;
     aspect-ratio: 2048 / 1365 !important;
     height: auto !important;
     max-height: none !important;
@@ -12628,6 +12647,7 @@ html body .legal-premium-shell {
   html body[data-atmo-active="true"]:has(.home-sky-page) .home-sky-intro__hero [data-sun-hero-frame] {
     width: 100% !important;
     /* Desktop crop: trims the top sky area while preserving the building mass. */
+    --sun-hero-radius: 1.16rem !important;
     aspect-ratio: 16 / 9.55 !important;
     height: clamp(29rem, 58svh, 40rem) !important;
     min-height: 0 !important;
@@ -12817,6 +12837,7 @@ html body .legal-premium-shell {
   html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v3__hero .sun-hero-frame,
   html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v4__hero [data-sun-hero-frame],
   html body[data-atmo-active="true"]:has(.home-sky-page) .home-hero-premium-balance-v4__hero .sun-hero-frame {
+    --sun-hero-radius: 1.18rem !important;
     aspect-ratio: 2048 / 1365 !important;
     height: auto !important;
     min-height: 0 !important;
@@ -17150,16 +17171,16 @@ html body[data-atmo-active="true"] .atmo-backdrop::after {
   }
 
   html body[data-atmo-active="true"] .atmo-backdrop {
-    inset: -72px -26px -128px !important;
+    inset: -84px -30px -140px !important;
     background:
-      radial-gradient(84vw 34vw at 24% 4%, rgba(255, 230, 202, calc(0.13 + var(--atmo-sunset, 0) * 0.18)), transparent 70%),
-      radial-gradient(92vw 42vw at 80% 2%, rgba(70, 96, 150, calc(0.12 + var(--atmo-bluehour, 0) * 0.34)), transparent 68%),
-      radial-gradient(78vw 34vw at 56% 44%, rgba(255,255,255, calc(0.08 + var(--atmo-sunset, 0) * 0.06)), transparent 72%),
+      radial-gradient(86vw 36vw at 24% 4%, rgba(255, 230, 202, calc(0.16 + var(--atmo-sunset, 0) * 0.20)), transparent 68%),
+      radial-gradient(96vw 44vw at 80% 2%, rgba(70, 96, 150, calc(0.15 + var(--atmo-bluehour, 0) * 0.38)), transparent 68%),
+      radial-gradient(78vw 34vw at 56% 44%, rgba(255,255,255, calc(0.10 + var(--atmo-sunset, 0) * 0.08)), transparent 72%),
       linear-gradient(
         180deg,
-        color-mix(in oklab, #c9d7e8, #314771 calc(var(--atmo-bluehour, 0) * 42%)) 0%,
-        color-mix(in oklab, #cfd1d1, #58627b calc(var(--atmo-bluehour, 0) * 24%)) 54%,
-        color-mix(in oklab, #c9c2ba, #e2a878 calc(var(--atmo-sunset, 0) * 28%)) 100%
+        color-mix(in oklab, #c8d7e9, #2f4771 calc(var(--atmo-bluehour, 0) * 44%)) 0%,
+        color-mix(in oklab, #ced1d3, #566278 calc(var(--atmo-bluehour, 0) * 26%)) 54%,
+        color-mix(in oklab, #c7c1ba, #e1a677 calc(var(--atmo-sunset, 0) * 30%)) 100%
       ) !important;
   }
 
@@ -17167,13 +17188,13 @@ html body[data-atmo-active="true"] .atmo-backdrop::after {
     background:
       radial-gradient(70vw 22vw at 28% 12%, rgba(255,255,255, calc(0.16 - var(--atmo-bluehour, 0) * 0.04)), transparent 70%),
       radial-gradient(82vw 30vw at 62% 34%, rgba(255,255,255, calc(0.10 + var(--atmo-sunset, 0) * 0.08)), transparent 74%);
-    opacity: calc(0.72 - var(--atmo-bluehour, 0) * 0.10 + var(--atmo-sunset, 0) * 0.10) !important;
+    opacity: calc(0.78 - var(--atmo-bluehour, 0) * 0.12 + var(--atmo-sunset, 0) * 0.14) !important;
   }
 
   html body[data-atmo-active="true"] .atmo-backdrop::after {
     background:
-      linear-gradient(180deg, rgba(22, 36, 70, calc(var(--atmo-bluehour, 0) * 0.28)), transparent 48%),
-      radial-gradient(78vw 34vw at 20% 5%, rgba(255, 188, 136, calc(var(--atmo-sunset, 0) * 0.26)), transparent 72%);
+      linear-gradient(180deg, rgba(22, 36, 70, calc(var(--atmo-bluehour, 0) * 0.32)), transparent 48%),
+      radial-gradient(78vw 34vw at 20% 5%, rgba(255, 188, 136, calc(var(--atmo-sunset, 0) * 0.30)), transparent 72%);
     opacity: calc(0.46 + var(--atmo-bluehour, 0) * 0.24 + var(--atmo-sunset, 0) * 0.16) !important;
   }
 }

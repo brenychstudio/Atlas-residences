@@ -156,45 +156,44 @@ const imagePlaceholder =
       <div class="units-filter-group" data-filter="building">
         <p class="text-sm font-medium tracking-wide opacity-80">{t(lang, "Tower", "Torre")}</p>
         <div class="units-filter-options">
-          <a data-value="all" class="ui-chip" href="#">{t(lang, "All", "Todos")}</a>
-          <a data-value="a" class="ui-chip" href="#">A</a>
-          <a data-value="b" class="ui-chip" href="#">B</a>
+          <button type="button" data-value="all" class="ui-chip">{t(lang, "All", "Todos")}</button>
+          <button type="button" data-value="a" class="ui-chip">A</button>
+          <button type="button" data-value="b" class="ui-chip">B</button>
         </div>
       </div>
       <div class="units-filter-group" data-filter="beds">
         <p class="text-sm font-medium tracking-wide opacity-80">{t(lang, "Beds", "Dormitorios")}</p>
         <div class="units-filter-options">
-          <a data-value="all" class="ui-chip" href="#">{t(lang, "All", "Todos")}</a>
-          <a data-value="1" class="ui-chip" href="#">1</a>
-          <a data-value="2" class="ui-chip" href="#">2</a>
-          <a data-value="3" class="ui-chip" href="#">3</a>
-          <a data-value="4" class="ui-chip" href="#">4</a>
+          <button type="button" data-value="all" class="ui-chip">{t(lang, "All", "Todos")}</button>
+          <button type="button" data-value="1" class="ui-chip">1</button>
+          <button type="button" data-value="2" class="ui-chip">2</button>
+          <button type="button" data-value="3" class="ui-chip">3</button>
+          <button type="button" data-value="4" class="ui-chip">4</button>
         </div>
       </div>
 
       <div class="units-filter-group units-filter-group--status" data-filter="status">
         <p class="text-sm font-medium tracking-wide opacity-80">{t(lang, "Status", "Estado")}</p>
         <div class="units-filter-options">
-          <a data-value="all" class="ui-chip" href="#">{t(lang, "All", "Todos")}</a>
-          <a data-value="available" class="ui-chip" href="#">{t(lang, "Available", "Disponible")}</a>
-          <a data-value="reserved" class="ui-chip" href="#">{t(lang, "Reserved", "Reservada")}</a>
-          <a data-value="sold" class="ui-chip" href="#">{t(lang, "Sold", "Vendida")}</a>
-          <a data-value="coming_soon" class="ui-chip" href="#">{t(lang, "Coming soon", "Próximamente")}</a>
+          <button type="button" data-value="all" class="ui-chip">{t(lang, "All", "Todos")}</button>
+          <button type="button" data-value="available" class="ui-chip">{t(lang, "Available", "Disponible")}</button>
+          <button type="button" data-value="reserved" class="ui-chip">{t(lang, "Reserved", "Reservada")}</button>
+          <button type="button" data-value="sold" class="ui-chip">{t(lang, "Sold", "Vendida")}</button>
+          <button type="button" data-value="coming_soon" class="ui-chip">{t(lang, "Coming soon", "Próximamente")}</button>
         </div>
       </div>
 
       <div class="units-filter-group units-filter-group--orientation" data-filter="orientation">
         <p class="text-sm font-medium tracking-wide opacity-80">{t(lang, "Orientation", "Orientación")}</p>
         <div class="units-filter-options">
-          <a data-value="all" class="ui-chip" href="#">{t(lang, "All", "Todos")}</a>
-          <a data-value="sea" class="ui-chip" href="#">{t(lang, "Sea", "Mar")}</a>
-          <a data-value="city" class="ui-chip" href="#">{t(lang, "City", "Ciudad")}</a>
-          <a data-value="courtyard" class="ui-chip" href="#">{t(lang, "Courtyard", "Patio")}</a>
-          <a data-value="mountain" class="ui-chip" href="#">{t(lang, "Mountain", "Montaña")}</a>
+          <button type="button" data-value="all" class="ui-chip">{t(lang, "All", "Todos")}</button>
+          <button type="button" data-value="sea" class="ui-chip">{t(lang, "Sea", "Mar")}</button>
+          <button type="button" data-value="city" class="ui-chip">{t(lang, "City", "Ciudad")}</button>
+          <button type="button" data-value="courtyard" class="ui-chip">{t(lang, "Courtyard", "Patio")}</button>
+          <button type="button" data-value="mountain" class="ui-chip">{t(lang, "Mountain", "Montaña")}</button>
         </div>
       </div>
     </div>
-
     <div id="units-grid" class="units-premium-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-initial-building={initialBuilding}>
       {units.map((unit, index) => {
         const unitType = unit.type_id ? unitTypeById.get(unit.type_id) : undefined;
@@ -326,6 +325,10 @@ const imagePlaceholder =
       return `${window.location.pathname}${qs ? `?${qs}` : ""}`;
     };
 
+    const syncFiltersToUrl = () => {
+      history.replaceState(null, "", buildQuery(filters));
+    };
+
     const hydrateCardImage = (card) => {
       const image = card.querySelector("img[data-src]");
       if (!image) return;
@@ -355,14 +358,12 @@ const imagePlaceholder =
       document.querySelectorAll("[data-filter]").forEach((group) => {
         const key = group.getAttribute("data-filter");
 
-        group.querySelectorAll("a[data-value]").forEach((link) => {
-          const value = link.getAttribute("data-value") || "all";
-          const next = { ...filters, [key]: value };
+        group.querySelectorAll("button[data-value]").forEach((button) => {
+          const value = button.getAttribute("data-value") || "all";
+          const active = key ? filters[key] === value : false;
 
-          link.setAttribute("href", buildQuery(next));
-
-          const active = filters[key] === value;
-          link.classList.toggle("is-active", active);
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-pressed", active ? "true" : "false");
         });
       });
     };
@@ -424,6 +425,23 @@ const imagePlaceholder =
 
     updateFilterButtons();
     renderCards();
+
+    document.querySelectorAll("[data-filter]").forEach((group) => {
+      const key = group.getAttribute("data-filter");
+      if (!key) return;
+
+      group.querySelectorAll("button[data-value]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const value = button.getAttribute("data-value") || "all";
+
+          filters[key] = value;
+          visibleLimit = INITIAL_BATCH;
+          syncFiltersToUrl();
+          updateFilterButtons();
+          renderCards();
+        });
+      });
+    });
 
     if ("IntersectionObserver" in window && sentinel) {
       const observer = new IntersectionObserver(
