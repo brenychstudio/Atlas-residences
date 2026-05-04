@@ -154,93 +154,171 @@ const projectMapsHref = hasProjectCoords
         </p>
       </div>
 
-      <nav class="location-premium-filters">
+      <div class="location-premium-filters">
         {categoryOptions.map((category) => {
           const active = activeCat === category;
 
           return (
-            <a
-              href={buildCatHref(category)}
+            <button
+              type="button"
+              data-location-filter
+              data-category={category}
+              data-href={buildCatHref(category)}
               class={`location-premium-filter ${active ? "is-active" : ""}`}
+              aria-pressed={active ? "true" : "false"}
             >
               {category === "all" ? t(lang, "All", "Todos") : categoryLabel(category)}
-            </a>
+            </button>
           );
         })}
-      </nav>
+      </div>
     </section>
 
-    {filteredPoi.length === 0 ? (
-      <section class="location-premium-empty">
-        <p class="location-premium-card-kicker">
-          {t(lang, "Coming soon", "Próximamente")}
+    <section
+      class="location-premium-results"
+      aria-label={t(lang, "Nearby places", "Lugares cercanos")}
+      data-location-results
+      hidden={filteredPoi.length === 0}
+    >
+      <div class="location-premium-results__intro">
+        <p class="location-premium-kicker">
+          {t(lang, "Neighbourhood rhythm", "Ritmo del entorno")}
         </p>
-        <h2>{t(lang, "Nearby highlights will be available soon.", "Los puntos de interés cercanos estarán disponibles pronto.")}</h2>
-      </section>
-    ) : (
-      <section class="location-premium-results" aria-label={t(lang, "Nearby places", "Lugares cercanos")}>
-        <div class="location-premium-results__intro">
-          <p class="location-premium-kicker">
-            {t(lang, "Neighbourhood rhythm", "Ritmo del entorno")}
-          </p>
 
-          <h2>
-            {t(lang, "Daily reach, curated by minutes", "Alcance diario, organizado por minutos")}
-          </h2>
+        <h2>
+          {t(lang, "Daily reach, curated by minutes", "Alcance diario, organizado por minutos")}
+        </h2>
 
-          <p>
-            {t(
-              lang,
-              "The list is ordered by walking or short travel proximity, helping buyers understand everyday convenience before opening a map.",
-              "La lista está ordenada por proximidad a pie o trayectos cortos, ayudando a entender la comodidad diaria antes de abrir un mapa.",
-            )}
-          </p>
-        </div>
+        <p>
+          {t(
+            lang,
+            "The list is ordered by walking or short travel proximity, helping buyers understand everyday convenience before opening a map.",
+            "La lista está ordenada por proximidad a pie o trayectos cortos, ayudando a entender la comodidad diaria antes de abrir un mapa.",
+          )}
+        </p>
+      </div>
 
-        <ol class="location-premium-list">
-          {filteredPoi.map((item, index) => {
-            const poiName = lang === "es" ? item.name_es : item.name_en;
-            const category = String(item.category ?? "").toLowerCase();
-            const minutes = Number(item.distance_minutes ?? 0);
-            const hasPoiCoords = Boolean(item.coords_lat && item.coords_lng);
-            const poiMapsHref = hasPoiCoords
-              ? `https://www.google.com/maps?q=${encodeURIComponent(`${item.coords_lat},${item.coords_lng}`)}`
-              : "";
+      <ol class="location-premium-list">
+        {sortedPoi.map((item, index) => {
+          const poiName = lang === "es" ? item.name_es : item.name_en;
+          const category = String(item.category ?? "").toLowerCase();
+          const minutes = Number(item.distance_minutes ?? 0);
+          const hasPoiCoords = Boolean(item.coords_lat && item.coords_lng);
+          const poiMapsHref = hasPoiCoords
+            ? "https://www.google.com/maps?q=" + encodeURIComponent(String(item.coords_lat) + "," + String(item.coords_lng))
+            : "";
+          const matchesInitialCategory = activeCat === "all" || category === activeCat;
 
-            return (
-              <li class="location-premium-poi">
-                <div class="location-premium-poi__index">
-                  {String(index + 1).padStart(2, "0")}
-                </div>
+          return (
+            <li
+              class="location-premium-poi"
+              data-location-poi
+              data-category={category}
+              hidden={!matchesInitialCategory}
+            >
+              <div class="location-premium-poi__index">
+                {String(index + 1).padStart(2, "0")}
+              </div>
 
-                <div class="location-premium-poi__body">
-                  <div>
-                    <p class="location-premium-poi__category">
-                      {categoryLabel(category)}
-                    </p>
-
-                    <h3>
-                      {poiName}
-                    </h3>
-                  </div>
-
-                  <p class="location-premium-poi__distance">
-                    <strong>{minutes}</strong>
-                    <span>{t(lang, "min", "min")}</span>
+              <div class="location-premium-poi__body">
+                <div>
+                  <p class="location-premium-poi__category">
+                    {categoryLabel(category)}
                   </p>
 
-                  {poiMapsHref && (
-                    <a href={poiMapsHref} target="_blank" rel="noreferrer" class="location-premium-poi__link">
-                      {t(lang, "View on map", "Ver en mapa")}
-                      <span aria-hidden="true">→</span>
-                    </a>
-                  )}
+                  <h3>
+                    {poiName}
+                  </h3>
                 </div>
-              </li>
-            );
-          })}
-        </ol>
-      </section>
-    )}
+
+                <p class="location-premium-poi__distance">
+                  <strong>{minutes}</strong>
+                  <span>{t(lang, "min", "min")}</span>
+                </p>
+
+                {poiMapsHref && (
+                  <a href={poiMapsHref} target="_blank" rel="noreferrer" class="location-premium-poi__link">
+                    {t(lang, "View on map", "Ver en mapa")}
+                    <span aria-hidden="true">→</span>
+                  </a>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+
+    <section class="location-premium-empty" data-location-empty hidden={filteredPoi.length > 0}>
+      <p class="location-premium-card-kicker">
+        {t(lang, "Coming soon", "Próximamente")}
+      </p>
+      <h2>{t(lang, "Nearby highlights will be available soon.", "Los puntos de interés cercanos estarán disponibles pronto.")}</h2>
+    </section>
   </section>
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector(".location-premium-shell");
+    if (!(root instanceof HTMLElement)) return;
+
+    const filterButtons = Array.from(root.querySelectorAll("[data-location-filter]"));
+    const items = Array.from(root.querySelectorAll("[data-location-poi]"));
+    const results = root.querySelector("[data-location-results]");
+    const emptyState = root.querySelector("[data-location-empty]");
+    const meta = root.querySelector(".location-premium-control__meta");
+
+    if (!filterButtons.length || !items.length) return;
+
+    const lang = document.documentElement.lang === "es" ? "es" : "en";
+    const text = {
+      all: { en: "All categories shown", es: "Todas las categorías visibles" },
+      filtered: { en: "Filtered selection", es: "Selección filtrada" },
+    };
+
+    const isKnownCategory = (value) =>
+      filterButtons.some((button) => button.getAttribute("data-category") === value);
+
+    const normalizeCategory = (value) => {
+      const next = String(value || "all").toLowerCase();
+      return isKnownCategory(next) ? next : "all";
+    };
+
+    const applyCategory = (value, updateUrl = true) => {
+      const category = normalizeCategory(value);
+      let visibleCount = 0;
+
+      filterButtons.forEach((button) => {
+        const active = button.getAttribute("data-category") === category;
+        button.classList.toggle("is-active", active);
+        button.setAttribute("aria-pressed", active ? "true" : "false");
+      });
+
+      items.forEach((item) => {
+        const itemCategory = String(item.getAttribute("data-category") ?? "all").toLowerCase();
+        const visible = category === "all" || itemCategory === category;
+        item.hidden = !visible;
+        if (visible) visibleCount += 1;
+      });
+
+      if (results instanceof HTMLElement) results.hidden = visibleCount === 0;
+      if (emptyState instanceof HTMLElement) emptyState.hidden = visibleCount > 0;
+      if (meta instanceof HTMLElement) meta.textContent = category === "all" ? text.all[lang] : text.filtered[lang];
+
+      if (updateUrl) {
+        const activeButton = filterButtons.find((button) => button.getAttribute("data-category") === category);
+        const href = activeButton?.getAttribute("data-href");
+        if (href) history.replaceState(null, "", href);
+      }
+    };
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        applyCategory(button.getAttribute("data-category"));
+      });
+    });
+
+    applyCategory(new URLSearchParams(window.location.search).get("cat"), false);
+  })();
+</script>

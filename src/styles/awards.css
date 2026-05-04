@@ -8222,6 +8222,10 @@ body:has(.location-premium-shell) .header-shell {
   min-height: 2.55rem;
   display: inline-flex;
   align-items: center;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  font: inherit;
   border-radius: 999px;
   padding: 0.68rem 1rem;
   text-decoration: none;
@@ -14640,7 +14644,7 @@ html body .legal-premium-shell {
   }
 
   html body [data-dev-header] [data-header-mobile-lang] {
-    display: none !important;
+    display: inline-flex !important;
   }
 }
 
