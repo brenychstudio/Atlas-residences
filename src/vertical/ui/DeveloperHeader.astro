@@ -208,15 +208,52 @@ function isActive(href: string) {
     const backdrop = root.querySelector("[data-mobile-menu-backdrop]");
     const links = root.querySelectorAll("[data-mobile-menu-link]");
     const desktopQuery = window.matchMedia("(min-width: 48rem)");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const menuMotionMs = 260;
+    let closeTimer = 0;
 
     if (!(toggle instanceof HTMLButtonElement) || !(panel instanceof HTMLElement)) return;
 
+    const clearCloseTimer = () => {
+      if (closeTimer) {
+        window.clearTimeout(closeTimer);
+        closeTimer = 0;
+      }
+    };
+
+    const hideMenu = () => {
+      panel.hidden = true;
+      if (backdrop instanceof HTMLElement) backdrop.hidden = true;
+      document.body.toggleAttribute("data-atlas-mobile-menu-open", false);
+    };
+
     const setOpen = (open) => {
-      root.setAttribute("data-mobile-menu-open", open ? "true" : "false");
+      clearCloseTimer();
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
-      panel.hidden = !open;
-      if (backdrop instanceof HTMLElement) backdrop.hidden = !open;
-      document.body.toggleAttribute("data-atlas-mobile-menu-open", open);
+
+      if (open) {
+        panel.hidden = false;
+        if (backdrop instanceof HTMLElement) backdrop.hidden = false;
+        root.setAttribute("data-mobile-menu-open", "false");
+        panel.getBoundingClientRect();
+        requestAnimationFrame(() => {
+          root.setAttribute("data-mobile-menu-open", "true");
+          document.body.toggleAttribute("data-atlas-mobile-menu-open", true);
+        });
+        return;
+      }
+
+      root.setAttribute("data-mobile-menu-open", "false");
+
+      if (reduceMotion) {
+        document.body.toggleAttribute("data-atlas-mobile-menu-open", false);
+        hideMenu();
+        return;
+      }
+
+      closeTimer = window.setTimeout(() => {
+        if (root.getAttribute("data-mobile-menu-open") !== "true") hideMenu();
+      }, menuMotionMs);
     };
 
     toggle.addEventListener("click", () => {

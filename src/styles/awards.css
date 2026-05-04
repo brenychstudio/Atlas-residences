@@ -13026,6 +13026,28 @@ html body .legal-premium-shell {
       0 24px 70px rgba(15, 18, 24, 0.18) !important;
     backdrop-filter: blur(30px) saturate(1.22) !important;
     -webkit-backdrop-filter: blur(30px) saturate(1.22) !important;
+    opacity: 0 !important;
+    transform: translateX(-50%) translateY(-6px) scale(0.985) !important;
+    transform-origin: top center !important;
+    transition:
+      opacity 260ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 260ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+    will-change: opacity, transform !important;
+  }
+
+  html body [data-mobile-menu-backdrop] {
+    opacity: 0 !important;
+    transition: opacity 220ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+    will-change: opacity !important;
+  }
+
+  html body [data-mobile-menu-root][data-mobile-menu-open="true"] [data-mobile-menu-panel] {
+    opacity: 1 !important;
+    transform: translateX(-50%) translateY(0) scale(1) !important;
+  }
+
+  html body [data-mobile-menu-root][data-mobile-menu-open="true"] [data-mobile-menu-backdrop] {
+    opacity: 1 !important;
   }
 
   html body [data-mobile-menu-inner] {
@@ -13422,7 +13444,12 @@ html body .legal-premium-shell {
 
 @media (min-width: 48rem) {
   html body [data-dev-header] [data-header-mobile-lang] {
-    display: none !important;
+    display: inline-flex !important;
+  }
+
+  html body [data-dev-header] > [data-header-shell] {
+    grid-template-columns: minmax(0, 1fr) auto auto !important;
+    gap: 0.28rem !important;
   }
 }
 
@@ -13673,6 +13700,8 @@ html body .legal-premium-shell {
     gap: 0.62rem 0.9rem !important;
     margin-top: 0.85rem !important;
     padding-top: 0.72rem !important;
+    justify-items: center !important;
+    text-align: center !important;
   }
 
   html body .masterplan-premium-signals strong,
@@ -13978,11 +14007,11 @@ html body .legal-premium-shell {
 
 @media (max-width: 23.5rem) {
   html body [data-dev-header] > [data-header-shell] {
-    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-columns: minmax(0, 1fr) auto auto !important;
   }
 
   html body [data-dev-header] [data-header-mobile-lang] {
-    display: none !important;
+    display: inline-flex !important;
   }
 }
 
