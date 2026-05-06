@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../content/languages";
+import SeoHead from "../../vertical/ui/SeoHead.astro";
 
 export function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
@@ -11,7 +12,11 @@ if (!isLang(langParam)) throw new Error("Invalid lang");
 const lang = langParam as Lang;
 ---
 
-<BaseLayout lang={lang} title={t(lang, "Privacy | Atlas Residences", "Privacidad | Atlas Residences")}>
+<BaseLayout lang={lang}>
+  <Fragment slot="head">
+    <SeoHead lang={lang} page="privacy" />
+  </Fragment>
+
   <section class="legal-premium-shell">
     <p class="legal-premium-kicker">{t(lang, "Legal", "Legal")}</p>
     <h1>{t(lang, "Privacy policy", "Política de privacidad")}</h1>

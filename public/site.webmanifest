@@ -1,7 +1,9 @@
 {
   "name": "Atlas Residences",
   "short_name": "Atlas",
+  "description": "Private residences in Barcelona with live availability, guided masterplan exploration and private viewing requests.",
   "start_url": "/en/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#d7dde4",
   "theme_color": "#111111",
@@ -9,7 +11,14 @@
     {
       "src": "/favicon.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

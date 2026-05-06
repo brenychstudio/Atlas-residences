@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../content/languages";
 import { getSettings } from "../../vertical/cms/sheets";
+import SeoHead from "../../vertical/ui/SeoHead.astro";
 
 export function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
@@ -17,7 +18,11 @@ const priceListUrl = String((lang === "es" ? settings.price_list_url_es : settin
 const hasDownloads = Boolean(brochureUrl || priceListUrl);
 ---
 
-<BaseLayout lang={lang} title={t(lang, "Downloads | Atlas Residences", "Descargas | Atlas Residences")}>
+<BaseLayout lang={lang}>
+  <Fragment slot="head">
+    <SeoHead lang={lang} page="downloads" />
+  </Fragment>
+
   <section class="downloads-premium-shell downloads-layout">
     <header class="downloads-premium-hero">
       <div class="downloads-premium-hero__copy">

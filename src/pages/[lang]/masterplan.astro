@@ -1,8 +1,9 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../content/languages";
-import { getAmenities, getBuildings, getPageBySlug, getSettings, getUnits } from "../../vertical/cms/sheets";
+import { getAmenities, getBuildings, getUnits } from "../../vertical/cms/sheets";
 import { ATLAS_ASSETS } from "../../vertical/content/assets";
+import SeoHead from "../../vertical/ui/SeoHead.astro";
 
 export function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
@@ -11,22 +12,6 @@ export function getStaticPaths() {
 const langParam = Astro.params.lang ?? "en";
 if (!isLang(langParam)) throw new Error("Invalid lang");
 const lang = langParam as Lang;
-
-const p0 = Astro.url.pathname;
-const p = p0.endsWith("/") ? p0 : `${p0}/`;
-const [settings, pageSeo] = await Promise.all([getSettings(), getPageBySlug(p)]);
-
-const projectName = (lang === "es" ? settings.project_name_es : settings.project_name_en) || "Atlas Residences";
-const canonicalPath = `/${lang}/masterplan/`;
-const seoUrl = Astro.site ? new URL(canonicalPath, Astro.site).toString() : canonicalPath;
-
-const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Masterplan", "Plan maestro")} \u2014 ${projectName}`;
-const seoDescription =
-  (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) ||
-  t(lang, "Masterplan overview for Atlas Residences.", "Resumen del plan maestro de Atlas Residences.");
-const seoImage = pageSeo?.og_image || ATLAS_ASSETS.masterplan.mp01Wide16x9 || ATLAS_ASSETS.og.og01Home1200x630;
-const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";
-const ogLocale = lang === "es" ? "es_ES" : "en_US";
 
 const searchParams = Astro.url.searchParams;
 const bedsParam = searchParams.get("beds") ?? "all";
@@ -75,22 +60,9 @@ const amenityCategoryText = (category?: string) => {
 };
 ---
 
-<BaseLayout lang={lang} title={seoTitle}>
+<BaseLayout lang={lang}>
   <Fragment slot="head">
-    <title>{seoTitle}</title>
-    <meta name="description" content={seoDescription} />
-    <meta property="og:title" content={seoTitle} />
-    <meta property="og:description" content={seoDescription} />
-    <meta property="og:image" content={seoImage} />
-    <meta property="og:url" content={seoUrl} />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content={ogLocale} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={seoTitle} />
-    <meta name="twitter:description" content={seoDescription} />
-    <meta name="twitter:image" content={seoImage} />
-    <meta name="twitter:url" content={seoUrl} />
-    {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
+    <SeoHead lang={lang} page="masterplan" />
   </Fragment>
 
   <section class="masterplan-premium-shell" aria-labelledby="masterplan-title">

@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../../content/languages";
-import { getPageBySlug, getSettings, getUnits, getUnitTypes } from "../../../vertical/cms/sheets";
-import { ATLAS_ASSETS } from "../../../vertical/content/assets";
+import { getUnits, getUnitTypes } from "../../../vertical/cms/sheets";
+import SeoHead from "../../../vertical/ui/SeoHead.astro";
 
 export async function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
@@ -11,21 +11,6 @@ export async function getStaticPaths() {
 const langParam = Astro.params.lang ?? "en";
 if (!isLang(langParam)) throw new Error("Invalid lang");
 const lang = langParam as Lang;
-
-const p0 = Astro.url.pathname;
-const p = p0.endsWith("/") ? p0 : `${p0}/`;
-const [settings, pageSeo] = await Promise.all([getSettings(), getPageBySlug(p)]);
-
-const projectName = (lang === "es" ? settings.project_name_es : settings.project_name_en) || "Atlas Residences";
-const defaultDescription =
-  (lang === "es" ? settings.tagline_es : settings.tagline_en) ||
-  t(lang, "Browse available units at Atlas Residences.", "Explora las unidades disponibles en Atlas Residences.");
-
-const seoTitle = (lang === "es" ? pageSeo?.title_es : pageSeo?.title_en) || `${t(lang, "Units", "Unidades")} \u2014 ${projectName}`;
-const seoDescription = (lang === "es" ? pageSeo?.description_es : pageSeo?.description_en) || defaultDescription;
-const seoImage = pageSeo?.og_image || ATLAS_ASSETS.og.og02Units1200x630 || ATLAS_ASSETS.masterplan.mp01Wide16x9;
-const seoNoindex = String(pageSeo?.noindex ?? "").toLowerCase() === "true";
-const ogLocale = lang === "es" ? "es_ES" : "en_US";
 
 const searchParams = Astro.url.searchParams;
 const buildingParam = (searchParams.get("building") ?? "all").toLowerCase();
@@ -69,20 +54,9 @@ const imagePlaceholder =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'%3E%3C/svg%3E";
 ---
 
-<BaseLayout lang={lang} title={seoTitle}>
+<BaseLayout lang={lang}>
   <Fragment slot="head">
-    <title>{seoTitle}</title>
-    <meta name="description" content={seoDescription} />
-    <meta property="og:title" content={seoTitle} />
-    <meta property="og:description" content={seoDescription} />
-    <meta property="og:image" content={seoImage} />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content={ogLocale} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={seoTitle} />
-    <meta name="twitter:description" content={seoDescription} />
-    <meta name="twitter:image" content={seoImage} />
-    {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
+    <SeoHead lang={lang} page="units" />
   </Fragment>
 
   <section class="units-premium-page space-y-5 sm:space-y-6">

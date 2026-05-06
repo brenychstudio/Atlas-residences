@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { LANGS, type Lang, isLang, t } from "../../content/languages";
 import { getPageBySlug, getSettings } from "../../vertical/cms/sheets";
 import { ATLAS_ASSETS } from "../../vertical/content/assets";
+import SeoHead from "../../vertical/ui/SeoHead.astro";
 
 export function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
@@ -147,20 +148,9 @@ const selectionSummary = [
   .join(" • ");
 ---
 
-<BaseLayout lang={lang} title={seoTitle}>
+<BaseLayout lang={lang}>
   <Fragment slot="head">
-    <title>{seoTitle}</title>
-    <meta name="description" content={seoDescription} />
-    <meta property="og:title" content={seoTitle} />
-    <meta property="og:description" content={seoDescription} />
-    <meta property="og:image" content={seoImage} />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content={ogLocale} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={seoTitle} />
-    <meta name="twitter:description" content={seoDescription} />
-    <meta name="twitter:image" content={seoImage} />
-    {seoNoindex && <meta name="robots" content="noindex,nofollow" />}
+    <SeoHead lang={lang} page="contact" />
   </Fragment>
 
   <section class="contact-premium-shell" aria-labelledby="contact-title">

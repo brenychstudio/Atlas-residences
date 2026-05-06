@@ -6,6 +6,9 @@ const props = Astro.props;
 ---
 
 <DeveloperLayout {...props}>
+  <Fragment slot="head">
+    <slot name="head" />
+  </Fragment>
   <div class="awards-flow">
     <slot />
   </div>
