@@ -17342,3 +17342,63 @@ html body[data-atmo-active="true"] .atmo-backdrop::after {
     -webkit-backdrop-filter: none !important;
   }
 }
+/* ==========================================================================
+   Unit detail desktop facts card polish
+   Keeps compositor-safe rendering without backdrop-filter.
+   ========================================================================== */
+@media (min-width: 64rem) {
+  html body .unit-detail-canon-hero__facts,
+  html body .unit-detail-editorial-hero__card,
+  html body .unit-detail-premium-summary {
+    background:
+      linear-gradient(
+        135deg,
+        rgba(244, 246, 247, 0.94) 0%,
+        rgba(228, 232, 235, 0.88) 46%,
+        rgba(214, 217, 219, 0.9) 100%
+      ) !important;
+    border: 1px solid rgba(255, 255, 255, 0.72) !important;
+    box-shadow:
+      0 26px 60px rgba(18, 24, 32, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.72),
+      inset 0 -1px 0 rgba(18, 18, 18, 0.08) !important;
+    color: rgba(18, 18, 18, 0.92) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  html body .unit-detail-canon-hero__facts *,
+  html body .unit-detail-editorial-hero__card *,
+  html body .unit-detail-premium-summary * {
+    color: inherit;
+  }
+
+  html body .unit-detail-canon-hero__facts small,
+  html body .unit-detail-canon-hero__facts .eyebrow,
+  html body .unit-detail-canon-hero__facts [class*="label"],
+  html body .unit-detail-editorial-hero__card small,
+  html body .unit-detail-editorial-hero__card .eyebrow,
+  html body .unit-detail-editorial-hero__card [class*="label"],
+  html body .unit-detail-premium-summary small,
+  html body .unit-detail-premium-summary .eyebrow,
+  html body .unit-detail-premium-summary [class*="label"] {
+    color: rgba(18, 18, 18, 0.46) !important;
+    letter-spacing: 0.12em;
+  }
+
+  html body .unit-detail-canon-hero__facts a,
+  html body .unit-detail-editorial-hero__card a,
+  html body .unit-detail-premium-summary a {
+    color: inherit;
+  }
+
+  html body .unit-detail-canon-hero__facts .ui-button--dark,
+  html body .unit-detail-canon-hero__facts .button--dark,
+  html body .unit-detail-canon-hero__facts [class*="button"][class*="dark"],
+  html body .unit-detail-editorial-hero__card .ui-button--dark,
+  html body .unit-detail-editorial-hero__card .button--dark,
+  html body .unit-detail-editorial-hero__card [class*="button"][class*="dark"] {
+    color: rgba(255, 255, 255, 0.96) !important;
+    background: rgba(12, 12, 12, 0.94) !important;
+  }
+}
