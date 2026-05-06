@@ -11610,6 +11610,12 @@ html body [data-dev-header] {
   color: rgba(18, 18, 18, 0.72);
 }
 
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  html body .atlas-footer {
+    padding-bottom: clamp(2.4rem, 4svh, 3.25rem) !important;
+  }
+}
+
 .atlas-footer::before {
   content: "";
   position: absolute;
