@@ -1452,13 +1452,6 @@ textarea.ui-field {
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  inline-size: 100vw;
-  block-size: 100lvh;
-  min-block-size: 100vh;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  contain: paint;
-  isolation: isolate;
 }
 
 .atmo-backdrop__canvas {
@@ -1483,28 +1476,17 @@ textarea.ui-field {
 }
 
 .atmo-backdrop__grain {
-  display: none;
-}
-
-html {
-  background:
-    linear-gradient(
-      180deg,
-      rgb(205, 216, 231) 0%,
-      rgb(199, 203, 205) 48%,
-      rgb(195, 191, 187) 100%
-    );
+  position: absolute;
+  inset: 0;
+  opacity: 0.014;
+  background-image:
+    radial-gradient(rgba(18, 18, 18, 0.45) 0.5px, transparent 0.72px);
+  background-size: 10px 10px;
+  mix-blend-mode: multiply;
 }
 
 body[data-atmo-active="true"] {
-  min-height: 100svh;
-  background:
-    linear-gradient(
-      180deg,
-      rgb(205, 216, 231) 0%,
-      rgb(199, 203, 205) 48%,
-      rgb(195, 191, 187) 100%
-    ) !important;
+  background: transparent;
 }
 
 body[data-atmo-active="true"] main {
@@ -4238,8 +4220,9 @@ body[data-atmo-active="true"] .atmo-backdrop::after {
 }
 
 body[data-atmo-active="true"] .atmo-backdrop__grain {
-  display: none !important;
-  opacity: 0 !important;
+  position: absolute;
+  z-index: 3;
+  opacity: calc(0.012 + var(--atmo-mood, 0) * 0.006);
 }
 
 /* Atmospheric Backdrop tri-state mood v4 — blue hour peaks before warm sunset */
@@ -12226,30 +12209,6 @@ html body .legal-premium-shell {
   }
 
   html,
-  html body,
-  html body[data-atmo-active="true"] {
-    min-height: 100svh !important;
-    background:
-      linear-gradient(
-        180deg,
-        rgb(205, 216, 231) 0%,
-        rgb(199, 203, 205) 48%,
-        rgb(195, 191, 187) 100%
-      ) !important;
-    overscroll-behavior-y: none;
-  }
-
-  html body .atmo-backdrop {
-    block-size: 100lvh !important;
-    min-block-size: 100vh !important;
-  }
-
-  html body .atlas-footer {
-    margin-bottom: -1px !important;
-    padding-bottom: max(5.5rem, calc(5.5rem + env(safe-area-inset-bottom, 0px))) !important;
-  }
-
-  html,
   body {
     width: 100% !important;
     max-width: 100% !important;
@@ -17232,8 +17191,8 @@ html body[data-atmo-active="true"] .atmo-backdrop::after {
   }
 
   html body[data-atmo-active="true"] .atmo-backdrop__grain {
-    display: none !important;
-    opacity: 0 !important;
+    z-index: 4 !important;
+    opacity: 0.012 !important;
   }
 }
 
