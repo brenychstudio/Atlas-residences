@@ -1,0 +1,15 @@
+{
+  "name": "Atlas Residences",
+  "short_name": "Atlas",
+  "start_url": "/en/",
+  "display": "standalone",
+  "background_color": "#d7dde4",
+  "theme_color": "#111111",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

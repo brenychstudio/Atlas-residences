@@ -3,7 +3,7 @@ import "../../styles/global.css";
 
 import type { Lang } from "../../content/languages";
 
-const { lang, title } = Astro.props as { lang: Lang; title: string };
+const { lang, title } = Astro.props as { lang: Lang; title?: string };
 ---
 
 <!doctype html>
@@ -23,7 +23,10 @@ const { lang, title } = Astro.props as { lang: Lang; title: string };
       })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    {title && <title>{title}</title>}
     <slot name="head" />
   </head>
   <body class="bg-white text-black">

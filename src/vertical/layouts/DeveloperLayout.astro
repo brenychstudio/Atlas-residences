@@ -12,6 +12,9 @@ const lang = (props as { lang?: string }).lang;
 ---
 
 <BaseLayout {...props}>
+  <Fragment slot="head">
+    <slot name="head" />
+  </Fragment>
   <AtmosphericBackdrop />
   <DeveloperHeader slot="header" lang={lang} pathname={pathname} />
   <div data-dev-main class="awards-main-flow">

@@ -10,6 +10,9 @@ const lang = (props as any).lang;
 ---
 
 <BaseLayout {...props}>
+  <Fragment slot="head">
+    <slot name="head" />
+  </Fragment>
   <HotelHeader slot="header" lang={lang} pathname={pathname} />
   <slot />
 </BaseLayout>
