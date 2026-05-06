@@ -17279,3 +17279,66 @@ html body[data-atmo-active="true"] .atmo-backdrop::after {
   }
 }
 /* ATLAS-QA-FIX-04 END */
+/* ==========================================================================
+   Desktop compositor stabilization
+   Cause confirmed: backdrop-filter creates horizontal compositor seam on desktop.
+   Keep mobile/tablet untouched. Desktop uses static frosted surfaces instead.
+   ========================================================================== */
+@media (min-width: 64rem) {
+  html body [data-dev-header],
+  html body [data-dev-header] [data-header-shell],
+  html body [data-dev-header] [data-header-lang],
+  html body [data-dev-header] [data-header-cta],
+  html body [data-dev-header] [data-header-mobile-link],
+
+  html body .home-sky-intro__hero [data-sun-slider-wrap],
+  html body .home-brief--sky .home-brief__card--glass,
+  html body[data-atmo-active="true"] .home-brief__card,
+  html body[data-atmo-active="true"] .home-brief__card--glass,
+  html body[data-atmo-active="true"] .home-brief__card--frosted,
+  html body[data-atmo-active="true"] .home-brief--sky .home-brief__actions-row > a,
+  html body[data-atmo-active="true"] .sticky-cta,
+  html body .sticky-cta__panel,
+  html body .sticky-cta__secondary,
+
+  html body .units-premium-hero,
+  html body .units-premium-hero__panel,
+  html body .units-premium-filters,
+  html body .units-premium-filters .ui-chip,
+  html body .units-filter-console,
+  html body .units-filter-console .ui-chip,
+  html body .unit-card--premium,
+  html body .unit-card--premium .unit-card__status,
+  html body .unit-detail-premium-plan,
+  html body .unit-detail-premium-summary,
+  html body .unit-detail-canon-hero__facts,
+  html body .unit-detail-canon-plan,
+  html body .unit-detail-canon-gallery__caption,
+  html body .unit-detail-canon-summary,
+  html body .unit-detail-editorial-hero__card,
+
+  html body .downloads-premium-hero,
+  html body .downloads-premium-hero__card,
+  html body .downloads-premium-card,
+
+  html body .contact-premium-hero,
+  html body .contact-premium-gallery-card,
+  html body .contact-premium-method,
+  html body .contact-premium-form-shell,
+
+  html body .location-premium-hero,
+  html body .location-premium-address-card,
+  html body .location-premium-control,
+  html body .location-premium-poi,
+
+  html body .masterplan-premium-hero,
+  html body .masterplan-premium-stage-shell,
+  html body .masterplan-premium-zone-rail,
+  html body .masterplan-premium-cta,
+  html body .masterplan-premium-hero__card,
+  html body .masterplan-premium-panel,
+  html body .masterplan-premium-hotspot {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
