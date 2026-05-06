@@ -1476,13 +1476,7 @@ textarea.ui-field {
 }
 
 .atmo-backdrop__grain {
-  position: absolute;
-  inset: 0;
-  opacity: 0.014;
-  background-image:
-    radial-gradient(rgba(18, 18, 18, 0.45) 0.5px, transparent 0.72px);
-  background-size: 10px 10px;
-  mix-blend-mode: multiply;
+  display: none;
 }
 
 body[data-atmo-active="true"] {
@@ -4264,24 +4258,25 @@ body[data-atmo-active="true"] .atmo-backdrop::after {
   z-index: 2;
   pointer-events: none;
   background:
-    linear-gradient(
-      180deg,
-      rgba(20, 32, 58, calc(var(--atmo-bluehour, 0) * 0.26)) 0%,
-      rgba(42, 52, 78, calc(var(--atmo-bluehour, 0) * 0.13)) 46%,
-      rgba(96, 68, 54, calc(var(--atmo-bluehour, 0) * 0.06)) 100%
+    radial-gradient(
+      circle at 24% 18%,
+      rgba(210, 224, 244, calc(var(--atmo-mood, 0) * 0.10)),
+      transparent 34rem
     ),
     radial-gradient(
-      90% 82% at 18% 12%,
-      rgba(255, 198, 144, calc(var(--atmo-sunset, 0) * 0.22)),
-      transparent 62%
+      circle at 78% 22%,
+      rgba(255, 232, 204, calc(var(--atmo-sunset, 0) * 0.10)),
+      transparent 36rem
     ),
     linear-gradient(
       180deg,
-      rgba(255, 210, 176, calc(var(--atmo-sunset, 0) * 0.08)),
-      rgba(255, 220, 180, calc(var(--atmo-sunset, 0) * 0.12))
+      rgba(30, 42, 68, calc(var(--atmo-mood, 0) * 0.045)) 0%,
+      rgba(86, 72, 62, calc(var(--atmo-sunset, 0) * 0.04)) 100%
     );
-  mix-blend-mode: multiply;
-  opacity: clamp(0, calc(var(--atmo-bluehour, 0) * 0.75 + var(--atmo-sunset, 0) * 0.22), 0.78);
+  mix-blend-mode: normal !important;
+  opacity: 0.78;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
 /* Header glass should not become heavy/dark at sunset */
