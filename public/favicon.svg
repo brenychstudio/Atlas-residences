@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Atlas Residences">
-  <rect width="512" height="512" rx="128" fill="#111111"/>
-  <rect x="76" y="76" width="360" height="360" rx="104" fill="none" stroke="#d7dde4" stroke-opacity=".16" stroke-width="4"/>
-  <text x="256" y="303" text-anchor="middle" fill="#d7dde4" font-family="Arial, Helvetica, sans-serif" font-size="168" font-weight="700" letter-spacing="8">AR</text>
-</svg>
